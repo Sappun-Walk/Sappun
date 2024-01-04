@@ -1,6 +1,6 @@
 ---
-name: 이슈 제목
-about: 이슈 설명
+name: Feature Teamplate
+about: issue 템플릿
 title: ''
 labels: ''
 assignees: ''
