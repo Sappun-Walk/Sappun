@@ -1,0 +1,107 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.1'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'com.diffplug.spotless' version '6.11.0'
+}
+
+group = 'sparta.com'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // devtools
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // mysql
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // mapstruct
+    implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+
+    // oauth2
+    implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: '6.2.1'
+
+    // aws
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.623'
+
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // h2
+    testImplementation 'com.h2database:h2:2.1.214'
+    compileOnly('com.h2database:h2:2.1.214')
+
+    // JWT
+    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+    // JWT 테스트용
+    testCompileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    testRuntimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    testRuntimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+spotless {
+    java {
+        // 사용하지 않는 import 제거
+        removeUnusedImports()
+        // 구글 자바 포맷 적용
+        googleJavaFormat()
+        indentWithTabs(2)
+        indentWithSpaces(4)
+        // 공백 제거
+        trimTrailingWhitespace()
+        // 끝부분 New Line 처리
+        endWithNewline()
+    }
+}
+
+// 의존성을 설정해줌 test 끝나고 spotlessjava 수행되도록
+tasks.named("spotlessJava").configure { dependsOn("compileTestJava") }
