@@ -11,7 +11,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import sparta.com.sappun.domain.BaseMvcTest;
+import sparta.com.sappun.domain.sample.dto.request.SampleSaveReq;
 import sparta.com.sappun.domain.sample.dto.response.SampleGetRes;
 import sparta.com.sappun.domain.sample.dto.response.SampleSaveRes;
 import sparta.com.sappun.domain.sample.service.SampleService;
@@ -47,6 +49,8 @@ class SampleControllerTest extends BaseMvcTest implements SampleTest {
     @DisplayName("saveSample 테스트")
     void saveSampleTest() throws Exception {
         // given
+        SampleSaveReq req =
+                SampleSaveReq.builder().field1(TEST_SAMPLE_FILED1).field2(TEST_SAMPLE_FILED2).build();
         SampleSaveRes res = SampleSaveRes.builder().sampleId(TEST_SAMPLE_ID).build();
 
         // when
@@ -54,7 +58,10 @@ class SampleControllerTest extends BaseMvcTest implements SampleTest {
 
         // then
         mockMvc
-                .perform(post("/api/samples"))
+                .perform(
+                        post("/api/samples")
+                                .content(objectMapper.writeValueAsString(req))
+                                .contentType(MediaType.APPLICATION_JSON))
                 // .principal(mockPrincipal)) UserDetails 추가 이후
                 .andDo(print())
                 .andExpect(status().isOk());

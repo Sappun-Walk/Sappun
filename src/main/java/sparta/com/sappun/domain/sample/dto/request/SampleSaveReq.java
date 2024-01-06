@@ -10,14 +10,12 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SampleSaveReq {
-    private Long id;
     private String field1;
     private String field2;
     private Long userId;
 
     @Builder
-    private SampleSaveReq(Long id, String field1, String field2) {
-        this.id = id;
+    private SampleSaveReq(String field1, String field2) {
         this.field1 = field1;
         this.field2 = field2;
     }
