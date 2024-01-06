@@ -1,7 +1,6 @@
 package sparta.com.sappun.domain.sample.service.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -21,14 +20,11 @@ import sparta.com.sappun.test.SampleTest;
 
 @ExtendWith(MockitoExtension.class)
 class SampleServiceImplTest implements SampleTest {
-    @Mock
-    SampleRepository sampleRepository;
+    @Mock SampleRepository sampleRepository;
 
-    @InjectMocks
-    SampleServiceImpl sampleService;
+    @InjectMocks SampleServiceImpl sampleService;
 
-    @Captor
-    ArgumentCaptor<Sample> argumentCaptor; // 반환값이 없는 메소드를 테스트할 때 메소드 내의 객체를 캡처해 테스트 가능
+    @Captor ArgumentCaptor<Sample> argumentCaptor; // 반환값이 없는 메소드를 테스트할 때 메소드 내의 객체를 캡처해 테스트 가능
 
     @Test
     @DisplayName("getSample 테스트")
@@ -50,10 +46,7 @@ class SampleServiceImplTest implements SampleTest {
     void saveSampleTest() {
         // given
         SampleSaveReq req =
-            SampleSaveReq.builder()
-                .field1(TEST_SAMPLE_FILED1)
-                .field2(TEST_SAMPLE_FILED2)
-                .build();
+                SampleSaveReq.builder().field1(TEST_SAMPLE_FILED1).field2(TEST_SAMPLE_FILED2).build();
 
         // when
         sampleService.saveSample(req);

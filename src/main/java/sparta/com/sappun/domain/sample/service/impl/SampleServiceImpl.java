@@ -27,18 +27,19 @@ public class SampleServiceImpl implements SampleService {
     public SampleGetRes getSample(Long sampleId) {
         Sample sample = getSampleById(sampleId);
 
-        return SampleServiceMapper.INSTANCE.toSampleGetRes(sample); // 반환하고자 하는 dto로 entity를 변환하는데 Mapper를 사용
+        return SampleServiceMapper.INSTANCE.toSampleGetRes(
+                sample); // 반환하고자 하는 dto로 entity를 변환하는데 Mapper를 사용
     }
 
     @Override
     @Transactional
     public SampleSaveRes saveSample(SampleSaveReq sampleSaveReq) {
         return SampleServiceMapper.INSTANCE.toSampleSavaRes(
-            sampleRepository.save(
-                Sample.builder()
-                    .field1(sampleSaveReq.getField1())
-                    .field2(sampleSaveReq.getField2())
-                    .build()));
+                sampleRepository.save(
+                        Sample.builder()
+                                .field1(sampleSaveReq.getField1())
+                                .field2(sampleSaveReq.getField2())
+                                .build()));
     }
 
     @Override
@@ -51,7 +52,6 @@ public class SampleServiceImpl implements SampleService {
         sample.update(sampleUpdateReq);
         return new SampleUpdateRes(); // 반환할 값이 없을 때 생성자를 이용해 생성한 빈 객체를 반환
     }
-
 
     @Override
     @Transactional

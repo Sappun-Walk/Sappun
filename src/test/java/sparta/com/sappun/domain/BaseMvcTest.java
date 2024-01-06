@@ -16,26 +16,25 @@ import org.springframework.web.context.WebApplicationContext;
 @ExtendWith({MockitoExtension.class, SpringExtension.class})
 public class BaseMvcTest {
 
-    @Autowired
-    protected ObjectMapper objectMapper;
+    @Autowired protected ObjectMapper objectMapper;
     protected MockMvc mockMvc;
     protected Principal mockPrincipal;
 
-    @Autowired
-    private WebApplicationContext context;
+    @Autowired private WebApplicationContext context;
 
     @BeforeEach
     public void setUp() throws Exception {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context)
-            .apply(springSecurity(new MockSpringSecurityFilter()))
-            .build();
-//        mockUserSetup();
+        mockMvc =
+                MockMvcBuilders.webAppContextSetup(context)
+                        .apply(springSecurity(new MockSpringSecurityFilter()))
+                        .build();
+        //        mockUserSetup();
     }
 
-//    private void mockUserSetup() {
-//        UserDetails testUserDetails = new UserDetailsImpl(TEST_USER);
-//        mockPrincipal =
-//            new UsernamePasswordAuthenticationToken(
-//                testUserDetails, "", testUserDetails.getAuthorities());
-//    }
+    //    private void mockUserSetup() {
+    //        UserDetails testUserDetails = new UserDetailsImpl(TEST_USER);
+    //        mockPrincipal =
+    //            new UsernamePasswordAuthenticationToken(
+    //                testUserDetails, "", testUserDetails.getAuthorities());
+    //    }
 }

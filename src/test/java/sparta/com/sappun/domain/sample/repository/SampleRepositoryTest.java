@@ -16,8 +16,7 @@ import sparta.com.sappun.test.SampleTest;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class SampleRepositoryTest implements SampleTest {
-    @Autowired
-    private SampleRepository sampleRepository;
+    @Autowired private SampleRepository sampleRepository;
 
     @Test
     @DisplayName("save 테스트")

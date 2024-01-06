@@ -9,5 +9,4 @@ public class SappunApplication {
     public static void main(String[] args) {
         SpringApplication.run(SappunApplication.class, args);
     }
-
 }
