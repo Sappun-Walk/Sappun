@@ -26,30 +26,28 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
-        throws Exception {
+            throws Exception {
         return configuration.getAuthenticationManager();
     }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
 
         http.sessionManagement(
-            (sessionManagement) ->
-                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                (sessionManagement) ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(
-            (authorizeHttpRequests) ->
-                authorizeHttpRequests
-                    .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                    .permitAll() // resources 접근 허용 설정
-                    .requestMatchers(
-                        "/api/users/signup")
-                    .permitAll() // 회원가입 API만 접근 허용
-                    .anyRequest()
-                    .authenticated() // 그 외 모든 요청 인증처리
-        );
+                (authorizeHttpRequests) ->
+                        authorizeHttpRequests
+                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                                .permitAll() // resources 접근 허용 설정
+                                .requestMatchers("/api/users/signup")
+                                .permitAll() // 회원가입 API만 접근 허용
+                                .anyRequest()
+                                .authenticated() // 그 외 모든 요청 인증처리
+                );
 
         return http.build();
     }

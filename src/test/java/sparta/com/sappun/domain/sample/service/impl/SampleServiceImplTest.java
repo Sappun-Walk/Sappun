@@ -12,6 +12,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import sparta.com.sappun.domain.sample.dto.request.SampleSaveReq;
 import sparta.com.sappun.domain.sample.dto.response.SampleGetRes;
 import sparta.com.sappun.domain.sample.entity.Sample;
@@ -31,6 +32,7 @@ class SampleServiceImplTest implements SampleTest {
     void getSampleTest() {
         // given
         given(sampleRepository.findById(TEST_SAMPLE_ID)).willReturn(TEST_SAMPLE);
+        ReflectionTestUtils.setField(TEST_SAMPLE, "id", TEST_SAMPLE_ID); // 빌더로 넣어줄 수 없는 값을 넣을 수 있음
 
         // when
         SampleGetRes res = sampleService.getSample(TEST_SAMPLE_ID);
