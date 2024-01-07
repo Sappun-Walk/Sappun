@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SampleSaveRes {
-    private Long sampleId;
+    private Long id;
 
     @Builder
-    private SampleSaveRes(Long sampleId) {
-        this.sampleId = sampleId;
+    private SampleSaveRes(Long id) {
+        this.id = id;
     }
 }

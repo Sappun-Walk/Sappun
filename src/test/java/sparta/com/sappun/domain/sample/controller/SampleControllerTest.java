@@ -51,7 +51,7 @@ class SampleControllerTest extends BaseMvcTest implements SampleTest {
         // given
         SampleSaveReq req =
                 SampleSaveReq.builder().field1(TEST_SAMPLE_FILED1).field2(TEST_SAMPLE_FILED2).build();
-        SampleSaveRes res = SampleSaveRes.builder().sampleId(TEST_SAMPLE_ID).build();
+        SampleSaveRes res = SampleSaveRes.builder().id(TEST_SAMPLE_ID).build();
 
         // when
         when(sampleService.saveSample(any())).thenReturn(res);
