@@ -21,7 +21,7 @@ public class CommonResponse<T> implements Serializable {
     public static <T> CommonResponse<T> success(T data) {
         return CommonResponse.<T>builder()
                 .status(ResultCode.SUCCESS.getStatus())
-                .code(ResultCode.SUCCESS.getCode())
+                .code(ResultCode.SUCCESS.getStatus().value())
                 .message(ResultCode.SUCCESS.getMessage())
                 .data(data)
                 .build();
@@ -30,7 +30,7 @@ public class CommonResponse<T> implements Serializable {
     public static <T> CommonResponse<T> error(ResultCode resultCode) {
         return CommonResponse.<T>builder()
                 .status(resultCode.getStatus())
-                .code(resultCode.getCode())
+                .code(resultCode.getStatus().value())
                 .message(resultCode.getMessage())
                 .build();
     }
