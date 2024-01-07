@@ -1,0 +1,77 @@
+package sparta.com.sappun.domain.user.service.impl;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static sparta.com.sappun.global.response.ResultCode.NOT_MATCHED_PASSWORD;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
+import sparta.com.sappun.domain.user.entity.User;
+import sparta.com.sappun.domain.user.repository.UserRepository;
+import sparta.com.sappun.global.exception.GlobalException;
+import sparta.com.sappun.test.UserTest;
+
+@ExtendWith(MockitoExtension.class)
+class UserServiceImplTest implements UserTest {
+    @Mock UserRepository userRepository;
+
+    @Mock PasswordEncoder passwordEncoder;
+
+    @InjectMocks UserServiceImpl userService;
+
+    @Captor ArgumentCaptor<User> argumentCaptor;
+
+    @Test
+    @DisplayName("signup 테스트 - 성공")
+    void signupTest() {
+        // given
+        UserSignupReq req =
+                UserSignupReq.builder()
+                        .username(TEST_USER_USERNAME)
+                        .nickname(TEST_USER_NICKNAME)
+                        .password(TEST_USER_PASSWORD)
+                        .confirmPassword(TEST_USER_PASSWORD)
+                        .build();
+
+        // when
+        userService.signup(req);
+
+        // then
+        verify(userRepository).save(argumentCaptor.capture());
+        verify(passwordEncoder).encode(TEST_USER_PASSWORD);
+        assertEquals(TEST_USER_USERNAME, argumentCaptor.getValue().getUsername());
+        assertEquals(TEST_USER_NICKNAME, argumentCaptor.getValue().getNickname());
+    }
+
+    @Test
+    @DisplayName("signup 테스트 - 실패")
+    void signupFailureTest() {
+        // given
+        UserSignupReq req =
+                UserSignupReq.builder()
+                        .username(TEST_USER_USERNAME)
+                        .nickname(TEST_USER_NICKNAME)
+                        .password(TEST_USER_PASSWORD)
+                        .confirmPassword("wrongPassword")
+                        .build();
+
+        // when
+        GlobalException exception =
+                assertThrows(
+                        GlobalException.class,
+                        () -> {
+                            userService.signup(req);
+                        });
+
+        // then
+        assertEquals(NOT_MATCHED_PASSWORD.getMessage(), exception.getResultCode().getMessage());
+    }
+}
