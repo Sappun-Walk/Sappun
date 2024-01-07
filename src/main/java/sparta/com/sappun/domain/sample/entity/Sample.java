@@ -26,7 +26,7 @@ public class Sample extends TimeStamp {
     private String field2;
 
     @Builder
-    private Sample(Long id, String field1, String field2) {
+    private Sample(String field1, String field2) { // 빌더로 id값을 직접 넣어주는 경우가 없으므로 제거
         this.id = id;
         this.field1 = field1;
         this.field2 = field2;

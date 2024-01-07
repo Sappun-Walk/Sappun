@@ -9,7 +9,6 @@ public interface SampleTest {
 
     Sample TEST_SAMPLE =
             Sample.builder()
-                    .id(TEST_SAMPLE_ID)
                     .field1(TEST_SAMPLE_FILED1)
                     .field2(TEST_SAMPLE_FILED2)
                     .build();
