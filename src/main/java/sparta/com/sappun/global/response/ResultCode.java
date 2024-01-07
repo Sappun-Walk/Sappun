@@ -1,4 +1,4 @@
-package sparta.com.sappun.global;
+package sparta.com.sappun.global.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

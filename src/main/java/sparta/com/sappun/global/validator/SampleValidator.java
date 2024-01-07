@@ -1,6 +1,6 @@
 package sparta.com.sappun.global.validator;
 
-import static sparta.com.sappun.global.ResultCode.NOT_FOUND_SAMPLE;
+import static sparta.com.sappun.global.response.ResultCode.NOT_FOUND_SAMPLE;
 
 import sparta.com.sappun.domain.sample.entity.Sample;
 import sparta.com.sappun.global.exception.GlobalException;

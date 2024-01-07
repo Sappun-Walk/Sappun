@@ -1,6 +1,6 @@
 package sparta.com.sappun.global.validator;
 
-import static sparta.com.sappun.global.ResultCode.NOT_MATCHED_PASSWORD;
+import static sparta.com.sappun.global.response.ResultCode.NOT_MATCHED_PASSWORD;
 
 import java.util.Objects;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
