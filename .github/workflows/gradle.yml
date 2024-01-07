@@ -29,15 +29,18 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: make application-prod.yml
+       run: |
+          cd ./src/main/resources
+          touch ./application-prod.yml
+          echo "${{ secrets.YML_PROD }}" > ./application-prod.yml
+        shell: bash
+
     - name: Run chmod to make gradlew executable
       run: chmod +x ./gradlew
         
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
-      with:
-        arguments: build
-      env: 
-          spring.datasource.url: ${{ secrets.DB_URL }}
-          spring.datasource.username: ${{ secrets.DB_USERNAME }}
-          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
-          jwt.secret.key: ${{ secrets.JWT_SECRET_KEY }}
+        env:
+          SPRING_PROFILES_ACTIVE: prod
+        run: ./gradlew clean build --stacktrace
+        shell: bash
