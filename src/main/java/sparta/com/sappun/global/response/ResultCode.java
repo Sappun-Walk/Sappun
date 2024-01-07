@@ -13,6 +13,7 @@ public enum ResultCode {
 
     // 유저
     NOT_MATCHED_PASSWORD(HttpStatus.BAD_REQUEST, "일치하지 않는 비밀번호 입니다."),
+    NOT_FOUND_USER(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
 
     // 보드
 
