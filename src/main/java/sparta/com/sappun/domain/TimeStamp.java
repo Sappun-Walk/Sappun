@@ -18,6 +18,5 @@ public abstract class TimeStamp {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
+    @LastModifiedDate private LocalDateTime modifiedAt;
 }

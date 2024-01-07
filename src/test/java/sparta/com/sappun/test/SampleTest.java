@@ -8,8 +8,5 @@ public interface SampleTest {
     String TEST_SAMPLE_FILED2 = "field2";
 
     Sample TEST_SAMPLE =
-            Sample.builder()
-                    .field1(TEST_SAMPLE_FILED1)
-                    .field2(TEST_SAMPLE_FILED2)
-                    .build();
+            Sample.builder().field1(TEST_SAMPLE_FILED1).field2(TEST_SAMPLE_FILED2).build();
 }
