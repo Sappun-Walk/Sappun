@@ -17,13 +17,14 @@ import sparta.com.sappun.domain.sample.dto.request.SampleSaveReq;
 import sparta.com.sappun.domain.sample.dto.response.SampleGetRes;
 import sparta.com.sappun.domain.sample.entity.Sample;
 import sparta.com.sappun.domain.sample.repository.SampleRepository;
+import sparta.com.sappun.domain.sample.service.SampleService;
 import sparta.com.sappun.test.SampleTest;
 
 @ExtendWith(MockitoExtension.class)
-class SampleServiceImplTest implements SampleTest {
+class SampleServiceTest implements SampleTest {
     @Mock SampleRepository sampleRepository;
 
-    @InjectMocks SampleServiceImpl sampleService;
+    @InjectMocks SampleService sampleService;
 
     @Captor ArgumentCaptor<Sample> argumentCaptor; // 반환값이 없는 메소드를 테스트할 때 메소드 내의 객체를 캡처해 테스트 가능
 
