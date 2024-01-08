@@ -16,12 +16,16 @@ import sparta.com.sappun.domain.BaseMvcTest;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
 import sparta.com.sappun.domain.user.dto.response.UserSignupRes;
 import sparta.com.sappun.domain.user.service.UserService;
+import sparta.com.sappun.global.jwt.JwtUtil;
+import sparta.com.sappun.global.redis.RedisUtil;
 import sparta.com.sappun.test.UserTest;
 
 @WebMvcTest(controllers = {UserController.class})
 class UserControllerTest extends BaseMvcTest implements UserTest {
 
     @MockBean private UserService userService;
+    @MockBean private JwtUtil jwtUtil;
+    @MockBean private RedisUtil redisUtil;
 
     @Test
     @DisplayName("signup 테스트")

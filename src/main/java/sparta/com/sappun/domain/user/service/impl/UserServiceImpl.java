@@ -4,12 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
+import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
 import sparta.com.sappun.domain.user.dto.response.UserSignupRes;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.domain.user.service.UserService;
+import sparta.com.sappun.domain.user.service.UserServiceMapper;
 import sparta.com.sappun.global.validator.UserValidator;
 
 @Service
@@ -35,5 +38,18 @@ public class UserServiceImpl implements UserService {
                         .build());
 
         return new UserSignupRes();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserLoginRes login(UserLoginReq req) {
+
+        User user = userRepository.findByUsername(req.getUsername());
+        UserValidator.validate(user); // 사용자가 존재하는지 확인
+
+        UserValidator.checkPassword(
+                passwordEncoder.matches(req.getPassword(), user.getPassword())); // 비밀번호가 일치하는지 확인
+
+        return UserServiceMapper.INSTANCE.toUserLoginRes(user);
     }
 }

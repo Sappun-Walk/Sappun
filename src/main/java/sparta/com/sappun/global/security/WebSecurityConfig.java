@@ -62,7 +62,7 @@ public class WebSecurityConfig {
                         authorizeHttpRequests
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                                 .permitAll() // resources 접근 허용 설정
-                                .requestMatchers("/api/users/signup")
+                                .requestMatchers("/api/users/signup", "/api/users/login")
                                 .permitAll() // 회원가입 API만 접근 허용
                                 .anyRequest()
                                 .authenticated() // 그 외 모든 요청 인증처리
