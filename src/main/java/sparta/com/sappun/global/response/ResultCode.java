@@ -10,9 +10,12 @@ public enum ResultCode {
 
     // 글로벌
     SUCCESS(HttpStatus.OK, "정상 처리 되었습니다"),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다."),
+    LOGIN_REQUIRED(HttpStatus.UNAUTHORIZED, "재로그인 해주세요."),
 
     // 유저
     NOT_MATCHED_PASSWORD(HttpStatus.BAD_REQUEST, "일치하지 않는 비밀번호 입니다."),
+    NOT_FOUND_USER(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
 
     // 보드
 
