@@ -1,7 +1,7 @@
 package sparta.com.sappun.global.exception;
 
 import lombok.Getter;
-import sparta.com.sappun.global.ResultCode;
+import sparta.com.sappun.global.response.ResultCode;
 
 @Getter
 public class GlobalException extends RuntimeException {
