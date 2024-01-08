@@ -27,8 +27,8 @@ class SampleRepositoryTest implements SampleTest {
         Sample saveSample = sampleRepository.save(TEST_SAMPLE);
 
         // then
-        assertEquals(saveSample.getField1(), TEST_SAMPLE_FILED1);
-        assertEquals(saveSample.getField2(), TEST_SAMPLE_FILED2);
+        assertEquals(TEST_SAMPLE_FILED1, saveSample.getField1());
+        assertEquals(TEST_SAMPLE_FILED2, saveSample.getField2());
     }
 
     @Test
@@ -41,9 +41,9 @@ class SampleRepositoryTest implements SampleTest {
         Sample sample = sampleRepository.findById(saveSample.getId());
 
         // then
-        assertEquals(sample.getId(), saveSample.getId());
-        assertEquals(sample.getField1(), saveSample.getField1());
-        assertEquals(sample.getField2(), saveSample.getField2());
+        assertEquals(saveSample.getId(), sample.getId());
+        assertEquals(saveSample.getField1(), sample.getField1());
+        assertEquals(saveSample.getField2(), sample.getField2());
     }
 
     @Test

@@ -27,7 +27,35 @@ class UserRepositoryTest implements UserTest {
         User saveUser = userRepository.save(TEST_USER);
 
         // then
-        assertEquals(saveUser.getUsername(), TEST_USER_USERNAME);
-        assertEquals(saveUser.getNickname(), TEST_USER_NICKNAME);
+        assertEquals(TEST_USER_USERNAME, saveUser.getUsername());
+        assertEquals(TEST_USER_NICKNAME, saveUser.getNickname());
+    }
+
+    @Test
+    @DisplayName("findByUsername 테스트")
+    void findByUsernameTest() {
+        // given
+        userRepository.save(TEST_USER);
+
+        // when
+        User saveUser = userRepository.findByUsername(TEST_USER_USERNAME);
+
+        // then
+        assertEquals(TEST_USER_USERNAME, saveUser.getUsername());
+        assertEquals(TEST_USER_NICKNAME, saveUser.getNickname());
+    }
+
+    @Test
+    @DisplayName("findById 테스트")
+    void findByIdTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+
+        // when
+        User saveUser = userRepository.findById(user.getId());
+
+        // then
+        assertEquals(TEST_USER_USERNAME, saveUser.getUsername());
+        assertEquals(TEST_USER_NICKNAME, saveUser.getNickname());
     }
 }
