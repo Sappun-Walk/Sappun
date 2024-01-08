@@ -21,4 +21,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         UserValidator.validate(user);
         return new UserDetailsImpl(user);
     }
+
+    public UserDetails loadUserById(String userId) throws UsernameNotFoundException {
+        User user = userRepository.findById(Long.parseLong(userId));
+        UserValidator.validate(user);
+        return new UserDetailsImpl(user);
+    }
 }

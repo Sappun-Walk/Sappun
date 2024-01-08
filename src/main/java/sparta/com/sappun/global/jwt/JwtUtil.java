@@ -22,7 +22,6 @@ import org.springframework.util.StringUtils;
 public class JwtUtil {
 
     public static final String ACCESS_TOKEN_HEADER = "AccessToken"; // Access Token KEY 값
-    public static final String REFRESH_TOKEN_HEADER = "RefreshToken"; // Refresh Token KEY 값
     public static final String AUTHORIZATION_KEY = "auth"; // 사용자 권한 값의 KEY
     public static final String BEARER_PREFIX = "Bearer "; // Token 식별자
     private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // 토큰 만료시간 60분
@@ -44,12 +43,12 @@ public class JwtUtil {
     }
 
     /** AccessToken 토큰 만들기 */
-    public String createAccessToken(Long userId, String role) {
+    public String createAccessToken(String userId, String role) {
         Date now = new Date();
 
         return BEARER_PREFIX
                 + Jwts.builder()
-                        .setSubject(String.valueOf(userId)) // 사용자 식별자값(ID)
+                        .setSubject(userId) // 사용자 식별자값(ID)
                         .claim(AUTHORIZATION_KEY, role) // 사용자 권한
                         .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_TIME)) // 만료 기간
                         .setIssuedAt(now)
@@ -110,7 +109,7 @@ public class JwtUtil {
     }
 
     /** 토큰에서 유저 ID 가져오기 */
-    public Long getUserIdFromToken(String token) {
-        return Long.parseLong(getUserInfoFromToken(token).getSubject());
+    public String getUserIdFromToken(String token) {
+        return getUserInfoFromToken(token).getSubject();
     }
 }
