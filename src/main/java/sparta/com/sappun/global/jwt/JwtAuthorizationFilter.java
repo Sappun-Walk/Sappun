@@ -1,6 +1,7 @@
 package sparta.com.sappun.global.jwt;
 
 import static sparta.com.sappun.global.jwt.JwtUtil.ACCESS_TOKEN_HEADER;
+import static sparta.com.sappun.global.jwt.JwtUtil.REFRESH_TOKEN_HEADER;
 
 import com.amazonaws.HttpMethod;
 import jakarta.servlet.FilterChain;
@@ -30,7 +31,10 @@ import sparta.com.sappun.global.validator.TokenValidator;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private static final List<RequestMatcher> whiteList =
-            List.of(new AntPathRequestMatcher("/api/users/signup/**", HttpMethod.POST.name()));
+            List.of(
+                    new AntPathRequestMatcher("/api/users/signup", HttpMethod.POST.name()),
+                    new AntPathRequestMatcher("/api/users/login", HttpMethod.POST.name()));
+
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
     private final UserDetailsServiceImpl userDetailsService;
@@ -50,8 +54,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 우선 access token 으로 검증
-        TokenValidator.checkValidToken(jwtUtil.validateToken(accessToken));
+        // access token 검증
+        TokenValidator.checkValidAccessToken(jwtUtil.validateToken(accessToken));
 
         // TODO: 로그아웃된 access token 인지 확인
 
@@ -62,32 +66,36 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
+        log.info("accessToken 만료");
+
         // access token 이 만료되면 refresh token 검증
-        String refreshToken = findRefreshTokenByAccessToken(accessToken);
-        TokenValidator.checkValidToken(isRefreshTokenValid(refreshToken));
+        String refreshToken =
+                jwtUtil.getTokenWithoutBearer(request.getHeader(REFRESH_TOKEN_HEADER)); // refresh token 찾음
+        log.info("refreshToken : {}", refreshToken);
+
+        TokenValidator.checkValidRefreshToken(isRefreshTokenValid(refreshToken));
 
         // refresh token 이 만료되면 로그인 필요 예외 발생
         TokenValidator.checkLoginRequired(jwtUtil.isTokenExpired(refreshToken));
 
         // 응답 헤더에 재발급한 access token 반환
-        response.addHeader(ACCESS_TOKEN_HEADER, renewAccessToken(accessToken));
+        response.addHeader(ACCESS_TOKEN_HEADER, renewAccessToken(refreshToken));
+        log.info("accessToken 재발급 종료");
+        log.info("accessToken : {}", accessToken);
+
         filterChain.doFilter(request, response);
     }
 
-    private String findRefreshTokenByAccessToken(String accessToken) {
-        log.info("refresh token 검색");
-        String userId = jwtUtil.getUserIdFromToken(accessToken);
-        return (String) redisUtil.get(userId);
-    }
-
-    private String renewAccessToken(String accessToken) {
+    private String renewAccessToken(String refreshToken) {
         log.info("access token 재발급");
-        String userId = jwtUtil.getUserIdFromToken(accessToken); // access token 으로 userId를 찾음
-        UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserById(userId);
+        Long userId = Long.parseLong(String.valueOf(redisUtil.get(refreshToken)));
+        log.info("userId : {}", userId);
+        UserDetailsImpl userDetails =
+                (UserDetailsImpl) userDetailsService.loadUserByUsername(String.valueOf(userId));
         String role = userDetails.getUser().getRole().getAuthority();
         String newAccessToken = jwtUtil.createAccessToken(userId, role); // 새로운 access token 발급
 
-        setAuthentication(userId);
+        setAuthentication(String.valueOf(userId));
         return newAccessToken;
     }
 
@@ -107,11 +115,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         context.setAuthentication(authentication);
 
         SecurityContextHolder.setContext(context);
+        log.info("setAuthentication 종료");
     }
 
     /** 인증 객체 생성 */
-    private Authentication createAuthentication(String username) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+    private Authentication createAuthentication(String userId) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
         return new UsernamePasswordAuthenticationToken(
                 userDetails, userDetails.getPassword(), userDetails.getAuthorities());
     }

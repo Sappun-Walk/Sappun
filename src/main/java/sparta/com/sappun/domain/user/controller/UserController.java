@@ -39,16 +39,19 @@ public class UserController {
         UserLoginRes res = userService.login(req);
 
         // Access token 발급 후 헤더에 저장
-        String accessToken =
-                jwtUtil.createAccessToken(String.valueOf(res.getId()), res.getRole().getValue());
+        String accessToken = jwtUtil.createAccessToken(res.getId(), res.getRole().getValue());
         response.setHeader(JwtUtil.ACCESS_TOKEN_HEADER, accessToken);
 
-        // Refresh token 발급 후 redis 에 저장
+        // Refresh token 존재하면 삭제
+        if (redisUtil.hasKey(String.valueOf(res.getId()))) {
+            redisUtil.delete(String.valueOf(res.getId()));
+        }
+
+        // Refresh token 발급 후 헤더, redis 에 저장
         String refreshToken = jwtUtil.createRefreshToken();
+        response.setHeader(JwtUtil.REFRESH_TOKEN_HEADER, refreshToken);
         redisUtil.set(
-                String.valueOf(res.getId()),
-                jwtUtil.getTokenWithoutBearer(refreshToken),
-                REFRESH_TOKEN_EXPIRED_TIME);
+                jwtUtil.getTokenWithoutBearer(refreshToken), res.getId(), REFRESH_TOKEN_EXPIRED_TIME);
 
         return CommonResponse.success(res);
     }
