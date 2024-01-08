@@ -1,7 +1,9 @@
 package sparta.com.sappun.domain.user.service.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static sparta.com.sappun.global.response.ResultCode.NOT_MATCHED_PASSWORD;
 
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +15,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
+import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
+import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
+import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.exception.GlobalException;
@@ -73,5 +79,26 @@ class UserServiceImplTest implements UserTest {
 
         // then
         assertEquals(NOT_MATCHED_PASSWORD.getMessage(), exception.getResultCode().getMessage());
+    }
+
+    @Test
+    @DisplayName("login 테스트")
+    void loginTest() {
+        // given
+        UserLoginReq req =
+                UserLoginReq.builder().username(TEST_USER_USERNAME).password(TEST_USER_PASSWORD).build();
+
+        when(userRepository.findByUsername(any())).thenReturn(TEST_USER);
+        ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
+        when(passwordEncoder.matches(any(), any())).thenReturn(true);
+
+        // when
+        UserLoginRes res = userService.login(req);
+
+        // then
+        assertEquals(TEST_USER_ID, res.getId());
+        assertEquals(TEST_USER_USERNAME, res.getUsername());
+        assertEquals(TEST_USER_NICKNAME, res.getNickname());
+        assertEquals(Role.USER, res.getRole());
     }
 }
