@@ -30,18 +30,18 @@ import sparta.com.sappun.global.validator.TokenValidator;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private static final List<RequestMatcher> whiteList =
-        List.of(new AntPathRequestMatcher("/api/users/signup/**", HttpMethod.POST.name()));
+            List.of(new AntPathRequestMatcher("/api/users/signup/**", HttpMethod.POST.name()));
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
     private final UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(
-        HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-        throws ServletException, IOException {
+            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
         String accessToken =
-            jwtUtil.getTokenWithoutBearer(request.getHeader(ACCESS_TOKEN_HEADER)); // access token 찾음
+                jwtUtil.getTokenWithoutBearer(request.getHeader(ACCESS_TOKEN_HEADER)); // access token 찾음
         log.info("accessToken : {}", accessToken);
 
         // access token 비어있으면 인증 미처리
@@ -113,7 +113,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private Authentication createAuthentication(String username) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(
-            userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+                userDetails, userDetails.getPassword(), userDetails.getAuthorities());
     }
 
     /** shouldNotFilter 는 true 를 반환하면 필터링 통과시키는 메서드. */
