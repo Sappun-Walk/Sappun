@@ -1,5 +1,6 @@
 package sparta.com.sappun.domain.user.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,8 +23,10 @@ public class User extends TimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String username; // 사용자 아이디
 
+    @Column(unique = true)
     private String nickname; // 사용자 닉네임
 
     private String password;
