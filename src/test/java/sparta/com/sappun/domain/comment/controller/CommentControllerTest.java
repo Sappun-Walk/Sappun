@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -25,7 +24,6 @@ class CommentControllerTest extends BaseMvcTest implements CommentTest {
     @MockBean private CommentService commentService;
 
     @MockBean private UserService userService;
-    @InjectMocks private CommentController commentController;
 
     @Test
     @DisplayName("댓글 저장 API 테스트")
@@ -33,7 +31,6 @@ class CommentControllerTest extends BaseMvcTest implements CommentTest {
         // given
         CommentSaveReq req =
                 CommentSaveReq.builder()
-                        .nickname(TEST_USER_NICKNAME)
                         .content(TEST_COMMENT_CONTENT)
                         .fileUrl(TEST_COMMENT_FILEURL)
                         .build();

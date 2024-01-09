@@ -10,9 +10,8 @@ public interface CommentTest extends UserTest {
 
     Comment TEST_COMMENT =
             Comment.builder()
-                    .id(TEST_COMMENT_ID)
-                    .nickname(TEST_USER_NICKNAME)
                     .content(TEST_COMMENT_CONTENT)
                     .fileUrl(TEST_COMMENT_FILEURL)
+                    .user(TEST_USER)
                     .build();
 }

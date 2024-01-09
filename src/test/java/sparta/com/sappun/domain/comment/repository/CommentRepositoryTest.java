@@ -32,7 +32,7 @@ class CommentRepositoryTest implements CommentTest {
         Comment saveComment = commentRepository.save(TEST_COMMENT);
 
         // thens
-        assertEquals(TEST_USER.getNickname(), saveComment.getNickname());
+        assertEquals(TEST_USER.getNickname(), saveComment.getUser().getNickname());
         assertEquals(TEST_COMMENT.getContent(), saveComment.getContent());
         assertEquals(TEST_COMMENT.getFileUrl(), saveComment.getFileUrl());
     }

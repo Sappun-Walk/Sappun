@@ -1,7 +1,9 @@
 package sparta.com.sappun.domain.comment.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,12 +16,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
+import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.test.CommentTest;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest implements CommentTest {
 
     @Mock CommentRepository commentRepository;
+    @Mock UserRepository userRepository;
     @InjectMocks CommentService commentService;
     @Captor ArgumentCaptor<Comment> argumentCaptor;
 
@@ -29,17 +33,17 @@ class CommentServiceTest implements CommentTest {
         // given
         CommentSaveReq req =
                 CommentSaveReq.builder()
-                        .nickname(TEST_USER_NICKNAME)
                         .content(TEST_COMMENT_CONTENT)
                         .fileUrl(TEST_COMMENT_FILEURL)
                         .build();
+        req.setUserId(TEST_USER_ID);
+        when(userRepository.findById(any())).thenReturn(TEST_USER);
 
         // when
         commentService.saveComment(req);
 
         // then
         verify(commentRepository).save(argumentCaptor.capture());
-        assertEquals(TEST_USER_NICKNAME, argumentCaptor.getValue().getNickname());
         assertEquals(TEST_COMMENT_CONTENT, argumentCaptor.getValue().getContent());
         assertEquals(TEST_COMMENT_FILEURL, argumentCaptor.getValue().getFileUrl());
     }
