@@ -22,7 +22,7 @@ public enum ResultCode {
     NOT_FOUND_BOARD(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."),
 
     // 댓글
-    NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND,  "댓글을 찾을 수 없습니다.");
+    NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND,"댓글을 찾을 수 없습니다."),
 
     // 좋아요
 
