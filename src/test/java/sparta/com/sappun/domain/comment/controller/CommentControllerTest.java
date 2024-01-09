@@ -1,5 +1,11 @@
 package sparta.com.sappun.domain.comment.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,22 +19,13 @@ import sparta.com.sappun.domain.comment.service.CommentService;
 import sparta.com.sappun.domain.user.service.UserService;
 import sparta.com.sappun.test.CommentTest;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @WebMvcTest(controllers = {CommentController.class})
 class CommentControllerTest extends BaseMvcTest implements CommentTest {
 
-    @MockBean
-    private CommentService commentService;
+    @MockBean private CommentService commentService;
 
-    @MockBean
-    private UserService userService;
-    @InjectMocks
-    private CommentController commentController;
+    @MockBean private UserService userService;
+    @InjectMocks private CommentController commentController;
 
     @Test
     @DisplayName("댓글 저장 API 테스트")
@@ -60,5 +57,4 @@ class CommentControllerTest extends BaseMvcTest implements CommentTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
-
 }

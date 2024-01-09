@@ -19,14 +19,14 @@ class CommentRepositoryTest implements CommentTest {
 
     @Autowired private CommentRepository commentRepository;
     @Autowired private UserRepository userRepository;
-    //BoardRepositoru 추가 필요
+    // BoardRepositoru 추가 필요
 
     @Test
     @DisplayName("save 테스트")
     void saveTest() {
         // given
         userRepository.save(TEST_USER);
-        //BoardRepositoru 추가 필요
+        // BoardRepositoru 추가 필요
 
         // when
         Comment saveComment = commentRepository.save(TEST_COMMENT);
@@ -35,6 +35,5 @@ class CommentRepositoryTest implements CommentTest {
         assertEquals(TEST_USER.getNickname(), saveComment.getNickname());
         assertEquals(TEST_COMMENT.getContent(), saveComment.getContent());
         assertEquals(TEST_COMMENT.getFileUrl(), saveComment.getFileUrl());
-
     }
 }

@@ -2,7 +2,7 @@ package sparta.com.sappun.test;
 
 import sparta.com.sappun.domain.comment.entity.Comment;
 
-public interface CommentTest extends UserTest{
+public interface CommentTest extends UserTest {
 
     Long TEST_COMMENT_ID = 1L;
     String TEST_COMMENT_CONTENT = "test content";

@@ -1,5 +1,8 @@
 package sparta.com.sappun.domain.comment.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,9 +15,6 @@ import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.test.CommentTest;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest implements CommentTest {
@@ -44,26 +44,26 @@ class CommentServiceTest implements CommentTest {
         assertEquals(TEST_COMMENT_FILEURL, argumentCaptor.getValue().getFileUrl());
     }
 
-//        @Test
-//        @DisplayName("댓글 저장 실패 테스트 - 사용자 권한 없음")
-//        void invalidSaveCommentTest() {
-//            // given
-//            CommentSaveReq req =
-//                    CommentSaveReq.builder()
-//                            .nickname(null)
-//                            .content(TEST_COMMENT_CONTENT)
-//                            .fileUrl(TEST_COMMENT_FILEURL)
-//                            .build();
-//
-//            // when
-//            GlobalException exception =
-//                    assertThrows(
-//                            GlobalException.class,
-//                            () -> {
-//                                commentService.saveComment(req);
-//                            });
-//
-//            // then
-//            assertEquals(NOT_FOUND_BOARD.getMessage(), exception.getResultCode().getMessage());
-//        }
+    //        @Test
+    //        @DisplayName("댓글 저장 실패 테스트 - 사용자 권한 없음")
+    //        void invalidSaveCommentTest() {
+    //            // given
+    //            CommentSaveReq req =
+    //                    CommentSaveReq.builder()
+    //                            .nickname(null)
+    //                            .content(TEST_COMMENT_CONTENT)
+    //                            .fileUrl(TEST_COMMENT_FILEURL)
+    //                            .build();
+    //
+    //            // when
+    //            GlobalException exception =
+    //                    assertThrows(
+    //                            GlobalException.class,
+    //                            () -> {
+    //                                commentService.saveComment(req);
+    //                            });
+    //
+    //            // then
+    //            assertEquals(NOT_FOUND_BOARD.getMessage(), exception.getResultCode().getMessage());
+    //        }
 }
