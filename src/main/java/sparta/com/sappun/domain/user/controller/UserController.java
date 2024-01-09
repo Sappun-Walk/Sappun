@@ -5,18 +5,18 @@ import static sparta.com.sappun.global.redis.RedisUtil.REFRESH_TOKEN_EXPIRED_TIM
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
 import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
+import sparta.com.sappun.domain.user.dto.response.UserProfileRes;
 import sparta.com.sappun.domain.user.dto.response.UserSignupRes;
 import sparta.com.sappun.domain.user.service.UserService;
 import sparta.com.sappun.global.jwt.JwtUtil;
 import sparta.com.sappun.global.redis.RedisUtil;
 import sparta.com.sappun.global.response.CommonResponse;
+import sparta.com.sappun.global.security.UserDetailsImpl;
 
 @RestController
 @RequestMapping("/api/users")
@@ -55,4 +55,12 @@ public class UserController {
 
         return CommonResponse.success(res);
     }
+
+    // 프로필 조회
+    @GetMapping("")
+    public CommonResponse<UserProfileRes> getProfile(
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return CommonResponse.success(userService.getProfile(userDetails.getUser().getId()));
+    }
+
 }

@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sparta.com.sappun.domain.TimeStamp;
+import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
 
 @Entity
 @Getter
@@ -43,5 +44,16 @@ public class User extends TimeStamp {
         this.password = password;
         this.profileUrl = profileUrl;
         this.role = role;
+    }
+
+    // 프로필 수정
+    public void updateProfile (UserProfileUpdateReq req) {
+        this.username = req.getUsername();
+        this.nickname = req.getNickname();
+    }
+
+    // 비밀번호 수정
+    public void updatePassword (String encodedPassword) {
+        this.password = encodedPassword;
     }
 }
