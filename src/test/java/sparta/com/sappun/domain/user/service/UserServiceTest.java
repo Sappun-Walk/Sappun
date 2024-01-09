@@ -1,4 +1,4 @@
-package sparta.com.sappun.domain.user.service.impl;
+package sparta.com.sappun.domain.user.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
