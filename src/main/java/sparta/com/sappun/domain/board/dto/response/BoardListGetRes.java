@@ -18,6 +18,7 @@ public class BoardListGetRes {
     private String stopover;
     private RegionEnum region;
 
+    @Builder
     public BoardListGetRes(Board board) {
         this.title = board.getTitle();
         this.content = board.getContent();
