@@ -88,4 +88,26 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("logout 테스트")
+    void logoutTest() throws Exception {
+        // given
+        String accessToken = "accessToken";
+        String refreshToken = "refreshToken";
+
+        // when
+        when(jwtUtil.getTokenWithoutBearer(any())).thenReturn(accessToken);
+        when(jwtUtil.getTokenWithoutBearer(any())).thenReturn(refreshToken);
+
+        // then
+        mockMvc
+                .perform(
+                        post("/api/users/logout")
+                                .header("Authorization", "Bearer " + accessToken)
+                                .header("Refresh-Token", "Bearer " + refreshToken)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }
