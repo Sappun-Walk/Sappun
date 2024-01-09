@@ -24,8 +24,8 @@ public class JwtUtil {
     public static final String REFRESH_TOKEN_HEADER = "RefreshToken"; // Refresh Token KEY 값
     public static final String AUTHORIZATION_KEY = "auth"; // 사용자 권한 값의 KEY
     public static final String BEARER_PREFIX = "Bearer "; // Token 식별자
-    private static final long ACCESS_TOKEN_TIME = 10 * 1000L; // 60 * 60 * 1000L; // 토큰 만료시간 60분
-    private static final long REFRESH_TOKEN_TIME = 14 * 24 * 60 * 60 * 1000L; // 토큰 만료시간 2주
+    private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // 액세스 토큰 만료시간 60분
+    private static final long REFRESH_TOKEN_TIME = 14 * 24 * 60 * 60 * 1000L; // 리프레시 토큰 만료시간 2주
 
     @Value("${jwt.secret.key}")
     private String secretKey;
