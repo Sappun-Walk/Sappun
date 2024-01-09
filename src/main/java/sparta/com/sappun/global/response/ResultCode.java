@@ -21,6 +21,7 @@ public enum ResultCode {
     DUPLICATED_NICKNAME(HttpStatus.CONFLICT, "중복된 닉네임입니다."),
 
     // 보드
+    NOT_FOUND_BOARD(HttpStatus.NOT_FOUND, "존재하지 않는 게시글입니다."),
     NOT_FOUND_BOARD(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."),
 
     // 댓글
