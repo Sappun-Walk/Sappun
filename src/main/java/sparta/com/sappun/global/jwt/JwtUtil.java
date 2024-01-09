@@ -1,6 +1,5 @@
 package sparta.com.sappun.global.jwt;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -22,10 +21,11 @@ import org.springframework.util.StringUtils;
 public class JwtUtil {
 
     public static final String ACCESS_TOKEN_HEADER = "AccessToken"; // Access Token KEY 값
+    public static final String REFRESH_TOKEN_HEADER = "RefreshToken"; // Refresh Token KEY 값
     public static final String AUTHORIZATION_KEY = "auth"; // 사용자 권한 값의 KEY
     public static final String BEARER_PREFIX = "Bearer "; // Token 식별자
-    private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // 토큰 만료시간 60분
-    private static final long REFRESH_TOKEN_TIME = 14 * 24 * 60 * 60 * 1000L; // 토큰 만료시간 2주
+    private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // 액세스 토큰 만료시간 60분
+    private static final long REFRESH_TOKEN_TIME = 14 * 24 * 60 * 60 * 1000L; // 리프레시 토큰 만료시간 2주
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -43,12 +43,12 @@ public class JwtUtil {
     }
 
     /** AccessToken 토큰 만들기 */
-    public String createAccessToken(String userId, String role) {
+    public String createAccessToken(Long userId, String role) {
         Date now = new Date();
 
         return BEARER_PREFIX
                 + Jwts.builder()
-                        .setSubject(userId) // 사용자 식별자값(ID)
+                        .setSubject(String.valueOf(userId)) // 사용자 식별자값(ID)
                         .claim(AUTHORIZATION_KEY, role) // 사용자 권한
                         .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_TIME)) // 만료 기간
                         .setIssuedAt(now)
@@ -103,13 +103,8 @@ public class JwtUtil {
         return false;
     }
 
-    /** 토큰에서 유저 정보 가져오기 */
-    public Claims getUserInfoFromToken(String token) {
-        return jwtParser.parseClaimsJws(token).getBody();
-    }
-
     /** 토큰에서 유저 ID 가져오기 */
     public String getUserIdFromToken(String token) {
-        return getUserInfoFromToken(token).getSubject();
+        return jwtParser.parseClaimsJws(token).getBody().getSubject();
     }
 }

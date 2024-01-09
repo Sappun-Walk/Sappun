@@ -15,7 +15,7 @@ public class RedisUtil {
     public static final int REFRESH_TOKEN_EXPIRED_TIME = 60 * 24 * 14; // 2주
     private final RedisTemplate<String, Object> redisTemplate;
 
-    /** 토큰의 경우 key가 user의 id, value가 refresh token */
+    /** 토큰의 경우 key가 refresh token, value가 user의 id */
     public void set(String key, Object value, int minutes) {
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(value.getClass()));
         redisTemplate.opsForValue().set(key, value, minutes, TimeUnit.MINUTES);

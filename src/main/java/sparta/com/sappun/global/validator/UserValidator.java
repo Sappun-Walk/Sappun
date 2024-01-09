@@ -21,6 +21,12 @@ public class UserValidator {
         }
     }
 
+    public static void checkPassword(boolean isMatched) {
+        if (!isMatched) {
+            throw new GlobalException(NOT_MATCHED_PASSWORD);
+        }
+    }
+
     private static boolean checkConfirmPassword(String password1, String password2) {
         return Objects.equals(password1, password2);
     }
