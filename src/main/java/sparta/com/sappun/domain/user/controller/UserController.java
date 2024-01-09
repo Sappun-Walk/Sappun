@@ -16,12 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
+import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
-import sparta.com.sappun.domain.user.dto.response.UserDeleteRes;
-import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
-import sparta.com.sappun.domain.user.dto.response.UserLogoutRes;
-import sparta.com.sappun.domain.user.dto.response.UserProfileRes;
-import sparta.com.sappun.domain.user.dto.response.UserSignupRes;
+import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.service.UserService;
 import sparta.com.sappun.global.jwt.JwtUtil;
 import sparta.com.sappun.global.redis.RedisUtil;
@@ -85,9 +82,16 @@ public class UserController {
     }
 
     // 프로필 조회
-    @GetMapping("")
+    @GetMapping
     public CommonResponse<UserProfileRes> getProfile(
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return CommonResponse.success(userService.getProfile(userDetails.getUser().getId()));
+    }
+
+    //프로필 수정
+    @PatchMapping("/profile")
+    public  CommonResponse<UserProfileUpdateRes> updateProfile(
+            @AuthenticationPrincipal UserProfileUpdateReq req) {
+        return CommonResponse.success(userService.updateProfile(req));
     }
 }

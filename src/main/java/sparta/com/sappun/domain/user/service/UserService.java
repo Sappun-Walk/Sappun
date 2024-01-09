@@ -5,15 +5,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
+import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
-import sparta.com.sappun.domain.user.dto.response.UserDeleteRes;
-import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
-import sparta.com.sappun.domain.user.dto.response.UserProfileRes;
-import sparta.com.sappun.domain.user.dto.response.UserSignupRes;
+import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.validator.UserValidator;
+import sparta.com.sappun.domain.user.dto.response.UserProfileUpdateRes;
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +66,23 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserProfileRes getProfile(Long userId) {
         User user = userRepository.findById(userId);
-        UserValidator.validate(user);
+        UserValidator.validate(user); // 사용자가 존재하는지 확인
         return UserServiceMapper.INSTANCE.toUserProfileRes(user);
+    }
+
+    //프로필 수정
+    @Transactional
+    public UserProfileUpdateRes updateProfile(UserProfileUpdateReq req) {
+        User user = userRepository.findByUsername(req.getUsername());
+        UserValidator.validate(user); // 사용자가 존재하는지 확인
+
+        userRepository.save(
+                User.builder()
+                        .username(req.getUsername())
+                        .nickname(req.getNickname())
+                        .profileUrl(req.getProfileUrl())
+                        .build());
+
+        return new UserProfileUpdateRes();
     }
 }
