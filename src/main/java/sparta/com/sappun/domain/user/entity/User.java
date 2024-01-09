@@ -47,13 +47,13 @@ public class User extends TimeStamp {
     }
 
     // 프로필 수정
-    public void updateProfile (UserProfileUpdateReq req) {
+    public void updateProfile(UserProfileUpdateReq req) {
         this.username = req.getUsername();
         this.nickname = req.getNickname();
     }
 
     // 비밀번호 수정
-    public void updatePassword (String encodedPassword) {
+    public void updatePassword(String encodedPassword) {
         this.password = encodedPassword;
     }
 }

@@ -107,4 +107,19 @@ public class JwtUtil {
     public String getUserIdFromToken(String token) {
         return jwtParser.parseClaimsJws(token).getBody().getSubject();
     }
+
+    /** 액세스 토큰의 남은 유효 시간 확인 */
+    public int getExpiration(String accessToken) {
+        Date expiration =
+                Jwts.parserBuilder()
+                        .setSigningKey(key)
+                        .build()
+                        .parseClaimsJws(accessToken)
+                        .getBody()
+                        .getExpiration();
+
+        long now = new Date().getTime(); // 현재 시간
+
+        return (int) ((expiration.getTime() - now) / (60 * 1000));
+    }
 }

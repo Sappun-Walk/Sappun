@@ -1,23 +1,22 @@
 package sparta.com.sappun.domain.user.dto.response;
 
-import lombok.Getter;
-import lombok.Setter;
-import sparta.com.sappun.domain.user.entity.User;
+import lombok.*;
 
-//프로필 응답 DTO
+// 프로필 응답 DTO
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserProfileRes {
-    private Long userId;
+    private Long id;
     private String username;
     private String nickname;
     private String profileUrl;
     // private Integer score; // 좋아요(+1) + 신고(-1)
 
-    public UserProfileRes(User user) {
-        this.userId = user.getId();
-        this.username = user.getUsername();
-        this.nickname = user.getNickname();
-        this.profileUrl = user.getProfileUrl();
+    @Builder
+    private UserProfileRes(Long id, String username, String nickname, String profileUrl) {
+        this.id = id;
+        this.username = username;
+        this.nickname = nickname;
+        this.profileUrl = profileUrl;
     }
 }
