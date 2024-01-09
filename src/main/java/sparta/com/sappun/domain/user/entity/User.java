@@ -50,6 +50,7 @@ public class User extends TimeStamp {
     public void updateProfile(UserProfileUpdateReq req) {
         this.username = req.getUsername();
         this.nickname = req.getNickname();
+        this.profileUrl = req.getProfileUrl();
     }
 
     // 비밀번호 수정

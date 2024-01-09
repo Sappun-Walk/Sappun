@@ -64,7 +64,7 @@ public class UserService {
     }
 
     // 프로필 조회
-    @Transactional
+    @Transactional(readOnly = true)
     public UserProfileRes getProfile(Long userId) {
         User user = userRepository.findById(userId);
         UserValidator.validate(user);
