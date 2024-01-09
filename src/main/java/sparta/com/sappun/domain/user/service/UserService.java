@@ -8,11 +8,11 @@ import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
 import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
 import sparta.com.sappun.domain.user.dto.response.*;
+import sparta.com.sappun.domain.user.dto.response.UserProfileUpdateRes;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.validator.UserValidator;
-import sparta.com.sappun.domain.user.dto.response.UserProfileUpdateRes;
 
 @Service
 @RequiredArgsConstructor
@@ -70,7 +70,7 @@ public class UserService {
         return UserServiceMapper.INSTANCE.toUserProfileRes(user);
     }
 
-    //프로필 수정
+    // 프로필 수정
     @Transactional
     public UserProfileUpdateRes updateProfile(UserProfileUpdateReq req) {
         User user = userRepository.findByUsername(req.getUsername());

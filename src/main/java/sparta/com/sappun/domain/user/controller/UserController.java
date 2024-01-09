@@ -88,9 +88,9 @@ public class UserController {
         return CommonResponse.success(userService.getProfile(userDetails.getUser().getId()));
     }
 
-    //프로필 수정
+    // 프로필 수정
     @PatchMapping("/profile")
-    public  CommonResponse<UserProfileUpdateRes> updateProfile(
+    public CommonResponse<UserProfileUpdateRes> updateProfile(
             @AuthenticationPrincipal UserProfileUpdateReq req) {
         return CommonResponse.success(userService.updateProfile(req));
     }
