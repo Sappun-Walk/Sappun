@@ -8,6 +8,7 @@ import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
 import sparta.com.sappun.domain.user.dto.response.UserDeleteRes;
 import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
+import sparta.com.sappun.domain.user.dto.response.UserProfileRes;
 import sparta.com.sappun.domain.user.dto.response.UserSignupRes;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
@@ -60,5 +61,13 @@ public class UserService {
         userRepository.delete(user);
 
         return new UserDeleteRes();
+    }
+
+    // 프로필 조회
+    @Transactional(readOnly = true)
+    public UserProfileRes getProfile(Long userId) {
+        User user = userRepository.findById(userId);
+        UserValidator.validate(user);
+        return UserServiceMapper.INSTANCE.toUserProfileRes(user);
     }
 }

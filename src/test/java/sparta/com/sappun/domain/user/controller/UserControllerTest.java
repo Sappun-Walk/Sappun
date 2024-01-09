@@ -128,4 +128,15 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("프로필 조회 테스트")
+    void getProfileTest() {
+        // given - 필요한 변수 생성
+
+        // when - 테스트할 메서드를 실제 동작
+
+        // then - 결과 제대로 나왔는지 확인
+
+    }
 }
