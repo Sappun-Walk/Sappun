@@ -57,7 +57,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // access token 검증
         TokenValidator.checkValidAccessToken(jwtUtil.validateToken(accessToken));
 
-        // TODO: 로그아웃된 access token 인지 확인
+        // 로그아웃된 access token 인지 확인
+        TokenValidator.checkLoginRequired(redisUtil.hasKey(accessToken));
+        log.info("로그아웃되지 않은 accessToken");
 
         // 유효한 access token 이면 인증 처리
         if (!jwtUtil.isTokenExpired(accessToken)) {
