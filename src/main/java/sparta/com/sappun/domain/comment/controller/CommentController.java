@@ -26,7 +26,7 @@ public class CommentController {
             @RequestBody CommentSaveReq commentSaveReq,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         // TODO: 댓글 사진 입력받기
-        commentSaveReq.setNickname(userDetails.getUser().getNickname());
+        commentSaveReq.setUserId(userDetails.getUser().getId());
         return CommonResponse.success(commentService.saveComment(commentSaveReq));
     }
 }

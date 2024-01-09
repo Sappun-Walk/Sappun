@@ -34,10 +34,9 @@ public class Comment extends TimeStamp {
     private User user;
 
     @Builder
-    private Comment(Long id, String nickname, String content, String fileUrl) {
-        this.id = id;
-        this.nickname = nickname;
+    private Comment(String content, String fileUrl, User user) {
         this.content = content;
         this.fileUrl = fileUrl;
+        this.user = user;
     }
 }

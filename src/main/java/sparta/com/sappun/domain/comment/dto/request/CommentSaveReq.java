@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentSaveReq {
     //    private Long BoardId;
-    private String nickname;
+    private Long userId;
 
     @Size(max = 500, message = "500자 이내로 입력해주세요.")
     private String content;
@@ -16,8 +16,7 @@ public class CommentSaveReq {
     private String fileUrl;
 
     @Builder
-    private CommentSaveReq(String nickname, String content, String fileUrl) {
-        this.nickname = nickname;
+    private CommentSaveReq(String content, String fileUrl) {
         this.content = content;
         this.fileUrl = fileUrl;
     }
