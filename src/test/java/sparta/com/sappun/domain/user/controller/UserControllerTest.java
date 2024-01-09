@@ -2,6 +2,7 @@ package sparta.com.sappun.domain.user.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import sparta.com.sappun.domain.BaseMvcTest;
 import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
+import sparta.com.sappun.domain.user.dto.response.UserDeleteRes;
 import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
 import sparta.com.sappun.domain.user.dto.response.UserSignupRes;
 import sparta.com.sappun.domain.user.entity.Role;
@@ -85,6 +87,44 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
                         post("/api/users/login")
                                 .content(objectMapper.writeValueAsString(req))
                                 .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("logout 테스트")
+    void logoutTest() throws Exception {
+        // given
+        String accessToken = "accessToken";
+        String refreshToken = "refreshToken";
+
+        // when
+        when(jwtUtil.getTokenWithoutBearer(any())).thenReturn(accessToken);
+        when(jwtUtil.getTokenWithoutBearer(any())).thenReturn(refreshToken);
+
+        // then
+        mockMvc
+                .perform(
+                        post("/api/users/logout")
+                                .header("Authorization", "Bearer " + accessToken)
+                                .header("Refresh-Token", "Bearer " + refreshToken)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("deleteUser 테스트")
+    void deleteUserTest() throws Exception {
+        // given
+        UserDeleteRes res = new UserDeleteRes();
+
+        // when
+        when(userService.deleteUser(any())).thenReturn(res);
+
+        // then
+        mockMvc
+                .perform(delete("/api/users").principal(mockPrincipal))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

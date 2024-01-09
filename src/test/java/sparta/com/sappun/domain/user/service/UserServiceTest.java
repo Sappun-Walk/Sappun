@@ -101,4 +101,18 @@ class UserServiceTest implements UserTest {
         assertEquals(TEST_USER_NICKNAME, res.getNickname());
         assertEquals(Role.USER, res.getRole());
     }
+
+    @Test
+    @DisplayName("deleteUser 테스트")
+    void deleteUserTest() {
+        // given
+        when(userRepository.findById(any())).thenReturn(TEST_USER);
+
+        // when
+        userService.deleteUser(TEST_USER_ID);
+
+        // then
+        verify(userRepository).findById(any());
+        verify(userRepository).delete(any());
+    }
 }
