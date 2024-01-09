@@ -1,5 +1,8 @@
 package sparta.com.sappun.domain.board.entity;
 
+import lombok.Getter;
+
+@Getter
 public enum RegionEnum {
     REGION1("REGION1"),
     REGION2("REGION2"),
@@ -11,7 +14,4 @@ public enum RegionEnum {
         this.region = region;
     }
 
-    public String getRegion() {
-        return region;
-    }
 }
