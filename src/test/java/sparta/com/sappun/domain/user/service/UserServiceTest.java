@@ -22,7 +22,6 @@ import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
-import sparta.com.sappun.domain.user.service.UserService;
 import sparta.com.sappun.global.exception.GlobalException;
 import sparta.com.sappun.test.UserTest;
 
