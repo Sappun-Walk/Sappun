@@ -76,6 +76,8 @@ public class UserService {
         User user = userRepository.findByUsername(req.getUsername());
         UserValidator.validate(user); // 사용자가 존재하는지 확인
 
+        // TODO: 프로필 사진 관련 로직 추가
+
         userRepository.save(
                 User.builder()
                         .username(req.getUsername())
