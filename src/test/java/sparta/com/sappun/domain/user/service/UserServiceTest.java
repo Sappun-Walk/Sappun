@@ -115,4 +115,24 @@ class UserServiceTest implements UserTest {
         verify(userRepository).findById(any());
         verify(userRepository).delete(any());
     }
+
+    @Test
+    @DisplayName("프로필 조회 테스트 - 성공")
+    void getProfileTest() {
+        // given - 필요한 변수 생성
+
+        // when - 테스트할 메서드를 실제 동작
+
+        // then - 결과 제대로 나왔는지 확인
+    }
+
+    @Test
+    @DisplayName("프로필 조회 테스트 - 실패")
+    void getProfileFailureTest() {
+        // given - 필요한 변수 생성
+
+        // when - 테스트할 메서드를 실제 동작
+
+        // then - 결과 제대로 나왔는지 확인
+    }
 }
