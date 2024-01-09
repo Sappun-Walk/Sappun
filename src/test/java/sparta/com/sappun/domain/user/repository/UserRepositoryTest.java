@@ -58,4 +58,18 @@ class UserRepositoryTest implements UserTest {
         assertEquals(TEST_USER_USERNAME, saveUser.getUsername());
         assertEquals(TEST_USER_NICKNAME, saveUser.getNickname());
     }
+
+    @Test
+    @DisplayName("delete 테스트")
+    void deleteTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+
+        // when
+        userRepository.delete(user);
+        User findUser = userRepository.findById(user.getId());
+
+        // then
+        assertNull(findUser);
+    }
 }
