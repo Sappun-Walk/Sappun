@@ -13,7 +13,6 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.user.repository.UserRepository;
@@ -31,16 +30,11 @@ class CommentServiceTest implements CommentTest {
     @DisplayName("댓글 저장 테스트")
     void saveCommentTest() {
         // given
-        CommentSaveReq req =
-                CommentSaveReq.builder()
-                        .content(TEST_COMMENT_CONTENT)
-                        .fileUrl(TEST_COMMENT_FILEURL)
-                        .build();
-        req.setUserId(TEST_USER_ID);
+        TEST_COMMENT_SAVE.setUserId(TEST_USER_ID);
         when(userRepository.findById(any())).thenReturn(TEST_USER);
 
         // when
-        commentService.saveComment(req);
+        commentService.saveComment(TEST_COMMENT_SAVE);
 
         // then
         verify(commentRepository).save(argumentCaptor.capture());
@@ -52,22 +46,31 @@ class CommentServiceTest implements CommentTest {
     //        @DisplayName("댓글 저장 실패 테스트 - 사용자 권한 없음")
     //        void invalidSaveCommentTest() {
     //            // given
-    //            CommentSaveReq req =
-    //                    CommentSaveReq.builder()
-    //                            .nickname(null)
-    //                            .content(TEST_COMMENT_CONTENT)
-    //                            .fileUrl(TEST_COMMENT_FILEURL)
-    //                            .build();
     //
     //            // when
     //            GlobalException exception =
     //                    assertThrows(
     //                            GlobalException.class,
     //                            () -> {
-    //                                commentService.saveComment(req);
+    //                                commentService.saveComment(TEST_COMMENT_SAVE);
     //                            });
     //
     //            // then
     //            assertEquals(NOT_FOUND_BOARD.getMessage(), exception.getResultCode().getMessage());
     //        }
+
+    //    @Test
+    //    @DisplayName("댓글 수정 테스트")
+    //    void updateCommentTest() {
+    //        // given
+    //
+    // given(commentRepository.findById(TEST_COMMENT_UPDATE.getCommentId())).willReturn(TEST_COMMENT);
+    //
+    //        // when
+    //        commentService.updateComment(TEST_COMMENT_UPDATE);
+    //
+    //        // then
+    //        verify(commentRepository).save(argumentCaptor.capture());
+    //        assertEquals(TEST_COMMENT_UPDATE_CONTENT, argumentCaptor.getValue().getContent());
+    //    }
 }

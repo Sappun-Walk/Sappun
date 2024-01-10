@@ -20,10 +20,7 @@ public interface CommentTest extends UserTest {
                     .build();
 
     CommentSaveReq TEST_COMMENT_SAVE =
-            CommentSaveReq.builder()
-                    .content(TEST_COMMENT_CONTENT)
-                    .fileUrl(TEST_COMMENT_FILEURL)
-                    .build();
+            CommentSaveReq.builder().content(TEST_COMMENT_CONTENT).fileUrl(TEST_COMMENT_FILEURL).build();
 
     CommentUpdateReq TEST_COMMENT_UPDATE =
             CommentUpdateReq.builder()

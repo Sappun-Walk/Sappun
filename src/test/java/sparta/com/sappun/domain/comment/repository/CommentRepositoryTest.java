@@ -50,5 +50,4 @@ class CommentRepositoryTest implements CommentTest {
         // then
         assertEquals(findComment.getContent(), TEST_COMMENT.getContent());
     }
-
 }

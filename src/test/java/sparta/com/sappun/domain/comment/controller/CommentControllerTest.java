@@ -54,4 +54,34 @@ class CommentControllerTest extends BaseMvcTest implements CommentTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    //    @Test
+    //    @DisplayName("댓글 수정 api 테스트")
+    //    void updateCommentTest() throws Exception {
+    //        // given
+    //        CommentUpdateReq req =
+    //                CommentUpdateReq.builder()
+    //                        .content(TEST_COMMENT_CONTENT)
+    //                        .fileUrl(TEST_COMMENT_FILEURL)
+    //                        .build();
+    //        CommentUpdateRes res =
+    //                CommentUpdateRes.builder()
+    //                        .id(TEST_COMMENT_ID)
+    //                        .nickname(TEST_USER_NICKNAME)
+    //                        .content(TEST_COMMENT_CONTENT)
+    //                        .fileUrl(TEST_COMMENT_FILEURL)
+    //                        .build();
+    //        when(commentService.updateComment(any())).thenReturn(res);
+    //
+    //        // when - then
+    //        mockMvc
+    //                .perform(
+    //                        patch("/api/comments/{commentId}")
+    //                                .content(objectMapper.writeValueAsString(req))
+    //                                .contentType(MediaType.APPLICATION_JSON)
+    //                                .principal(mockPrincipal))
+    //                .andDo(print())
+    //                .andExpect(status().isOk());
+    //    }
+
 }
