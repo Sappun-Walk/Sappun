@@ -25,16 +25,8 @@ public class LikeComment {
     private User user;
 
     @Builder
-    public LikeComment(Comment comment, User user) {
+    private LikeComment(Comment comment, User user) {
         this.comment = comment;
-        this.user = user;
-    }
-
-    public void setComment(Comment comment) {
-        this.comment = comment;
-    }
-
-    public void setUser(User user) {
         this.user = user;
     }
 }

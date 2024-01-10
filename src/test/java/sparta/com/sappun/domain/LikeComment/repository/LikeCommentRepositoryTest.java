@@ -29,7 +29,6 @@ class LikeCommentRepositoryTest implements LikeCommentTest {
         // given
         userRepository.save(TEST_USER);
         commentRepository.save(TEST_COMMENT);
-        // BoardRepositoru 추가 필요
 
         // when
         LikeComment likeComment = likeCommentRepository.save(TEST_LIKE_COMMENT);
