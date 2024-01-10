@@ -1,15 +1,15 @@
 package sparta.com.sappun.domain.board.entity;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sparta.com.sappun.domain.TimeStamp;
-import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.user.entity.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -69,13 +69,13 @@ public class Board extends TimeStamp {
         this.region = region;
         this.user = user;
     }
-
-    public void update(BoardUpdateReq boardUpdateReq) {
-        this.title = boardUpdateReq.getTitle();
-        this.content = boardUpdateReq.getContent();
-        this.fileURL = boardUpdateReq.getFileURL();
-        this.departure = boardUpdateReq.getDeparture();
-        this.destination = boardUpdateReq.getDestination();
-        this.stopover = boardUpdateReq.getStopover();
-    }
+//
+//    public void update(BoardUpdateReq boardUpdateReq) {
+//        this.title = boardUpdateReq.getTitle();
+//        this.content = boardUpdateReq.getContent();
+//        this.fileURL = boardUpdateReq.getFileURL();
+//        this.departure = boardUpdateReq.getDeparture();
+//        this.destination = boardUpdateReq.getDestination();
+//        this.stopover = boardUpdateReq.getStopover();
+//    }
 }
