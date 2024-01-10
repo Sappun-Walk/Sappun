@@ -1,7 +1,6 @@
 package sparta.com.sappun.global.validator;
 
-import static sparta.com.sappun.global.response.ResultCode.NOT_FOUND_USER;
-import static sparta.com.sappun.global.response.ResultCode.NOT_MATCHED_PASSWORD;
+import static sparta.com.sappun.global.response.ResultCode.*;
 
 import java.util.Objects;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
@@ -33,5 +32,17 @@ public class UserValidator {
 
     private static boolean checkIsNull(User user) {
         return user == null;
+    }
+
+    public static void checkDuplicatedUsername(boolean isDuplicated) {
+        if (isDuplicated) {
+            throw new GlobalException(DUPLICATED_USERNAME);
+        }
+    }
+
+    public static void checkDuplicatedNickname(boolean isDuplicated) {
+        if (isDuplicated) {
+            throw new GlobalException(DUPLICATED_NICKNAME);
+        }
     }
 }
