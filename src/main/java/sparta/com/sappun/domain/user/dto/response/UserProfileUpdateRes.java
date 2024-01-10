@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 // 프로필 수정 응답 Dto
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserProfileUpdateRes {private Long id;
+public class UserProfileUpdateRes {
+    private Long id;
     private String username;
     private String nickname;
     private String profileUrl;

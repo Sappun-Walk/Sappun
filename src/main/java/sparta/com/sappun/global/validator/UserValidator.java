@@ -1,11 +1,11 @@
 package sparta.com.sappun.global.validator;
 
+import static sparta.com.sappun.global.response.ResultCode.*;
+
 import java.util.Objects;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.global.exception.GlobalException;
-
-import static sparta.com.sappun.global.response.ResultCode.*;
 
 public class UserValidator {
     public static void validate(UserSignupReq req) {

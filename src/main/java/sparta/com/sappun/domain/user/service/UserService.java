@@ -75,8 +75,10 @@ public class UserService {
     public UserProfileUpdateRes updateProfile(UserProfileUpdateReq req) {
         User user = userRepository.findById(req.getId());
         UserValidator.validate(user); // 사용자가 존재하는지 확인
-        UserValidator.checkDuplicatedUsername(userRepository.existsByUsername(req.getUsername())); // username 중복확인
-        UserValidator.checkDuplicatedNickname(userRepository.existsByNickname(req.getNickname())); // nickname 중복확인
+        UserValidator.checkDuplicatedUsername(
+                userRepository.existsByUsername(req.getUsername())); // username 중복확인
+        UserValidator.checkDuplicatedNickname(
+                userRepository.existsByNickname(req.getNickname())); // nickname 중복확인
 
         // TODO: 프로필 사진 관련 로직 추가
 
