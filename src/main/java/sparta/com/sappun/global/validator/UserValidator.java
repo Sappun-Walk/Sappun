@@ -45,4 +45,10 @@ public class UserValidator {
             throw new GlobalException(DUPLICATED_NICKNAME);
         }
     }
+
+    public static void checkEqualsPassword(boolean isDuplicated) {
+        if (isDuplicated) {
+            throw new GlobalException(DIFFERENT_PASSWORD);
+        }
+    }
 }
