@@ -13,6 +13,8 @@ public interface BoardRepository {
 
     List<Board> findAllByRegion(RegionEnum region);
 
+    List<Board> findTop3ByOrderByBoardLikesDesc();
+
     Board save(Board board);
 
     void delete(Board board);

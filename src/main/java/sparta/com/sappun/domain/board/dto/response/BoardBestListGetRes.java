@@ -8,6 +8,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BoardListGetRes {
+public class BoardBestListGetRes {
     private List<BoardGetRes> boards;
 }
