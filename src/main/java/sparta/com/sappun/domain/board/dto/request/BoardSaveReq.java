@@ -1,5 +1,6 @@
 package sparta.com.sappun.domain.board.dto.request;
 
+import java.util.List;
 import lombok.*;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
 
@@ -14,17 +15,17 @@ public class BoardSaveReq {
     private String fileURL;
     private String departure;
     private String destination;
-    private String stopover;
+    private List<String> stopover;
     private RegionEnum region;
 
     @Builder
-    public BoardSaveReq(
+    private BoardSaveReq(
             String title,
             String content,
             String fileURL,
             String departure,
             String destination,
-            String stopover,
+            List<String> stopover,
             RegionEnum region) {
         this.title = title;
         this.content = content;

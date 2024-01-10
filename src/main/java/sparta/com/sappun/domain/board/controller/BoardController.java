@@ -3,12 +3,12 @@ package sparta.com.sappun.domain.board.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import sparta.com.sappun.domain.board.dto.request.BoardListGetReq;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
 import sparta.com.sappun.domain.board.dto.response.BoardBestListGetRes;
 import sparta.com.sappun.domain.board.dto.response.BoardGetRes;
 import sparta.com.sappun.domain.board.dto.response.BoardListGetRes;
 import sparta.com.sappun.domain.board.dto.response.BoardSaveRes;
+import sparta.com.sappun.domain.board.entity.RegionEnum;
 import sparta.com.sappun.domain.board.service.BoardService;
 import sparta.com.sappun.global.response.CommonResponse;
 import sparta.com.sappun.global.security.UserDetailsImpl;
@@ -28,8 +28,8 @@ public class BoardController {
 
     // 지역별 게시글 조회
     @GetMapping("/region")
-    public CommonResponse<BoardListGetRes> getBoards(@RequestBody BoardListGetReq requestDto) {
-        BoardListGetRes responseDto = boardService.getBoardList(requestDto.getRegion());
+    public CommonResponse<BoardListGetRes> getBoards(@RequestParam RegionEnum region) {
+        BoardListGetRes responseDto = boardService.getBoardList(region);
         return CommonResponse.success(responseDto);
     }
 

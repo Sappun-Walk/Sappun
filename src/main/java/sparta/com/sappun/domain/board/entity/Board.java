@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sparta.com.sappun.domain.TimeStamp;
+import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.user.entity.User;
 
 @Entity
@@ -33,8 +34,8 @@ public class Board extends TimeStamp {
     @Column(nullable = false)
     private String destination;
 
-    @Column(nullable = false)
-    private String stopover;
+    @ElementCollection
+    private List<String> stopover;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -44,18 +45,21 @@ public class Board extends TimeStamp {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardLike> boardLikes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+
     @Builder
-    public Board(
+    private Board(
             Long id,
             String title,
             String content,
             String fileURL,
             String departure,
             String destination,
-            String stopover,
+            List<String> stopover,
             RegionEnum region,
             User user) {
         this.id = id;

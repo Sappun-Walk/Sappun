@@ -12,7 +12,7 @@ public class BoardListGetRes {
     private List<BoardGetRes> boards;
 
     @Builder
-    public BoardListGetRes(List<BoardGetRes> boards) {
+    private BoardListGetRes(List<BoardGetRes> boards) {
         this.boards = boards;
     }
 }

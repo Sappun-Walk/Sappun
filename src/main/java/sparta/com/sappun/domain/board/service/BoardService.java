@@ -42,6 +42,7 @@ public class BoardService {
         return BoardListGetRes.builder().boards(boardGetRes).build();
     }
 
+    @Transactional(readOnly = true)
     public BoardBestListGetRes getBoardBestList() {
         List<BoardGetRes> boardGetRes =
                 BoardServiceMapper.INSTANCE.toBoardBestListGetRes(
