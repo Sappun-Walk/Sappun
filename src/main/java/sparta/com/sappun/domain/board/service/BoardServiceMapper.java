@@ -1,14 +1,11 @@
 package sparta.com.sappun.domain.board.service;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import sparta.com.sappun.domain.board.dto.response.BoardBestListGetRes;
 import sparta.com.sappun.domain.board.dto.response.BoardGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardListGetRes;
 import sparta.com.sappun.domain.board.dto.response.BoardSaveRes;
 import sparta.com.sappun.domain.board.entity.Board;
-
-import java.util.List;
 
 @Mapper
 public interface BoardServiceMapper {
@@ -16,9 +13,9 @@ public interface BoardServiceMapper {
 
     BoardGetRes toBoardGetRes(Board board);
 
-    BoardListGetRes toBoardListGetRes(List<Board> boardList);
+    List<BoardGetRes> toBoardListGetRes(List<Board> boardList);
 
-    BoardBestListGetRes toBoardBestListGetRes(List<Board> boardList);
+    List<BoardGetRes> toBoardBestListGetRes(List<Board> boardList);
 
     BoardSaveRes toBoardSavaRes(Board board);
 }

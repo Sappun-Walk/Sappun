@@ -1,6 +1,8 @@
 package sparta.com.sappun.domain.board.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,9 +10,6 @@ import lombok.NoArgsConstructor;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.user.entity.User;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
