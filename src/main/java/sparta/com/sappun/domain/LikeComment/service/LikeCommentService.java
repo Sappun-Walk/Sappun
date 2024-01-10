@@ -36,7 +36,7 @@ public class LikeCommentService {
     public LikeCommentSaveRes likeCommentSaveRes(Long commentid, Long userId) {
         User user = userRepository.findById(userId);
         Comment comment = commentRepository.findById(commentid);
-        //CommentValidator.validate(comment);
+        // CommentValidator.validate(comment);
         UserValidator.validate(user);
         likeCommentRepository.save(LikeComment.builder().comment(comment).user(user).build());
         return new LikeCommentSaveRes();
