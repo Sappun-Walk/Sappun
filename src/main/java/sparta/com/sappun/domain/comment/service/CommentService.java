@@ -29,7 +29,7 @@ public class CommentService {
                         Comment.builder()
                                 .content(commentSaveReq.getContent())
                                 .fileUrl(commentSaveReq.getFileUrl())
-                                .user(User.builder().build())
+                                .user(user)
                                 .build()));
     }
 }
