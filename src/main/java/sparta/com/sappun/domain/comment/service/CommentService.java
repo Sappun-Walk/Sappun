@@ -40,23 +40,29 @@ public class CommentService {
 
     @Transactional
     public CommentUpdateRes updateComment(CommentUpdateReq commentUpdateReq) {
-        Comment comment = findComment(commentUpdateReq.getCommentId()); // 댓글이 존재하는지 확인
-        User user = userRepository.findById(commentUpdateReq.getUserId()); // 사용자가 존재하는지 확인
-        UserValidator.validate(user); // 사용자가 존재하는지 확인
+        // 댓글이 존재하는지 확인
+        Comment comment = findComment(commentUpdateReq.getCommentId());
+
+        // 사용자가 존재하는지 확인
+        User user = userRepository.findById(commentUpdateReq.getUserId());
+        UserValidator.validate(user);
 
         // 댓글 업데이트 로직
-        comment.updateContent(commentUpdateReq.getContent());
-        comment.updateFileUrl(commentUpdateReq.getFileUrl());
+        comment.update(commentUpdateReq);
 
         return CommentServiceMapper.INSTANCE.toCommentUpdateRes(comment);
     }
 
     @Transactional
     public CommentDeleteRes deleteComment(CommentDeleteReq commentDeleteReq) {
-        Comment comment = findComment(commentDeleteReq.getCommentId()); // 댓글이 존재하는지 확인
-        User user = userRepository.findById(commentDeleteReq.getUserId()); // 사용자가 존재하는지 확인
-        UserValidator.validate(user); // 사용자가 존재하는지 확인
+        // 댓글이 존재하는지 확인
+        Comment comment = findComment(commentDeleteReq.getCommentId());
 
+        // 사용자가 존재하는지 확인
+        User user = userRepository.findById(commentDeleteReq.getUserId());
+        UserValidator.validate(user);
+
+        // 댓글 삭제 로직
         commentRepository.delete(comment);
         return new CommentDeleteRes();
     }

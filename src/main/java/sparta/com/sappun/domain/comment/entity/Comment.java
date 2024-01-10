@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.board.entity.Board;
+import sparta.com.sappun.domain.comment.dto.request.CommentUpdateReq;
 import sparta.com.sappun.domain.user.entity.User;
 
 @Entity
@@ -33,18 +34,14 @@ public class Comment extends TimeStamp {
     private User user;
 
     @Builder
-    private Comment(Long id, String content, String fileUrl, User user) {
-        this.id = id;
+    private Comment(String content, String fileUrl, User user) {
         this.content = content;
         this.fileUrl = fileUrl;
         this.user = user;
     }
 
-    public void updateContent(String content) {
-        this.content = content;
-    }
-
-    public void updateFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
+    public void update(CommentUpdateReq commentUpdateReq) {
+        this.content = commentUpdateReq.getContent();
+        this.fileUrl = commentUpdateReq.getFileUrl();
     }
 }

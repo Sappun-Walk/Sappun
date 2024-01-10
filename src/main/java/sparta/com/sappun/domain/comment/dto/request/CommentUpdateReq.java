@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentUpdateReq {
-    // private Long BoardId;
+    private Long BoardId;
     private Long commentId;
     private Long userId;
 
