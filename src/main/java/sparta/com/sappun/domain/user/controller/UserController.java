@@ -91,7 +91,9 @@ public class UserController {
     // 프로필 수정
     @PatchMapping("/profile")
     public CommonResponse<UserProfileUpdateRes> updateProfile(
-            @AuthenticationPrincipal UserProfileUpdateReq req) { // TODO: 프로필 사진 입력받기
+            @RequestBody UserProfileUpdateReq req,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) { // TODO: 프로필 사진 입력받기
+        req.setId(userDetails.getUser().getId());
         return CommonResponse.success(userService.updateProfile(req));
     }
 }
