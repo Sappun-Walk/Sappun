@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
+import sparta.com.sappun.domain.comment.dto.request.CommentUpdateReq;
 import sparta.com.sappun.domain.comment.dto.response.CommentSaveRes;
+import sparta.com.sappun.domain.comment.dto.response.CommentUpdateRes;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
+import sparta.com.sappun.global.validator.CommentValidator;
 import sparta.com.sappun.global.validator.UserValidator;
 
 @Service
@@ -31,5 +34,27 @@ public class CommentService {
                                 .fileUrl(commentSaveReq.getFileUrl())
                                 .user(user)
                                 .build()));
+    }
+
+    @Transactional
+    public CommentUpdateRes updateComment(CommentUpdateReq commentUpdateReq) {
+        Comment comment = findComment(commentUpdateReq.getCommentId()); // 댓글이 존재하는지 확인
+        // TODO: 사용자 권한 로직 필요
+        User user = userRepository.findById(commentUpdateReq.getUserId()); // 사용자가 존재하는지 확인
+        UserValidator.validate(user); // 사용자가 존재하는지 확인
+
+        // 댓글 업데이트 로직
+        // TODO: 사진 관련 로직 추가
+        comment.updateContent(commentUpdateReq.getContent());
+        comment.updateFileUrl(commentUpdateReq.getFileUrl());
+
+        // 수정된 댓글 저장
+        return CommentServiceMapper.INSTANCE.toCommentUpdateRes(comment);
+    }
+
+    private Comment findComment(Long id) {
+        Comment comment = commentRepository.findById(id);
+        CommentValidator.validate(comment);
+        return comment;
     }
 }

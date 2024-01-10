@@ -19,8 +19,6 @@ public class Comment extends TimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // commentId
 
-    private String nickname; // 사용자 닉네임
-
     @NotBlank private String content; // 댓글 내용
 
     private String fileUrl; // 댓글 사진 URL
@@ -34,9 +32,18 @@ public class Comment extends TimeStamp {
     private User user;
 
     @Builder
-    private Comment(String content, String fileUrl, User user) {
+    private Comment(Long id, String content, String fileUrl, User user) {
+        this.id = id;
         this.content = content;
         this.fileUrl = fileUrl;
         this.user = user;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
+
+    public void updateFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 }
