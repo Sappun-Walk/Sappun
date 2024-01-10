@@ -46,7 +46,7 @@ public class BoardService {
     public BoardBestListGetRes getBoardBestList() {
         List<BoardGetRes> boardGetRes =
                 BoardServiceMapper.INSTANCE.toBoardBestListGetRes(
-                        boardRepository.findTop3ByOrderByBoardLikesDesc());
+                        boardRepository.findTop3ByOrderByLikeBoardDesc());
         return BoardBestListGetRes.builder().boards(boardGetRes).build();
     }
 

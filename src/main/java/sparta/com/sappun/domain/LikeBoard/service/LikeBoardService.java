@@ -4,9 +4,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sparta.com.sappun.domain.LikeBoard.dto.response.LikeBoardSaveRes;
+import sparta.com.sappun.domain.LikeBoard.entity.LikeBoard;
 import sparta.com.sappun.domain.LikeBoard.repository.LikeBoardRepository;
 import sparta.com.sappun.domain.board.entity.Board;
-import sparta.com.sappun.domain.board.entity.BoardLike;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
@@ -26,7 +26,7 @@ public class LikeBoardService {
         Board board = boardRepository.findById(boardId);
         // CommentValidator.validate(comment);
         UserValidator.validate(user);
-        likeBoardRepository.save(BoardLike.builder().board(board).user(user).build());
+        likeBoardRepository.save(LikeBoard.builder().board(board).user(user).build());
         return new LikeBoardSaveRes();
     }
 }
