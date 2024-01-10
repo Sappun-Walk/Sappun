@@ -3,8 +3,10 @@ package sparta.com.sappun.domain.comment.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sparta.com.sappun.domain.comment.dto.request.CommentDeleteReq;
 import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
 import sparta.com.sappun.domain.comment.dto.request.CommentUpdateReq;
+import sparta.com.sappun.domain.comment.dto.response.CommentDeleteRes;
 import sparta.com.sappun.domain.comment.dto.response.CommentSaveRes;
 import sparta.com.sappun.domain.comment.dto.response.CommentUpdateRes;
 import sparta.com.sappun.domain.comment.entity.Comment;
@@ -47,6 +49,16 @@ public class CommentService {
         comment.updateFileUrl(commentUpdateReq.getFileUrl());
 
         return CommentServiceMapper.INSTANCE.toCommentUpdateRes(comment);
+    }
+
+    @Transactional
+    public CommentDeleteRes deleteComment(CommentDeleteReq commentDeleteReq) {
+        Comment comment = findComment(commentDeleteReq.getCommentId()); // 댓글이 존재하는지 확인
+        User user = userRepository.findById(commentDeleteReq.getUserId()); // 사용자가 존재하는지 확인
+        UserValidator.validate(user); // 사용자가 존재하는지 확인
+
+        commentRepository.delete(comment);
+        return new CommentDeleteRes();
     }
 
     private Comment findComment(Long id) {

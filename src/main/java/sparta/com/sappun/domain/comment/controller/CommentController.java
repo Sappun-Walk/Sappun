@@ -3,8 +3,10 @@ package sparta.com.sappun.domain.comment.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import sparta.com.sappun.domain.comment.dto.request.CommentDeleteReq;
 import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
 import sparta.com.sappun.domain.comment.dto.request.CommentUpdateReq;
+import sparta.com.sappun.domain.comment.dto.response.CommentDeleteRes;
 import sparta.com.sappun.domain.comment.dto.response.CommentSaveRes;
 import sparta.com.sappun.domain.comment.dto.response.CommentUpdateRes;
 import sparta.com.sappun.domain.comment.service.CommentService;
@@ -37,5 +39,15 @@ public class CommentController {
         commentUpdateReq.setUserId(userDetails.getUser().getId());
         commentUpdateReq.setCommentId(commentId);
         return CommonResponse.success(commentService.updateComment(commentUpdateReq));
+    }
+
+    @DeleteMapping("/{commentId}")
+    public CommonResponse<CommentDeleteRes> deleteComment(
+            @PathVariable Long commentId,
+            @RequestBody CommentDeleteReq commentDeleteReq,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        commentDeleteReq.setUserId(userDetails.getUser().getId());
+        commentDeleteReq.setCommentId(commentId);
+        return CommonResponse.success(commentService.deleteComment(commentDeleteReq));
     }
 }
