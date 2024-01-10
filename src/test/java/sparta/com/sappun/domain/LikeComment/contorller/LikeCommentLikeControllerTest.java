@@ -25,13 +25,13 @@ class LikeCommentLikeControllerTest extends BaseMvcTest implements LikeCommentTe
     @DisplayName("댓글 저장 API 테스트")
     void saveCommentTest() throws Exception {
         // given
-        Long commentId = 1L;
         LikeCommentSaveRes res = new LikeCommentSaveRes();
-        // when-then
         when(likeCommentService.likeCommentSaveRes(any(), any())).thenReturn(res);
+
+        // when-then
         mockMvc
                 .perform(
-                        post("/api/comments/{commentId}/like", commentId)
+                        post("/api/comments/{commentId}/like", TEST_COMMENT_ID)
                                 .principal(mockPrincipal)) // 실제 사용자 정보 제공 필요
                 .andDo(print())
                 .andExpect(status().isOk());

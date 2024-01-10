@@ -18,7 +18,6 @@ public class CommentController {
 
     private final CommentService commentService;
     private final UserService userService;
-    private final LikeCommentService likeCommentService;
 
     @PostMapping
     public CommonResponse<CommentSaveRes> saveComment(
