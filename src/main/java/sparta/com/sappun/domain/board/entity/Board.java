@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
+import sparta.com.sappun.domain.user.entity.User;
 
 @Entity
 @Getter
@@ -38,6 +39,9 @@ public class Board extends TimeStamp {
     @Enumerated(value = EnumType.STRING)
     private RegionEnum region;
 
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
 
     @Builder
     public Board(
@@ -48,7 +52,8 @@ public class Board extends TimeStamp {
             String departure,
             String destination,
             String stopover,
-            RegionEnum region) {
+            RegionEnum region,
+            User user) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -57,6 +62,7 @@ public class Board extends TimeStamp {
         this.destination = destination;
         this.stopover = stopover;
         this.region = region;
+        this.user = user;
     }
 
     public void update(BoardUpdateReq boardUpdateReq) {
