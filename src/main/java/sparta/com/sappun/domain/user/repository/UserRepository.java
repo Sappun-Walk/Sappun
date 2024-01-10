@@ -16,4 +16,6 @@ public interface UserRepository {
     Boolean existsByUsername(String username);
 
     Boolean existsByNickname(String nickname);
+
+    Boolean existsByPassword(String password);
 }

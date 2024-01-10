@@ -31,7 +31,7 @@ public class UserPasswordUpdateReq {
     private String confirmPassword;
 
     @Builder
-    private UserPasswordUpdateReq(String prePassword, String newPassword, String confirmPassword) {
+    public UserPasswordUpdateReq(String prePassword, String newPassword, String confirmPassword) {
         this.prePassword = prePassword;
         this.newPassword = newPassword;
         this.confirmPassword = confirmPassword;
