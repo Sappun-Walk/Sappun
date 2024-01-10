@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.com.sappun.domain.board.dto.request.BoardListGetReq;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
+import sparta.com.sappun.domain.board.dto.response.BoardBestListGetRes;
 import sparta.com.sappun.domain.board.dto.response.BoardGetRes;
 import sparta.com.sappun.domain.board.dto.response.BoardListGetRes;
 import sparta.com.sappun.domain.board.dto.response.BoardSaveRes;
 import sparta.com.sappun.domain.board.entity.Board;
+import sparta.com.sappun.domain.board.entity.BoardLike;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.sample.dto.request.SampleSaveReq;
@@ -54,7 +56,9 @@ public class BoardService {
         return BoardServiceMapper.INSTANCE.toBoardListGetRes(boardRepository.findAllByRegion(region));
     }
 
-
+    public BoardBestListGetRes getBoardBestList(){
+        return BoardServiceMapper.INSTANCE.toBoardBestListGetRes(boardRepository.findTop3ByOrderByBoardLikesDesc());
+    }
 
 
     @Transactional
