@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
+import sparta.com.sappun.domain.user.dto.request.UserPasswordUpdateReq;
 import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
 import sparta.com.sappun.domain.user.dto.response.*;
@@ -95,5 +96,14 @@ public class UserController {
             @AuthenticationPrincipal UserDetailsImpl userDetails) { // TODO: 프로필 사진 입력받기
         req.setId(userDetails.getUser().getId());
         return CommonResponse.success(userService.updateProfile(req));
+    }
+
+    // 비밀번호 수정
+    @PatchMapping("/profile/password")
+    public CommonResponse<UserPasswordUpdateRes> updatePassword(
+            @RequestBody UserPasswordUpdateReq req,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        req.setId(userDetails.getUser().getId());
+        return CommonResponse.success(userService.updatePassword(req));
     }
 }
