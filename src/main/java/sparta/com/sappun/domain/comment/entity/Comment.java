@@ -6,12 +6,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sparta.com.sappun.domain.LikeComment.entity.LikeComment;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.user.entity.User;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
