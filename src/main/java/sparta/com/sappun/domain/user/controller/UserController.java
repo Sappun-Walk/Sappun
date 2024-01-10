@@ -109,4 +109,10 @@ public class UserController {
     public CommonResponse<UsernameVerifyRes> verifyUsername(@RequestBody UsernameVerifyReq req) {
         return CommonResponse.success(userService.verifyUsername(req));
     }
+
+    // 닉네임 중복확인
+    @PostMapping("/username")
+    public CommonResponse<NicknameVerifyRes> verifyNickname(@RequestBody NicknameVerifyReq req) {
+        return CommonResponse.success(userService.verifyNickname(req));
+    }
 }
