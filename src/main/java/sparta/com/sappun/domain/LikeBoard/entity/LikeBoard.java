@@ -25,7 +25,6 @@ public class LikeBoard {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-
     @Builder
     private LikeBoard(Board board, User user) {
         this.board = board;

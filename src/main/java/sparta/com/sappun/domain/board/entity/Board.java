@@ -45,7 +45,6 @@ public class Board extends TimeStamp {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LikeBoard> likeBoard = new ArrayList<>();
 
