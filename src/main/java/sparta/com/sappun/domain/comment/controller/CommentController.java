@@ -1,11 +1,12 @@
 package sparta.com.sappun.domain.comment.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.parameters.P;
+import org.springframework.web.bind.annotation.*;
+import sparta.com.sappun.domain.LikeComment.repository.LikeCommentRepository;
+import sparta.com.sappun.domain.LikeComment.service.LikeCommentService;
 import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
 import sparta.com.sappun.domain.comment.dto.response.CommentSaveRes;
 import sparta.com.sappun.domain.comment.service.CommentService;
@@ -20,6 +21,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final UserService userService;
+    private final LikeCommentService likeCommentService;
 
     @PostMapping
     public CommonResponse<CommentSaveRes> saveComment(
@@ -30,3 +32,5 @@ public class CommentController {
         return CommonResponse.success(commentService.saveComment(commentSaveReq));
     }
 }
+
+
