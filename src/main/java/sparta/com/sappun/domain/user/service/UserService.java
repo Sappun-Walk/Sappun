@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
+import sparta.com.sappun.domain.user.dto.request.UserPasswordUpdateReq;
 import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
 import sparta.com.sappun.domain.user.dto.response.*;
@@ -85,5 +86,22 @@ public class UserService {
         user.updateProfile(req);
 
         return UserServiceMapper.INSTANCE.toUserProfileUpdateRes(user);
+    }
+
+    // 비밀번호 수정
+    public UserPasswordUpdateRes updatePassword(UserPasswordUpdateReq req) {
+        User user = userRepository.findById(req.getId());
+        UserValidator.validate(user); // 사용자가 존재하는지 확인
+        UserValidator.checkEqualsPassword(
+                passwordEncoder.matches(
+                        req.getPrePassword(), user.getPassword())); // 저장소 내의 비밀번호랑 req의 prepassword가 일치하는지 확인
+        UserValidator.checkEqualsPassword(
+                (req.getNewPassword().equals(req.getConfirmPassword()))); // 바꿀 비밀번호와 비밀번호 확인이 같은지 확인
+
+        user.updatePassword(
+                passwordEncoder.encode(
+                        req.getConfirmPassword())); // 저장소 내의 비밀번호는 암호화 되어있기 때문에 passwordEncoder로 암호화 후 저장
+
+        return new UserPasswordUpdateRes();
     }
 }
