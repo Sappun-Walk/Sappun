@@ -108,4 +108,11 @@ public class UserService {
                 .isDuplicated(userRepository.existsByUsername(req.getUsername()))
                 .build(); // username 중복확인
     }
+
+    // 닉네임 중복확인
+    public NicknameVerifyRes verifyNickname(NicknameVerifyReq req) {
+        return NicknameVerifyRes.builder()
+                .isDuplicated(userRepository.existsByNickname(req.getNickname()))
+                .build(); // nickname 중복확인
+    }
 }
