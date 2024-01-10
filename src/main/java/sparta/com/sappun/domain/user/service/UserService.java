@@ -93,13 +93,12 @@ public class UserService {
         User user = userRepository.findById(req.getId());
         UserValidator.validate(user); // 사용자가 존재하는지 확인
         UserValidator.checkEqualsPassword(
-                userRepository.existsByPassword(
-                        req.getPrePassword())); // 저장소 내의 비밀번호랑 req의 prepassword가 일치하는지
+                passwordEncoder.matches(req.getPrePassword(), user.getPassword())); // 저장소 내의 비밀번호랑 req의 prepassword가 일치하는지 확인
         UserValidator.checkEqualsPassword(
                 (req.getNewPassword().equals(req.getConfirmPassword()))); // 바꿀 비밀번호와 비밀번호 확인이 같은지 확인
 
-        user.updatePassword(req.getConfirmPassword());
+        user.updatePassword(passwordEncoder.encode(req.getConfirmPassword())); // 저장소 내의 비밀번호는 암호화 되어있기 때문에 passwordEncoder로 암호화 후 저장
 
-        return UserServiceMapper.INSTANCE.toUserPasswordUpdateRes(user);
+        return new UserPasswordUpdateRes();
     }
 }
