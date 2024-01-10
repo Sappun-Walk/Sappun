@@ -34,8 +34,7 @@ public class Board extends TimeStamp {
     @Column(nullable = false)
     private String destination;
 
-    @ElementCollection
-    private List<String> stopover;
+    @ElementCollection private List<String> stopover;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
