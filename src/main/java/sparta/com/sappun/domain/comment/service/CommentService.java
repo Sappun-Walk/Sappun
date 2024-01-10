@@ -39,16 +39,13 @@ public class CommentService {
     @Transactional
     public CommentUpdateRes updateComment(CommentUpdateReq commentUpdateReq) {
         Comment comment = findComment(commentUpdateReq.getCommentId()); // 댓글이 존재하는지 확인
-        // TODO: 사용자 권한 로직 필요
         User user = userRepository.findById(commentUpdateReq.getUserId()); // 사용자가 존재하는지 확인
         UserValidator.validate(user); // 사용자가 존재하는지 확인
 
         // 댓글 업데이트 로직
-        // TODO: 사진 관련 로직 추가
         comment.updateContent(commentUpdateReq.getContent());
         comment.updateFileUrl(commentUpdateReq.getFileUrl());
 
-        // 수정된 댓글 저장
         return CommentServiceMapper.INSTANCE.toCommentUpdateRes(comment);
     }
 

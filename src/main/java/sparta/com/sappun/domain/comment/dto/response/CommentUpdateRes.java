@@ -1,9 +1,12 @@
 package sparta.com.sappun.domain.comment.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentUpdateRes {
     private Long id;
     private String nickname;
