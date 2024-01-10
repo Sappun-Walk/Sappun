@@ -111,7 +111,7 @@ public class UserController {
     }
 
     // 닉네임 중복확인
-    @PostMapping("/username")
+    @PostMapping("/nickname")
     public CommonResponse<NicknameVerifyRes> verifyNickname(@RequestBody NicknameVerifyReq req) {
         return CommonResponse.success(userService.verifyNickname(req));
     }
