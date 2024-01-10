@@ -67,8 +67,8 @@ public class CommentService {
         return new CommentDeleteRes();
     }
 
-    private Comment findComment(Long id) {
-        Comment comment = commentRepository.findById(id);
+    private Comment findComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId);
         CommentValidator.validate(comment);
         return comment;
     }
