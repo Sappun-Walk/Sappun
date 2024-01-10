@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum RegionEnum {
+    // 지역명 입력
     REGION1("REGION1"),
     REGION2("REGION2"),
     REGION3("REGION3");
