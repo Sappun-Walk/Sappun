@@ -15,7 +15,10 @@ import sparta.com.sappun.domain.sample.dto.request.SampleSaveReq;
 import sparta.com.sappun.domain.sample.dto.response.SampleSaveRes;
 import sparta.com.sappun.domain.sample.entity.Sample;
 import sparta.com.sappun.domain.sample.service.SampleServiceMapper;
+import sparta.com.sappun.domain.user.entity.User;
+import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.validator.BoardValidator;
+import sparta.com.sappun.global.validator.UserValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public BoardGetRes getBoard(Long boardId) {
@@ -33,37 +37,31 @@ public class BoardService {
         return BoardServiceMapper.INSTANCE.toBoardGetRes(board);
     }
 
-
-    public List<BoardListGetRes> getBoardList(BoardListGetReq requestDto) {
-        List<Board> boardList = boardRepository.findAllByRegion(requestDto.getRegion());
-        List<BoardListGetRes> res = new ArrayList<>();
-
-        for (Board board : boardList) {
-            res.add(new BoardListGetRes(board));
-        }
-        return res;
-    }
-    //Service Mapper 및 Builder 적용 중
-//    @Transactional(readOnly = true)
-//    public BoardListGetRes getBoardList(String title, String content, String fileURL, String departure, String destination, String stopover,RegionEnum region) {
+//    public List<BoardListGetRes> getBoardList(BoardListGetReq requestDto) {
+//        List<Board> boardList = boardRepository.findAllByRegion(requestDto.getRegion());
+//        List<BoardListGetRes> res = new ArrayList<>();
 //
-//        List<BoardListGetRes> boardListGetRes = BoardServiceMapper.INSTANCE.toBoardListGetRes(
-//                boardRepository.findAllByRegion(region));
-//        return BoardListGetRes.builder()
-//                .title(title)
-//                .content(content)
-//                .fileURL(fileURL)
-//                .departure(departure)
-//                .destination(destination)
-//                .stopover(stopover)
-//                .region(region)
-//                .build();
+//        for (Board board : boardList) {
+//            res.add(new BoardListGetRes(board));
+//        }
+//        return res;
 //    }
+
+    @Transactional(readOnly = true)
+    public BoardListGetRes getBoardList(RegionEnum region) {
+//        List<Board> boards = boardRepository.findAllByRegion(region);
+//        return new BoardListGetRes(boards);
+        return BoardServiceMapper.INSTANCE.toBoardListGetRes(boardRepository.findAllByRegion(region));
+    }
+
+
+
 
     @Transactional
     public BoardSaveRes saveBoard(BoardSaveReq boardSaveReq) {
-        //validator 추가
-        
+        User user = userRepository.findById(boardSaveReq.getUserId());
+        UserValidator.validate(user);
+
         return BoardServiceMapper.INSTANCE.toBoardSavaRes(
                 boardRepository.save(
                         Board.builder()
@@ -74,6 +72,7 @@ public class BoardService {
                                 .destination(boardSaveReq.getDestination())
                                 .stopover(boardSaveReq.getStopover())
                                 .region(boardSaveReq.getRegion())
+                                .user(user)
                                 .build()));
     }
 
