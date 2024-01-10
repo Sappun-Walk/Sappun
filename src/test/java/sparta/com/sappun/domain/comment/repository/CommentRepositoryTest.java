@@ -36,4 +36,19 @@ class CommentRepositoryTest implements CommentTest {
         assertEquals(TEST_COMMENT.getContent(), saveComment.getContent());
         assertEquals(TEST_COMMENT.getFileUrl(), saveComment.getFileUrl());
     }
+
+    @Test
+    @DisplayName("findById 테스트")
+    void findByIdTest() {
+        // given
+        userRepository.save(TEST_USER);
+        Comment comment = commentRepository.save(TEST_COMMENT);
+
+        // when
+        Comment findComment = commentRepository.findById(comment.getId());
+
+        // then
+        assertEquals(findComment.getContent(), TEST_COMMENT.getContent());
+    }
+
 }
