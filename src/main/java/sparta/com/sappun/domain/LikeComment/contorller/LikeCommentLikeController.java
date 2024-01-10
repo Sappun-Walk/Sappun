@@ -16,7 +16,6 @@ import sparta.com.sappun.global.security.UserDetailsImpl;
 @RequestMapping("/api/comments")
 public class LikeCommentLikeController {
     private final LikeCommentService likeCommentService;
-
     @PostMapping("/{commentId}/like")
     public CommonResponse<LikeCommentSaveRes> likeComment(@PathVariable Long commentId,
                                                            @AuthenticationPrincipal UserDetailsImpl userId) {
