@@ -70,11 +70,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         log.info("accessToken 만료");
 
-        // access token 이 만료되면 refresh token 검증
+        // access token 이 만료되면 refresh token 가져옴
         String refreshToken =
                 jwtUtil.getTokenWithoutBearer(request.getHeader(REFRESH_TOKEN_HEADER)); // refresh token 찾음
         log.info("refreshToken : {}", refreshToken);
 
+        // refresh token 검증
         TokenValidator.checkValidRefreshToken(isRefreshTokenValid(refreshToken));
 
         // refresh token 이 만료되면 로그인 필요 예외 발생
@@ -97,7 +98,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String role = userDetails.getUser().getRole().getAuthority();
         String newAccessToken = jwtUtil.createAccessToken(userId, role); // 새로운 access token 발급
 
-        setAuthentication(String.valueOf(userId));
+        setAuthentication(userDetails);
         return newAccessToken;
     }
 
@@ -118,6 +119,18 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.setContext(context);
         log.info("setAuthentication 종료");
+    }
+
+    /** Access Token을 재발급하는 경우 user를 두 번 조회하지 않도록 추가 */
+    private void setAuthentication(UserDetailsImpl userDetails) {
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken( // createAuthentication 메소드에서 사용자를 다시 조회하지 않도록 바로
+                        // userDetails 를 넣음
+                        userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+        context.setAuthentication(authentication);
+
+        SecurityContextHolder.setContext(context);
     }
 
     /** 인증 객체 생성 */
