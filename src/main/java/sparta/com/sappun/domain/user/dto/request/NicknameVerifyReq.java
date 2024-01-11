@@ -13,7 +13,7 @@ public class NicknameVerifyReq {
     private String nickname;
 
     @Builder
-    public NicknameVerifyReq(String nickname) {
+    private NicknameVerifyReq(String nickname) {
         this.nickname = nickname;
     }
 }
