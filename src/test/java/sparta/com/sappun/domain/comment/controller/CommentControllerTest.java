@@ -14,7 +14,7 @@ class CommentControllerTest extends BaseMvcTest implements CommentTest {
 
     @MockBean private UserService userService;
 
-    //TODO: Board TEST 작성후 다시 TEST
+    // TODO: Board TEST 작성후 다시 TEST
     //    @Test
     //    @DisplayName("댓글 저장 API 테스트")
     //    void saveCommentTest() throws Exception {

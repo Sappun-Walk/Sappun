@@ -19,7 +19,7 @@ class CommentServiceTest implements CommentTest {
     @InjectMocks CommentService commentService;
     @Captor ArgumentCaptor<Comment> argumentCaptor;
 
-    //TODO: Board TEST 작성후 다시 TEST
+    // TODO: Board TEST 작성후 다시 TEST
     //    @Test
     //    @DisplayName("댓글 저장 테스트")
     //    void saveCommentTest() {
