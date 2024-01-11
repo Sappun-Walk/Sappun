@@ -22,7 +22,7 @@ public class ReportCommentService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ReportCommentRes reporCommentRes(Long commentId, ReportCommentReq req) {
+    public ReportCommentRes reportCommentRes(Long commentId, ReportCommentReq req) {
         Comment comment = commentRepository.findById(commentId);
         // CommentValidator.validate(comment);
         User user = userRepository.findById(req.getUserId());
