@@ -1,8 +1,10 @@
 package sparta.com.sappun.test;
 
+import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
 import sparta.com.sappun.domain.comment.dto.request.CommentUpdateReq;
 import sparta.com.sappun.domain.comment.entity.Comment;
+import sparta.com.sappun.domain.user.entity.User;
 
 public interface CommentTest extends UserTest {
 
