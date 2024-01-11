@@ -1,5 +1,6 @@
 package sparta.com.sappun.domain.comment.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class CommentController {
     @PostMapping("/{boardId}/comments")
     public CommonResponse<CommentSaveRes> saveComment(
             @PathVariable Long boardId,
-            @RequestBody CommentSaveReq req,
+            @RequestBody @Valid CommentSaveReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         // TODO: 댓글 사진 입력받기
         req.setBoardId(boardId);
@@ -34,7 +35,7 @@ public class CommentController {
     @PatchMapping("/comments/{commentId}")
     public CommonResponse<CommentUpdateRes> updateComment(
             @PathVariable Long commentId,
-            @RequestBody CommentUpdateReq req,
+            @RequestBody @Valid CommentUpdateReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         // TODO: 댓글 수정사진 입력받기
         req.setCommentId(commentId);
