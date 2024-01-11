@@ -40,7 +40,6 @@ class ReportCommentControllerTest extends BaseMvcTest implements ReportCommentTe
                         .reason(TEST_COMMENT_REASON)
                         .build();
 
-
         when(reportCommentService.reportCommentRes(any(), any())).thenReturn(res);
 
         // when-then
