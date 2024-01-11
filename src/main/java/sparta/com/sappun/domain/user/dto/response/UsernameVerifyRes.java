@@ -11,7 +11,7 @@ public class UsernameVerifyRes {
     private Boolean isDuplicated;
 
     @Builder
-    public UsernameVerifyRes(Boolean isDuplicated) {
+    private UsernameVerifyRes(Boolean isDuplicated) {
         this.isDuplicated = isDuplicated;
     }
 }

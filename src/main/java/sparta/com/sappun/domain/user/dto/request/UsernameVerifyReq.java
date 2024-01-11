@@ -14,7 +14,7 @@ public class UsernameVerifyReq {
     private String username;
 
     @Builder
-    public UsernameVerifyReq(String username) {
+    private UsernameVerifyReq(String username) {
         this.username = username;
     }
 }
