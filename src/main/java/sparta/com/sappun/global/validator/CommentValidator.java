@@ -1,5 +1,6 @@
 package sparta.com.sappun.global.validator;
 
+import static sparta.com.sappun.global.response.ResultCode.ACCESS_DENY;
 import static sparta.com.sappun.global.response.ResultCode.NOT_FOUND_COMMENT;
 
 import sparta.com.sappun.domain.comment.entity.Comment;
@@ -13,11 +14,11 @@ public class CommentValidator {
         }
     }
 
-    //    public static void checkCommentUser(String author, String accessor) {
-    //        if (!author.equals(accessor)) {
-    //            throw new GlobalException(ACCESS_DENY);
-    //        }
-    //    }
+    public static void checkCommentUser(Long id, Long userId) {
+        if (!id.equals(userId)) {
+            throw new GlobalException(ACCESS_DENY);
+        }
+    }
 
     private static boolean isNullComment(Comment comment) {
         return comment == null;
