@@ -89,7 +89,7 @@ public class UserController {
     // 프로필 수정
     @PatchMapping("/profile")
     public CommonResponse<UserProfileUpdateRes> updateProfile(
-            @RequestBody UserProfileUpdateReq req,
+            @RequestBody @Valid UserProfileUpdateReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) { // TODO: 프로필 사진 입력받기
         req.setId(userDetails.getUser().getId());
         return CommonResponse.success(userService.updateProfile(req));
@@ -98,7 +98,7 @@ public class UserController {
     // 비밀번호 수정
     @PatchMapping("/profile/password")
     public CommonResponse<UserPasswordUpdateRes> updatePassword(
-            @RequestBody UserPasswordUpdateReq req,
+            @RequestBody @Valid UserPasswordUpdateReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         req.setId(userDetails.getUser().getId());
         return CommonResponse.success(userService.updatePassword(req));
@@ -106,13 +106,15 @@ public class UserController {
 
     // 아이디 중복 확인
     @PostMapping("/username")
-    public CommonResponse<UsernameVerifyRes> verifyUsername(@RequestBody UsernameVerifyReq req) {
+    public CommonResponse<UsernameVerifyRes> verifyUsername(
+            @RequestBody @Valid UsernameVerifyReq req) {
         return CommonResponse.success(userService.verifyUsername(req));
     }
 
     // 닉네임 중복확인
     @PostMapping("/nickname")
-    public CommonResponse<NicknameVerifyRes> verifyNickname(@RequestBody NicknameVerifyReq req) {
+    public CommonResponse<NicknameVerifyRes> verifyNickname(
+            @RequestBody @Valid NicknameVerifyReq req) {
         return CommonResponse.success(userService.verifyNickname(req));
     }
 }
