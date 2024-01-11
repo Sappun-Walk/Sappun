@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.test.CommentTest;
@@ -19,7 +20,7 @@ class CommentRepositoryTest implements CommentTest {
 
     @Autowired private CommentRepository commentRepository;
     @Autowired private UserRepository userRepository;
-    // BoardRepositoru 추가 필요
+    @Autowired private BoardRepository boardRepository;
 
     @Test
     @DisplayName("save 테스트")
@@ -35,5 +36,19 @@ class CommentRepositoryTest implements CommentTest {
         assertEquals(TEST_USER.getNickname(), saveComment.getUser().getNickname());
         assertEquals(TEST_COMMENT.getContent(), saveComment.getContent());
         assertEquals(TEST_COMMENT.getFileUrl(), saveComment.getFileUrl());
+    }
+
+    @Test
+    @DisplayName("findById 테스트")
+    void findByIdTest() {
+        // given
+        userRepository.save(TEST_USER);
+        Comment comment = commentRepository.save(TEST_COMMENT);
+
+        // when
+        Comment findComment = commentRepository.findById(comment.getId());
+
+        // then
+        assertEquals(findComment.getContent(), TEST_COMMENT.getContent());
     }
 }

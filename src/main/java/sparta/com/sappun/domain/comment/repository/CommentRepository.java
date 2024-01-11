@@ -7,5 +7,7 @@ import sparta.com.sappun.domain.comment.entity.Comment;
 public interface CommentRepository {
     Comment save(Comment comment);
 
-    Comment findById(Long commentid);
+    Comment findById(Long commentId);
+
+    void delete(Comment comment);
 }
