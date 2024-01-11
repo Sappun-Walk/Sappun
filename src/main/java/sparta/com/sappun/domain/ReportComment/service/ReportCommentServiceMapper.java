@@ -10,6 +10,7 @@ import sparta.com.sappun.domain.ReportComment.entity.ReportComment;
 public interface ReportCommentServiceMapper {
     ReportCommentServiceMapper INSTANCE = Mappers.getMapper(ReportCommentServiceMapper.class);
 
+
     @Mapping(source = "comment.id", target = "reportCommentId")
     @Mapping(source = "user.id", target = "reporterUserId")
     ReportCommentRes toReportCommentRes(ReportComment reportComment);

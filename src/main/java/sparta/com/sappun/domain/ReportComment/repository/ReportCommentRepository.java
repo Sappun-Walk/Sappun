@@ -5,5 +5,6 @@ import sparta.com.sappun.domain.ReportComment.entity.ReportComment;
 
 @RepositoryDefinition(domainClass = ReportComment.class, idClass = Long.class)
 public interface ReportCommentRepository {
+
     ReportComment save(ReportComment reportComment);
 }

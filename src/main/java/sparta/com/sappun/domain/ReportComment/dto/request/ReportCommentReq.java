@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReportCommentReq {
 
+
     private Long userId;
     private Long reportCommentId;
     @NotBlank private String reason;

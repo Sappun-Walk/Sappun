@@ -13,6 +13,7 @@ import sparta.com.sappun.domain.user.entity.User;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tb_commentreport")
 public class ReportComment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

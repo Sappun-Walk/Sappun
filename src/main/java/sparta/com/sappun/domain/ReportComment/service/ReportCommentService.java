@@ -21,6 +21,7 @@ public class ReportCommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
+
     @Transactional
     public ReportCommentRes reportCommentRes(Long commentId, ReportCommentReq req) {
         Comment comment = commentRepository.findById(commentId);

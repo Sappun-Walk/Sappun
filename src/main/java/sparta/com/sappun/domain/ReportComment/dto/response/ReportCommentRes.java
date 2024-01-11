@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReportCommentRes {
+
     private Long id;
     private Long reportCommentId;
     private String reason;
