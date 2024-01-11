@@ -17,7 +17,6 @@ import sparta.com.sappun.global.security.UserDetailsImpl;
 public class ReportCommentController {
     @Autowired private ReportCommentService reportCommentService;
 
-
     @PostMapping("/{commentId}/report")
     public ResponseEntity<ReportCommentRes> reportComment(
             @PathVariable Long commentId,
