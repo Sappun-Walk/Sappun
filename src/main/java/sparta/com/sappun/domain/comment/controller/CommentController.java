@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
 import sparta.com.sappun.domain.comment.dto.response.CommentSaveRes;
 import sparta.com.sappun.domain.comment.service.CommentService;
-import sparta.com.sappun.domain.user.service.UserService;
 import sparta.com.sappun.global.response.CommonResponse;
 import sparta.com.sappun.global.security.UserDetailsImpl;
 
@@ -16,7 +15,6 @@ import sparta.com.sappun.global.security.UserDetailsImpl;
 public class CommentController {
 
     private final CommentService commentService;
-    private final UserService userService;
 
     @PostMapping
     public CommonResponse<CommentSaveRes> saveComment(

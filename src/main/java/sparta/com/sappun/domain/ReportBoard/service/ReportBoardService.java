@@ -11,6 +11,7 @@ import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
+import sparta.com.sappun.global.validator.BoardValidator;
 import sparta.com.sappun.global.validator.UserValidator;
 
 @Service
@@ -24,7 +25,7 @@ public class ReportBoardService {
     @Transactional
     public ReportBoardRes reportBoardRes(Long boardId, ReportBoardReq req) {
         Board board = boardRepository.findById(boardId);
-        // BoardValidator.validate(board);
+        BoardValidator.validate(board);
         User user = userRepository.findById(req.getUserId());
         UserValidator.validate(user);
         ReportBoard reportBoard =
