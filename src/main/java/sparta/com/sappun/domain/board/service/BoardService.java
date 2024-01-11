@@ -1,10 +1,8 @@
 package sparta.com.sappun.domain.board.service;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sparta.com.sappun.domain.board.dto.request.BoardDeleteReq;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.board.dto.response.*;
@@ -15,6 +13,8 @@ import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.validator.BoardValidator;
 import sparta.com.sappun.global.validator.UserValidator;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -69,7 +69,7 @@ public class BoardService {
 
     @Transactional
     public BoardUpdateRes updateBoard(BoardUpdateReq boardUpdateReq) {
-        Board board = findBoard(boardUpdateReq.getBoardId());
+        Board board = getBoardById(boardUpdateReq.getBoardId());
         User user = getUserById(boardUpdateReq.getUserId());
         BoardValidator.checkBoardUser(board.getUser().getId(), user.getId());
         board.update(boardUpdateReq);
@@ -78,10 +78,9 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardDeleteRes deleteBoard(BoardDeleteReq boardDeleteReq) {
-        Board board = findBoard(boardDeleteReq.getBoardId());
-        User user = getUserById(boardDeleteReq.getUserId());
-        BoardValidator.checkBoardUser(board.getUser().getId(), user.getId());
+    public BoardDeleteRes deleteBoard(Long boardId, User user) {
+        Board board = getBoardById(boardId);
+        BoardValidator.checkBoardUser(board.getUser(), user);
         boardRepository.delete(board);
 
         return new BoardDeleteRes();
@@ -99,9 +98,4 @@ public class BoardService {
         return user;
     }
 
-    private Board findBoard(Long boardId) {
-        Board board = boardRepository.findById(boardId);
-        BoardValidator.validate(board);
-        return board;
-    }
 }

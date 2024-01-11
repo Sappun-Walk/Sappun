@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import sparta.com.sappun.domain.board.dto.request.BoardDeleteReq;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.board.dto.response.*;
@@ -63,10 +62,7 @@ public class BoardController {
     @DeleteMapping("/{boardId}")
     public CommonResponse<BoardDeleteRes> deleteBoard(
             @PathVariable Long boardId,
-            @RequestBody @Valid BoardDeleteReq boardDeleteReq,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        boardDeleteReq.setBoardId(boardId);
-        boardDeleteReq.setUserId(userDetails.getUser().getId());
-        return CommonResponse.success(boardService.deleteBoard(boardDeleteReq));
+        return CommonResponse.success(boardService.deleteBoard(boardId, userDetails.getUser()));
     }
 }
