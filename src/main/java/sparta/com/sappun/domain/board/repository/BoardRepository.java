@@ -12,7 +12,7 @@ public interface BoardRepository {
 
     List<Board> findAllByRegion(RegionEnum region);
 
-    List<Board> findTop3ByOrderByBoardLikesDesc();
+    List<Board> findTop3ByOrderByLikeBoardDesc();
 
     Board save(Board board);
 
