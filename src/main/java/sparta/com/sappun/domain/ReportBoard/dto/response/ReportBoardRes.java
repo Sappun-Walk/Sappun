@@ -13,7 +13,6 @@ public class ReportBoardRes {
     private String reason;
     private Long reporterUserId;
 
-
     @Builder
     public ReportBoardRes(Long id, Long reportedBoardId, String reason, Long reporterUserId) {
         this.id = id;

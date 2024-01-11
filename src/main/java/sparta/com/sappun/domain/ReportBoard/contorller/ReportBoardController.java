@@ -15,16 +15,19 @@ import sparta.com.sappun.global.security.UserDetailsImpl;
 @RequiredArgsConstructor
 public class ReportBoardController {
 
-    @Autowired
-    private ReportBoardService reportBoardService;
+    @Autowired private ReportBoardService reportBoardService;
 
     @PostMapping("/{boardId}/report")
-    public ResponseEntity<ReportBoardRes> reportBoard(@PathVariable Long boardId, @RequestBody ReportBoardReq req, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ReportBoardRes> reportBoard(
+            @PathVariable Long boardId,
+            @RequestBody ReportBoardReq req,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
-            ReportBoardRes reportBoardRes = reportBoardService.reportBoardRes(boardId, req, userDetails.getUser().getId());
+            ReportBoardRes reportBoardRes =
+                    reportBoardService.reportBoardRes(boardId, req, userDetails.getUser().getId());
             return ResponseEntity.ok(reportBoardRes);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);  // 적절한 에러 응답 처리
+            return ResponseEntity.badRequest().body(null); // 적절한 에러 응답 처리
         }
     }
 }

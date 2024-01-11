@@ -17,8 +17,7 @@ public class ReportBoard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String reason;
+    @Column private String reason;
 
     @ManyToOne
     @JoinColumn(name = "boardId", nullable = false)
@@ -29,7 +28,7 @@ public class ReportBoard {
     private User user;
 
     @Builder
-    private ReportBoard(Board board, User user,String reason) {
+    private ReportBoard(Board board, User user, String reason) {
         this.board = board;
         this.user = user;
         this.reason = reason;
