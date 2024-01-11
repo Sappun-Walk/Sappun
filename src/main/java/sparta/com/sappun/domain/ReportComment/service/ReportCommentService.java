@@ -11,6 +11,7 @@ import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
+import sparta.com.sappun.global.validator.CommentValidator;
 import sparta.com.sappun.global.validator.UserValidator;
 
 @Service
@@ -24,7 +25,7 @@ public class ReportCommentService {
     @Transactional
     public ReportCommentRes reportCommentRes(Long commentId, ReportCommentReq req) {
         Comment comment = commentRepository.findById(commentId);
-        // CommentValidator.validate(comment);
+        CommentValidator.validate(comment);
         User user = userRepository.findById(req.getUserId());
         UserValidator.validate(user);
         ReportComment reportComment =
