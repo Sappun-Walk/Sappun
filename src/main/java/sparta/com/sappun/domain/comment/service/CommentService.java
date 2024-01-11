@@ -30,11 +30,9 @@ public class CommentService {
     @Transactional
     public CommentSaveRes saveComment(CommentSaveReq req) {
         // 보드 아이디 조회 로직
-        Board board = boardRepository.findById(req.getBoardId());
-        BoardValidator.validate(board);
+        Board board = findBoard(req.getBoardId());
         // 사용자 아이디 조회 로직
-        User user = userRepository.findById(req.getUserId());
-        UserValidator.validate(user);
+        User user = getUserById(req.getUserId());
 
         return CommentServiceMapper.INSTANCE.toCommentSaveRes(
                 commentRepository.save(
@@ -52,11 +50,10 @@ public class CommentService {
         Comment comment = findComment(req.getCommentId());
 
         // 사용자가 존재하는지 확인
-        User user = userRepository.findById(req.getUserId());
-        UserValidator.validate(user);
+        User user = getUserById(req.getUserId());
 
         // 사용자가 작성자인지 확인
-        CommentValidator.checkCommentUser(comment.getUser().getId(), req.getUserId());
+        CommentValidator.checkCommentUser(comment.getUser().getId(), user.getId());
 
         // 댓글 업데이트 로직
         comment.update(req);
@@ -70,12 +67,10 @@ public class CommentService {
         Comment comment = findComment(req.getCommentId());
 
         // 사용자가 존재하는지 확인
-        User user = userRepository.findById(req.getUserId());
-        UserValidator.validate(user);
+        User user = getUserById(req.getUserId());
 
         // 사용자가 작성자 또는 관리자인지 확인
-        CommentValidator.checkCommentUser(comment.getUser().getId(), req.getUserId());
-        // TODO: 관리자 인지 확인 로직 필요
+        CommentValidator.checkCommentUser(comment.getUser(), user);
 
         // 댓글 삭제 로직
         commentRepository.delete(comment);
@@ -87,5 +82,17 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId);
         CommentValidator.validate(comment);
         return comment;
+    }
+
+    private Board findBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId);
+        BoardValidator.validate(board);
+        return board;
+    }
+
+    private User getUserById(Long userId) {
+        User user = userRepository.findById(userId);
+        UserValidator.validate(user);
+        return user;
     }
 }

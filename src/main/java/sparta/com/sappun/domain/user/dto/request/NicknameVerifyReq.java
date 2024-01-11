@@ -8,8 +8,8 @@ import lombok.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NicknameVerifyReq {
-    @Size(min = 4, max = 10)
-    @Pattern(regexp = "^[a-zA-Z0-9]*$")
+    @Size(min = 2, max = 10)
+    @Pattern(regexp = "^[가-힣a-zA-Z0-9]*$")
     private String nickname;
 
     @Builder

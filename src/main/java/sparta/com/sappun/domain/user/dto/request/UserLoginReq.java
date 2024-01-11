@@ -15,7 +15,7 @@ public class UserLoginReq {
     private String password;
 
     @Builder
-    public UserLoginReq(String username, String password) {
+    private UserLoginReq(String username, String password) {
         this.username = username;
         this.password = password;
     }
