@@ -54,7 +54,7 @@ public class BoardService {
     public BoardSaveRes saveBoard(BoardSaveReq boardSaveReq) {
         User user = getUserById(boardSaveReq.getUserId());
 
-        return BoardServiceMapper.INSTANCE.toBoardSavaRes(
+        return BoardServiceMapper.INSTANCE.toBoardSaveRes(
                 boardRepository.save(
                         Board.builder()
                                 .title(boardSaveReq.getTitle())
