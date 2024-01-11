@@ -1,5 +1,6 @@
 package sparta.com.sappun.domain.board.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +14,6 @@ import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.validator.BoardValidator;
 import sparta.com.sappun.global.validator.UserValidator;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -97,5 +96,4 @@ public class BoardService {
         UserValidator.validate(user);
         return user;
     }
-
 }
