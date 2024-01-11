@@ -6,8 +6,8 @@ import lombok.*;
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommentSaveReq {
-    private Long BoardId;
+public class CommentUpdateReq {
+    private Long commentId;
     private Long userId;
 
     @Size(max = 500, message = "500자 이내로 입력해주세요.") // TODO: 255글자 이상으로 작성안됨 확인필요 403Error 발생
@@ -16,7 +16,7 @@ public class CommentSaveReq {
     private String fileUrl;
 
     @Builder
-    private CommentSaveReq(String content, String fileUrl) {
+    private CommentUpdateReq(String content, String fileUrl) {
         this.content = content;
         this.fileUrl = fileUrl;
     }
