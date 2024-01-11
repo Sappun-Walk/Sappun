@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
-import sparta.com.sappun.domain.board.dto.response.BoardBestListGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardListGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardSaveRes;
+import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
+import sparta.com.sappun.domain.board.dto.response.*;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
@@ -68,6 +66,15 @@ public class BoardService {
                                 .build()));
     }
 
+    public BoardUpdateRes updateBoard(BoardUpdateReq boardUpdateReq) {
+        Board board = findBoard(boardUpdateReq.getBoardId());
+        User user = getUserById(boardUpdateReq.getUserId());
+        BoardValidator.checkBoardUser(board.getUser().getId(), user.getId());
+        board.update(boardUpdateReq);
+
+        return BoardServiceMapper.INSTANCE.toBoardUpdateRes(board);
+    }
+
     private Board getBoardById(Long boardId) {
         Board board = boardRepository.findById(boardId);
         BoardValidator.validate(board);
@@ -78,5 +85,11 @@ public class BoardService {
         User user = userRepository.findById(userId);
         UserValidator.validate(user);
         return user;
+    }
+
+    private Board findBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId);
+        BoardValidator.validate(board);
+        return board;
     }
 }
