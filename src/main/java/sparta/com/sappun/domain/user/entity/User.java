@@ -41,7 +41,13 @@ public class User extends TimeStamp {
     private Role role;
 
     @Builder
-    private User(String username, String nickname, String email, String password, String profileUrl, Role role) {
+    private User(
+            String username,
+            String nickname,
+            String email,
+            String password,
+            String profileUrl,
+            Role role) {
         this.username = username;
         this.nickname = nickname;
         this.email = email;
