@@ -77,8 +77,9 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardDeleteRes deleteBoard(Long boardId, User user) {
+    public BoardDeleteRes deleteBoard(Long boardId, Long userId) {
         Board board = getBoardById(boardId);
+        User user = getUserById(userId);
         BoardValidator.checkBoardUser(board.getUser(), user);
         boardRepository.delete(board);
 

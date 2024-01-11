@@ -62,6 +62,6 @@ public class BoardController {
     @DeleteMapping("/{boardId}")
     public CommonResponse<BoardDeleteRes> deleteBoard(
             @PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return CommonResponse.success(boardService.deleteBoard(boardId, userDetails.getUser()));
+        return CommonResponse.success(boardService.deleteBoard(boardId, userDetails.getUser().getId()));
     }
 }
