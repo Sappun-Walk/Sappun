@@ -24,7 +24,7 @@ public class LikeBoardService {
     public LikeBoardSaveRes likeBoardSaveRes(Long boardId, Long userId) {
         User user = userRepository.findById(userId);
         Board board = boardRepository.findById(boardId);
-        // CommentValidator.validate(comment);
+        // BoardValidatoor,validate(board);
         UserValidator.validate(user);
         likeBoardRepository.save(LikeBoard.builder().board(board).user(user).build());
         return new LikeBoardSaveRes();
