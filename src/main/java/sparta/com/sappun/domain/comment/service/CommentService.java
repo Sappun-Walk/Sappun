@@ -21,8 +21,7 @@ public class CommentService {
     @Transactional
     public CommentSaveRes saveComment(CommentSaveReq commentSaveReq) {
         // 보드 아이디 조회 로직 구현 필요
-        User user = userRepository.findById(commentSaveReq.getUserId());
-        UserValidator.validate(user);
+        User user = getUserById(commentSaveReq.getUserId());
 
         return CommentServiceMapper.INSTANCE.toCommentSaveRes(
                 commentRepository.save(
@@ -31,5 +30,11 @@ public class CommentService {
                                 .fileUrl(commentSaveReq.getFileUrl())
                                 .user(user)
                                 .build()));
+    }
+
+    private User getUserById(Long userId) {
+        User user = userRepository.findById(userId);
+        UserValidator.validate(user);
+        return user;
     }
 }

@@ -52,8 +52,7 @@ public class BoardService {
 
     @Transactional
     public BoardSaveRes saveBoard(BoardSaveReq boardSaveReq) {
-        User user = userRepository.findById(boardSaveReq.getUserId());
-        UserValidator.validate(user);
+        User user = getUserById(boardSaveReq.getUserId());
 
         return BoardServiceMapper.INSTANCE.toBoardSavaRes(
                 boardRepository.save(
@@ -73,5 +72,11 @@ public class BoardService {
         Board board = boardRepository.findById(boardId);
         BoardValidator.validate(board);
         return board;
+    }
+
+    private User getUserById(Long userId) {
+        User user = userRepository.findById(userId);
+        UserValidator.validate(user);
+        return user;
     }
 }
