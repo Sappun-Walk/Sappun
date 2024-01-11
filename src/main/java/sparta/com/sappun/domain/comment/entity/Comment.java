@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.board.entity.Board;
+import sparta.com.sappun.domain.comment.dto.request.CommentUpdateReq;
 import sparta.com.sappun.domain.user.entity.User;
 
 @Entity
@@ -19,8 +20,6 @@ public class Comment extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // commentId
-
-    private String nickname; // 사용자 닉네임
 
     @NotBlank private String content; // 댓글 내용
 
@@ -35,9 +34,15 @@ public class Comment extends TimeStamp {
     private User user;
 
     @Builder
-    private Comment(String content, String fileUrl, User user) {
+    private Comment(String content, String fileUrl, User user, Board board) {
         this.content = content;
         this.fileUrl = fileUrl;
         this.user = user;
+        this.board = board;
+    }
+
+    public void update(CommentUpdateReq req) {
+        this.content = req.getContent();
+        this.fileUrl = req.getFileUrl();
     }
 }

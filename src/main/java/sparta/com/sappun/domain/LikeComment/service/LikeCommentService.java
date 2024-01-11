@@ -33,9 +33,9 @@ public class LikeCommentService {
     //        likeCommentRepository.save(commentLike);
     //    }
     @Transactional
-    public LikeCommentSaveRes likeCommentSaveRes(Long commentid, Long userId) {
+    public LikeCommentSaveRes likeCommentSaveRes(Long commentId, Long userId) {
         User user = userRepository.findById(userId);
-        Comment comment = commentRepository.findById(commentid);
+        Comment comment = commentRepository.findById(commentId);
         // CommentValidator.validate(comment);
         UserValidator.validate(user);
         likeCommentRepository.save(LikeComment.builder().comment(comment).user(user).build());
