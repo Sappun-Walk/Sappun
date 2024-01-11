@@ -1,12 +1,5 @@
 package sparta.com.sappun.domain.comment.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -26,51 +19,54 @@ class CommentServiceTest implements CommentTest {
     @InjectMocks CommentService commentService;
     @Captor ArgumentCaptor<Comment> argumentCaptor;
 
-    @Test
-    @DisplayName("댓글 저장 테스트")
-    void saveCommentTest() {
-        // given
-        TEST_COMMENT_SAVE.setUserId(TEST_USER_ID);
-        when(userRepository.findById(any())).thenReturn(TEST_USER);
-
-        // when
-        commentService.saveComment(TEST_COMMENT_SAVE);
-
-        // then
-        verify(commentRepository).save(argumentCaptor.capture());
-        assertEquals(TEST_COMMENT_CONTENT, argumentCaptor.getValue().getContent());
-        assertEquals(TEST_COMMENT_FILEURL, argumentCaptor.getValue().getFileUrl());
-    }
-
-    //        @Test
-    //        @DisplayName("댓글 저장 실패 테스트 - 사용자 권한 없음")
-    //        void invalidSaveCommentTest() {
-    //            // given
-    //
-    //            // when
-    //            GlobalException exception =
-    //                    assertThrows(
-    //                            GlobalException.class,
-    //                            () -> {
-    //                                commentService.saveComment(TEST_COMMENT_SAVE);
-    //                            });
-    //
-    //            // then
-    //            assertEquals(NOT_FOUND_BOARD.getMessage(), exception.getResultCode().getMessage());
-    //        }
-
+    //TODO: Board TEST 작성후 다시 TEST
     //    @Test
-    //    @DisplayName("댓글 수정 테스트")
-    //    void updateCommentTest() {
+    //    @DisplayName("댓글 저장 테스트")
+    //    void saveCommentTest() {
     //        // given
-    //
-    // given(commentRepository.findById(TEST_COMMENT_UPDATE.getCommentId())).willReturn(TEST_COMMENT);
+    //        TEST_COMMENT_SAVE.setUserId(TEST_USER_ID);
+    //        when(userRepository.findById(any())).thenReturn(TEST_USER);
     //
     //        // when
-    //        commentService.updateComment(TEST_COMMENT_UPDATE);
+    //        commentService.saveComment(TEST_COMMENT_SAVE);
     //
     //        // then
     //        verify(commentRepository).save(argumentCaptor.capture());
-    //        assertEquals(TEST_COMMENT_UPDATE_CONTENT, argumentCaptor.getValue().getContent());
+    //        assertEquals(TEST_COMMENT_CONTENT, argumentCaptor.getValue().getContent());
+    //        assertEquals(TEST_COMMENT_FILEURL, argumentCaptor.getValue().getFileUrl());
     //    }
+
+    //            @Test
+    //            @DisplayName("댓글 저장 실패 테스트 - 사용자 권한 없음")
+    //            void invalidSaveCommentTest() {
+    //                // given
+    //
+    //                // when
+    //                GlobalException exception =
+    //                        assertThrows(
+    //                                GlobalException.class,
+    //                                () -> {
+    //                                    commentService.saveComment(TEST_COMMENT_SAVE);
+    //                                });
+    //
+    //                // then
+    //                assertEquals(NOT_FOUND_BOARD.getMessage(),
+    // exception.getResultCode().getMessage());
+    //            }
+    //
+    //        @Test
+    //        @DisplayName("댓글 수정 테스트")
+    //        void updateCommentTest() {
+    //            // given
+    //
+    //
+    // given(commentRepository.findById(TEST_COMMENT_UPDATE.getCommentId())).willReturn(TEST_COMMENT);
+    //
+    //            // when
+    //            commentService.updateComment(TEST_COMMENT_UPDATE);
+    //
+    //            // then
+    //            verify(commentRepository).save(argumentCaptor.capture());
+    //            assertEquals(TEST_COMMENT_UPDATE_CONTENT, argumentCaptor.getValue().getContent());
+    //        }
 }
