@@ -27,6 +27,7 @@ class LikeCommentLikeControllerTest extends BaseMvcTest implements LikeCommentTe
         // given
         LikeCommentSaveRes res = new LikeCommentSaveRes();
         when(likeCommentService.likeCommentSaveRes(any(), any())).thenReturn(res);
+
         // when-then
         mockMvc
                 .perform(
