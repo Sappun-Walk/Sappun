@@ -6,7 +6,6 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentDeleteReq {
-    // private Long BoardId;
     private Long commentId;
     private Long userId;
 
