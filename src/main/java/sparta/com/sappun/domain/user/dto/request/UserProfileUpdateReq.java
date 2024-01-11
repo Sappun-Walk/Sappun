@@ -24,7 +24,7 @@ public class UserProfileUpdateReq {
     private String profileUrl;
 
     @Builder
-    public UserProfileUpdateReq(String username, String nickname, String profileUrl) {
+    private UserProfileUpdateReq(String username, String nickname, String profileUrl) {
         this.username = username;
         this.nickname = nickname;
         this.profileUrl = profileUrl;
