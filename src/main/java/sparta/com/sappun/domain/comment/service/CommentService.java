@@ -55,7 +55,7 @@ public class CommentService {
         User user = userRepository.findById(req.getUserId());
         UserValidator.validate(user);
 
-        // 사용자가 작성자 또는 관리자인지 확인
+        // 사용자가 작성자인지 확인
         CommentValidator.checkCommentUser(comment.getUser().getId(), req.getUserId());
 
         // 댓글 업데이트 로직
@@ -75,6 +75,7 @@ public class CommentService {
 
         // 사용자가 작성자 또는 관리자인지 확인
         CommentValidator.checkCommentUser(comment.getUser().getId(), req.getUserId());
+        // TODO: 관리자 인지 확인 로직 필요
 
         // 댓글 삭제 로직
         commentRepository.delete(comment);
