@@ -2,6 +2,7 @@ package sparta.com.sappun.domain.board.dto.response;
 
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +18,8 @@ public class BoardUpdateRes {
     private String destination;
     private List<String> stopover;
 
-    public BoardUpdateRes(
+    @Builder
+    private BoardUpdateRes(
             String nickname,
             Long id,
             String title,

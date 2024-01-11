@@ -1,10 +1,7 @@
 package sparta.com.sappun.domain.board.dto.request;
 
 import java.util.List;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
 
 @Getter
@@ -22,7 +19,8 @@ public class BoardUpdateReq {
     private List<String> stopover;
     private RegionEnum region;
 
-    public BoardUpdateReq(
+    @Builder
+    private BoardUpdateReq(
             Long boardId,
             String title,
             String content,

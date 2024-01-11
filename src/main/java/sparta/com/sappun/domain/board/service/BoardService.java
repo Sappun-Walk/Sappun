@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sparta.com.sappun.domain.board.dto.request.BoardDeleteReq;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.board.dto.response.*;
@@ -66,6 +67,7 @@ public class BoardService {
                                 .build()));
     }
 
+    @Transactional
     public BoardUpdateRes updateBoard(BoardUpdateReq boardUpdateReq) {
         Board board = findBoard(boardUpdateReq.getBoardId());
         User user = getUserById(boardUpdateReq.getUserId());
@@ -73,6 +75,16 @@ public class BoardService {
         board.update(boardUpdateReq);
 
         return BoardServiceMapper.INSTANCE.toBoardUpdateRes(board);
+    }
+
+    @Transactional
+    public BoardDeleteRes deleteBoard(BoardDeleteReq boardDeleteReq) {
+        Board board = findBoard(boardDeleteReq.getBoardId());
+        User user = getUserById(boardDeleteReq.getUserId());
+        BoardValidator.checkBoardUser(board.getUser().getId(), user.getId());
+        boardRepository.delete(board);
+
+        return new BoardDeleteRes();
     }
 
     private Board getBoardById(Long boardId) {
