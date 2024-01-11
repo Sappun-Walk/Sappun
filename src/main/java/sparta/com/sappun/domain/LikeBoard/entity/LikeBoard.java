@@ -1,16 +1,18 @@
-package sparta.com.sappun.domain.board.entity;
+package sparta.com.sappun.domain.LikeBoard.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.user.entity.User;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tb_boardlike")
-public class BoardLike {
+public class LikeBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,8 +25,8 @@ public class BoardLike {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    public BoardLike(Long id, Board board, User user) {
-        this.id = id;
+    @Builder
+    private LikeBoard(Board board, User user) {
         this.board = board;
         this.user = user;
     }

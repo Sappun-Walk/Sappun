@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sparta.com.sappun.domain.LikeBoard.entity.LikeBoard;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.user.entity.User;
@@ -45,7 +46,7 @@ public class Board extends TimeStamp {
     private User user;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BoardLike> boardLikes = new ArrayList<>();
+    private List<LikeBoard> likeBoard = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();

@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
-import sparta.com.sappun.domain.user.dto.request.UserPasswordUpdateReq;
-import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
-import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
+import sparta.com.sappun.domain.user.dto.request.*;
 import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.dto.response.UserProfileUpdateRes;
 import sparta.com.sappun.domain.user.entity.Role;
@@ -76,10 +73,10 @@ public class UserService {
     public UserProfileUpdateRes updateProfile(UserProfileUpdateReq req) {
         User user = userRepository.findById(req.getId());
         UserValidator.validate(user); // 사용자가 존재하는지 확인
-        UserValidator.checkDuplicatedUsername(
-                userRepository.existsByUsername(req.getUsername())); // username 중복확인
-        UserValidator.checkDuplicatedNickname(
-                userRepository.existsByNickname(req.getNickname())); // nickname 중복확인
+        //        UserValidator.checkDuplicatedUsername(
+        //                userRepository.existsByUsername(req.getUsername())); // username 중복확인
+        //        UserValidator.checkDuplicatedNickname(
+        //                userRepository.existsByNickname(req.getNickname())); // nickname 중복확인
 
         // TODO: 프로필 사진 관련 로직 추가
 
@@ -103,5 +100,19 @@ public class UserService {
                         req.getConfirmPassword())); // 저장소 내의 비밀번호는 암호화 되어있기 때문에 passwordEncoder로 암호화 후 저장
 
         return new UserPasswordUpdateRes();
+    }
+
+    // 아이디 중복확인
+    public UsernameVerifyRes verifyUsername(UsernameVerifyReq req) {
+        return UsernameVerifyRes.builder()
+                .isDuplicated(userRepository.existsByUsername(req.getUsername()))
+                .build(); // username 중복확인
+    }
+
+    // 닉네임 중복확인
+    public NicknameVerifyRes verifyNickname(NicknameVerifyReq req) {
+        return NicknameVerifyRes.builder()
+                .isDuplicated(userRepository.existsByNickname(req.getNickname()))
+                .build(); // nickname 중복확인
     }
 }
