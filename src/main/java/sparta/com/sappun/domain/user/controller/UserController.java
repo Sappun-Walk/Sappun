@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
-import sparta.com.sappun.domain.user.dto.request.UserPasswordUpdateReq;
-import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
-import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
+import sparta.com.sappun.domain.user.dto.request.*;
 import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.service.UserService;
 import sparta.com.sappun.global.jwt.JwtUtil;
@@ -105,5 +102,17 @@ public class UserController {
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         req.setId(userDetails.getUser().getId());
         return CommonResponse.success(userService.updatePassword(req));
+    }
+
+    // 아이디 중복 확인
+    @PostMapping("/username")
+    public CommonResponse<UsernameVerifyRes> verifyUsername(@RequestBody UsernameVerifyReq req) {
+        return CommonResponse.success(userService.verifyUsername(req));
+    }
+
+    // 닉네임 중복확인
+    @PostMapping("/nickname")
+    public CommonResponse<NicknameVerifyRes> verifyNickname(@RequestBody NicknameVerifyReq req) {
+        return CommonResponse.success(userService.verifyNickname(req));
     }
 }
