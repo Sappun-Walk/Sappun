@@ -49,7 +49,7 @@ public class BoardController {
 
     // 게시글 수정
     @PatchMapping("/{boardId}")
-    public CommonResponse<BoardUpdateRes> updateBorad(
+    public CommonResponse<BoardUpdateRes> updateBoard(
             @PathVariable Long boardId,
             @RequestBody @Valid BoardUpdateReq boardUpdateReq,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
