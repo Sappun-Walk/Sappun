@@ -1,11 +1,7 @@
 package sparta.com.sappun.domain.ReportBoard.dto.request;
 
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import sparta.com.sappun.domain.board.entity.Board;
-import sparta.com.sappun.domain.user.entity.User;
-
 
 @Getter
 @Setter
@@ -13,8 +9,7 @@ import sparta.com.sappun.domain.user.entity.User;
 public class ReportBoardReq {
 
     private Long reportBoardId;
-    @NotBlank
-    private String reason;
+    @NotBlank private String reason;
     private Long userId;
 
     @Builder
@@ -22,6 +17,4 @@ public class ReportBoardReq {
         this.reportBoardId = reportBoardId;
         this.reason = reason;
     }
-
 }
-

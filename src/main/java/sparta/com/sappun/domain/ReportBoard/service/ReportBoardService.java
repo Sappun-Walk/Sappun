@@ -24,7 +24,7 @@ public class ReportBoardService {
     @Transactional
     public ReportBoardRes reportBoardRes(Long boardId, ReportBoardReq req) {
         Board board = boardRepository.findById(boardId);
-        //BoardValidator.validate(board);
+        // BoardValidator.validate(board);
         User user = userRepository.findById(req.getUserId());
         UserValidator.validate(user);
         ReportBoard reportBoard =

@@ -23,8 +23,7 @@ public class ReportBoardController {
             @PathVariable Long boardId,
             @RequestBody @Valid ReportBoardReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-              req.setUserId(userDetails.getUser().getId());
-            return ResponseEntity.ok(reportBoardService.reportBoardRes(boardId, req));
-
+        req.setUserId(userDetails.getUser().getId());
+        return ResponseEntity.ok(reportBoardService.reportBoardRes(boardId, req));
     }
 }
