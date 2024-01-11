@@ -34,14 +34,15 @@ public class Comment extends TimeStamp {
     private User user;
 
     @Builder
-    private Comment(String content, String fileUrl, User user) {
+    private Comment(String content, String fileUrl, User user, Board board) {
         this.content = content;
         this.fileUrl = fileUrl;
         this.user = user;
+        this.board = board;
     }
 
-    public void update(CommentUpdateReq commentUpdateReq) {
-        this.content = commentUpdateReq.getContent();
-        this.fileUrl = commentUpdateReq.getFileUrl();
+    public void update(CommentUpdateReq req) {
+        this.content = req.getContent();
+        this.fileUrl = req.getFileUrl();
     }
 }

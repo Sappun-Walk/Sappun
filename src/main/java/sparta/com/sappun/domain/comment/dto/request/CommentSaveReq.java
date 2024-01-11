@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentSaveReq {
-    //    private Long BoardId;
+    private Long BoardId;
     private Long userId;
 
     @Size(max = 500, message = "500자 이내로 입력해주세요.")

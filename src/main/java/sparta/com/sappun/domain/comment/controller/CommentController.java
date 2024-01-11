@@ -10,44 +10,45 @@ import sparta.com.sappun.domain.comment.dto.response.CommentDeleteRes;
 import sparta.com.sappun.domain.comment.dto.response.CommentSaveRes;
 import sparta.com.sappun.domain.comment.dto.response.CommentUpdateRes;
 import sparta.com.sappun.domain.comment.service.CommentService;
-import sparta.com.sappun.domain.user.service.UserService;
 import sparta.com.sappun.global.response.CommonResponse;
 import sparta.com.sappun.global.security.UserDetailsImpl;
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
-    private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/{boardId}/comments")
     public CommonResponse<CommentSaveRes> saveComment(
-            @RequestBody CommentSaveReq commentSaveReq,
+            @PathVariable Long boardId,
+            @RequestBody CommentSaveReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         // TODO: 댓글 사진 입력받기
-        commentSaveReq.setUserId(userDetails.getUser().getId());
-        return CommonResponse.success(commentService.saveComment(commentSaveReq));
+        req.setBoardId(boardId);
+        req.setUserId(userDetails.getUser().getId());
+        return CommonResponse.success(commentService.saveComment(req));
     }
 
-    @PatchMapping("/{commentId}")
+    @PatchMapping("/comments/{commentId}")
     public CommonResponse<CommentUpdateRes> updateComment(
             @PathVariable Long commentId,
-            @RequestBody CommentUpdateReq commentUpdateReq,
+            @RequestBody CommentUpdateReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        commentUpdateReq.setUserId(userDetails.getUser().getId());
-        commentUpdateReq.setCommentId(commentId);
-        return CommonResponse.success(commentService.updateComment(commentUpdateReq));
+        // TODO: 댓글 수정사진 입력받기
+        req.setCommentId(commentId);
+        req.setUserId(userDetails.getUser().getId());
+        return CommonResponse.success(commentService.updateComment(req));
     }
 
-    @DeleteMapping("/{commentId}")
+    @DeleteMapping("/comments/{commentId}")
     public CommonResponse<CommentDeleteRes> deleteComment(
             @PathVariable Long commentId,
-            @RequestBody CommentDeleteReq commentDeleteReq,
+            @RequestBody CommentDeleteReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        commentDeleteReq.setUserId(userDetails.getUser().getId());
-        commentDeleteReq.setCommentId(commentId);
-        return CommonResponse.success(commentService.deleteComment(commentDeleteReq));
+        req.setCommentId(commentId);
+        req.setUserId(userDetails.getUser().getId());
+        return CommonResponse.success(commentService.deleteComment(req));
     }
 }
