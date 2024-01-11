@@ -1,20 +1,27 @@
 package sparta.com.sappun.domain.ReportBoard.dto.request;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import sparta.com.sappun.domain.board.entity.Board;
+import sparta.com.sappun.domain.user.entity.User;
+
+
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReportBoardReq {
 
     private Long reportBoardId;
+    @NotBlank
     private String reason;
+    private Long userId;
 
     @Builder
-    public ReportBoardReq(Long reportBoardId, String reason) {
+    private ReportBoardReq(Long reportBoardId, String reason) {
         this.reportBoardId = reportBoardId;
         this.reason = reason;
-        ;
     }
+
 }
+

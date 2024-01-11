@@ -1,5 +1,6 @@
 package sparta.com.sappun.domain.ReportBoard.contorller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +21,10 @@ public class ReportBoardController {
     @PostMapping("/{boardId}/report")
     public ResponseEntity<ReportBoardRes> reportBoard(
             @PathVariable Long boardId,
-            @RequestBody ReportBoardReq req,
+            @RequestBody @Valid ReportBoardReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        try {
-            ReportBoardRes reportBoardRes =
-                    reportBoardService.reportBoardRes(boardId, req, userDetails.getUser().getId());
-            return ResponseEntity.ok(reportBoardRes);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null); // 적절한 에러 응답 처리
-        }
+              req.setUserId(userDetails.getUser().getId());
+            return ResponseEntity.ok(reportBoardService.reportBoardRes(boardId, req));
+
     }
 }

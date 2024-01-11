@@ -14,7 +14,7 @@ public class ReportBoardRes {
     private Long reporterUserId;
 
     @Builder
-    public ReportBoardRes(Long id, Long reportedBoardId, String reason, Long reporterUserId) {
+    private ReportBoardRes(Long id, Long reportedBoardId, String reason, Long reporterUserId) {
         this.id = id;
         this.reporterUserId = reporterUserId;
         this.reportedBoardId = reportedBoardId;
