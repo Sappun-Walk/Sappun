@@ -40,6 +40,8 @@ public class User extends TimeStamp {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    private Integer score = 0;
+
     @Builder
     private User(
             String username,
@@ -47,13 +49,15 @@ public class User extends TimeStamp {
             String email,
             String password,
             String profileUrl,
-            Role role) {
+            Role role,
+            Integer score) {
         this.username = username;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.profileUrl = profileUrl;
         this.role = role;
+        this.score = score;
     }
 
     // 프로필 수정
@@ -66,5 +70,12 @@ public class User extends TimeStamp {
     // 비밀번호 수정
     public void updatePassword(String encodedPassword) {
         this.password = encodedPassword;
+    }
+
+    // 점수 업데이트
+    public void updateScore(Integer point) {
+        this.score += point;
+        if (score > 10000) score = 10000; // 점수의 범위는 -10000 ~ 10000 이도록
+        else if (score < -10000) score = -10000;
     }
 }

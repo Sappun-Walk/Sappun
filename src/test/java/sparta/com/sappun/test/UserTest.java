@@ -16,5 +16,6 @@ public interface UserTest {
                     .nickname(TEST_USER_NICKNAME)
                     .password(TEST_USER_PASSWORD)
                     .role(Role.USER)
+                    .score(0)
                     .build();
 }

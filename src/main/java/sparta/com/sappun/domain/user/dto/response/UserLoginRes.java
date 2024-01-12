@@ -13,12 +13,14 @@ public class UserLoginRes {
     private String username;
     private String nickname;
     private Role role;
+    private Integer score;
 
     @Builder
-    private UserLoginRes(Long id, String username, String nickname, Role role) {
+    private UserLoginRes(Long id, String username, String nickname, Role role, Integer score) {
         this.id = id;
         this.username = username;
         this.nickname = nickname;
         this.role = role;
+        this.score = score;
     }
 }

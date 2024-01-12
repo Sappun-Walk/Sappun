@@ -10,13 +10,15 @@ public class UserProfileRes {
     private String username;
     private String nickname;
     private String profileUrl;
-    // private Integer score; // 좋아요(+1) + 신고(-1)
+    private Integer score;
 
     @Builder
-    private UserProfileRes(Long id, String username, String nickname, String profileUrl) {
+    private UserProfileRes(
+            Long id, String username, String nickname, String profileUrl, Integer score) {
         this.id = id;
         this.username = username;
         this.nickname = nickname;
         this.profileUrl = profileUrl;
+        this.score = score;
     }
 }
