@@ -21,6 +21,6 @@ public class LikeBoardLikeController {
     public CommonResponse<LikeBoardSaveRes> likeBoard(
             @PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userId) {
         return CommonResponse.success(
-                likeBoardService.likeBoardSaveRes(boardId, userId.getUser().getId()));
+                likeBoardService.clickLikeBoard(boardId, userId.getUser().getId()));
     }
 }

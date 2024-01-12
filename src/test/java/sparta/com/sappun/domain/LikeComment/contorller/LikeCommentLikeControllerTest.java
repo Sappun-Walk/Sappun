@@ -1,6 +1,5 @@
 package sparta.com.sappun.domain.LikeComment.contorller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,7 +25,7 @@ class LikeCommentLikeControllerTest extends BaseMvcTest implements LikeCommentTe
     void saveCommentTest() throws Exception {
         // given
         LikeCommentSaveRes res = new LikeCommentSaveRes();
-        when(likeCommentService.likeCommentSaveRes(any(), any())).thenReturn(res);
+        when(likeCommentService.clickLikeComment(any(), any())).thenReturn(res);
 
         // when-then
         mockMvc

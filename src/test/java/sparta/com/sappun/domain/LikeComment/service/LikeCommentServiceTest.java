@@ -1,6 +1,5 @@
 package sparta.com.sappun.domain.LikeComment.service;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -34,8 +33,7 @@ class LikeCommentServiceTest implements CommentTest {
         when(userRepository.findById(any())).thenReturn(TEST_USER);
         when(commentRepository.findById(any())).thenReturn(TEST_COMMENT);
         // when
-        LikeCommentSaveRes result =
-                likecommentService.likeCommentSaveRes(TEST_COMMENT_ID, TEST_USER_ID);
+        LikeCommentSaveRes result = likecommentService.clickLikeComment(TEST_COMMENT_ID, TEST_USER_ID);
 
         // then
         verify(userRepository, times(1)).findById(TEST_USER_ID);
