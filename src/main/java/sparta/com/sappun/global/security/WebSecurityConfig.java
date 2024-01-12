@@ -1,6 +1,7 @@
 package sparta.com.sappun.global.security;
 
 import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
 import static sparta.com.sappun.domain.user.entity.Role.ADMIN;
 
 import lombok.RequiredArgsConstructor;
@@ -78,6 +79,8 @@ public class WebSecurityConfig {
                                 .hasAuthority(ADMIN.getAuthority()) // 게시글 신고 삭제는 관리자만 가능
                                 .requestMatchers(DELETE, "/api/comments/{commentId}/report")
                                 .hasAuthority(ADMIN.getAuthority()) // 게시글 신고 삭제는 관리자만 가능
+                                .requestMatchers(GET, "/api/boards/reports")
+                                .hasAuthority(ADMIN.getAuthority()) // 신고된 게시글 목록 조회는 관리자만 가능
                                 .anyRequest()
                                 .authenticated()); // 그 외 모든 요청 인증처리
 
