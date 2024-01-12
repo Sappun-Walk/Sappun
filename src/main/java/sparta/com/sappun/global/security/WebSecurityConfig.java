@@ -30,6 +30,7 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
     private final UserDetailsServiceImpl userDetailsService;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -74,6 +75,10 @@ public class WebSecurityConfig {
                                 .anyRequest()
                                 .authenticated() // 그 외 모든 요청 인증처리
                 );
+
+        http.exceptionHandling(
+                authenticationManager ->
+                        authenticationManager.accessDeniedHandler(customAccessDeniedHandler));
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
