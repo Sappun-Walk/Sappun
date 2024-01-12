@@ -64,9 +64,12 @@ public class WebSecurityConfig {
                                 .permitAll() // resources 접근 허용 설정
                                 .requestMatchers("/api/users/signup", "/api/users/login")
                                 .permitAll() // 회원가입, 로그인 API만 접근 허용
+                                .requestMatchers("/api/users/kakao/callback/**")
+                                .permitAll()
+                                .requestMatchers("/**.html")
+                                .permitAll()
                                 .anyRequest()
-                                .authenticated() // 그 외 모든 요청 인증처리
-                );
+                                .authenticated()); // 그 외 모든 요청 인증처리
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
