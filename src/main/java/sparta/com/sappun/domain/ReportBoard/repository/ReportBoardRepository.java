@@ -12,6 +12,8 @@ import sparta.com.sappun.domain.user.entity.User;
 public interface ReportBoardRepository {
     ReportBoard save(ReportBoard reportBoard);
 
+    boolean existsReportBoardByBoardAndUser(Board board, User user);
+
     @Query(value = "select r.user FROM ReportBoard r WHERE r.board = :board")
     List<User> selectUserByBoard(Board board);
 

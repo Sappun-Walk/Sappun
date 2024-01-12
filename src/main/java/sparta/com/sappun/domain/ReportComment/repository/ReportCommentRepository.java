@@ -13,6 +13,8 @@ public interface ReportCommentRepository {
 
     ReportComment save(ReportComment reportComment);
 
+    boolean existsReportBoardByCommentAndUser(Comment comment, User user);
+
     @Query(value = "select r.user FROM ReportComment r WHERE r.comment = :comment")
     List<User> selectUserByComment(Comment comment);
 

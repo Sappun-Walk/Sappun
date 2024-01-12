@@ -25,7 +25,7 @@ public class ReportBoardController {
             @RequestBody @Valid ReportBoardReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         req.setUserId(userDetails.getUser().getId());
-        return ResponseEntity.ok(reportBoardService.reportBoard(boardId, req));
+        return ResponseEntity.ok(reportBoardService.clickReportBoard(boardId, req));
     }
 
     @DeleteMapping("/{boardId}/report") // 필터에서 관리자만 접근하도록 막기

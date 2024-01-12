@@ -37,11 +37,13 @@ class ReportCommentServiceTest implements ReportCommentTest {
         // given
         when(userRepository.findById(any())).thenReturn(TEST_USER);
         when(commentRepository.findById(any())).thenReturn(TEST_COMMENT);
+        when(reportCommentRepository.existsReportBoardByCommentAndUser(any(), any())).thenReturn(false);
         // when
-        reportCommentService.reportComment(TEST_COMMENT_ID, req);
+        reportCommentService.clickReportComment(TEST_COMMENT_ID, req);
         // then
         verify(userRepository, times(1)).findById(TEST_USER_ID);
         verify(commentRepository, times(1)).findById(TEST_COMMENT_ID);
+        verify(reportCommentRepository, times(1)).existsReportBoardByCommentAndUser(any(), any());
         verify(reportCommentRepository, times(1)).save(any());
     }
 }

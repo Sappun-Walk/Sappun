@@ -1,6 +1,5 @@
 package sparta.com.sappun.domain.ReportComment.contorller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,7 +36,7 @@ class ReportCommentControllerTest extends BaseMvcTest implements ReportCommentTe
                         .reason(TEST_COMMENT_REPORT_REASON)
                         .build();
 
-        when(reportCommentService.reportComment(any(), any())).thenReturn(res);
+        when(reportCommentService.clickReportComment(any(), any())).thenReturn(res);
 
         // when-then
         mockMvc
