@@ -16,6 +16,7 @@ import sparta.com.sappun.global.security.UserDetailsImpl;
 @RequestMapping("/api/boards")
 public class LikeBoardController {
     private final LikeBoardService likeBoardService;
+
     @PostMapping("/{boardId}/like")
     public CommonResponse<LikeBoardSaveRes> likeBoard(
             @PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userId) {
