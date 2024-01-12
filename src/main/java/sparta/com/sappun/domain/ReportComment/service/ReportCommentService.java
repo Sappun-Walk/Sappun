@@ -4,18 +4,15 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sparta.com.sappun.domain.ReportBoard.dto.response.DeleteReportBoardRes;
 import sparta.com.sappun.domain.ReportComment.dto.request.ReportCommentReq;
 import sparta.com.sappun.domain.ReportComment.dto.response.DeleteReportCommentRes;
 import sparta.com.sappun.domain.ReportComment.dto.response.ReportCommentRes;
 import sparta.com.sappun.domain.ReportComment.entity.ReportComment;
 import sparta.com.sappun.domain.ReportComment.repository.ReportCommentRepository;
-import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
-import sparta.com.sappun.global.validator.BoardValidator;
 import sparta.com.sappun.global.validator.CommentValidator;
 import sparta.com.sappun.global.validator.UserValidator;
 
@@ -51,7 +48,7 @@ public class ReportCommentService {
         // 허위 신고한 사용자의 점수 -50
         int count = 0; // 신고 횟수
         List<User> reporters = reportCommentRepository.selectUserByComment(comment);
-        for(User user : reporters) {
+        for (User user : reporters) {
             user.updateScore(-50);
             count++;
         }
@@ -65,7 +62,7 @@ public class ReportCommentService {
         return new DeleteReportCommentRes();
     }
 
-    private Comment findCommentById(Long commentId){
+    private Comment findCommentById(Long commentId) {
         Comment comment = commentRepository.findById(commentId);
         CommentValidator.validate(comment);
         return comment;

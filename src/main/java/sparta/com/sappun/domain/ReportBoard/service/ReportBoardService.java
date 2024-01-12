@@ -25,7 +25,7 @@ public class ReportBoardService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ReportBoardRes reportBoardRes(Long boardId, ReportBoardReq req) {
+    public ReportBoardRes reportBoard(Long boardId, ReportBoardReq req) {
         Board board = findBoardById(boardId);
 
         User user = userRepository.findById(req.getUserId());
@@ -48,7 +48,7 @@ public class ReportBoardService {
         // 허위 신고한 사용자의 점수 -50
         int count = 0; // 신고 횟수
         List<User> reporters = reportBoardRepository.selectUserByBoard(board);
-        for(User user : reporters) {
+        for (User user : reporters) {
             user.updateScore(-50);
             count++;
         }
@@ -62,7 +62,7 @@ public class ReportBoardService {
         return new DeleteReportBoardRes();
     }
 
-    private Board findBoardById(Long boardId){
+    private Board findBoardById(Long boardId) {
         Board board = boardRepository.findById(boardId);
         BoardValidator.validate(board);
         return board;
