@@ -1,18 +1,5 @@
 package sparta.com.sappun.domain.LikeBoard.contorller;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import sparta.com.sappun.domain.BaseMvcTest;
-import sparta.com.sappun.domain.LikeBoard.dto.response.LikeBoardSaveRes;
-import sparta.com.sappun.domain.LikeBoard.service.LikeBoardService;
-import sparta.com.sappun.domain.LikeComment.contorller.LikeCommentController;
-import sparta.com.sappun.domain.LikeComment.dto.response.LikeCommentSaveRes;
-import sparta.com.sappun.domain.LikeComment.service.LikeCommentService;
-import sparta.com.sappun.test.LikeBoardTest;
-import sparta.com.sappun.test.LikeCommentTest;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -20,11 +7,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import sparta.com.sappun.domain.BaseMvcTest;
+import sparta.com.sappun.domain.LikeBoard.dto.response.LikeBoardSaveRes;
+import sparta.com.sappun.domain.LikeBoard.service.LikeBoardService;
+import sparta.com.sappun.test.LikeBoardTest;
+
 @WebMvcTest(controllers = {LikeBoardController.class})
 class LikeBoardControllerTest extends BaseMvcTest implements LikeBoardTest {
 
-    @MockBean
-    private LikeBoardService likeBoardService;
+    @MockBean private LikeBoardService likeBoardService;
 
     @Test
     @DisplayName("게기글 좋아요 저장 API 테스트")
