@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.user.entity.User;
 
@@ -11,7 +12,7 @@ import sparta.com.sappun.domain.user.entity.User;
 @Getter
 @Table(name = "tb_commentlike")
 @NoArgsConstructor
-public class LikeComment {
+public class LikeComment extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

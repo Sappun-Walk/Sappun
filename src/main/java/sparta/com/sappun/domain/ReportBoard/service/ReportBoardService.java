@@ -28,8 +28,11 @@ public class ReportBoardService {
         BoardValidator.validate(board);
         User user = userRepository.findById(req.getUserId());
         UserValidator.validate(user);
+
         ReportBoard reportBoard =
                 ReportBoard.builder().reason(req.getReason()).board(board).user(user).build();
+
+        board.getUser().updateScore(-50); // 신고를 받은 게시글의 작성자 점수 -50
 
         reportBoardRepository.save(reportBoard);
 

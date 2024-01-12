@@ -26,6 +26,12 @@ public class UserValidator {
         }
     }
 
+    public static void checkEmail(boolean isDuplicated) {
+        if (isDuplicated) {
+            throw new GlobalException(DUPLICATED_EMAIL);
+        }
+    }
+
     private static boolean checkConfirmPassword(String password1, String password2) {
         return Objects.equals(password1, password2);
     }

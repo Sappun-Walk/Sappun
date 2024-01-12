@@ -39,6 +39,7 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
                 UserSignupReq.builder()
                         .username(TEST_USER_USERNAME)
                         .nickname(TEST_USER_NICKNAME)
+                        .email(TEST_USER_EMAIL)
                         .password(TEST_USER_PASSWORD)
                         .confirmPassword(TEST_USER_PASSWORD)
                         .build();
@@ -106,8 +107,8 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
         mockMvc
                 .perform(
                         post("/api/users/logout")
-                                .header("Authorization", "Bearer " + accessToken)
-                                .header("Refresh-Token", "Bearer " + refreshToken)
+                                .header("AccessToken", "Bearer " + accessToken)
+                                .header("RefreshToken", "Bearer " + refreshToken)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
