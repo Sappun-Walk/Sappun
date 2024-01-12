@@ -15,8 +15,8 @@ import sparta.com.sappun.domain.LikeComment.dto.response.LikeCommentSaveRes;
 import sparta.com.sappun.domain.LikeComment.service.LikeCommentService;
 import sparta.com.sappun.test.LikeCommentTest;
 
-@WebMvcTest(controllers = {LikeCommentLikeController.class})
-class LikeCommentLikeControllerTest extends BaseMvcTest implements LikeCommentTest {
+@WebMvcTest(controllers = {LikeCommentController.class})
+class LikeCommentControllerTest extends BaseMvcTest implements LikeCommentTest {
 
     @MockBean private LikeCommentService likeCommentService;
 
