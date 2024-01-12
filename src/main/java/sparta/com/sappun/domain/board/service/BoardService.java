@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
-import sparta.com.sappun.domain.board.dto.response.BoardBestListGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardListGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardSaveRes;
+import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
+import sparta.com.sappun.domain.board.dto.response.*;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
@@ -66,6 +64,26 @@ public class BoardService {
                                 .region(boardSaveReq.getRegion())
                                 .user(user)
                                 .build()));
+    }
+
+    @Transactional
+    public BoardUpdateRes updateBoard(BoardUpdateReq boardUpdateReq) {
+        Board board = getBoardById(boardUpdateReq.getBoardId());
+        User user = getUserById(boardUpdateReq.getUserId());
+        BoardValidator.checkBoardUser(board.getUser().getId(), user.getId());
+        board.update(boardUpdateReq);
+
+        return BoardServiceMapper.INSTANCE.toBoardUpdateRes(board);
+    }
+
+    @Transactional
+    public BoardDeleteRes deleteBoard(Long boardId, Long userId) {
+        Board board = getBoardById(boardId);
+        User user = getUserById(userId);
+        BoardValidator.checkBoardUser(board.getUser(), user);
+        boardRepository.delete(board);
+
+        return new BoardDeleteRes();
     }
 
     private Board getBoardById(Long boardId) {

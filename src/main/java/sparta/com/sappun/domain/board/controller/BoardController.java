@@ -1,13 +1,12 @@
 package sparta.com.sappun.domain.board.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
-import sparta.com.sappun.domain.board.dto.response.BoardBestListGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardListGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardSaveRes;
+import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
+import sparta.com.sappun.domain.board.dto.response.*;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
 import sparta.com.sappun.domain.board.service.BoardService;
 import sparta.com.sappun.global.response.CommonResponse;
@@ -46,5 +45,23 @@ public class BoardController {
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         boardSaveReq.setUserId(userDetails.getUser().getId());
         return CommonResponse.success(boardService.saveBoard(boardSaveReq));
+    }
+
+    // 게시글 수정
+    @PatchMapping("/{boardId}")
+    public CommonResponse<BoardUpdateRes> updateBoard(
+            @PathVariable Long boardId,
+            @RequestBody @Valid BoardUpdateReq boardUpdateReq,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        boardUpdateReq.setBoardId(boardId);
+        boardUpdateReq.setUserId(userDetails.getUser().getId());
+        return CommonResponse.success(boardService.updateBoard(boardUpdateReq));
+    }
+
+    // 게시글 삭제
+    @DeleteMapping("/{boardId}")
+    public CommonResponse<BoardDeleteRes> deleteBoard(
+            @PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return CommonResponse.success(boardService.deleteBoard(boardId, userDetails.getUser().getId()));
     }
 }
