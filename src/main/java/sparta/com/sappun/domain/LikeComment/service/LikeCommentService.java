@@ -10,6 +10,7 @@ import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
+import sparta.com.sappun.global.validator.CommentValidator;
 import sparta.com.sappun.global.validator.UserValidator;
 
 @Service
@@ -21,23 +22,15 @@ public class LikeCommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
-    //    public void saveLike(Long commentId, UserDetailsImpl userDetails) {
-    //        Comment comment = commentRepository.findById(commentId);
-    //
-    //        User user = userDetails.getUser();
-    //        LikeComment commentLike = new LikeComment();
-    //
-    //        commentLike.setComment(comment);
-    //        commentLike.setUser(user);
-    //
-    //        likeCommentRepository.save(commentLike);
-    //    }
     @Transactional
     public LikeCommentSaveRes likeCommentSaveRes(Long commentId, Long userId) {
         User user = userRepository.findById(userId);
-        Comment comment = commentRepository.findById(commentId);
-        // CommentValidator.validate(comment);
         UserValidator.validate(user);
+        Comment comment = commentRepository.findById(commentId);
+        CommentValidator.validate(comment);
+
+        comment.getUser().updateScore(10); // 좋아요를 받은 댓글의 작성자 점수 +10
+
         likeCommentRepository.save(LikeComment.builder().comment(comment).user(user).build());
         return new LikeCommentSaveRes();
     }

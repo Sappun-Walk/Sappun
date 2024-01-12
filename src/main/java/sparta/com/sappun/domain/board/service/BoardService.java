@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
-import sparta.com.sappun.domain.board.dto.response.BoardBestListGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardListGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardSaveRes;
+import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
+import sparta.com.sappun.domain.board.dto.response.*;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
@@ -33,10 +31,6 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public BoardListGetRes getBoardList(RegionEnum region) {
-        //        List<Board> boards = boardRepository.findAllByRegion(region);
-        //        return new BoardListGetRes(boards);
-        //        return
-        // BoardServiceMapper.INSTANCE.toBoardListGetRes(boardRepository.findAllByRegion(region));
         List<BoardGetRes> boardGetRes =
                 BoardServiceMapper.INSTANCE.toBoardListGetRes(boardRepository.findAllByRegion(region));
         return BoardListGetRes.builder().boards(boardGetRes).build();
@@ -53,6 +47,7 @@ public class BoardService {
     @Transactional
     public BoardSaveRes saveBoard(BoardSaveReq boardSaveReq) {
         User user = getUserById(boardSaveReq.getUserId());
+        user.updateScore(100); // 게시글 작성하면 점수 +100
 
         return BoardServiceMapper.INSTANCE.toBoardSaveRes(
                 boardRepository.save(
@@ -66,6 +61,29 @@ public class BoardService {
                                 .region(boardSaveReq.getRegion())
                                 .user(user)
                                 .build()));
+    }
+
+    @Transactional
+    public BoardUpdateRes updateBoard(BoardUpdateReq boardUpdateReq) {
+        Board board = getBoardById(boardUpdateReq.getBoardId());
+        User user = getUserById(boardUpdateReq.getUserId());
+        BoardValidator.checkBoardUser(board.getUser().getId(), user.getId()); // 수정 가능한 사용자인지 확인
+        board.update(boardUpdateReq);
+
+        return BoardServiceMapper.INSTANCE.toBoardUpdateRes(board);
+    }
+
+    @Transactional
+    public BoardDeleteRes deleteBoard(Long boardId, Long userId) {
+        Board board = getBoardById(boardId);
+        User user = getUserById(userId);
+        BoardValidator.checkBoardUser(board.getUser(), user); // 삭제 가능한 사용자인지 확인
+
+        user.updateScore(-100); // 게시글 삭제하면 점수 -100
+
+        boardRepository.delete(board);
+
+        return new BoardDeleteRes();
     }
 
     private Board getBoardById(Long boardId) {

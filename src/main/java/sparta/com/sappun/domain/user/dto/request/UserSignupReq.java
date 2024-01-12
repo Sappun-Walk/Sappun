@@ -21,6 +21,9 @@ public class UserSignupReq {
     @Pattern(regexp = "^[가-힣a-zA-Z0-9]*$")
     private String nickname;
 
+    @Pattern(regexp = "\\w+@\\w+\\.\\w+(\\.\\w+)?")
+    private String email;
+
     @Size(min = 6, max = 15)
     @Pattern(regexp = "^(?=.*[a-z])(?=.*\\d)(?=.*[@$!%#?&])[A-Za-z\\d@$!%*#?&]*$")
     // 영어 소문자, 숫자, 특수문자를 각 하나씩 필수로 포함
@@ -29,9 +32,11 @@ public class UserSignupReq {
     private String confirmPassword;
 
     @Builder
-    private UserSignupReq(String username, String nickname, String password, String confirmPassword) {
+    private UserSignupReq(
+            String username, String nickname, String email, String password, String confirmPassword) {
         this.username = username;
         this.nickname = nickname;
+        this.email = email;
         this.password = password;
         this.confirmPassword = confirmPassword;
     }
