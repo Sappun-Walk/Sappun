@@ -9,13 +9,10 @@ import lombok.*;
 public class ReportCommentReq {
 
     private Long userId;
-    private Long reportCommentId;
     @NotBlank private String reason;
 
     @Builder
-    private ReportCommentReq(Long reportCommentId, String reason) {
-        this.reportCommentId = reportCommentId;
+    private ReportCommentReq(String reason) {
         this.reason = reason;
-        this.userId = userId;
     }
 }

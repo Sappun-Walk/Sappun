@@ -27,11 +27,7 @@ class ReportCommentControllerTest extends BaseMvcTest implements ReportCommentTe
     @DisplayName("댓글 신고 API 테스트")
     void reportCommentTest() throws Exception {
         // given
-        ReportCommentReq req =
-                ReportCommentReq.builder()
-                        .reportCommentId(TEST_COMMENT_ID)
-                        .reason(TEST_COMMENT_REPORT_REASON)
-                        .build();
+        ReportCommentReq req = ReportCommentReq.builder().reason(TEST_COMMENT_REPORT_REASON).build();
         req.setUserId(TEST_USER_ID);
 
         ReportCommentRes res =

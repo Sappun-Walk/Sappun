@@ -30,11 +30,7 @@ class ReportCommentServiceTest implements ReportCommentTest {
     @Test
     @DisplayName("댓글 신고 테스트")
     void reportComment() {
-        ReportCommentReq req =
-                ReportCommentReq.builder()
-                        .reportCommentId(TEST_COMMENT_ID)
-                        .reason(TEST_COMMENT_REPORT_REASON)
-                        .build();
+        ReportCommentReq req = ReportCommentReq.builder().reason(TEST_COMMENT_REPORT_REASON).build();
 
         req.setUserId(TEST_USER_ID);
 
