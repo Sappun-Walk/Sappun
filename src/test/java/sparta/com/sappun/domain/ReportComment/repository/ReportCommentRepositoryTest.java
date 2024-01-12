@@ -29,7 +29,6 @@ class ReportCommentRepositoryTest implements ReportCommentTest {
         // given
         userRepository.save(TEST_USER);
         commentRepository.save(TEST_COMMENT);
-        reportCommentRepository.save(REPORT_COMMENT);
 
         // when
         ReportComment reportComment = reportCommentRepository.save(REPORT_COMMENT);
@@ -37,6 +36,6 @@ class ReportCommentRepositoryTest implements ReportCommentTest {
         // then
         assertEquals(TEST_USER, reportComment.getUser());
         assertEquals(TEST_COMMENT, reportComment.getComment());
-        assertEquals(TEST_COMMENT_REASON, reportComment.getReason());
+        assertEquals(TEST_COMMENT_REPORT_REASON, reportComment.getReason());
     }
 }

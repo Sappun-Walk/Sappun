@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sparta.com.sappun.domain.ReportComment.dto.request.ReportCommentReq;
 import sparta.com.sappun.domain.ReportComment.repository.ReportCommentRepository;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.user.repository.UserRepository;
@@ -28,12 +29,20 @@ class ReportCommentServiceTest implements ReportCommentTest {
 
     @Test
     @DisplayName("댓글 신고 테스트")
-    void reportCommentRes() {
+    void reportComment() {
+        ReportCommentReq req =
+                ReportCommentReq.builder()
+                        .reportCommentId(TEST_COMMENT_ID)
+                        .reason(TEST_COMMENT_REPORT_REASON)
+                        .build();
+
+        req.setUserId(TEST_USER_ID);
+
         // given
         when(userRepository.findById(any())).thenReturn(TEST_USER);
         when(commentRepository.findById(any())).thenReturn(TEST_COMMENT);
         // when
-        reportCommentService.reportCommentRes(TEST_COMMENT_ID, TEST_REPORT_COMMENT_REQ);
+        reportCommentService.reportComment(TEST_COMMENT_ID, req);
         // then
         verify(userRepository, times(1)).findById(TEST_USER_ID);
         verify(commentRepository, times(1)).findById(TEST_COMMENT_ID);

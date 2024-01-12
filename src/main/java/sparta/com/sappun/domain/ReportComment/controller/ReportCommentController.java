@@ -23,6 +23,6 @@ public class ReportCommentController {
             @RequestBody @Valid ReportCommentReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         req.setUserId(userDetails.getUser().getId());
-        return ResponseEntity.ok(reportCommentService.reportCommentRes(commentId, req));
+        return ResponseEntity.ok(reportCommentService.reportComment(commentId, req));
     }
 }

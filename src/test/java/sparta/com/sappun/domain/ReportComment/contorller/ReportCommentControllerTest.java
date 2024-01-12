@@ -30,17 +30,18 @@ class ReportCommentControllerTest extends BaseMvcTest implements ReportCommentTe
         ReportCommentReq req =
                 ReportCommentReq.builder()
                         .reportCommentId(TEST_COMMENT_ID)
-                        .reason(TEST_COMMENT_REASON)
+                        .reason(TEST_COMMENT_REPORT_REASON)
                         .build();
+        req.setUserId(TEST_USER_ID);
 
         ReportCommentRes res =
                 ReportCommentRes.builder()
                         .reporterUserId(TEST_USER_ID)
                         .reportCommentId(TEST_COMMENT_ID)
-                        .reason(TEST_COMMENT_REASON)
+                        .reason(TEST_COMMENT_REPORT_REASON)
                         .build();
 
-        when(reportCommentService.reportCommentRes(any(), any())).thenReturn(res);
+        when(reportCommentService.reportComment(any(), any())).thenReturn(res);
 
         // when-then
         mockMvc

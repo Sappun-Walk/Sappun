@@ -13,7 +13,7 @@ public class ReportCommentReq {
     @NotBlank private String reason;
 
     @Builder
-    private ReportCommentReq(Long reportCommentId, String reason, Long userId) {
+    private ReportCommentReq(Long reportCommentId, String reason) {
         this.reportCommentId = reportCommentId;
         this.reason = reason;
         this.userId = userId;
