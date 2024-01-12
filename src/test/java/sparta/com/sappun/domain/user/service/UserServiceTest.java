@@ -43,6 +43,7 @@ class UserServiceTest implements UserTest {
                 UserSignupReq.builder()
                         .username(TEST_USER_USERNAME)
                         .nickname(TEST_USER_NICKNAME)
+                        .email(TEST_USER_EMAIL)
                         .password(TEST_USER_PASSWORD)
                         .confirmPassword(TEST_USER_PASSWORD)
                         .build();
@@ -55,6 +56,7 @@ class UserServiceTest implements UserTest {
         verify(passwordEncoder).encode(TEST_USER_PASSWORD);
         assertEquals(TEST_USER_USERNAME, argumentCaptor.getValue().getUsername());
         assertEquals(TEST_USER_NICKNAME, argumentCaptor.getValue().getNickname());
+        assertEquals(TEST_USER_EMAIL, argumentCaptor.getValue().getEmail());
     }
 
     @Test
@@ -65,6 +67,7 @@ class UserServiceTest implements UserTest {
                 UserSignupReq.builder()
                         .username(TEST_USER_USERNAME)
                         .nickname(TEST_USER_NICKNAME)
+                        .email(TEST_USER_EMAIL)
                         .password(TEST_USER_PASSWORD)
                         .confirmPassword("wrongPassword")
                         .build();

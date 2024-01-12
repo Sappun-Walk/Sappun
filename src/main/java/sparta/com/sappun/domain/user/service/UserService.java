@@ -21,7 +21,9 @@ public class UserService {
 
     @Transactional
     public UserSignupRes signup(UserSignupReq req) {
-        UserValidator.validate(req); // 재확인 비밀번호가 일치하는지 확인 (중복검사는 api를 따로 분리했으므로 추가하지 않음)
+        UserValidator.validate(req);
+
+        UserValidator.checkEmail(userRepository.existsByEmail(req.getEmail()));
 
         // TODO: 프로필 사진 관련 로직 추가
 
@@ -29,6 +31,7 @@ public class UserService {
                 User.builder()
                         .username(req.getUsername())
                         .nickname(req.getNickname())
+                        .email(req.getEmail())
                         .password(passwordEncoder.encode(req.getPassword()))
                         .role(Role.USER)
                         .build());

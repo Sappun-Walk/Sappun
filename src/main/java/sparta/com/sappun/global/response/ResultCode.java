@@ -20,6 +20,7 @@ public enum ResultCode {
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     DUPLICATED_USERNAME(HttpStatus.CONFLICT, "중복된 아이디 입니다."),
     DUPLICATED_NICKNAME(HttpStatus.CONFLICT, "중복된 닉네임 입니다."),
+    DUPLICATED_EMAIL(HttpStatus.CONFLICT, "이미 가입된 이메일입니다."),
     DIFFERENT_PASSWORD(HttpStatus.CONFLICT, "비밀번호가 일치하지 않습니다."),
 
     // 보드

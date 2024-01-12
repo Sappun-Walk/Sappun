@@ -72,4 +72,43 @@ class UserRepositoryTest implements UserTest {
         // then
         assertNull(findUser);
     }
+
+    @Test
+    @DisplayName("existsByUsername 테스트")
+    void existsByUsernameTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+
+        // when
+        Boolean isFound = userRepository.existsByUsername(user.getUsername());
+
+        // then
+        assertTrue(isFound);
+    }
+
+    @Test
+    @DisplayName("existsByNickname 테스트")
+    void existsByNicknameTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+
+        // when
+        Boolean isFound = userRepository.existsByNickname(user.getNickname());
+
+        // then
+        assertTrue(isFound);
+    }
+
+    @Test
+    @DisplayName("existsByEmail 테스트")
+    void existsByEmailTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+
+        // when
+        Boolean isFound = userRepository.existsByEmail(user.getEmail());
+
+        // then
+        assertTrue(isFound);
+    }
 }
