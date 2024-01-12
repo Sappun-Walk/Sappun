@@ -1,5 +1,8 @@
 package sparta.com.sappun.global.security;
 
+import static org.springframework.http.HttpMethod.DELETE;
+import static sparta.com.sappun.domain.user.entity.Role.ADMIN;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +30,7 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
     private final UserDetailsServiceImpl userDetailsService;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -64,9 +68,17 @@ public class WebSecurityConfig {
                                 .permitAll() // resources 접근 허용 설정
                                 .requestMatchers("/api/users/signup", "/api/users/login")
                                 .permitAll() // 회원가입, 로그인 API만 접근 허용
+                                .requestMatchers(DELETE, "/api/boards/{boardId}/report")
+                                .hasAuthority(ADMIN.getAuthority()) // 게시글 신고 삭제는 관리자만 가능
+                                .requestMatchers(DELETE, "/api/comments/{commentId}/report")
+                                .hasAuthority(ADMIN.getAuthority()) // 게시글 신고 삭제는 관리자만 가능
                                 .anyRequest()
                                 .authenticated() // 그 외 모든 요청 인증처리
                 );
+
+        http.exceptionHandling(
+                authenticationManager ->
+                        authenticationManager.accessDeniedHandler(customAccessDeniedHandler));
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
