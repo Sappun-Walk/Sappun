@@ -28,8 +28,11 @@ public class ReportCommentService {
         CommentValidator.validate(comment);
         User user = userRepository.findById(req.getUserId());
         UserValidator.validate(user);
+
         ReportComment reportComment =
                 ReportComment.builder().reason(req.getReason()).comment(comment).user(user).build();
+
+        comment.getUser().updateScore(-50); // 신고를 받은 댓글의 작성자 점수 -50
 
         reportCommentRepository.save(reportComment);
 

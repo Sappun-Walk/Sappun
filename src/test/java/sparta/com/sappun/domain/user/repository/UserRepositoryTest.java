@@ -29,20 +29,24 @@ class UserRepositoryTest implements UserTest {
         // then
         assertEquals(TEST_USER_USERNAME, saveUser.getUsername());
         assertEquals(TEST_USER_NICKNAME, saveUser.getNickname());
+        assertEquals(TEST_USER_EMAIL, saveUser.getEmail());
     }
 
     @Test
     @DisplayName("findByUsername 테스트")
     void findByUsernameTest() {
         // given
-        userRepository.save(TEST_USER);
+        User user = userRepository.save(TEST_USER);
 
         // when
         User saveUser = userRepository.findByUsername(TEST_USER_USERNAME);
 
         // then
-        assertEquals(TEST_USER_USERNAME, saveUser.getUsername());
-        assertEquals(TEST_USER_NICKNAME, saveUser.getNickname());
+        assertEquals(user.getId(), saveUser.getId());
+        assertEquals(user.getUsername(), saveUser.getUsername());
+        assertEquals(user.getNickname(), saveUser.getNickname());
+        assertEquals(user.getEmail(), saveUser.getEmail());
+        assertEquals(user.getScore(), saveUser.getScore());
     }
 
     @Test
@@ -55,8 +59,11 @@ class UserRepositoryTest implements UserTest {
         User saveUser = userRepository.findById(user.getId());
 
         // then
-        assertEquals(TEST_USER_USERNAME, saveUser.getUsername());
-        assertEquals(TEST_USER_NICKNAME, saveUser.getNickname());
+        assertEquals(user.getId(), saveUser.getId());
+        assertEquals(user.getUsername(), saveUser.getUsername());
+        assertEquals(user.getNickname(), saveUser.getNickname());
+        assertEquals(user.getEmail(), saveUser.getEmail());
+        assertEquals(user.getScore(), saveUser.getScore());
     }
 
     @Test

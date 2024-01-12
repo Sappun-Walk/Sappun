@@ -19,5 +19,6 @@ public interface UserTest {
                     .password(TEST_USER_PASSWORD)
                     .email(TEST_USER_EMAIL)
                     .role(Role.USER)
+                    .score(0)
                     .build();
 }

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static sparta.com.sappun.global.response.ResultCode.DUPLICATED_EMAIL;
 import static sparta.com.sappun.global.response.ResultCode.NOT_MATCHED_PASSWORD;
 
 import org.junit.jupiter.api.DisplayName;
@@ -57,11 +58,12 @@ class UserServiceTest implements UserTest {
         assertEquals(TEST_USER_USERNAME, argumentCaptor.getValue().getUsername());
         assertEquals(TEST_USER_NICKNAME, argumentCaptor.getValue().getNickname());
         assertEquals(TEST_USER_EMAIL, argumentCaptor.getValue().getEmail());
+        assertEquals(0, argumentCaptor.getValue().getScore());
     }
 
     @Test
-    @DisplayName("signup 테스트 - 실패")
-    void signupFailureTest() {
+    @DisplayName("signup 테스트 - 확인 비밀번호 일치 실패")
+    void signupPasswordFailureTest() {
         // given
         UserSignupReq req =
                 UserSignupReq.builder()
@@ -82,6 +84,33 @@ class UserServiceTest implements UserTest {
 
         // then
         assertEquals(NOT_MATCHED_PASSWORD.getMessage(), exception.getResultCode().getMessage());
+    }
+
+    @Test
+    @DisplayName("signup 테스트 - 이메일 중복 실패")
+    void signupEmailFailureTest() {
+        // given
+        UserSignupReq req =
+                UserSignupReq.builder()
+                        .username(TEST_USER_USERNAME)
+                        .nickname(TEST_USER_NICKNAME)
+                        .email(TEST_USER_EMAIL)
+                        .password(TEST_USER_PASSWORD)
+                        .confirmPassword(TEST_USER_PASSWORD)
+                        .build();
+
+        when(userRepository.existsByEmail(any())).thenReturn(true);
+
+        // when
+        GlobalException exception =
+                assertThrows(
+                        GlobalException.class,
+                        () -> {
+                            userService.signup(req);
+                        });
+
+        // then
+        assertEquals(DUPLICATED_EMAIL.getMessage(), exception.getResultCode().getMessage());
     }
 
     @Test

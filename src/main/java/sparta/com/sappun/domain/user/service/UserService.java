@@ -34,6 +34,7 @@ public class UserService {
                         .email(req.getEmail())
                         .password(passwordEncoder.encode(req.getPassword()))
                         .role(Role.USER)
+                        .score(0)
                         .build());
 
         return new UserSignupRes();

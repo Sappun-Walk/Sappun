@@ -34,6 +34,8 @@ public class CommentService {
         // 사용자 아이디 조회 로직
         User user = getUserById(req.getUserId());
 
+        user.updateScore(50); // 댓글 작성하면 점수 +50
+
         return CommentServiceMapper.INSTANCE.toCommentSaveRes(
                 commentRepository.save(
                         Comment.builder()
@@ -71,6 +73,8 @@ public class CommentService {
 
         // 사용자가 작성자 또는 관리자인지 확인
         CommentValidator.checkCommentUser(comment.getUser(), user);
+
+        user.updateScore(-50); // 댓글 삭제하면 점수 -50
 
         // 댓글 삭제 로직
         commentRepository.delete(comment);
