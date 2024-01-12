@@ -18,4 +18,7 @@ public interface ReportBoardRepository {
     @Modifying // select 외의 쿼리를 사용하기 위해서 필요함
     @Query(value = "delete from ReportBoard r where r.board = :board")
     void clearReportBoardByBoard(Board board);
+
+    @Query("SELECT rb FROM ReportBoard rb JOIN FETCH rb.board")
+    List<ReportBoard> findAllFetchBoard();
 }
