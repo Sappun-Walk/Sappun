@@ -5,6 +5,22 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
+  security:
+    oauth2:
+      client:
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize # 카카오 로그인 요청 uri
+            token-uri: https://kauth.kakao.com/oauth/token # 토큰을 발급받기 위한 uri
+            user-info-uri: https://kapi.kakao.com/v2/user/me # 유저 정보를 받아오기 위한 uri
+        registration:
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID} # REST API Key
+            client-secret: ${KAKAO_CLIENT_SECRET} # Client Secret Key
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            redirect-uri: ${KAKAO_REDIRECT_URI} # Redirect URI
+
   jpa:
     open-in-view: false
     hibernate:
@@ -34,3 +50,4 @@ logging:
 jwt:
   secret:
     key: ${JWT_SECRET_KEY}
+

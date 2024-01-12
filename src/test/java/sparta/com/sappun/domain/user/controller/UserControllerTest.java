@@ -19,6 +19,7 @@ import sparta.com.sappun.domain.user.dto.response.UserDeleteRes;
 import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
 import sparta.com.sappun.domain.user.dto.response.UserSignupRes;
 import sparta.com.sappun.domain.user.entity.Role;
+import sparta.com.sappun.domain.user.service.KakaoService;
 import sparta.com.sappun.domain.user.service.UserService;
 import sparta.com.sappun.global.jwt.JwtUtil;
 import sparta.com.sappun.global.redis.RedisUtil;
@@ -30,6 +31,7 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
     @MockBean private UserService userService;
     @MockBean private JwtUtil jwtUtil;
     @MockBean private RedisUtil redisUtil;
+    @MockBean private KakaoService kakaoService;
 
     @Test
     @DisplayName("signup 테스트")
