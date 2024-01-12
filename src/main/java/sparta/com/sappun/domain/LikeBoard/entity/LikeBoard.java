@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.user.entity.User;
 
@@ -12,7 +13,7 @@ import sparta.com.sappun.domain.user.entity.User;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tb_boardlike")
-public class LikeBoard {
+public class LikeBoard extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
