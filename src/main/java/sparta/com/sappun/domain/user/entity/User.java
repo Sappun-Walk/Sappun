@@ -40,7 +40,7 @@ public class User extends TimeStamp {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    private Integer score = 0;
+    private Integer score;
 
     @Builder
     private User(
