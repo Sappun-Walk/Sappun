@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sparta.com.sappun.domain.ReportBoard.dto.request.ReportBoardReq;
+import sparta.com.sappun.domain.ReportBoard.dto.response.DeleteReportBoardRes;
 import sparta.com.sappun.domain.ReportBoard.dto.response.ReportBoardRes;
 import sparta.com.sappun.domain.ReportBoard.service.ReportBoardService;
 import sparta.com.sappun.global.security.UserDetailsImpl;
@@ -25,5 +26,11 @@ public class ReportBoardController {
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         req.setUserId(userDetails.getUser().getId());
         return ResponseEntity.ok(reportBoardService.reportBoardRes(boardId, req));
+    }
+
+    @DeleteMapping("/{boardId}/report") // 필터에서 관리자만 접근하도록 막기
+    public ResponseEntity<DeleteReportBoardRes> deleteReportedBoard(
+        @PathVariable Long boardId) {
+        return ResponseEntity.ok(reportBoardService.deleteReportBoard(boardId));
     }
 }
