@@ -14,6 +14,7 @@ import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.validator.BoardValidator;
+import sparta.com.sappun.global.validator.ReportBoardValidator;
 import sparta.com.sappun.global.validator.UserValidator;
 
 @Service
@@ -25,18 +26,23 @@ public class ReportBoardService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ReportBoardRes reportBoard(Long boardId, ReportBoardReq req) {
+    public ReportBoardRes clickReportBoard(Long boardId, ReportBoardReq req) {
         Board board = findBoardById(boardId);
 
         User user = userRepository.findById(req.getUserId());
         UserValidator.validate(user);
 
+        ReportBoardValidator.checkReport(
+                reportBoardRepository.existsReportBoardByBoardAndUser(board, user)); // 이미 신고했다면 예외처리
+
         ReportBoard reportBoard =
-                ReportBoard.builder().reason(req.getReason()).board(board).user(user).build();
-
+                reportBoardRepository.save(
+                        ReportBoard.builder()
+                                .reason(req.getReason())
+                                .board(board)
+                                .user(user)
+                                .build()); // 신고하지 않은 상태라면
         board.getUser().updateScore(-50); // 신고를 받은 게시글의 작성자 점수 -50
-
-        reportBoardRepository.save(reportBoard);
 
         return ReportBoardServiceMapper.INSTANCE.toReportBoardRes(reportBoard);
     }

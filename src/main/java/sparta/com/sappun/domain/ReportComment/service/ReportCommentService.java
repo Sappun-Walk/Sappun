@@ -14,6 +14,7 @@ import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.validator.CommentValidator;
+import sparta.com.sappun.global.validator.ReportCommentValidator;
 import sparta.com.sappun.global.validator.UserValidator;
 
 @Service
@@ -25,18 +26,22 @@ public class ReportCommentService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ReportCommentRes reportComment(Long commentId, ReportCommentReq req) {
-        Comment comment = commentRepository.findById(commentId);
-        CommentValidator.validate(comment);
+    public ReportCommentRes clickReportComment(Long commentId, ReportCommentReq req) {
+        Comment comment = findCommentById(commentId);
         User user = userRepository.findById(req.getUserId());
         UserValidator.validate(user);
 
+        ReportCommentValidator.checkReport(
+                reportCommentRepository.existsReportBoardByCommentAndUser(comment, user)); // 이미 신고했다면 예외처리
+
         ReportComment reportComment =
-                ReportComment.builder().reason(req.getReason()).comment(comment).user(user).build();
-
-        comment.getUser().updateScore(-50); // 신고를 받은 댓글의 작성자 점수 -50
-
-        reportCommentRepository.save(reportComment);
+                reportCommentRepository.save(
+                        ReportComment.builder()
+                                .reason(req.getReason())
+                                .comment(comment)
+                                .user(user)
+                                .build()); // 신고하지 않은 상태라면
+        comment.getUser().updateScore(-50); // 신고를 받은 게시글의 작성자 점수 -50
 
         return ReportCommentServiceMapper.INSTANCE.toReportCommentRes(reportComment);
     }

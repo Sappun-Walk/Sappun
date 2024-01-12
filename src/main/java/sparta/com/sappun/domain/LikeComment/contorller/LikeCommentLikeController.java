@@ -18,6 +18,6 @@ public class LikeCommentLikeController {
     public CommonResponse<LikeCommentSaveRes> likeComment(
             @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userId) {
         return CommonResponse.success(
-                likeCommentService.likeCommentSaveRes(commentId, userId.getUser().getId()));
+                likeCommentService.clickLikeComment(commentId, userId.getUser().getId()));
     }
 }

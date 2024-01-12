@@ -24,7 +24,7 @@ public class ReportCommentController {
             @RequestBody @Valid ReportCommentReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         req.setUserId(userDetails.getUser().getId());
-        return ResponseEntity.ok(reportCommentService.reportComment(commentId, req));
+        return ResponseEntity.ok(reportCommentService.clickReportComment(commentId, req));
     }
 
     @DeleteMapping("/{commentId}/report") // 필터에서 관리자만 접근하도록 막기

@@ -32,6 +32,8 @@ public enum ResultCode {
     // 좋아요
 
     // 신고
+    DUPLICATED_REPORT_BOARD(HttpStatus.CONFLICT, "이미 신고한 게시글입니다."),
+    DUPLICATED_REPORT_COMMENT(HttpStatus.CONFLICT, "이미 신고한 댓글입니다."),
 
     // sample
     NOT_FOUND_SAMPLE(HttpStatus.NOT_FOUND, "존재하지 않는 샘플입니다.");
