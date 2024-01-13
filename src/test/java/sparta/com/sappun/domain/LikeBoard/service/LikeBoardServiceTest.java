@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sparta.com.sappun.domain.LikeBoard.dto.response.LikeBoardSaveRes;
 import sparta.com.sappun.domain.LikeBoard.repository.LikeBoardRepository;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.user.repository.UserRepository;
@@ -26,13 +25,17 @@ class LikeBoardServiceTest implements LikeBoardTest {
 
     @Test
     @DisplayName("게시글 좋아요 저장 테스트")
-    void saveLikeBoardTest() {
+    // 제가 메소드명을 바꿔서 clickLikeBoardTest로 수정해주세요!
+    void clickLikeBoardTest() {
 
         // given
         when(userRepository.findById(any())).thenReturn(TEST_USER);
         when(boardRepository.findById(any())).thenReturn(TEST_BOARD);
+        when(likeBoardRepository.existsLikeBoardByBoardAndUser(any(), any())).thenReturn(false);
         // when
-        LikeBoardSaveRes res = likeBoardService.clickLikeBoard(TEST_BOARD_ID, TEST_USER_ID);
+        // res는 빈 값이기 때문에 받아오지 않아도 됩니다!
+        likeBoardService.clickLikeBoard(TEST_BOARD_ID, TEST_USER_ID);
+
         // then
         verify(userRepository, times(1)).findById(TEST_USER_ID);
         verify(boardRepository, times(1)).findById(TEST_BOARD_ID);

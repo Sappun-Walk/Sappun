@@ -22,7 +22,7 @@ class LikeBoardControllerTest extends BaseMvcTest implements LikeBoardTest {
     @MockBean private LikeBoardService likeBoardService;
 
     @Test
-    @DisplayName("게기글 좋아요 저장 API 테스트")
+    @DisplayName("게시글 좋아요 저장 API 테스트")
     void likeBoard() throws Exception {
         // given
         LikeBoardSaveRes res = new LikeBoardSaveRes();
