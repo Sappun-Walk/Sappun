@@ -26,7 +26,6 @@ class ReportBoardControllerTest extends BaseMvcTest implements ReportBoardTest {
     @DisplayName("게시글 신고 API 테스트")
     void reportBoardTest() throws Exception {
         // given
-        // 테스트하는 대상인 컨트롤러에서 setUserId를 해주기 때문에 이 줄은 지워도 됩니다!
         ReportBoardReq req = ReportBoardReq.builder().reason(TEST_BOARD_REPORT_REASON).build();
 
         ReportBoardRes res =

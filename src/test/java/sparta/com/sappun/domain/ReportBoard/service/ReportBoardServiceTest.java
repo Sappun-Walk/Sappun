@@ -29,10 +29,8 @@ class ReportBoardServiceTest implements ReportBoardTest {
 
     @Test
     @DisplayName("게시글 신고 테스트")
-    // 더 직관적이게 clickReportBoardTest로 수정해주세요~
     void clickReportBoardTest() {
         // given
-        // 이 두 줄은 //given 밑으로 옮겨주세요~
         ReportBoardReq req = ReportBoardReq.builder().reason(TEST_BOARD_REPORT_REASON).build();
         req.setUserId(TEST_USER_ID);
         when(userRepository.findById(any())).thenReturn(TEST_USER);

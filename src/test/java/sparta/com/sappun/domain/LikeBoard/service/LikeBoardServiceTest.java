@@ -25,7 +25,6 @@ class LikeBoardServiceTest implements LikeBoardTest {
 
     @Test
     @DisplayName("게시글 좋아요 저장 테스트")
-    // 제가 메소드명을 바꿔서 clickLikeBoardTest로 수정해주세요!
     void clickLikeBoardTest() {
 
         // given
@@ -33,7 +32,6 @@ class LikeBoardServiceTest implements LikeBoardTest {
         when(boardRepository.findById(any())).thenReturn(TEST_BOARD);
         when(likeBoardRepository.existsLikeBoardByBoardAndUser(any(), any())).thenReturn(false);
         // when
-        // res는 빈 값이기 때문에 받아오지 않아도 됩니다!
         likeBoardService.clickLikeBoard(TEST_BOARD_ID, TEST_USER_ID);
 
         // then
