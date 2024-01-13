@@ -75,6 +75,8 @@ public class WebSecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/**.html")
                                 .permitAll()
+                                .requestMatchers("/api/boards/region", "/api/boards/best", "/api/boards/{boardId}")
+                                .permitAll() // 게시글 단건 조회, 게시글 목록 조회, 좋아요 Best 3 게시글 목록 조회 접근 허용
                                 .requestMatchers(DELETE, "/api/boards/{boardId}/report")
                                 .hasAuthority(ADMIN.getAuthority()) // 게시글 신고 삭제는 관리자만 가능
                                 .requestMatchers(DELETE, "/api/comments/{commentId}/report")
@@ -82,7 +84,8 @@ public class WebSecurityConfig {
                                 .requestMatchers(GET, "/api/boards/reports")
                                 .hasAuthority(ADMIN.getAuthority()) // 신고된 게시글 목록 조회는 관리자만 가능
                                 .anyRequest()
-                                .authenticated()); // 그 외 모든 요청 인증처리
+                                .authenticated() // 그 외 모든 요청 인증처리
+                );
 
         http.exceptionHandling(
                 authenticationManager ->

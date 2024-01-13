@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sparta.com.sappun.domain.board.entity.RegionEnum;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,6 +18,7 @@ public class BoardUpdateRes {
     private String departure;
     private String destination;
     private List<String> stopover;
+    private RegionEnum region;
 
     @Builder
     private BoardUpdateRes(
@@ -27,7 +29,8 @@ public class BoardUpdateRes {
             String fileURL,
             String departure,
             String destination,
-            List<String> stopover) {
+            List<String> stopover,
+            RegionEnum region) {
         this.nickname = nickname;
         this.id = id;
         this.title = title;
@@ -36,5 +39,6 @@ public class BoardUpdateRes {
         this.departure = departure;
         this.destination = destination;
         this.stopover = stopover;
+        this.region = region;
     }
 }
