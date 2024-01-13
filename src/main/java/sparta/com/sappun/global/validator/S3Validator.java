@@ -1,10 +1,10 @@
 package sparta.com.sappun.global.validator;
 
-import org.springframework.web.multipart.MultipartFile;
-import sparta.com.sappun.global.exception.GlobalException;
-
 import static sparta.com.sappun.global.response.ResultCode.INVALID_PROFILE_IMAGE_FILE;
 import static sparta.com.sappun.global.response.ResultCode.NULL_FILE_TYPE;
+
+import org.springframework.web.multipart.MultipartFile;
+import sparta.com.sappun.global.exception.GlobalException;
 
 public class S3Validator {
 

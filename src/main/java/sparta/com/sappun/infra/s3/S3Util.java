@@ -1,19 +1,17 @@
 package sparta.com.sappun.infra.s3;
 
-import com.amazonaws.services.s3.AmazonS3;
+import static sparta.com.sappun.global.response.ResultCode.NOT_FOUND_FILE;
+import static sparta.com.sappun.global.response.ResultCode.SYSTEM_ERROR;
+
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.global.exception.GlobalException;
-
-import java.util.UUID;
-
-import static sparta.com.sappun.global.response.ResultCode.NOT_FOUND_FILE;
-import static sparta.com.sappun.global.response.ResultCode.SYSTEM_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +20,11 @@ public class S3Util {
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+    private String bucketName;
 
     @Getter
-    @RequiredArgsConstructor //final필드를 초기화하기 위해 사용
-    public enum FilePath { //파일 경로를 나타내는 상수를 정의
+    @RequiredArgsConstructor // final필드를 초기화하기 위해 사용
+    public enum FilePath { // 파일 경로를 나타내는 상수를 정의
         PROFILE("profile/"),
         BOARD("board/"),
         COMMENT("comment/");
@@ -35,7 +33,7 @@ public class S3Util {
     }
 
     private static ObjectMetadata setObjectMetadata(MultipartFile multipartFile) {
-        //ObjectMetadata 객체 생성
+        // ObjectMetadata 객체 생성
         ObjectMetadata metadata = new ObjectMetadata();
         // 업로드할 파일의 길이 설정
         metadata.setContentLength(multipartFile.getSize());
@@ -58,7 +56,7 @@ public class S3Util {
         try {
             // S3에 파일 업로드
             amazonS3Client.putObject(
-                    bucket, filePath.getPath() + fileName, multipartFile.getInputStream(), metadata);
+                    bucketName, filePath.getPath() + fileName, multipartFile.getInputStream(), metadata);
         } catch (Exception e) {
             // 업로드 중에 예외 발생 시 전역 예외(GlobalException) 발생
             throw new GlobalException(SYSTEM_ERROR);
@@ -72,16 +70,16 @@ public class S3Util {
         String fileName = getFileNameFromFileUrl(fileUrl, filePath);
         // 파일명이 비어있거나 해당 파일이 존재하지 않으면 예외 발생
         if (fileName.isBlank()
-                || !amazonS3Client.doesObjectExist(bucket, filePath.getPath() + fileName)) {
+                || !amazonS3Client.doesObjectExist(bucketName, filePath.getPath() + fileName)) {
             throw new GlobalException(NOT_FOUND_FILE);
         }
         // S3에서 파일 삭제
-        amazonS3Client.deleteObject(bucket, filePath.getPath() + fileName);
+        amazonS3Client.deleteObject(bucketName, filePath.getPath() + fileName);
     }
 
     public String getFileUrl(String fileName, FilePath filePath) {
         // AWS S3 클라이언트를 사용하여 주어진 버킷, 파일 경로 및 파일명에 해당하는 파일의 URL을 얻어옴
-        return amazonS3Client.getUrl(bucket, filePath.getPath() + fileName).toString();
+        return amazonS3Client.getUrl(bucketName, filePath.getPath() + fileName).toString();
     }
 
     private String getFileNameFromFileUrl(String fileUrl, FilePath filePath) {
