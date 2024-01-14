@@ -14,13 +14,13 @@ import sparta.com.sappun.global.security.UserDetailsImpl;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/boards")
-public class LikeBoardLikeController {
+public class LikeBoardController {
     private final LikeBoardService likeBoardService;
 
     @PostMapping("/{boardId}/like")
     public CommonResponse<LikeBoardSaveRes> likeBoard(
             @PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userId) {
         return CommonResponse.success(
-                likeBoardService.likeBoardSaveRes(boardId, userId.getUser().getId()));
+                likeBoardService.clickLikeBoard(boardId, userId.getUser().getId()));
     }
 }

@@ -13,7 +13,7 @@ public enum ResultCode {
     INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "액세스 토큰이 유효하지 않습니다."),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "리프레시 토큰이 유효하지 않습니다."),
     LOGIN_REQUIRED(HttpStatus.UNAUTHORIZED, "재로그인 해주세요."),
-    ACCESS_DENY(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 
     // 유저
     NOT_MATCHED_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
@@ -32,6 +32,8 @@ public enum ResultCode {
     // 좋아요
 
     // 신고
+    DUPLICATED_REPORT_BOARD(HttpStatus.CONFLICT, "이미 신고한 게시글입니다."),
+    DUPLICATED_REPORT_COMMENT(HttpStatus.CONFLICT, "이미 신고한 댓글입니다."),
 
     // sample
     NOT_FOUND_SAMPLE(HttpStatus.NOT_FOUND, "존재하지 않는 샘플입니다.");

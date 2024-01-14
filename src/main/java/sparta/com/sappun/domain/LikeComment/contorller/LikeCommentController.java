@@ -11,13 +11,13 @@ import sparta.com.sappun.global.security.UserDetailsImpl;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/comments")
-public class LikeCommentLikeController {
+public class LikeCommentController {
     private final LikeCommentService likeCommentService;
 
     @PostMapping("/{commentId}/like")
     public CommonResponse<LikeCommentSaveRes> likeComment(
             @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userId) {
         return CommonResponse.success(
-                likeCommentService.likeCommentSaveRes(commentId, userId.getUser().getId()));
+                likeCommentService.clickLikeComment(commentId, userId.getUser().getId()));
     }
 }

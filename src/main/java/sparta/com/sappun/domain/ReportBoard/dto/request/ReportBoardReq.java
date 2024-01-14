@@ -8,13 +8,11 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReportBoardReq {
 
-    private Long reportBoardId;
     @NotBlank private String reason;
     private Long userId;
 
     @Builder
-    private ReportBoardReq(Long reportBoardId, String reason) {
-        this.reportBoardId = reportBoardId;
+    private ReportBoardReq(String reason) {
         this.reason = reason;
     }
 }

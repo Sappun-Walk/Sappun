@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sparta.com.sappun.domain.user.entity.Role;
 
 // 프로필 수정 응답 Dto
 @Getter
@@ -14,16 +15,24 @@ public class UserProfileUpdateRes {
     private String nickname;
     private String email;
     private String profileUrl;
+    private Role role;
     private Integer score;
 
     @Builder
     private UserProfileUpdateRes(
-            Long id, String username, String nickname, String email, String profileUrl, Integer score) {
+            Long id,
+            String username,
+            String nickname,
+            String email,
+            String profileUrl,
+            Role role,
+            Integer score) {
         this.id = id;
         this.username = username;
         this.nickname = nickname;
         this.email = email;
         this.profileUrl = profileUrl;
+        this.role = role;
         this.score = score;
     }
 }
