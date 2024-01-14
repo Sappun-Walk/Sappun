@@ -5,13 +5,11 @@ import static sparta.com.sappun.global.response.ResultCode.SYSTEM_ERROR;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-
-import java.io.IOException;
-import java.util.UUID;
-
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
+import java.io.IOException;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,7 +74,8 @@ public class S3Util {
         String fileName = getFileNameFromFileUrl(fileUrl, filePath);
 
         // S3에 파일이 존재하는지 확인
-        if (fileName.isBlank() || !amazonS3Client.doesObjectExist(bucketName, filePath.getPath() + fileName)) {
+        if (fileName.isBlank()
+                || !amazonS3Client.doesObjectExist(bucketName, filePath.getPath() + fileName)) {
             // 파일을 찾을 수 없다면 NOT_FOUND_FILE 코드와 함께 전역 예외(GlobalException)를 발생
             throw new GlobalException(NOT_FOUND_FILE);
         }
