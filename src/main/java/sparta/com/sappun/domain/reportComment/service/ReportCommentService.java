@@ -32,7 +32,8 @@ public class ReportCommentService {
         UserValidator.validate(user);
 
         ReportCommentValidator.checkReport(
-                reportCommentRepository.existsReportBoardByCommentAndUser(comment, user)); // 이미 신고했다면 예외처리
+                reportCommentRepository.existsReportCommentByCommentAndUser(
+                        comment, user)); // 이미 신고했다면 예외처리
 
         ReportComment reportComment =
                 reportCommentRepository.save(

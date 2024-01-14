@@ -45,7 +45,8 @@ class ReportCommentServiceTest implements ReportCommentTest {
 
         when(userRepository.findById(any())).thenReturn(TEST_USER);
         when(commentRepository.findById(any())).thenReturn(TEST_COMMENT);
-        when(reportCommentRepository.existsReportBoardByCommentAndUser(any(), any())).thenReturn(false);
+        when(reportCommentRepository.existsReportCommentByCommentAndUser(any(), any()))
+                .thenReturn(false);
 
         // when
         reportCommentService.clickReportComment(TEST_COMMENT_ID, req);
@@ -53,7 +54,7 @@ class ReportCommentServiceTest implements ReportCommentTest {
         // then
         verify(userRepository, times(1)).findById(TEST_USER_ID);
         verify(commentRepository, times(1)).findById(TEST_COMMENT_ID);
-        verify(reportCommentRepository, times(1)).existsReportBoardByCommentAndUser(any(), any());
+        verify(reportCommentRepository, times(1)).existsReportCommentByCommentAndUser(any(), any());
         verify(reportCommentRepository, times(1)).save(any());
         assertEquals(score - 50, TEST_COMMENT.getUser().getScore());
     }
@@ -67,7 +68,8 @@ class ReportCommentServiceTest implements ReportCommentTest {
 
         when(userRepository.findById(any())).thenReturn(TEST_USER);
         when(commentRepository.findById(any())).thenReturn(TEST_COMMENT);
-        when(reportCommentRepository.existsReportBoardByCommentAndUser(any(), any())).thenReturn(true);
+        when(reportCommentRepository.existsReportCommentByCommentAndUser(any(), any()))
+                .thenReturn(true);
 
         // when
         GlobalException exception =
