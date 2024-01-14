@@ -2,6 +2,7 @@ package sparta.com.sappun.domain.reportBoard.contorller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import sparta.com.sappun.domain.BaseMvcTest;
 import sparta.com.sappun.domain.reportBoard.dto.request.ReportBoardReq;
+import sparta.com.sappun.domain.reportBoard.dto.response.DeleteReportBoardRes;
 import sparta.com.sappun.domain.reportBoard.dto.response.ReportBoardRes;
 import sparta.com.sappun.domain.reportBoard.service.ReportBoardService;
 import sparta.com.sappun.test.ReportBoardTest;
@@ -43,6 +45,20 @@ class ReportBoardControllerTest extends BaseMvcTest implements ReportBoardTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(req))
                                 .principal(mockPrincipal)) // 실제 사용자 정보 제공 필요
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("게시글 신고 삭제 API 테스트")
+    void deleteReportBoardTest() throws Exception {
+        // given
+        DeleteReportBoardRes res = new DeleteReportBoardRes();
+        when(reportBoardService.deleteReportBoard(any())).thenReturn(res);
+
+        // when-then
+        mockMvc
+                .perform(delete("/api/boards/{boardId}/report", TEST_BOARD_ID))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
