@@ -7,10 +7,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sparta.com.sappun.domain.LikeBoard.entity.LikeBoard;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.comment.entity.Comment;
+import sparta.com.sappun.domain.likeBoard.entity.LikeBoard;
 import sparta.com.sappun.domain.user.entity.User;
 
 @Entity
