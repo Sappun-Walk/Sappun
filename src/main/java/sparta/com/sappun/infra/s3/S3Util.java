@@ -5,7 +5,13 @@ import static sparta.com.sappun.global.response.ResultCode.SYSTEM_ERROR;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+
+import java.io.IOException;
 import java.util.UUID;
+
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.util.IOUtils;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,6 +69,28 @@ public class S3Util {
         }
         // 업로드한 파일의 URL 반환
         return getFileUrl(fileName, filePath);
+    }
+
+    public byte[] downloadFile(String fileUrl, FilePath filePath) {
+        // 파일 URL에서 파일 이름 추출
+        String fileName = getFileNameFromFileUrl(fileUrl, filePath);
+
+        // S3에 파일이 존재하는지 확인
+        if (fileName.isBlank() || !amazonS3Client.doesObjectExist(bucketName, filePath.getPath() + fileName)) {
+            // 파일을 찾을 수 없다면 NOT_FOUND_FILE 코드와 함께 전역 예외(GlobalException)를 발생
+            throw new GlobalException(NOT_FOUND_FILE);
+        }
+
+        // 지정된 파일에 대한 S3Object를 가져옵니다.
+        S3Object s3Object = amazonS3Client.getObject(bucketName, filePath.getPath() + fileName);
+        // try-with-resources를 사용하여 자동으로 S3ObjectInputStream을 닫음
+        try (S3ObjectInputStream objectInputStream = s3Object.getObjectContent()) {
+            // S3ObjectInputStream에서 파일 내용을 바이트 배열로 읽어옴
+            return IOUtils.toByteArray(objectInputStream);
+        } catch (IOException e) {
+            // 파일 읽기 중에 IO 예외가 발생하면 SYSTEM_ERROR 코드와 함께 전역 예외(GlobalException)를 발생
+            throw new GlobalException(SYSTEM_ERROR);
+        }
     }
 
     public void deleteFile(String fileUrl, FilePath filePath) {
