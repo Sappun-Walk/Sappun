@@ -6,11 +6,6 @@ import static sparta.com.sappun.global.jwt.JwtUtil.REFRESH_TOKEN_HEADER;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jose.shaded.gson.JsonElement;
 import com.nimbusds.jose.shaded.gson.JsonParser;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -19,6 +14,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import sparta.com.sappun.domain.user.dto.request.KakaoInsertReq;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
@@ -63,7 +63,12 @@ public class KakaoService {
     private String tokenType;
 
     public String getKakaoLoginPage() {
-        return kakaoAuthorizationUri + "?client_id=" + kakaoClientId + "&redirect_uri=" + kakaoRedirectUri + "&response_type=code";
+        return kakaoAuthorizationUri
+                + "?client_id="
+                + kakaoClientId
+                + "&redirect_uri="
+                + kakaoRedirectUri
+                + "&response_type=code";
     }
 
     public HashMap<String, String> kakaoLogin(String code) throws JsonProcessingException {
