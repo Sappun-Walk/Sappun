@@ -7,6 +7,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,12 @@ import sparta.com.sappun.domain.user.service.KakaoService;
 public class KakaoController {
     private final KakaoService kakaoService;
 
+    //카카오 로그인 페이지 가져오기
+    @GetMapping("/kakao/page")
+    public ResponseEntity<String> getKakaoLoginPage() {
+        return new ResponseEntity<>(kakaoService.getKakaoLoginPage(), HttpStatus.OK);
+    }
+
     // 카카오 로그인
     @GetMapping("/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse res)
@@ -30,6 +38,6 @@ public class KakaoController {
         cookie.setPath("/");
         res.addCookie(cookie);
 
-        return "redirect:/login.html";
+        return "redirect:/login.html"; // 로그인 완료시 이동할 페이지
     }
 }

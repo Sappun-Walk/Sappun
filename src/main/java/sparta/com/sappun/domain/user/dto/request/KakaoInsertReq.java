@@ -7,14 +7,14 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class UserInsertReq {
+public class KakaoInsertReq {
     private String email;
     private String nickname;
     private String accessToken;
     private String refreshToken;
 
-    public static UserInsertReq of(JsonElement element, HashMap<String, String> tokens) {
-        return UserInsertReq.builder()
+    public static KakaoInsertReq of(JsonElement element, HashMap<String, String> tokens) {
+        return KakaoInsertReq.builder()
                 .email(
                         element
                                 .getAsJsonObject()

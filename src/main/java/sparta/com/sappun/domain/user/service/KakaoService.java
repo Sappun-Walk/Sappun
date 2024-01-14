@@ -6,6 +6,11 @@ import static sparta.com.sappun.global.jwt.JwtUtil.REFRESH_TOKEN_HEADER;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jose.shaded.gson.JsonElement;
 import com.nimbusds.jose.shaded.gson.JsonParser;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -14,15 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-import org.springframework.http.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import sparta.com.sappun.domain.user.dto.request.UserInsertReq;
+import sparta.com.sappun.domain.user.dto.request.KakaoInsertReq;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.entity.UserSocialEnum;
@@ -34,10 +31,8 @@ import sparta.com.sappun.global.jwt.JwtUtil;
 @RequiredArgsConstructor
 public class KakaoService {
 
-    private final Environment env;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
@@ -67,11 +62,15 @@ public class KakaoService {
     @Value("Bearer")
     private String tokenType;
 
+    public String getKakaoLoginPage() {
+        return kakaoAuthorizationUri + "?client_id=" + kakaoClientId + "&redirect_uri=" + kakaoRedirectUri + "&response_type=code";
+    }
+
     public HashMap<String, String> kakaoLogin(String code) throws JsonProcessingException {
         // HTML에서 인증 코드(code)를 요청하여 전달받음
         HashMap<String, String> tokens = getKakaoTokens(code); // 인증 코드로 토큰 요청 getKakaoTokens
         // 받은 access 토큰으로 카카오 사용자 정보를 가져옴
-        UserInsertReq userResource = getKakaoUserInfo(tokens);
+        KakaoInsertReq userResource = getKakaoUserInfo(tokens);
         // 가져온 사용자 정보 중 이메일을 꺼냄
         String email = userResource.getEmail();
         // @의 위치를 num으로 지정한다
@@ -171,7 +170,7 @@ public class KakaoService {
         return tokens;
     }
 
-    public UserInsertReq getKakaoUserInfo(HashMap<String, String> tokens) {
+    public KakaoInsertReq getKakaoUserInfo(HashMap<String, String> tokens) {
         String userInfoUri = "";
         String authenticationMethod = "";
 
@@ -204,7 +203,7 @@ public class KakaoService {
             e.printStackTrace();
         }
 
-        return UserInsertReq.of(element, tokens);
+        return KakaoInsertReq.of(element, tokens);
     }
 
     private String makeRandomName(String name) {
