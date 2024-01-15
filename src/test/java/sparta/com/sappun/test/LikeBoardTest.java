@@ -1,6 +1,6 @@
 package sparta.com.sappun.test;
 
-import sparta.com.sappun.domain.LikeBoard.entity.LikeBoard;
+import sparta.com.sappun.domain.likeBoard.entity.LikeBoard;
 
 public interface LikeBoardTest extends UserTest, BoardTest {
 

@@ -1,6 +1,6 @@
 package sparta.com.sappun.test;
 
-import sparta.com.sappun.domain.ReportComment.entity.ReportComment;
+import sparta.com.sappun.domain.reportComment.entity.ReportComment;
 
 public interface ReportCommentTest extends CommentTest, UserTest {
 

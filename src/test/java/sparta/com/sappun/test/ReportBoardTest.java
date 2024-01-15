@@ -1,6 +1,6 @@
 package sparta.com.sappun.test;
 
-import sparta.com.sappun.domain.ReportBoard.entity.ReportBoard;
+import sparta.com.sappun.domain.reportBoard.entity.ReportBoard;
 
 public interface ReportBoardTest extends UserTest, LikeBoardTest {
     String TEST_BOARD_REPORT_REASON = "게시글 신고 테스트";

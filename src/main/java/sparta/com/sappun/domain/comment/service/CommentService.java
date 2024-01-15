@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
-import sparta.com.sappun.domain.comment.dto.request.CommentDeleteReq;
 import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
 import sparta.com.sappun.domain.comment.dto.request.CommentUpdateReq;
 import sparta.com.sappun.domain.comment.dto.response.CommentDeleteRes;
@@ -64,12 +63,13 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentDeleteRes deleteComment(CommentDeleteReq req) {
+    public CommentDeleteRes deleteComment(Long commentId, Long userId) {
+
         // 댓글이 존재하는지 확인
-        Comment comment = findComment(req.getCommentId());
+        Comment comment = findComment(commentId);
 
         // 사용자가 존재하는지 확인
-        User user = getUserById(req.getUserId());
+        User user = getUserById(userId);
 
         // 사용자가 작성자 또는 관리자인지 확인
         CommentValidator.checkCommentUser(comment.getUser(), user);
