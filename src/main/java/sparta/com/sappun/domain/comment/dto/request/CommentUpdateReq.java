@@ -13,11 +13,8 @@ public class CommentUpdateReq {
     @Size(max = 500, message = "500자 이내로 입력해주세요.") // TODO: 255글자 이상으로 작성안됨 확인필요 403Error 발생
     private String content;
 
-    private String fileURL;
-
     @Builder
-    private CommentUpdateReq(String content, String fileURL) {
+    private CommentUpdateReq(String content) {
         this.content = content;
-        this.fileURL = fileURL;
     }
 }
