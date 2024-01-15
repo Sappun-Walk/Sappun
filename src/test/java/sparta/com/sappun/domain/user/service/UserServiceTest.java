@@ -260,16 +260,6 @@ class UserServiceTest implements UserTest {
         verify(passwordEncoder).encode(newPassword);
     }
 
-//    @Test
-//    @DisplayName("비밀번호 수정 테스트 - 실패()")
-//    void updatePasswordFailureTest() {
-//        // given - 필요한 변수 생성
-//
-//        // when - 테스트할 메서드를 실제 동작
-//
-//        // then - 결과 제대로 나왔는지 확인
-//    }
-
     @Test
     @DisplayName("아이디 중복 테스트")
     void verifyUsernameTest() {
