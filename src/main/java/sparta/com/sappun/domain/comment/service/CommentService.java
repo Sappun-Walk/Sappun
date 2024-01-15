@@ -67,7 +67,7 @@ public class CommentService {
 
         // 기존 이미지
         String imageURL = comment.getFileURL();
-        if (!(imageURL == null) && !imageURL.isEmpty()) {
+        if (imageURL != null && !imageURL.isEmpty()) {
             // 기존 이미지 삭제
             s3Util.deleteFile(imageURL, S3Util.FilePath.COMMENT);
         }
@@ -95,7 +95,7 @@ public class CommentService {
         // 기존 이미지
         String imageURL = comment.getFileURL();
         // 기존 이미지가 있으면 삭제
-        if (!(imageURL == null) && !imageURL.isEmpty()) {
+        if (imageURL != null && !imageURL.isEmpty()) {
             s3Util.deleteFile(imageURL, S3Util.FilePath.COMMENT);
         }
         user.updateScore(-50); // 댓글 삭제하면 점수 -50
