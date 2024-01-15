@@ -1,4 +1,4 @@
-package sparta.com.sappun.domain.likeBoard.contorller;
+package sparta.com.sappun.domain.likeBoard.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

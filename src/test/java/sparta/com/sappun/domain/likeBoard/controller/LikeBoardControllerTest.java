@@ -1,4 +1,4 @@
-package sparta.com.sappun.domain.likeBoard.contorller;
+package sparta.com.sappun.domain.likeBoard.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

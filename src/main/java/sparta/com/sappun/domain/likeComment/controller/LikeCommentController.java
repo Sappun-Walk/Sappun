@@ -1,4 +1,4 @@
-package sparta.com.sappun.domain.likeComment.contorller;
+package sparta.com.sappun.domain.likeComment.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

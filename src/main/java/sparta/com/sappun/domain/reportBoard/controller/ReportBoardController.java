@@ -1,4 +1,4 @@
-package sparta.com.sappun.domain.reportBoard.contoroller;
+package sparta.com.sappun.domain.reportBoard.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package sparta.com.sappun.domain.likeComment.contorller;
+package sparta.com.sappun.domain.likeComment.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
