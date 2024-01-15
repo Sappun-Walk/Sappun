@@ -62,6 +62,9 @@ public class KakaoService {
     @Value("Bearer")
     private String tokenType;
 
+    @Value("${default.image.url}")
+    private String defaultProfileImage;
+
     public String getKakaoLoginPage() {
         return kakaoAuthorizationUri
                 + "?client_id="
@@ -104,7 +107,7 @@ public class KakaoService {
                             .role(Role.USER)
                             .score(0)
                             .social(UserSocialEnum.KAKAO)
-                            // TODO: 프로필 이미지 추가
+                            .profileUrl(defaultProfileImage)
                             .build();
             user = userRepository.save(newUser);
         }

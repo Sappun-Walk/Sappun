@@ -38,6 +38,17 @@
 <body>
 <div>
   <h2>User Profile</h2>
+  <!-- 메인 로고 이미지 -->
+  <img src="resources/image.jpg" alt="Logo" id="mainLogoImage">
+
+  <script>
+    // JavaScript로 이미지를 클릭했을 때의 동작을 설정
+    document.getElementById('mainImage').addEventListener('click', function() {
+      // 이미지를 클릭했을 때 메인 페이지로 이동하는 코드
+      window.location.href = 'resources/main-page.html';
+    });
+  </script>
+
   <div class="profile-info">
   <div class="profile-image-group">
     <img th:src="${userProfile.profileUrl}" alt="Profile Picture" class="profile-image">

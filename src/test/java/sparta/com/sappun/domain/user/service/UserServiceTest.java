@@ -4,9 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static sparta.com.sappun.global.response.ResultCode.DUPLICATED_EMAIL;
 import static sparta.com.sappun.global.response.ResultCode.NOT_MATCHED_PASSWORD;
 
+import java.io.IOException;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,15 +18,22 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
+import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
 import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
+import sparta.com.sappun.domain.user.dto.response.UserProfileUpdateRes;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.exception.GlobalException;
+import sparta.com.sappun.infra.s3.S3Util;
 import sparta.com.sappun.test.UserTest;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,9 +42,23 @@ class UserServiceTest implements UserTest {
 
     @Mock PasswordEncoder passwordEncoder;
 
+    @Mock S3Util s3Util;
+
     @InjectMocks UserService userService;
 
     @Captor ArgumentCaptor<User> argumentCaptor;
+
+    static MultipartFile multipartFile;
+
+    @BeforeAll
+    static void setUpProfile() throws IOException {
+        String imageUrl = "images/image1.jpg";
+        Resource fileResource = new ClassPathResource(imageUrl);
+
+        multipartFile =
+                new MockMultipartFile(
+                        "image", fileResource.getFilename(), IMAGE_JPEG_VALUE, fileResource.getInputStream());
+    }
 
     @Test
     @DisplayName("signup 테스트 - 성공")
@@ -49,14 +73,18 @@ class UserServiceTest implements UserTest {
                         .confirmPassword(TEST_USER_PASSWORD)
                         .build();
 
+        when(userRepository.existsByEmail(any())).thenReturn(false);
+        when(s3Util.uploadFile(any(), any())).thenReturn(TEST_USER_PROFILE_URL);
+
         // when
-        userService.signup(req);
+        userService.signup(req, multipartFile);
 
         // then
         verify(userRepository).save(argumentCaptor.capture());
         verify(passwordEncoder).encode(TEST_USER_PASSWORD);
         assertEquals(TEST_USER_USERNAME, argumentCaptor.getValue().getUsername());
         assertEquals(TEST_USER_NICKNAME, argumentCaptor.getValue().getNickname());
+        assertEquals(TEST_USER_PROFILE_URL, argumentCaptor.getValue().getProfileUrl());
         assertEquals(TEST_USER_EMAIL, argumentCaptor.getValue().getEmail());
         assertEquals(0, argumentCaptor.getValue().getScore());
     }
@@ -79,7 +107,7 @@ class UserServiceTest implements UserTest {
                 assertThrows(
                         GlobalException.class,
                         () -> {
-                            userService.signup(req);
+                            userService.signup(req, multipartFile);
                         });
 
         // then
@@ -106,7 +134,7 @@ class UserServiceTest implements UserTest {
                 assertThrows(
                         GlobalException.class,
                         () -> {
-                            userService.signup(req);
+                            userService.signup(req, multipartFile);
                         });
 
         // then
@@ -146,6 +174,30 @@ class UserServiceTest implements UserTest {
         // then
         verify(userRepository).findById(any());
         verify(userRepository).delete(any());
+    }
+
+    @Test
+    @DisplayName("프로필 수정 테스트")
+    void updateProfileTest() {
+        // given
+        String updatedUsername = "updatedUsername";
+        String updatedNickname = "updatedNickname";
+
+        UserProfileUpdateReq req =
+                UserProfileUpdateReq.builder().username(updatedUsername).nickname(updatedNickname).build();
+
+        when(userRepository.findById(any())).thenReturn(TEST_USER);
+        ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
+        when(s3Util.uploadFile(any(), any())).thenReturn(TEST_USER_PROFILE_URL);
+
+        // when
+        UserProfileUpdateRes res = userService.updateProfile(req, multipartFile);
+
+        // then
+        assertEquals(TEST_USER_ID, res.getId());
+        assertEquals(updatedUsername, res.getUsername());
+        assertEquals(updatedNickname, res.getNickname());
+        assertEquals(TEST_USER_PROFILE_URL, res.getProfileUrl());
     }
 
     @Test
