@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sparta.com.sappun.domain.ReportBoard.dto.request.ReportBoardReq;
 import sparta.com.sappun.domain.ReportBoard.dto.response.DeleteReportBoardRes;
+import sparta.com.sappun.domain.ReportBoard.dto.response.ReportBoardGetRes;
+import sparta.com.sappun.domain.ReportBoard.dto.response.ReportBoardListGetRes;
 import sparta.com.sappun.domain.ReportBoard.dto.response.ReportBoardRes;
 import sparta.com.sappun.domain.ReportBoard.entity.ReportBoard;
 import sparta.com.sappun.domain.ReportBoard.repository.ReportBoardRepository;
@@ -72,5 +74,13 @@ public class ReportBoardService {
         Board board = boardRepository.findById(boardId);
         BoardValidator.validate(board);
         return board;
+    }
+
+    @Transactional
+    public ReportBoardListGetRes getReportBoardList() {
+        List<ReportBoardGetRes> reportBoards =
+                ReportBoardServiceMapper.INSTANCE.toReportBoardListGetRes(
+                        reportBoardRepository.findAllFetchBoard());
+        return ReportBoardListGetRes.builder().reportBoards(reportBoards).build();
     }
 }

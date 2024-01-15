@@ -31,14 +31,14 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public BoardListGetRes getBoardList(RegionEnum region) {
-        List<BoardGetRes> boardGetRes =
+        List<BoardToListGetRes> boardGetRes =
                 BoardServiceMapper.INSTANCE.toBoardListGetRes(boardRepository.findAllByRegion(region));
         return BoardListGetRes.builder().boards(boardGetRes).build();
     }
 
     @Transactional(readOnly = true)
     public BoardBestListGetRes getBoardBestList() {
-        List<BoardGetRes> boardGetRes =
+        List<BoardToListGetRes> boardGetRes =
                 BoardServiceMapper.INSTANCE.toBoardBestListGetRes(
                         boardRepository.findTop3ByOrderByLikeBoardDesc());
         return BoardBestListGetRes.builder().boards(boardGetRes).build();
