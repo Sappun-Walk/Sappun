@@ -37,11 +37,13 @@ public class CommentService {
         // 사용자 아이디 조회 로직
         User user = getUserById(req.getUserId());
 
-        // 이미지 파일인지 확인
-        S3Validator.isProfileImageFile(multipartFile);
-        // 이미지 업로드
-        String fileImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.COMMENT);
-
+        String fileImage = null;
+        if (multipartFile != null && !multipartFile.isEmpty()) { // 이미지 입력이 있는 경우
+            // 이미지 파일인지 확인
+            S3Validator.isProfileImageFile(multipartFile);
+            // 이미지 업로드
+            fileImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.COMMENT);
+        }
         user.updateScore(50); // 댓글 작성하면 점수 +50
 
         return CommentServiceMapper.INSTANCE.toCommentSaveRes(
@@ -63,10 +65,13 @@ public class CommentService {
         // 사용자가 작성자인지 확인
         CommentValidator.checkCommentUser(comment.getUser().getId(), user.getId());
 
+
         // 기존 이미지
         String imageURL = comment.getFileURL();
-        // 기존 이미지 삭제
-        s3Util.deleteFile(imageURL, S3Util.FilePath.COMMENT);
+        if (!(imageURL == null) || !imageURL.isEmpty()) {
+            // 기존 이미지 삭제
+            s3Util.deleteFile(imageURL, S3Util.FilePath.COMMENT);
+        }
         // 이미지 파일인지 확인
         S3Validator.isProfileImageFile(multipartFile);
         // 이미지 업로드
@@ -90,9 +95,10 @@ public class CommentService {
 
         // 기존 이미지
         String imageURL = comment.getFileURL();
-        // 기존 이미지 삭제
-        s3Util.deleteFile(imageURL, S3Util.FilePath.COMMENT);
-
+        // 기존 이미지가 있으면 삭제
+        if (!(imageURL == null) || !imageURL.isEmpty()) {
+            s3Util.deleteFile(imageURL, S3Util.FilePath.COMMENT);
+        }
         user.updateScore(-50); // 댓글 삭제하면 점수 -50
 
         // 댓글 삭제 로직
