@@ -127,7 +127,9 @@ public class NaverService {
 
         // refresh token 저장
         redisUtil.set(
-            jwtUtil.getTokenWithoutBearer(tokens.get(REFRESH_TOKEN_HEADER)), user.getId(), REFRESH_TOKEN_EXPIRED_TIME);
+                jwtUtil.getTokenWithoutBearer(tokens.get(REFRESH_TOKEN_HEADER)),
+                user.getId(),
+                REFRESH_TOKEN_EXPIRED_TIME);
 
         return returnTokens;
     }
