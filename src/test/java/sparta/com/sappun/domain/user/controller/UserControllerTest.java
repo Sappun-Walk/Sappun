@@ -266,4 +266,30 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("닉네임 중복 테스트")
+    void verifyNicknameTest() throws Exception {
+        // given - 필요한 변수 생성
+        NicknameVerifyReq req = NicknameVerifyReq
+                .builder()
+                .nickname(TEST_USER_NICKNAME)
+                .build();
+
+        NicknameVerifyRes res = NicknameVerifyRes
+                .builder()
+                .isDuplicated(true)
+                .build();
+
+        when(userService.verifyNickname(req)).thenReturn(res);
+
+        // when - then - 테스트할 메서드를 실제 동작 & 결과 제대로 나왔는지 확인
+        mockMvc
+                .perform(post("/api/users/nickname")
+                        .content(objectMapper.writeValueAsString(req))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .principal(mockPrincipal))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }

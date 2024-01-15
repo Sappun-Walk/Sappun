@@ -288,4 +288,23 @@ class UserServiceTest implements UserTest {
         // then - 결과 제대로 나왔는지 확인
         assertTrue(res.getIsDuplicated());
     }
+
+    @Test
+    @DisplayName("닉네임 중복 테스트")
+    void verifyNicknameTest() {
+        // given - 필요한 변수 생성
+        NicknameVerifyReq req =
+                NicknameVerifyReq
+                        .builder()
+                        .nickname(TEST_USER_NICKNAME)
+                        .build();
+
+        when(userRepository.existsByNickname(any())).thenReturn(true);
+
+        // when - 테스트할 메서드를 실제 동작
+        NicknameVerifyRes res = userService.verifyNickname(req);
+
+        // then - 결과 제대로 나왔는지 확인
+        assertTrue(res.getIsDuplicated());
+    }
 }
