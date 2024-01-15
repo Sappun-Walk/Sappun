@@ -10,13 +10,13 @@ public class CommentGetRes {
     private Long id;
     private String nickname;
     private String content;
-    private String fileUrl;
+    private String fileURL;
 
     @Builder
-    private CommentGetRes(Long id, String nickname, String content, String fileUrl) {
+    private CommentGetRes(Long id, String nickname, String content, String fileURL) {
         this.id = id;
         this.nickname = nickname;
         this.content = content;
-        this.fileUrl = fileUrl;
+        this.fileURL = fileURL;
     }
 }

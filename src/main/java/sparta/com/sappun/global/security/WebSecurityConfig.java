@@ -80,9 +80,11 @@ public class WebSecurityConfig {
                                 .requestMatchers(DELETE, "/api/boards/{boardId}/report")
                                 .hasAuthority(ADMIN.getAuthority()) // 게시글 신고 삭제는 관리자만 가능
                                 .requestMatchers(DELETE, "/api/comments/{commentId}/report")
-                                .hasAuthority(ADMIN.getAuthority()) // 게시글 신고 삭제는 관리자만 가능
+                                .hasAuthority(ADMIN.getAuthority()) // 댓글 신고 삭제는 관리자만 가능
                                 .requestMatchers(GET, "/api/boards/reports")
                                 .hasAuthority(ADMIN.getAuthority()) // 신고된 게시글 목록 조회는 관리자만 가능
+                                .requestMatchers(GET, "/api/comments/reports")
+                                .hasAuthority(ADMIN.getAuthority()) // 신고된 댓글 목록 조회는 관리자만 가능
                                 .anyRequest()
                                 .authenticated() // 그 외 모든 요청 인증처리
                 );

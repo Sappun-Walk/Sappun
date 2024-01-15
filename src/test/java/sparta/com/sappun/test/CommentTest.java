@@ -15,16 +15,16 @@ public interface CommentTest extends UserTest {
     Comment TEST_COMMENT =
             Comment.builder()
                     .content(TEST_COMMENT_CONTENT)
-                    .fileUrl(TEST_COMMENT_FILEURL)
+                    .fileURL(TEST_COMMENT_FILEURL)
                     .user(TEST_USER)
                     .build();
 
     CommentSaveReq TEST_COMMENT_SAVE =
-            CommentSaveReq.builder().content(TEST_COMMENT_CONTENT).fileUrl(TEST_COMMENT_FILEURL).build();
+            CommentSaveReq.builder().content(TEST_COMMENT_CONTENT).fileURL(TEST_COMMENT_FILEURL).build();
 
     CommentUpdateReq TEST_COMMENT_UPDATE =
             CommentUpdateReq.builder()
                     .content(TEST_COMMENT_UPDATE_CONTENT)
-                    .fileUrl(TEST_COMMENT_FILEURL)
+                    .fileURL(TEST_COMMENT_FILEURL)
                     .build();
 }

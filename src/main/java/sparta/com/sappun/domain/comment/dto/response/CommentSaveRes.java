@@ -11,13 +11,13 @@ public class CommentSaveRes {
     private Long id;
     private String nickname;
     private String content;
-    private String fileUrl;
+    private String fileURL;
 
     @Builder
-    private CommentSaveRes(Long id, String nickname, String content, String fileUrl) {
+    private CommentSaveRes(Long id, String nickname, String content, String fileURL) {
         this.id = id;
         this.nickname = nickname;
         this.content = content;
-        this.fileUrl = fileUrl;
+        this.fileURL = fileURL;
     }
 }
