@@ -177,7 +177,7 @@ class UserServiceTest implements UserTest {
     @DisplayName("프로필 조회 테스트 - 성공")
     void getProfileTest() {
         // given - 필요한 변수 생성
-        when(userRepository.findById(any())).thenReturn(TEST_USER);
+        when(userRepository.findById(TEST_USER_ID)).thenReturn(TEST_USER);
         ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
 
         // when - 테스트할 메서드를 실제 동작
@@ -218,15 +218,15 @@ class UserServiceTest implements UserTest {
         UserProfileUpdateReq req =
                 UserProfileUpdateReq.builder().username(updatedUsername).nickname(updatedNickname).build();
 
-        when(userRepository.findById(any())).thenReturn(TEST_USER);
-        ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
+        when(userRepository.findById(any())).thenReturn(TEST_USER2);
+        ReflectionTestUtils.setField(TEST_USER2, "id", 2L);
         when(s3Util.uploadFile(any(), any())).thenReturn(TEST_USER_PROFILE_URL);
 
         // when
         UserProfileUpdateRes res = userService.updateProfile(req, multipartFile);
 
         // then
-        assertEquals(TEST_USER_ID, res.getId());
+        assertEquals(2L, res.getId());
         assertEquals(updatedUsername, res.getUsername());
         assertEquals(updatedNickname, res.getNickname());
         assertEquals(TEST_USER_PROFILE_URL, res.getProfileUrl());

@@ -25,4 +25,16 @@ public interface UserTest {
                     .social(UserSocialEnum.LOCAL)
                     .score(0)
                     .build();
+
+    User TEST_USER2 =
+            User.builder()
+                    .username(TEST_USER_USERNAME)
+                    .nickname(TEST_USER_NICKNAME)
+                    .password(TEST_USER_PASSWORD)
+                    .profileUrl(TEST_USER_PROFILE_URL)
+                    .email(TEST_USER_EMAIL)
+                    .role(Role.USER)
+                    .social(UserSocialEnum.LOCAL)
+                    .score(0)
+                    .build();
 }
