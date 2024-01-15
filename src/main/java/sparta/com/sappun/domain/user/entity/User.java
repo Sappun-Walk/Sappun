@@ -63,10 +63,10 @@ public class User extends TimeStamp {
     }
 
     // 프로필 수정
-    public void updateProfile(UserProfileUpdateReq req) {
+    public void updateProfile(UserProfileUpdateReq req, String profileUrl) {
         this.username = req.getUsername();
         this.nickname = req.getNickname();
-        this.profileUrl = req.getProfileUrl();
+        this.profileUrl = profileUrl;
     }
 
     // 비밀번호 수정

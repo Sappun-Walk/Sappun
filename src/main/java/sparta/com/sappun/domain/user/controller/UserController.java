@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.user.dto.request.*;
 import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.service.UserService;
@@ -34,8 +35,9 @@ public class UserController {
 
     @PostMapping("/signup")
     public CommonResponse<UserSignupRes> signup(
-            @RequestBody @Valid UserSignupReq req) { // TODO: 프로필 사진 입력받기
-        return CommonResponse.success(userService.signup(req));
+            @RequestPart(name = "data") @Valid UserSignupReq req,
+            @RequestPart(name = "image", required = false) MultipartFile multipartfile) {
+        return CommonResponse.success(userService.signup(req, multipartfile));
     }
 
     @PostMapping("/login")
@@ -89,10 +91,11 @@ public class UserController {
     // 프로필 수정
     @PatchMapping("/profile")
     public CommonResponse<UserProfileUpdateRes> updateProfile(
-            @RequestBody @Valid UserProfileUpdateReq req,
+            @RequestPart(name = "data") @Valid UserProfileUpdateReq req,
+            @RequestPart(name = "image", required = false) MultipartFile multipartfile,
             @AuthenticationPrincipal UserDetailsImpl userDetails) { // TODO: 프로필 사진 입력받기
         req.setId(userDetails.getUser().getId());
-        return CommonResponse.success(userService.updateProfile(req));
+        return CommonResponse.success(userService.updateProfile(req, multipartfile));
     }
 
     // 비밀번호 수정

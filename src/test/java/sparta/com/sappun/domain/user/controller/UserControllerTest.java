@@ -47,7 +47,7 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
         UserSignupRes res = new UserSignupRes();
 
         // when
-        when(userService.signup(any())).thenReturn(res);
+        when(userService.signup(any(), any())).thenReturn(res);
 
         // then
         mockMvc
