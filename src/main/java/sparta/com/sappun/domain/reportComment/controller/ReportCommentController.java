@@ -8,8 +8,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sparta.com.sappun.domain.reportComment.dto.request.ReportCommentReq;
 import sparta.com.sappun.domain.reportComment.dto.response.DeleteReportCommentRes;
+import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentListGetRes;
 import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentRes;
 import sparta.com.sappun.domain.reportComment.service.ReportCommentService;
+import sparta.com.sappun.global.response.CommonResponse;
 import sparta.com.sappun.global.security.UserDetailsImpl;
 
 @RestController
@@ -31,5 +33,10 @@ public class ReportCommentController {
     public ResponseEntity<DeleteReportCommentRes> deleteReportedComment(
             @PathVariable Long commentId) {
         return ResponseEntity.ok(reportCommentService.deleteReportComment(commentId));
+    }
+
+    @GetMapping("/reports") // 필터에서 관리자만 접근하도록 막기
+    public CommonResponse<ReportCommentListGetRes> getReportCommentList() {
+        return CommonResponse.success(reportCommentService.getReportCommentList());
     }
 }
