@@ -65,7 +65,6 @@ public class CommentService {
         // 사용자가 작성자인지 확인
         CommentValidator.checkCommentUser(comment.getUser().getId(), user.getId());
 
-
         // 기존 이미지
         String imageURL = comment.getFileURL();
         if (!(imageURL == null) || !imageURL.isEmpty()) {
