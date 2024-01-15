@@ -33,7 +33,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private static final List<RequestMatcher> whiteList =
             List.of(
                     new AntPathRequestMatcher("/api/users/signup", HttpMethod.POST.name()),
-                    new AntPathRequestMatcher("/api/users/login", HttpMethod.POST.name()));
+                    new AntPathRequestMatcher("/api/users/login", HttpMethod.POST.name()),
+                    new AntPathRequestMatcher("/api/boards/best", HttpMethod.GET.name()),
+                    new AntPathRequestMatcher("/api/boards/{boardId}", HttpMethod.GET.name()),
+                    new AntPathRequestMatcher("/api/boards/region", HttpMethod.GET.name()));
 
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;

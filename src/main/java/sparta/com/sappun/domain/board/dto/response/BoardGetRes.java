@@ -11,6 +11,7 @@ import sparta.com.sappun.domain.comment.dto.response.CommentGetRes;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardGetRes {
+    private Long id;
     private String nickname;
     private String title;
     private String content;
@@ -24,6 +25,7 @@ public class BoardGetRes {
 
     @Builder
     private BoardGetRes(
+            Long id,
             String nickname,
             String title,
             String content,
@@ -33,6 +35,7 @@ public class BoardGetRes {
             List<String> stopover,
             RegionEnum region,
             List<CommentGetRes> comments) {
+        this.id = id;
         this.nickname = nickname;
         this.title = title;
         this.content = content;

@@ -8,10 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
 
@@ -31,7 +28,7 @@ public class User extends TimeStamp {
     private String nickname; // 사용자 닉네임
 
     @Column(unique = true)
-    private String email;
+    private String email; // 사용자 이메일
 
     private String password;
 
@@ -42,6 +39,9 @@ public class User extends TimeStamp {
 
     private Integer score;
 
+    @Enumerated(EnumType.STRING)
+    private UserSocialEnum social;
+
     @Builder
     private User(
             String username,
@@ -50,7 +50,8 @@ public class User extends TimeStamp {
             String password,
             String profileUrl,
             Role role,
-            Integer score) {
+            Integer score,
+            UserSocialEnum social) {
         this.username = username;
         this.nickname = nickname;
         this.email = email;
@@ -58,6 +59,7 @@ public class User extends TimeStamp {
         this.profileUrl = profileUrl;
         this.role = role;
         this.score = score;
+        this.social = social;
     }
 
     // 프로필 수정
