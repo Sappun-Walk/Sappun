@@ -21,6 +21,7 @@ public interface ReportCommentServiceMapper {
     List<ReportCommentGetRes> toReportCommentListGetRes(List<ReportComment> reportComments);
 
     @Mapping(source = "user.nickname", target = "nickname")
+    @Mapping(source = "comment.board.id", target = "boardId")
     ReportCommentGetRes toReportCommentGetRes(ReportComment reportComment);
 
     @Mapping(source = "user.nickname", target = "nickname")

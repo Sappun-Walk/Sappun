@@ -17,7 +17,7 @@ public class CommentToReportGetRes {
     private Integer reportCount;
 
     @Builder
-    public CommentToReportGetRes(
+    private CommentToReportGetRes(
             Long id,
             String nickname,
             String content,
