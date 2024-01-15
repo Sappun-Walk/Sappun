@@ -3,8 +3,7 @@ package sparta.com.sappun.domain.user.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,13 +22,8 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import sparta.com.sappun.domain.BaseMvcTest;
-import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
-import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
-import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
-import sparta.com.sappun.domain.user.dto.response.UserDeleteRes;
-import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
-import sparta.com.sappun.domain.user.dto.response.UserProfileUpdateRes;
-import sparta.com.sappun.domain.user.dto.response.UserSignupRes;
+import sparta.com.sappun.domain.user.dto.request.*;
+import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.service.UserService;
 import sparta.com.sappun.global.jwt.JwtUtil;
@@ -160,6 +154,27 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
     }
 
     @Test
+    @DisplayName("프로필 조회 테스트")
+    void getProfileTest() throws Exception {
+        // given - 필요한 변수 생성
+        UserProfileRes res =
+                UserProfileRes.builder()
+                        .id(TEST_USER_ID)
+                        .username(TEST_USER_USERNAME)
+                        .nickname(TEST_USER_NICKNAME)
+                        .role(Role.USER)
+                        .build();
+
+        when(userService.getProfile(TEST_USER_ID)).thenReturn(res);
+
+        // when - then - 테스트할 메서드를 실제 동작 & 결과 제대로 나왔는지 확인
+        mockMvc
+                .perform(get("/api/users").principal(mockPrincipal))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
     @DisplayName("프로필 수정 테스트")
     void updateProfileTest() throws Exception {
         // given
@@ -203,13 +218,70 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
     }
 
     @Test
-    @DisplayName("프로필 조회 테스트")
-    void getProfileTest() {
+    @DisplayName("비밀번호 수정 테스트")
+    void updatePasswordTest() throws Exception {
         // given - 필요한 변수 생성
+        UserPasswordUpdateReq req =
+                UserPasswordUpdateReq.builder()
+                        .prePassword(TEST_USER_PASSWORD)
+                        .newPassword(TEST_USER_NEW_PASSWORD)
+                        .confirmPassword(TEST_USER_NEW_PASSWORD)
+                        .build();
 
-        // when - 테스트할 메서드를 실제 동작
+        UserPasswordUpdateRes res = new UserPasswordUpdateRes();
 
-        // then - 결과 제대로 나왔는지 확인
+        when(userService.updatePassword(req)).thenReturn(res);
 
+        // when - then - 테스트할 메서드를 실제 동작 & 결과 제대로 나왔는지 확인
+        mockMvc
+                .perform(
+                        patch("/api/users/profile/password")
+                                .content(objectMapper.writeValueAsString(req))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .principal(mockPrincipal))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("아이디 중복 테스트")
+    void verifyUsernameTest() throws Exception {
+        // given - 필요한 변수 생성
+        UsernameVerifyReq req = UsernameVerifyReq.builder().username(TEST_USER_USERNAME).build();
+
+        UsernameVerifyRes res = UsernameVerifyRes.builder().isDuplicated(true).build();
+
+        when(userService.verifyUsername(req)).thenReturn(res);
+
+        // when - then - 테스트할 메서드를 실제 동작 & 결과 제대로 나왔는지 확인
+        mockMvc
+                .perform(
+                        post("/api/users/username")
+                                .content(objectMapper.writeValueAsString(req))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .principal(mockPrincipal))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("닉네임 중복 테스트")
+    void verifyNicknameTest() throws Exception {
+        // given - 필요한 변수 생성
+        NicknameVerifyReq req = NicknameVerifyReq.builder().nickname(TEST_USER_NICKNAME).build();
+
+        NicknameVerifyRes res = NicknameVerifyRes.builder().isDuplicated(true).build();
+
+        when(userService.verifyNickname(req)).thenReturn(res);
+
+        // when - then - 테스트할 메서드를 실제 동작 & 결과 제대로 나왔는지 확인
+        mockMvc
+                .perform(
+                        post("/api/users/nickname")
+                                .content(objectMapper.writeValueAsString(req))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .principal(mockPrincipal))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }

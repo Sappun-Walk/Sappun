@@ -1,12 +1,12 @@
 package sparta.com.sappun.domain.user.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
-import static sparta.com.sappun.global.response.ResultCode.DUPLICATED_EMAIL;
-import static sparta.com.sappun.global.response.ResultCode.NOT_MATCHED_PASSWORD;
+import static sparta.com.sappun.global.response.ResultCode.*;
 
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,11 +24,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
-import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
-import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
-import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
-import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
-import sparta.com.sappun.domain.user.dto.response.UserProfileUpdateRes;
+import sparta.com.sappun.domain.user.dto.request.*;
+import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
@@ -177,6 +174,41 @@ class UserServiceTest implements UserTest {
     }
 
     @Test
+    @DisplayName("프로필 조회 테스트 - 성공")
+    void getProfileTest() {
+        // given - 필요한 변수 생성
+        when(userRepository.findById(TEST_USER_ID)).thenReturn(TEST_USER);
+        ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
+
+        // when - 테스트할 메서드를 실제 동작
+        UserProfileRes res = userService.getProfile(TEST_USER_ID);
+
+        // then - 결과 제대로 나왔는지 확인
+        assertEquals(TEST_USER_ID, res.getId());
+        assertEquals(TEST_USER_USERNAME, res.getUsername());
+        assertEquals(TEST_USER_NICKNAME, res.getNickname());
+        assertEquals(Role.USER, res.getRole());
+    }
+
+    @Test
+    @DisplayName("프로필 조회 테스트 - 실패(사용자를 찾지 못함)")
+    void getProfileFailureTest() {
+        // given - 필요한 변수 생성
+        when(userRepository.findById(TEST_USER_ID)).thenReturn(null);
+
+        // when
+        GlobalException exception =
+                assertThrows(
+                        GlobalException.class,
+                        () -> {
+                            userService.getProfile(TEST_USER_ID);
+                        });
+
+        // then
+        assertEquals(NOT_FOUND_USER.getMessage(), exception.getResultCode().getMessage());
+    }
+
+    @Test
     @DisplayName("프로필 수정 테스트")
     void updateProfileTest() {
         // given
@@ -186,37 +218,72 @@ class UserServiceTest implements UserTest {
         UserProfileUpdateReq req =
                 UserProfileUpdateReq.builder().username(updatedUsername).nickname(updatedNickname).build();
 
-        when(userRepository.findById(any())).thenReturn(TEST_USER);
-        ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
+        when(userRepository.findById(any())).thenReturn(TEST_USER2);
+        ReflectionTestUtils.setField(TEST_USER2, "id", 2L);
         when(s3Util.uploadFile(any(), any())).thenReturn(TEST_USER_PROFILE_URL);
 
         // when
         UserProfileUpdateRes res = userService.updateProfile(req, multipartFile);
 
         // then
-        assertEquals(TEST_USER_ID, res.getId());
+        assertEquals(2L, res.getId());
         assertEquals(updatedUsername, res.getUsername());
         assertEquals(updatedNickname, res.getNickname());
         assertEquals(TEST_USER_PROFILE_URL, res.getProfileUrl());
     }
 
     @Test
-    @DisplayName("프로필 조회 테스트 - 성공")
-    void getProfileTest() {
+    @DisplayName("비밀번호 수정 테스트 - 성공")
+    void updatePasswordTest() {
         // given - 필요한 변수 생성
+        String prePassword = "prePassword";
+        String newPassword = "newPassword";
+
+        UserPasswordUpdateReq req =
+                UserPasswordUpdateReq.builder()
+                        .prePassword(prePassword)
+                        .newPassword(newPassword)
+                        .confirmPassword(newPassword)
+                        .build();
+
+        when(userRepository.findById(any())).thenReturn(TEST_USER);
+        when(passwordEncoder.matches(any(), any())).thenReturn(true);
+        when(passwordEncoder.encode(any())).thenReturn(newPassword);
 
         // when - 테스트할 메서드를 실제 동작
+        userService.updatePassword(req);
 
-        // then - 결과 제대로 나왔는지 확인
+        // then
+        verify(passwordEncoder).encode(newPassword);
     }
 
     @Test
-    @DisplayName("프로필 조회 테스트 - 실패")
-    void getProfileFailureTest() {
+    @DisplayName("아이디 중복 테스트")
+    void verifyUsernameTest() {
         // given - 필요한 변수 생성
+        UsernameVerifyReq req = UsernameVerifyReq.builder().username(TEST_USER_USERNAME).build();
+
+        when(userRepository.existsByUsername(any())).thenReturn(true);
 
         // when - 테스트할 메서드를 실제 동작
+        UsernameVerifyRes res = userService.verifyUsername(req);
 
         // then - 결과 제대로 나왔는지 확인
+        assertTrue(res.getIsDuplicated());
+    }
+
+    @Test
+    @DisplayName("닉네임 중복 테스트")
+    void verifyNicknameTest() {
+        // given - 필요한 변수 생성
+        NicknameVerifyReq req = NicknameVerifyReq.builder().nickname(TEST_USER_NICKNAME).build();
+
+        when(userRepository.existsByNickname(any())).thenReturn(true);
+
+        // when - 테스트할 메서드를 실제 동작
+        NicknameVerifyRes res = userService.verifyNickname(req);
+
+        // then - 결과 제대로 나왔는지 확인
+        assertTrue(res.getIsDuplicated());
     }
 }
