@@ -16,11 +16,7 @@ public class NaverInsertReq {
     public static NaverInsertReq of(JsonElement element, HashMap<String, String> tokens) {
         return NaverInsertReq.builder()
                 .email(
-                        element
-                                .getAsJsonObject()
-                                .get("response")
-                                .getAsJsonObject()
-                                .get("email").getAsString())
+                        element.getAsJsonObject().get("response").getAsJsonObject().get("email").getAsString())
                 .nickname(
                         element
                                 .getAsJsonObject()

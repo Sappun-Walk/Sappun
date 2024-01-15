@@ -70,6 +70,8 @@ public class WebSecurityConfig {
                                 .permitAll() // 회원가입, 로그인 API만 접근 허용
                                 .requestMatchers("/api/users/kakao/callback/**")
                                 .permitAll()
+                                .requestMatchers("/api/users/naver/callback/**")
+                                .permitAll()
                                 .requestMatchers("/**.html")
                                 .permitAll()
                                 .requestMatchers(DELETE, "/api/boards/{boardId}/report")

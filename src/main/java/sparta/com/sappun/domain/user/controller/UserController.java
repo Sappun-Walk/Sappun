@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sparta.com.sappun.domain.user.dto.request.*;
 import sparta.com.sappun.domain.user.dto.response.*;
-import sparta.com.sappun.domain.user.service.KakaoService;
 import sparta.com.sappun.domain.user.service.UserService;
 import sparta.com.sappun.global.jwt.JwtUtil;
 import sparta.com.sappun.global.redis.RedisUtil;
@@ -32,7 +31,6 @@ public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
-    private final KakaoService kakaoService;
 
     @PostMapping("/signup")
     public CommonResponse<UserSignupRes> signup(
