@@ -36,6 +36,7 @@ public class ReportBoardService {
 
         ReportBoardValidator.checkReport(
                 reportBoardRepository.existsReportBoardByBoardAndUser(board, user)); // 이미 신고했다면 예외처리
+        board.clickReportBoard(1);
 
         ReportBoard reportBoard =
                 reportBoardRepository.save(
@@ -66,7 +67,7 @@ public class ReportBoardService {
 
         // 신고 내역 삭제
         reportBoardRepository.clearReportBoardByBoard(board);
-
+        board.clickReportBoard(-board.getReportCount());
         return new DeleteReportBoardRes();
     }
 
