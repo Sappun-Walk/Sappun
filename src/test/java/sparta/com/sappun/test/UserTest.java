@@ -10,6 +10,7 @@ public interface UserTest {
     String TEST_USER_USERNAME = "username";
     String TEST_USER_NICKNAME = "nickname";
     String TEST_USER_PASSWORD = "abc123@";
+    String TEST_USER_NEWPASSWORD = "cba321@";
     String TEST_USER_EMAIL = "aaa@aa.aa";
     String TEST_USER_PROFILE_URL = "resources/profile/image1.png";
 

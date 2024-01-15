@@ -1,6 +1,7 @@
 package sparta.com.sappun.domain.user.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,9 +25,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
+import sparta.com.sappun.domain.user.dto.request.UserPasswordUpdateReq;
 import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
 import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
+import sparta.com.sappun.domain.user.dto.response.UserPasswordUpdateRes;
 import sparta.com.sappun.domain.user.dto.response.UserProfileRes;
 import sparta.com.sappun.domain.user.dto.response.UserProfileUpdateRes;
 import sparta.com.sappun.domain.user.entity.Role;
@@ -35,6 +38,8 @@ import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.exception.GlobalException;
 import sparta.com.sappun.infra.s3.S3Util;
 import sparta.com.sappun.test.UserTest;
+
+import javax.management.Descriptor;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest implements UserTest {
@@ -234,4 +239,40 @@ class UserServiceTest implements UserTest {
         assertEquals(updatedNickname, res.getNickname());
         assertEquals(TEST_USER_PROFILE_URL, res.getProfileUrl());
     }
+
+    @Test
+    @DisplayName("비밀번호 수정 테스트 - 성공")
+    void updatePasswordTest() {
+        // given - 필요한 변수 생성
+        String prePassword = "prePassword";
+        String newPassword = "newPassword";
+
+        UserPasswordUpdateReq req =
+                UserPasswordUpdateReq
+                        .builder()
+                        .prePassword(prePassword)
+                        .newPassword(newPassword)
+                        .confirmPassword(newPassword)
+                        .build();
+
+        when(userRepository.findById(any())).thenReturn(TEST_USER);
+        when(passwordEncoder.matches(any(), any())).thenReturn(true);
+        when(passwordEncoder.encode(any())).thenReturn(newPassword);
+
+        // when - 테스트할 메서드를 실제 동작
+        userService.updatePassword(req);
+
+        // then
+        verify(passwordEncoder).encode(newPassword);
+    }
+
+//    @Test
+//    @DisplayName("비밀번호 수정 테스트 - 실패()")
+//    void updatePasswordFailureTest() {
+//        // given - 필요한 변수 생성
+//
+//        // when - 테스트할 메서드를 실제 동작
+//
+//        // then - 결과 제대로 나왔는지 확인
+//    }
 }

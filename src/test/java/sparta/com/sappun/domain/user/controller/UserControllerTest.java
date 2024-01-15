@@ -216,4 +216,29 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("비밀번호 수정 테스트")
+    void updatePasswordTest() throws Exception {
+        // given - 필요한 변수 생성
+        UserPasswordUpdateReq req = UserPasswordUpdateReq
+                .builder()
+                .prePassword(TEST_USER_PASSWORD)
+                .newPassword(TEST_USER_NEWPASSWORD)
+                .confirmPassword(TEST_USER_NEWPASSWORD)
+                .build();
+
+        UserPasswordUpdateRes res = new UserPasswordUpdateRes();
+
+        when(userService.updatePassword(req)).thenReturn(res);
+
+        // when - then - 테스트할 메서드를 실제 동작 & 결과 제대로 나왔는지 확인
+        mockMvc
+                .perform(patch("/api/users/profile/password")
+                        .content(objectMapper.writeValueAsString(req))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .principal(mockPrincipal))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }

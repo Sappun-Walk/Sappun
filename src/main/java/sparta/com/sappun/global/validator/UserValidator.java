@@ -52,8 +52,8 @@ public class UserValidator {
         }
     }
 
-    public static void checkEqualsPassword(boolean isDuplicated) {
-        if (isDuplicated) {
+    public static void checkEqualsPassword(boolean isMatched) {
+        if (!isMatched) {
             throw new GlobalException(DIFFERENT_PASSWORD);
         }
     }
