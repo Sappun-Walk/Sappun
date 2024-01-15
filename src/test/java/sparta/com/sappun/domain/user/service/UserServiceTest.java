@@ -5,8 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
-import static sparta.com.sappun.global.response.ResultCode.DUPLICATED_EMAIL;
-import static sparta.com.sappun.global.response.ResultCode.NOT_MATCHED_PASSWORD;
+import static sparta.com.sappun.global.response.ResultCode.*;
 
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,6 +27,7 @@ import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
 import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
 import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
 import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
+import sparta.com.sappun.domain.user.dto.response.UserProfileRes;
 import sparta.com.sappun.domain.user.dto.response.UserProfileUpdateRes;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
@@ -177,6 +177,41 @@ class UserServiceTest implements UserTest {
     }
 
     @Test
+    @DisplayName("프로필 조회 테스트 - 성공")
+    void getProfileTest() {
+        // given - 필요한 변수 생성
+        when(userRepository.findById(TEST_USER_ID)).thenReturn(TEST_USER);
+        ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
+
+        // when - 테스트할 메서드를 실제 동작
+        UserProfileRes res = userService.getProfile(TEST_USER_ID);
+
+        // then - 결과 제대로 나왔는지 확인
+        assertEquals(TEST_USER_ID, res.getId());
+        assertEquals(TEST_USER_USERNAME, res.getUsername());
+        assertEquals(TEST_USER_NICKNAME, res.getNickname());
+        assertEquals(Role.USER, res.getRole());
+    }
+
+    @Test
+    @DisplayName("프로필 조회 테스트 - 실패(사용자를 찾지 못함)")
+    void getProfileFailureTest() {
+        // given - 필요한 변수 생성
+        when(userRepository.findById(TEST_USER_ID)).thenReturn(null);
+
+        // when
+        GlobalException exception =
+                assertThrows(
+                        GlobalException.class,
+                        () -> {
+                            userService.getProfile(TEST_USER_ID);
+                        });
+
+        // then
+        assertEquals(NOT_FOUND_USER.getMessage(), exception.getResultCode().getMessage());
+    }
+
+    @Test
     @DisplayName("프로필 수정 테스트")
     void updateProfileTest() {
         // given
@@ -198,25 +233,5 @@ class UserServiceTest implements UserTest {
         assertEquals(updatedUsername, res.getUsername());
         assertEquals(updatedNickname, res.getNickname());
         assertEquals(TEST_USER_PROFILE_URL, res.getProfileUrl());
-    }
-
-    @Test
-    @DisplayName("프로필 조회 테스트 - 성공")
-    void getProfileTest() {
-        // given - 필요한 변수 생성
-
-        // when - 테스트할 메서드를 실제 동작
-
-        // then - 결과 제대로 나왔는지 확인
-    }
-
-    @Test
-    @DisplayName("프로필 조회 테스트 - 실패")
-    void getProfileFailureTest() {
-        // given - 필요한 변수 생성
-
-        // when - 테스트할 메서드를 실제 동작
-
-        // then - 결과 제대로 나왔는지 확인
     }
 }
