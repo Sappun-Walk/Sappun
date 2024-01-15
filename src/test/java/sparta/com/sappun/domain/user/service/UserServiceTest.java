@@ -24,14 +24,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
-import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
-import sparta.com.sappun.domain.user.dto.request.UserPasswordUpdateReq;
-import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
-import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
-import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
-import sparta.com.sappun.domain.user.dto.response.UserPasswordUpdateRes;
-import sparta.com.sappun.domain.user.dto.response.UserProfileRes;
-import sparta.com.sappun.domain.user.dto.response.UserProfileUpdateRes;
+import sparta.com.sappun.domain.user.dto.request.*;
+import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
@@ -185,7 +179,7 @@ class UserServiceTest implements UserTest {
     @DisplayName("프로필 조회 테스트 - 성공")
     void getProfileTest() {
         // given - 필요한 변수 생성
-        when(userRepository.findById(TEST_USER_ID)).thenReturn(TEST_USER);
+        when(userRepository.findById(any())).thenReturn(TEST_USER);
         ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
 
         // when - 테스트할 메서드를 실제 동작
@@ -275,4 +269,23 @@ class UserServiceTest implements UserTest {
 //
 //        // then - 결과 제대로 나왔는지 확인
 //    }
+
+    @Test
+    @DisplayName("아이디 중복 테스트")
+    void verifyUsernameTest() {
+        // given - 필요한 변수 생성
+        UsernameVerifyReq req =
+                UsernameVerifyReq
+                        .builder()
+                        .username(TEST_USER_USERNAME)
+                        .build();
+
+        when(userRepository.existsByUsername(any())).thenReturn(true);
+
+        // when - 테스트할 메서드를 실제 동작
+        UsernameVerifyRes res = userService.verifyUsername(req);
+
+        // then - 결과 제대로 나왔는지 확인
+        assertTrue(res.getIsDuplicated());
+    }
 }

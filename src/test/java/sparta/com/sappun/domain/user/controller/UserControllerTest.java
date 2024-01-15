@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,10 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import sparta.com.sappun.domain.BaseMvcTest;
-import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
-import sparta.com.sappun.domain.user.dto.request.UserPasswordUpdateReq;
-import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
-import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
+import sparta.com.sappun.domain.user.dto.request.*;
 import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.service.UserService;
@@ -235,6 +234,32 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
         // when - then - 테스트할 메서드를 실제 동작 & 결과 제대로 나왔는지 확인
         mockMvc
                 .perform(patch("/api/users/profile/password")
+                        .content(objectMapper.writeValueAsString(req))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .principal(mockPrincipal))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("아이디 중복 테스트")
+    void verifyUsernameTest() throws Exception {
+        // given - 필요한 변수 생성
+        UsernameVerifyReq req = UsernameVerifyReq
+                .builder()
+                .username(TEST_USER_USERNAME)
+                .build();
+
+        UsernameVerifyRes res = UsernameVerifyRes
+                .builder()
+                .isDuplicated(true)
+                .build();
+
+        when(userService.verifyUsername(req)).thenReturn(res);
+
+        // when - then - 테스트할 메서드를 실제 동작 & 결과 제대로 나왔는지 확인
+        mockMvc
+                .perform(post("/api/users/username")
                         .content(objectMapper.writeValueAsString(req))
                         .contentType(MediaType.APPLICATION_JSON)
                         .principal(mockPrincipal))
