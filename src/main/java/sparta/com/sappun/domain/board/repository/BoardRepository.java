@@ -1,6 +1,9 @@
 package sparta.com.sappun.domain.board.repository;
 
+import java.awt.*;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.RepositoryDefinition;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
@@ -10,9 +13,9 @@ public interface BoardRepository {
 
     Board findById(Long boardId);
 
-    List<Board> findAllByRegion(RegionEnum region);
+    Page<Board> findAllByRegion(RegionEnum region, Pageable pageable);
 
-    List<Board> findTop3ByOrderByLikeBoardDesc();
+    List<Board> findTop3ByOrderByLikeCountDesc();
 
     Board save(Board board);
 

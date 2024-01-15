@@ -2,6 +2,7 @@ package sparta.com.sappun.domain.board.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
@@ -27,8 +28,15 @@ public class BoardController {
 
     // 지역별 게시글 조회
     @GetMapping("/region")
-    public CommonResponse<BoardListGetRes> getBoards(@RequestParam RegionEnum region) {
-        BoardListGetRes responseDto = boardService.getBoardList(region);
+    public CommonResponse<Page<BoardGetRes>> getBoards(
+            @RequestParam RegionEnum region,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam("sortBy") String sortBy,
+            @RequestParam("isAsc") boolean isAsc) {
+        Page<BoardGetRes> responseDto =
+                boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
+        // BoardListGetRes responseDto = boardService.getBoardList(region);
         return CommonResponse.success(responseDto);
     }
 
