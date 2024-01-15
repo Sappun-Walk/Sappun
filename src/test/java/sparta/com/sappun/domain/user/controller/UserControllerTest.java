@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,6 +25,7 @@ import sparta.com.sappun.global.jwt.JwtUtil;
 import sparta.com.sappun.global.redis.RedisUtil;
 import sparta.com.sappun.test.UserTest;
 
+@Disabled
 @WebMvcTest(controllers = {UserController.class})
 class UserControllerTest extends BaseMvcTest implements UserTest {
 

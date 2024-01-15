@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>마이페이지</title>
+  <style>
+    div.profile-info {
+      width: 400px;
+      height: 200px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* 프로필 이미지를 동그랗게 보여주기 위한 CSS 스타일*/
+    img.profile-image {
+      border-radius: 50%;
+      width: 150px; /* 이미지 크기 조절에 따라 변경 가능 */
+      height: 150px;
+    }
+
+    /* 프로필 이미지와 Score를 나란히 보여줄 프로필 그룹 */
+    div.profile-image-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* 세로 중앙 정렬 */
+      margin-bottom: 10px; /* 그룹 간격 조절 */
+    }
+
+    /* ID, Nickname, Email을 나란히 보여줄 그룹 */
+    div.profile-text-group {
+      display: flex;
+      flex-direction: column; /* 세로 방향으로 나열 */
+      align-items: flex-start; /* 좌측 정렬 */
+      margin-bottom: 10px; /* 그룹 간격 조절 */
+    }
+  </style>
+</head>
+<body>
+<div>
+  <h2>User Profile</h2>
+  <div class="profile-info">
+  <div class="profile-image-group">
+    <img th:src="${userProfile.profileUrl}" alt="Profile Picture" class="profile-image">
+    <p>Rank:
+      <span th:if="${userProfile.score < 0}">Warned</span>
+      <span th:if="${userProfile.score >= 0 and userProfile.score <= 300}">Bronze</span>
+      <span th:if="${userProfile.score > 300 and userProfile.score <= 700}">Silver</span>
+      <span th:if="${userProfile.score > 700 and userProfile.score <= 1200}">Gold</span>
+      <span th:if="${userProfile.score > 1200}">Platinum</span>
+    </p>
+  </div>
+
+  <div class="profile-text-group">
+    <p>ID: <span th:text="${userProfile.username}"></span></p>
+    <p>Nickname: <span th:text="${userProfile.nickname}"></span></p>
+    <p>Email: <span th:text="${userProfile.email}"></span></p>
+  </div>
+  </div>
+
+</div>
+</body>
+</html>

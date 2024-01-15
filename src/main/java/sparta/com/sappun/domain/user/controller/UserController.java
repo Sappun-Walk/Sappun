@@ -9,12 +9,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import sparta.com.sappun.domain.user.dto.request.*;
 import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.service.UserService;
@@ -23,7 +24,7 @@ import sparta.com.sappun.global.redis.RedisUtil;
 import sparta.com.sappun.global.response.CommonResponse;
 import sparta.com.sappun.global.security.UserDetailsImpl;
 
-@RestController
+@Controller
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
@@ -32,12 +33,14 @@ public class UserController {
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
 
+    @ResponseBody
     @PostMapping("/signup")
     public CommonResponse<UserSignupRes> signup(
             @RequestBody @Valid UserSignupReq req) { // TODO: 프로필 사진 입력받기
         return CommonResponse.success(userService.signup(req));
     }
 
+    @ResponseBody
     @PostMapping("/login")
     public CommonResponse<UserLoginRes> login(
             @RequestBody UserLoginReq req, HttpServletResponse response) {
@@ -73,6 +76,7 @@ public class UserController {
         return CommonResponse.success(new UserLogoutRes());
     }
 
+    @ResponseBody
     @DeleteMapping
     public CommonResponse<UserDeleteRes> deleteUser(
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -81,12 +85,16 @@ public class UserController {
 
     // 프로필 조회
     @GetMapping
-    public CommonResponse<UserProfileRes> getProfile(
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return CommonResponse.success(userService.getProfile(userDetails.getUser().getId()));
+    public String getProfile(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UserProfileRes res = userService.getProfile(userDetails.getUser().getId());
+
+        model.addAttribute("userProfile", res);
+
+        return "profile";
     }
 
     // 프로필 수정
+    @ResponseBody
     @PatchMapping("/profile")
     public CommonResponse<UserProfileUpdateRes> updateProfile(
             @RequestBody @Valid UserProfileUpdateReq req,
@@ -96,6 +104,7 @@ public class UserController {
     }
 
     // 비밀번호 수정
+    @ResponseBody
     @PatchMapping("/profile/password")
     public CommonResponse<UserPasswordUpdateRes> updatePassword(
             @RequestBody @Valid UserPasswordUpdateReq req,
@@ -105,6 +114,7 @@ public class UserController {
     }
 
     // 아이디 중복 확인
+    @ResponseBody
     @PostMapping("/username")
     public CommonResponse<UsernameVerifyRes> verifyUsername(
             @RequestBody @Valid UsernameVerifyReq req) {
@@ -112,6 +122,7 @@ public class UserController {
     }
 
     // 닉네임 중복확인
+    @ResponseBody
     @PostMapping("/nickname")
     public CommonResponse<NicknameVerifyRes> verifyNickname(
             @RequestBody @Valid NicknameVerifyReq req) {
