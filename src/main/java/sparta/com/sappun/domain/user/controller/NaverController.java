@@ -1,6 +1,7 @@
 package sparta.com.sappun.domain.user.controller;
 
 import static sparta.com.sappun.global.jwt.JwtUtil.ACCESS_TOKEN_HEADER;
+import static sparta.com.sappun.global.jwt.JwtUtil.REFRESH_TOKEN_HEADER;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.Cookie;
@@ -33,11 +34,20 @@ public class NaverController {
             throws JsonProcessingException {
         HashMap<String, String> tokens = naverService.naverLogin(code);
 
-        Cookie cookie = new Cookie(ACCESS_TOKEN_HEADER, tokens.get(ACCESS_TOKEN_HEADER));
+        addCookie(tokens.get(ACCESS_TOKEN_HEADER), ACCESS_TOKEN_HEADER, res);
+        addCookie(tokens.get(REFRESH_TOKEN_HEADER), REFRESH_TOKEN_HEADER, res);
+
         // TODO: 리프레시토큰 저장하는 로직
-        cookie.setPath("/");
-        res.addCookie(cookie);
 
         return "redirect:/login.html"; // 로그인 완료시 이동할 페이지
+    }
+
+    private static void addCookie(String cookieValue, String header, HttpServletResponse res) {
+        Cookie cookie = new Cookie(header, cookieValue); // Name-Value
+        cookie.setPath("/");
+        cookie.setMaxAge(30 * 60);
+
+        // Response 객체에 Cookie 추가
+        res.addCookie(cookie);
     }
 }
