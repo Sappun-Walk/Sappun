@@ -9,6 +9,7 @@ import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.dto.response.UserProfileUpdateRes;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
+import sparta.com.sappun.domain.user.entity.UserSocialEnum;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.validator.UserValidator;
 
@@ -35,6 +36,7 @@ public class UserService {
                         .password(passwordEncoder.encode(req.getPassword()))
                         .role(Role.USER)
                         .score(0)
+                        .social(UserSocialEnum.LOCAL)
                         .build());
 
         return new UserSignupRes();

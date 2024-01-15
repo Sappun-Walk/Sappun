@@ -68,13 +68,18 @@ public class WebSecurityConfig {
                                 .permitAll() // resources 접근 허용 설정
                                 .requestMatchers("/api/users/signup", "/api/users/login")
                                 .permitAll() // 회원가입, 로그인 API만 접근 허용
+                                .requestMatchers("/api/users/kakao/callback/**")
+                                .permitAll()
+                                .requestMatchers("/api/users/naver/callback/**")
+                                .permitAll()
+                                .requestMatchers("/**.html")
+                                .permitAll()
                                 .requestMatchers(DELETE, "/api/boards/{boardId}/report")
                                 .hasAuthority(ADMIN.getAuthority()) // 게시글 신고 삭제는 관리자만 가능
                                 .requestMatchers(DELETE, "/api/comments/{commentId}/report")
                                 .hasAuthority(ADMIN.getAuthority()) // 게시글 신고 삭제는 관리자만 가능
                                 .anyRequest()
-                                .authenticated() // 그 외 모든 요청 인증처리
-                );
+                                .authenticated()); // 그 외 모든 요청 인증처리
 
         http.exceptionHandling(
                 authenticationManager ->
