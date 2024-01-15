@@ -21,12 +21,9 @@ public class UserProfileUpdateReq {
     @Pattern(regexp = "^[가-힣a-zA-Z0-9]*$")
     private String nickname;
 
-    private String profileUrl;
-
     @Builder
-    private UserProfileUpdateReq(String username, String nickname, String profileUrl) {
+    private UserProfileUpdateReq(String username, String nickname) {
         this.username = username;
         this.nickname = nickname;
-        this.profileUrl = profileUrl;
     }
 }
