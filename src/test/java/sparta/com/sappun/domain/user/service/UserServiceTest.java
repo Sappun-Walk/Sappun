@@ -33,8 +33,6 @@ import sparta.com.sappun.global.exception.GlobalException;
 import sparta.com.sappun.infra.s3.S3Util;
 import sparta.com.sappun.test.UserTest;
 
-import javax.management.Descriptor;
-
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest implements UserTest {
     @Mock UserRepository userRepository;
@@ -242,8 +240,7 @@ class UserServiceTest implements UserTest {
         String newPassword = "newPassword";
 
         UserPasswordUpdateReq req =
-                UserPasswordUpdateReq
-                        .builder()
+                UserPasswordUpdateReq.builder()
                         .prePassword(prePassword)
                         .newPassword(newPassword)
                         .confirmPassword(newPassword)
@@ -264,11 +261,7 @@ class UserServiceTest implements UserTest {
     @DisplayName("아이디 중복 테스트")
     void verifyUsernameTest() {
         // given - 필요한 변수 생성
-        UsernameVerifyReq req =
-                UsernameVerifyReq
-                        .builder()
-                        .username(TEST_USER_USERNAME)
-                        .build();
+        UsernameVerifyReq req = UsernameVerifyReq.builder().username(TEST_USER_USERNAME).build();
 
         when(userRepository.existsByUsername(any())).thenReturn(true);
 
@@ -283,11 +276,7 @@ class UserServiceTest implements UserTest {
     @DisplayName("닉네임 중복 테스트")
     void verifyNicknameTest() {
         // given - 필요한 변수 생성
-        NicknameVerifyReq req =
-                NicknameVerifyReq
-                        .builder()
-                        .nickname(TEST_USER_NICKNAME)
-                        .build();
+        NicknameVerifyReq req = NicknameVerifyReq.builder().nickname(TEST_USER_NICKNAME).build();
 
         when(userRepository.existsByNickname(any())).thenReturn(true);
 

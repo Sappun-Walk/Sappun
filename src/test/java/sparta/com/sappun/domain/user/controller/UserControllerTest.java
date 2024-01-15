@@ -9,8 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -162,7 +160,8 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
                         .id(TEST_USER_ID)
                         .username(TEST_USER_USERNAME)
                         .nickname(TEST_USER_NICKNAME)
-                        .role(Role.USER).build();
+                        .role(Role.USER)
+                        .build();
 
         when(userService.getProfile(TEST_USER_ID)).thenReturn(res);
 
@@ -220,12 +219,12 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
     @DisplayName("비밀번호 수정 테스트")
     void updatePasswordTest() throws Exception {
         // given - 필요한 변수 생성
-        UserPasswordUpdateReq req = UserPasswordUpdateReq
-                .builder()
-                .prePassword(TEST_USER_PASSWORD)
-                .newPassword(TEST_USER_NEWPASSWORD)
-                .confirmPassword(TEST_USER_NEWPASSWORD)
-                .build();
+        UserPasswordUpdateReq req =
+                UserPasswordUpdateReq.builder()
+                        .prePassword(TEST_USER_PASSWORD)
+                        .newPassword(TEST_USER_NEW_PASSWORD)
+                        .confirmPassword(TEST_USER_NEW_PASSWORD)
+                        .build();
 
         UserPasswordUpdateRes res = new UserPasswordUpdateRes();
 
@@ -233,10 +232,11 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
 
         // when - then - 테스트할 메서드를 실제 동작 & 결과 제대로 나왔는지 확인
         mockMvc
-                .perform(patch("/api/users/profile/password")
-                        .content(objectMapper.writeValueAsString(req))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .principal(mockPrincipal))
+                .perform(
+                        patch("/api/users/profile/password")
+                                .content(objectMapper.writeValueAsString(req))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .principal(mockPrincipal))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -245,24 +245,19 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
     @DisplayName("아이디 중복 테스트")
     void verifyUsernameTest() throws Exception {
         // given - 필요한 변수 생성
-        UsernameVerifyReq req = UsernameVerifyReq
-                .builder()
-                .username(TEST_USER_USERNAME)
-                .build();
+        UsernameVerifyReq req = UsernameVerifyReq.builder().username(TEST_USER_USERNAME).build();
 
-        UsernameVerifyRes res = UsernameVerifyRes
-                .builder()
-                .isDuplicated(true)
-                .build();
+        UsernameVerifyRes res = UsernameVerifyRes.builder().isDuplicated(true).build();
 
         when(userService.verifyUsername(req)).thenReturn(res);
 
         // when - then - 테스트할 메서드를 실제 동작 & 결과 제대로 나왔는지 확인
         mockMvc
-                .perform(post("/api/users/username")
-                        .content(objectMapper.writeValueAsString(req))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .principal(mockPrincipal))
+                .perform(
+                        post("/api/users/username")
+                                .content(objectMapper.writeValueAsString(req))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .principal(mockPrincipal))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -271,24 +266,19 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
     @DisplayName("닉네임 중복 테스트")
     void verifyNicknameTest() throws Exception {
         // given - 필요한 변수 생성
-        NicknameVerifyReq req = NicknameVerifyReq
-                .builder()
-                .nickname(TEST_USER_NICKNAME)
-                .build();
+        NicknameVerifyReq req = NicknameVerifyReq.builder().nickname(TEST_USER_NICKNAME).build();
 
-        NicknameVerifyRes res = NicknameVerifyRes
-                .builder()
-                .isDuplicated(true)
-                .build();
+        NicknameVerifyRes res = NicknameVerifyRes.builder().isDuplicated(true).build();
 
         when(userService.verifyNickname(req)).thenReturn(res);
 
         // when - then - 테스트할 메서드를 실제 동작 & 결과 제대로 나왔는지 확인
         mockMvc
-                .perform(post("/api/users/nickname")
-                        .content(objectMapper.writeValueAsString(req))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .principal(mockPrincipal))
+                .perform(
+                        post("/api/users/nickname")
+                                .content(objectMapper.writeValueAsString(req))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .principal(mockPrincipal))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
