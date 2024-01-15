@@ -7,7 +7,7 @@ import org.mapstruct.factory.Mappers;
 import sparta.com.sappun.domain.ReportBoard.dto.response.ReportBoardGetRes;
 import sparta.com.sappun.domain.ReportBoard.dto.response.ReportBoardRes;
 import sparta.com.sappun.domain.ReportBoard.entity.ReportBoard;
-import sparta.com.sappun.domain.board.dto.response.BoardGetRes;
+import sparta.com.sappun.domain.board.dto.response.BoardToListGetRes;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.comment.dto.response.CommentGetRes;
 import sparta.com.sappun.domain.comment.entity.Comment;
@@ -26,8 +26,8 @@ public interface ReportBoardServiceMapper {
     CommentGetRes toCommentGetRes(Comment comment);
 
     @Mapping(source = "user.nickname", target = "nickname")
-    BoardGetRes toBoardGetRes(Board board);
+    ReportBoardGetRes toBoardGetRes(ReportBoard reportBoard);
 
     @Mapping(source = "user.nickname", target = "nickname")
-    ReportBoardGetRes toBoardGetRes(ReportBoard reportBoard);
+    BoardToListGetRes toBoardToListGetRes(Board board);
 }

@@ -38,7 +38,6 @@ public class ReportBoardController {
     // 신고된 게시글 조회
     @GetMapping("/reports") // 필터에서 관리자만 접근하도록 막기
     public CommonResponse<ReportBoardListGetRes> getReportBoardList() {
-        ReportBoardListGetRes responseDto = reportBoardService.getReportBoardList();
-        return CommonResponse.success(responseDto);
+        return CommonResponse.success(reportBoardService.getReportBoardList());
     }
 }
