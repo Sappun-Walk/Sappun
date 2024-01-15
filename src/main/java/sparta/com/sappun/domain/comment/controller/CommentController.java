@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import sparta.com.sappun.domain.comment.dto.request.CommentDeleteReq;
 import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
 import sparta.com.sappun.domain.comment.dto.request.CommentUpdateReq;
 import sparta.com.sappun.domain.comment.dto.response.CommentDeleteRes;
@@ -45,11 +44,8 @@ public class CommentController {
 
     @DeleteMapping("/comments/{commentId}")
     public CommonResponse<CommentDeleteRes> deleteComment(
-            @PathVariable Long commentId,
-            @RequestBody CommentDeleteReq req,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        req.setCommentId(commentId);
-        req.setUserId(userDetails.getUser().getId());
-        return CommonResponse.success(commentService.deleteComment(req));
+            @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return CommonResponse.success(
+                commentService.deleteComment(commentId, userDetails.getUser().getId()));
     }
 }
