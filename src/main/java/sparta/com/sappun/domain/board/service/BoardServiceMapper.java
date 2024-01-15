@@ -6,6 +6,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import sparta.com.sappun.domain.board.dto.response.BoardGetRes;
 import sparta.com.sappun.domain.board.dto.response.BoardSaveRes;
+import sparta.com.sappun.domain.board.dto.response.BoardToListGetRes;
 import sparta.com.sappun.domain.board.dto.response.BoardUpdateRes;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.comment.dto.response.CommentGetRes;
@@ -18,15 +19,18 @@ public interface BoardServiceMapper {
     @Mapping(source = "user.nickname", target = "nickname")
     BoardGetRes toBoardGetRes(Board board);
 
-    List<BoardGetRes> toBoardListGetRes(List<Board> boardList);
+    @Mapping(source = "user.nickname", target = "nickname")
+    CommentGetRes toCommentGetRes(Comment comment);
 
-    List<BoardGetRes> toBoardBestListGetRes(List<Board> boardList);
+    List<BoardToListGetRes> toBoardListGetRes(List<Board> boardList);
+
+    List<BoardToListGetRes> toBoardBestListGetRes(List<Board> boardList);
+
+    @Mapping(source = "user.nickname", target = "nickname")
+    BoardToListGetRes toBoardToListGetRes(Board board);
 
     @Mapping(source = "user.nickname", target = "nickname")
     BoardSaveRes toBoardSaveRes(Board board);
-
-    @Mapping(source = "user.nickname", target = "nickname")
-    CommentGetRes toCommentGetRes(Comment comment);
 
     @Mapping(source = "user.nickname", target = "nickname")
     BoardUpdateRes toBoardUpdateRes(Board board);

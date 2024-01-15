@@ -8,6 +8,8 @@ import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.reportBoard.dto.request.ReportBoardReq;
 import sparta.com.sappun.domain.reportBoard.dto.response.DeleteReportBoardRes;
+import sparta.com.sappun.domain.reportBoard.dto.response.ReportBoardGetRes;
+import sparta.com.sappun.domain.reportBoard.dto.response.ReportBoardListGetRes;
 import sparta.com.sappun.domain.reportBoard.dto.response.ReportBoardRes;
 import sparta.com.sappun.domain.reportBoard.entity.ReportBoard;
 import sparta.com.sappun.domain.reportBoard.repository.ReportBoardRepository;
@@ -72,5 +74,13 @@ public class ReportBoardService {
         Board board = boardRepository.findById(boardId);
         BoardValidator.validate(board);
         return board;
+    }
+
+    @Transactional
+    public ReportBoardListGetRes getReportBoardList() {
+        List<ReportBoardGetRes> reportBoards =
+                ReportBoardServiceMapper.INSTANCE.toReportBoardListGetRes(
+                        reportBoardRepository.findAllFetchBoard());
+        return ReportBoardListGetRes.builder().reportBoards(reportBoards).build();
     }
 }

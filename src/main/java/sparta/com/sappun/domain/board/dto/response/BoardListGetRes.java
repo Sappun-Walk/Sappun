@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardListGetRes {
-    private List<BoardGetRes> boards;
+    private List<BoardToListGetRes> boards;
 
     @Builder
-    private BoardListGetRes(List<BoardGetRes> boards) {
+    private BoardListGetRes(List<BoardToListGetRes> boards) {
         this.boards = boards;
     }
 }

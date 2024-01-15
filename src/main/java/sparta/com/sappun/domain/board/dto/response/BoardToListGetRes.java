@@ -9,11 +9,10 @@ import sparta.com.sappun.domain.board.entity.RegionEnum;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BoardUpdateRes {
-    private String nickname;
+public class BoardToListGetRes {
     private Long id;
+    private String nickname;
     private String title;
-    private String content;
     private String fileURL;
     private String departure;
     private String destination;
@@ -21,20 +20,18 @@ public class BoardUpdateRes {
     private RegionEnum region;
 
     @Builder
-    private BoardUpdateRes(
-            String nickname,
+    private BoardToListGetRes(
             Long id,
+            String nickname,
             String title,
-            String content,
             String fileURL,
             String departure,
             String destination,
             List<String> stopover,
             RegionEnum region) {
-        this.nickname = nickname;
         this.id = id;
+        this.nickname = nickname;
         this.title = title;
-        this.content = content;
         this.fileURL = fileURL;
         this.departure = departure;
         this.destination = destination;
