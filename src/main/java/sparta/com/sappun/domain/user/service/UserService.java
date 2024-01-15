@@ -36,7 +36,7 @@ public class UserService {
         UserValidator.checkEmail(userRepository.existsByEmail(req.getEmail()));
 
         String profileImage = defaultProfileImage; // 기본 프로필 이미지 설정
-        if(multipartFile != null && !multipartFile.isEmpty()){ // 이미지 입력이 있는 경우
+        if (multipartFile != null && !multipartFile.isEmpty()) { // 이미지 입력이 있는 경우
             S3Validator.isProfileImageFile(multipartFile); // 이미지 파일인지 확인
             profileImage = s3Util.uploadFile(multipartFile, FilePath.PROFILE); // 이미지 업로드 후 프로필로 설정
         }
@@ -90,15 +90,15 @@ public class UserService {
     public UserProfileUpdateRes updateProfile(UserProfileUpdateReq req, MultipartFile multipartFile) {
         User user = getUserById(req.getId()); // 사용자가 존재하는지 확인
 
-//        UserValidator.checkDuplicatedUsername(
-//            userRepository.existsByUsername(req.getUsername())); // username 중복확인
-//        UserValidator.checkDuplicatedNickname(
-//            userRepository.existsByNickname(req.getNickname())); // nickname 중복확인
+        //        UserValidator.checkDuplicatedUsername(
+        //            userRepository.existsByUsername(req.getUsername())); // username 중복확인
+        //        UserValidator.checkDuplicatedNickname(
+        //            userRepository.existsByNickname(req.getNickname())); // nickname 중복확인
 
         // 프로필 사진 관련 로직
         String imageUrl = user.getProfileUrl(); // 기존 프로필 이미지
         if (!imageUrl.equals(defaultProfileImage)) { // 기존 이미지가 기본 프로필이 아닌 경우
-            s3Util.deleteFile(imageUrl, FilePath.PROFILE); //기존 이미지 삭제
+            s3Util.deleteFile(imageUrl, FilePath.PROFILE); // 기존 이미지 삭제
         }
         if (multipartFile == null || multipartFile.isEmpty()) { // 새로 입력한 이미지 파일이 없는 경우
             imageUrl = defaultProfileImage; // 기본 이미지로
