@@ -18,6 +18,7 @@ public class BoardToListGetRes {
     private String destination;
     private List<String> stopover;
     private RegionEnum region;
+    private Integer likeCount;
 
     @Builder
     private BoardToListGetRes(
@@ -28,7 +29,8 @@ public class BoardToListGetRes {
             String departure,
             String destination,
             List<String> stopover,
-            RegionEnum region) {
+            RegionEnum region,
+            Integer likeCount) {
         this.id = id;
         this.nickname = nickname;
         this.title = title;
@@ -37,5 +39,6 @@ public class BoardToListGetRes {
         this.destination = destination;
         this.stopover = stopover;
         this.region = region;
+        this.likeCount = likeCount;
     }
 }

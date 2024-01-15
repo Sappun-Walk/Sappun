@@ -11,6 +11,7 @@ import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.likeBoard.entity.LikeBoard;
+import sparta.com.sappun.domain.reportBoard.entity.ReportBoard;
 import sparta.com.sappun.domain.user.entity.User;
 
 @Entity
@@ -52,6 +53,9 @@ public class Board extends TimeStamp {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReportBoard> reportBoard = new ArrayList<>();
+
     @Builder
     private Board(
             Long id,
@@ -81,5 +85,13 @@ public class Board extends TimeStamp {
         this.departure = boardUpdateReq.getDeparture();
         this.destination = boardUpdateReq.getDestination();
         this.stopover = boardUpdateReq.getStopover();
+    }
+
+    public Integer getLikeCount() {
+        return likeBoard.size();
+    }
+
+    public Integer getReportCount() {
+        return reportBoard.size();
     }
 }

@@ -6,48 +6,42 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
-import sparta.com.sappun.domain.comment.dto.response.CommentGetRes;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BoardGetRes {
+public class BoardToReportGetRes {
     private Long id;
     private String nickname;
     private String title;
-    private String content;
     private String fileURL;
     private String departure;
     private String destination;
     private List<String> stopover;
     private RegionEnum region;
-
-    private int likeCount;
-
-    private List<CommentGetRes> comments;
+    private Integer likeCount;
+    private Integer reportCount;
 
     @Builder
-    private BoardGetRes(
+    private BoardToReportGetRes(
             Long id,
             String nickname,
             String title,
-            String content,
             String fileURL,
             String departure,
             String destination,
             List<String> stopover,
             RegionEnum region,
-            List<CommentGetRes> comments,
-            Integer likeCount) {
+            Integer likeCount,
+            Integer reportCount) {
         this.id = id;
         this.nickname = nickname;
         this.title = title;
-        this.content = content;
         this.fileURL = fileURL;
         this.departure = departure;
         this.destination = destination;
         this.stopover = stopover;
         this.region = region;
-        this.comments = comments;
         this.likeCount = likeCount;
+        this.reportCount = reportCount;
     }
 }
