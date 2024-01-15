@@ -51,9 +51,9 @@ public class Comment extends TimeStamp {
         this.board = board;
     }
 
-    public void update(CommentUpdateReq req) {
+    public void update(CommentUpdateReq req, String fileURL) {
         this.content = req.getContent();
-        this.fileURL = req.getFileURL();
+        this.fileURL = fileURL;
     }
 
     public Integer getLikeCount() {

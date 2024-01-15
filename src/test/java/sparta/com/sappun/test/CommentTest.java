@@ -19,12 +19,8 @@ public interface CommentTest extends UserTest {
                     .user(TEST_USER)
                     .build();
 
-    CommentSaveReq TEST_COMMENT_SAVE =
-            CommentSaveReq.builder().content(TEST_COMMENT_CONTENT).fileURL(TEST_COMMENT_FILEURL).build();
+    CommentSaveReq TEST_COMMENT_SAVE = CommentSaveReq.builder().content(TEST_COMMENT_CONTENT).build();
 
     CommentUpdateReq TEST_COMMENT_UPDATE =
-            CommentUpdateReq.builder()
-                    .content(TEST_COMMENT_UPDATE_CONTENT)
-                    .fileURL(TEST_COMMENT_FILEURL)
-                    .build();
+            CommentUpdateReq.builder().content(TEST_COMMENT_UPDATE_CONTENT).build();
 }

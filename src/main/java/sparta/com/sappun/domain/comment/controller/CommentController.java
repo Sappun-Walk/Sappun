@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
 import sparta.com.sappun.domain.comment.dto.request.CommentUpdateReq;
 import sparta.com.sappun.domain.comment.dto.response.CommentDeleteRes;
@@ -23,23 +24,23 @@ public class CommentController {
     @PostMapping("/{boardId}/comments")
     public CommonResponse<CommentSaveRes> saveComment(
             @PathVariable Long boardId,
-            @RequestBody @Valid CommentSaveReq req,
+            @RequestPart(name = "data") @Valid CommentSaveReq req,
+            @RequestPart(name = "image", required = false) MultipartFile multipartfile,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        // TODO: 댓글 사진 입력받기
         req.setBoardId(boardId);
         req.setUserId(userDetails.getUser().getId());
-        return CommonResponse.success(commentService.saveComment(req));
+        return CommonResponse.success(commentService.saveComment(req, multipartfile));
     }
 
     @PatchMapping("/comments/{commentId}")
     public CommonResponse<CommentUpdateRes> updateComment(
             @PathVariable Long commentId,
-            @RequestBody @Valid CommentUpdateReq req,
+            @RequestPart(name = "data") @Valid CommentUpdateReq req,
+            @RequestPart(name = "image", required = false) MultipartFile multipartfile,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        // TODO: 댓글 수정사진 입력받기
         req.setCommentId(commentId);
         req.setUserId(userDetails.getUser().getId());
-        return CommonResponse.success(commentService.updateComment(req));
+        return CommonResponse.success(commentService.updateComment(req, multipartfile));
     }
 
     @DeleteMapping("/comments/{commentId}")
