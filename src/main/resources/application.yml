@@ -77,3 +77,7 @@ cloud:
       auto: false
     stack:
       auto: false
+
+default:
+  image:
+    url: ${DEFAULT_PROFILE_IMAGE}

@@ -64,6 +64,9 @@ public class NaverService {
     @Value("Bearer")
     private String tokenType;
 
+    @Value("${default.image.url}")
+    private String defaultProfileImage;
+
     public String getNaverLoginPage() {
         String state = new BigInteger(130, new SecureRandom()).toString();
         return naverAuthorizationUri
@@ -108,7 +111,7 @@ public class NaverService {
                             .role(Role.USER)
                             .score(0)
                             .social(UserSocialEnum.KAKAO)
-                            // TODO: 프로필 이미지 추가
+                            .profileUrl(defaultProfileImage)
                             .build();
             user = userRepository.save(newUser);
         }

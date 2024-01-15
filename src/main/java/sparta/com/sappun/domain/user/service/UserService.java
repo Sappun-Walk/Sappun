@@ -1,6 +1,7 @@
 package sparta.com.sappun.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,13 +21,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Value("${default.image.url}")
+    private String defaultProfileImage;
+
     @Transactional
     public UserSignupRes signup(UserSignupReq req) {
         UserValidator.validate(req);
 
         UserValidator.checkEmail(userRepository.existsByEmail(req.getEmail()));
-
-        // TODO: 프로필 사진 관련 로직 추가
 
         userRepository.save(
                 User.builder()
@@ -34,6 +36,7 @@ public class UserService {
                         .nickname(req.getNickname())
                         .email(req.getEmail())
                         .password(passwordEncoder.encode(req.getPassword()))
+                        .profileUrl(defaultProfileImage)
                         .role(Role.USER)
                         .score(0)
                         .social(UserSocialEnum.LOCAL)
