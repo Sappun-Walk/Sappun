@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.comment.entity.Comment;
-import sparta.com.sappun.domain.likeBoard.entity.LikeBoard;
-import sparta.com.sappun.domain.reportBoard.entity.ReportBoard;
 import sparta.com.sappun.domain.user.entity.User;
 
 @Entity
@@ -47,14 +45,12 @@ public class Board extends TimeStamp {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LikeBoard> likeBoard = new ArrayList<>();
+    @Column private Integer likeCount;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReportBoard> reportBoard = new ArrayList<>();
+    @Column private Integer reportCount;
 
     @Builder
     private Board(
@@ -66,7 +62,9 @@ public class Board extends TimeStamp {
             String destination,
             List<String> stopover,
             RegionEnum region,
-            User user) {
+            User user,
+            Integer likeCount,
+            Integer reportCount) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -76,6 +74,8 @@ public class Board extends TimeStamp {
         this.stopover = stopover;
         this.region = region;
         this.user = user;
+        this.likeCount = likeCount;
+        this.reportCount = reportCount;
     }
 
     public void update(BoardUpdateReq boardUpdateReq) {
@@ -87,11 +87,11 @@ public class Board extends TimeStamp {
         this.stopover = boardUpdateReq.getStopover();
     }
 
-    public Integer getLikeCount() {
-        return likeBoard.size();
+    public void clickLikeBoard(Integer count) {
+        this.likeCount += count;
     }
 
-    public Integer getReportCount() {
-        return reportBoard.size();
+    public void clickReportBoard(Integer count) {
+        this.reportCount += count;
     }
 }
