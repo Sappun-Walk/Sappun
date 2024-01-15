@@ -8,6 +8,8 @@ import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.reportComment.dto.request.ReportCommentReq;
 import sparta.com.sappun.domain.reportComment.dto.response.DeleteReportCommentRes;
+import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentGetRes;
+import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentListGetRes;
 import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentRes;
 import sparta.com.sappun.domain.reportComment.entity.ReportComment;
 import sparta.com.sappun.domain.reportComment.repository.ReportCommentRepository;
@@ -66,6 +68,14 @@ public class ReportCommentService {
         reportCommentRepository.clearReportCommentByComment(comment);
 
         return new DeleteReportCommentRes();
+    }
+
+    @Transactional
+    public ReportCommentListGetRes getReportCommentList() {
+        List<ReportCommentGetRes> reportComments =
+                ReportCommentServiceMapper.INSTANCE.toReportCommentListGetRes(
+                        reportCommentRepository.findAllFetchComment());
+        return ReportCommentListGetRes.builder().reportComments(reportComments).build();
     }
 
     private Comment findCommentById(Long commentId) {

@@ -22,7 +22,10 @@ public interface BoardServiceMapper {
     @Mapping(source = "user.nickname", target = "nickname")
     CommentGetRes toCommentGetRes(Comment comment);
 
-    List<BoardToListGetRes> toBoardListGetRes(List<Board> boardList);
+    @Mapping(target = "title", source = "boardList.title")
+    @Mapping(target = "content", source = "boardList.content")
+    @Mapping(source = "user.nickname", target = "nickname")
+    BoardGetRes toBoardPageGetRes(Board boardList);
 
     List<BoardToListGetRes> toBoardBestListGetRes(List<Board> boardList);
 

@@ -21,4 +21,7 @@ public interface ReportCommentRepository {
     @Modifying // select 외의 쿼리를 사용하기 위해서 필요함
     @Query(value = "delete from ReportComment r where r.comment = :comment")
     void clearReportCommentByComment(Comment comment);
+
+    @Query("SELECT rc FROM ReportComment rc JOIN FETCH rc.comment")
+    List<ReportComment> findAllFetchComment();
 }

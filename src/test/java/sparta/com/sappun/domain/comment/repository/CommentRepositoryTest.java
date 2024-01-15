@@ -35,7 +35,7 @@ class CommentRepositoryTest implements CommentTest {
         // thens
         assertEquals(TEST_USER.getNickname(), saveComment.getUser().getNickname());
         assertEquals(TEST_COMMENT.getContent(), saveComment.getContent());
-        assertEquals(TEST_COMMENT.getFileUrl(), saveComment.getFileUrl());
+        assertEquals(TEST_COMMENT.getFileURL(), saveComment.getFileURL());
     }
 
     @Test
