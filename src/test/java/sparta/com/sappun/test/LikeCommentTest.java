@@ -1,6 +1,6 @@
 package sparta.com.sappun.test;
 
-import sparta.com.sappun.domain.LikeComment.entity.LikeComment;
+import sparta.com.sappun.domain.likeComment.entity.LikeComment;
 
 public interface LikeCommentTest extends CommentTest, UserTest {
     LikeComment TEST_LIKE_COMMENT =
