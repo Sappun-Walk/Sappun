@@ -16,6 +16,9 @@ public interface BoardTest extends UserTest {
     List<String> TEST_STOPVER = List.of("TEST1", "TEST2", "TEST3", "TEST4", "TEST5");
     RegionEnum TEST_REGION1 = RegionEnum.REGION1;
 
+    Integer TEST_LIKECOUNT = 0;
+    Integer TEST_REPORTCOUNT = 0;
+
     Board TEST_BOARD =
             Board.builder()
                     .id(TEST_BOARD_ID)
@@ -27,5 +30,7 @@ public interface BoardTest extends UserTest {
                     .destination(TEST_DESTINATION)
                     .stopover(TEST_STOPVER)
                     .region(TEST_REGION1)
+                    .likeCount(TEST_LIKECOUNT)
+                    .reportCount(TEST_REPORTCOUNT)
                     .build();
 }
