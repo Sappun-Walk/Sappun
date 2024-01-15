@@ -14,6 +14,10 @@ public enum ResultCode {
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "리프레시 토큰이 유효하지 않습니다."),
     LOGIN_REQUIRED(HttpStatus.UNAUTHORIZED, "재로그인 해주세요."),
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
+    NOT_FOUND_FILE(HttpStatus.NOT_FOUND, "해당 파일을 찾을 수 없습니다."),
+    SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 에러가 발생했습니다."),
+    NULL_FILE_TYPE(HttpStatus.BAD_REQUEST, "해당 파일의 확장자를 찾을 수 없습니다."),
+    INVALID_PROFILE_IMAGE_FILE(HttpStatus.BAD_REQUEST, "이미지 파일만 업로드 가능합니다."),
 
     // 유저
     NOT_MATCHED_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
