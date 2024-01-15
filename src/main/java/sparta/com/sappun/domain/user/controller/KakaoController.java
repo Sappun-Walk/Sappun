@@ -1,6 +1,8 @@
 package sparta.com.sappun.domain.user.controller;
 
 import static sparta.com.sappun.global.jwt.JwtUtil.ACCESS_TOKEN_HEADER;
+import static sparta.com.sappun.global.jwt.JwtUtil.REFRESH_TOKEN_HEADER;
+import static sparta.com.sappun.global.redis.RedisUtil.REFRESH_TOKEN_EXPIRED_TIME;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.Cookie;
@@ -14,12 +16,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import sparta.com.sappun.domain.user.service.KakaoService;
+import sparta.com.sappun.global.jwt.JwtUtil;
+import sparta.com.sappun.global.redis.RedisUtil;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/api/users")
 public class KakaoController {
     private final KakaoService kakaoService;
+    private final RedisUtil redisUtil;
+    private final JwtUtil jwtUtil;
 
     // 카카오 로그인 페이지 가져오기
     @GetMapping("/kakao/page")
@@ -33,11 +39,21 @@ public class KakaoController {
             throws JsonProcessingException {
         HashMap<String, String> tokens = kakaoService.kakaoLogin(code);
 
-        Cookie cookie = new Cookie(ACCESS_TOKEN_HEADER, tokens.get(ACCESS_TOKEN_HEADER));
-        // TODO: 리프레시토큰 저장하는 로직
-        cookie.setPath("/");
-        res.addCookie(cookie);
+        addCookie(tokens.get(ACCESS_TOKEN_HEADER), ACCESS_TOKEN_HEADER, res);
+        addCookie(tokens.get(REFRESH_TOKEN_HEADER), REFRESH_TOKEN_HEADER, res);
+
+//        redisUtil.set(
+//            jwtUtil.getTokenWithoutBearer(tokens.get(REFRESH_TOKEN_HEADER)), res.getId(), REFRESH_TOKEN_EXPIRED_TIME);
 
         return "redirect:/login.html"; // 로그인 완료시 이동할 페이지
+    }
+
+    private static void addCookie(String cookieValue, String header, HttpServletResponse res) {
+        Cookie cookie = new Cookie(header, cookieValue); // Name-Value
+        cookie.setPath("/");
+        cookie.setMaxAge(30 * 60);
+
+        // Response 객체에 Cookie 추가
+        res.addCookie(cookie);
     }
 }

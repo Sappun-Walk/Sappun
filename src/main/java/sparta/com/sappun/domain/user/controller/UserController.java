@@ -4,6 +4,7 @@ import static sparta.com.sappun.global.jwt.JwtUtil.ACCESS_TOKEN_HEADER;
 import static sparta.com.sappun.global.jwt.JwtUtil.REFRESH_TOKEN_HEADER;
 import static sparta.com.sappun.global.redis.RedisUtil.REFRESH_TOKEN_EXPIRED_TIME;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -45,13 +46,13 @@ public class UserController {
             @RequestBody UserLoginReq req, HttpServletResponse response) {
         UserLoginRes res = userService.login(req);
 
-        // Access token 발급 후 헤더에 저장
+        // Access token 발급 후 쿠키에 저장
         String accessToken = jwtUtil.createAccessToken(res.getId(), res.getRole().getValue());
-        response.setHeader(JwtUtil.ACCESS_TOKEN_HEADER, accessToken);
+        addCookie(accessToken, ACCESS_TOKEN_HEADER, response);
 
-        // Refresh token 발급 후 헤더, redis 에 저장
+        // Refresh token 발급 후 쿠키, redis 에 저장
         String refreshToken = jwtUtil.createRefreshToken();
-        response.setHeader(REFRESH_TOKEN_HEADER, refreshToken);
+        addCookie(refreshToken, REFRESH_TOKEN_HEADER, response);
         redisUtil.set(
                 jwtUtil.getTokenWithoutBearer(refreshToken), res.getId(), REFRESH_TOKEN_EXPIRED_TIME);
 
@@ -119,5 +120,14 @@ public class UserController {
     public CommonResponse<NicknameVerifyRes> verifyNickname(
             @RequestBody @Valid NicknameVerifyReq req) {
         return CommonResponse.success(userService.verifyNickname(req));
+    }
+
+    private static void addCookie(String cookieValue, String header, HttpServletResponse res) {
+        Cookie cookie = new Cookie(header, cookieValue); // Name-Value
+        cookie.setPath("/");
+        cookie.setMaxAge(30 * 60);
+
+        // Response 객체에 Cookie 추가
+        res.addCookie(cookie);
     }
 }
