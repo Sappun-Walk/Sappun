@@ -2,7 +2,6 @@ package sparta.com.sappun.domain.user.controller;
 
 import static sparta.com.sappun.global.jwt.JwtUtil.ACCESS_TOKEN_HEADER;
 import static sparta.com.sappun.global.jwt.JwtUtil.REFRESH_TOKEN_HEADER;
-import static sparta.com.sappun.global.redis.RedisUtil.REFRESH_TOKEN_EXPIRED_TIME;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.Cookie;
@@ -42,8 +41,9 @@ public class KakaoController {
         addCookie(tokens.get(ACCESS_TOKEN_HEADER), ACCESS_TOKEN_HEADER, res);
         addCookie(tokens.get(REFRESH_TOKEN_HEADER), REFRESH_TOKEN_HEADER, res);
 
-//        redisUtil.set(
-//            jwtUtil.getTokenWithoutBearer(tokens.get(REFRESH_TOKEN_HEADER)), res.getId(), REFRESH_TOKEN_EXPIRED_TIME);
+        //        redisUtil.set(
+        //            jwtUtil.getTokenWithoutBearer(tokens.get(REFRESH_TOKEN_HEADER)), res.getId(),
+        // REFRESH_TOKEN_EXPIRED_TIME);
 
         return "redirect:/login.html"; // 로그인 완료시 이동할 페이지
     }

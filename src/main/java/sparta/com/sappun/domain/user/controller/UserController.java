@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.user.dto.request.*;
 import sparta.com.sappun.domain.user.dto.response.*;
@@ -62,8 +61,8 @@ public class UserController {
     @PostMapping("/logout")
     public CommonResponse<UserLogoutRes> logout(HttpServletRequest request) {
         // access token을 헤더에서 가져옴
-        String accessToken = jwtUtil.getTokenWithoutBearer(request.getHeader(ACCESS_TOKEN_HEADER));
-        String refreshToken = jwtUtil.getTokenWithoutBearer(request.getHeader(REFRESH_TOKEN_HEADER));
+        String accessToken = jwtUtil.getTokensFromCookie(request).get(ACCESS_TOKEN_HEADER);
+        String refreshToken = jwtUtil.getTokensFromCookie(request).get(REFRESH_TOKEN_HEADER);
 
         // refresh token이 이미 존재하면 삭제
         if (redisUtil.hasKey(refreshToken)) {
