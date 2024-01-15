@@ -39,7 +39,7 @@ public class CommentService {
                 commentRepository.save(
                         Comment.builder()
                                 .content(req.getContent())
-                                .fileUrl(req.getFileUrl())
+                                .fileURL(req.getFileURL())
                                 .user(user)
                                 .board(board)
                                 .build()));
