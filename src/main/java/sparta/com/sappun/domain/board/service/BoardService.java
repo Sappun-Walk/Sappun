@@ -2,12 +2,14 @@ package sparta.com.sappun.domain.board.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.board.dto.response.*;
@@ -17,7 +19,9 @@ import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.validator.BoardValidator;
+import sparta.com.sappun.global.validator.S3Validator;
 import sparta.com.sappun.global.validator.UserValidator;
+import sparta.com.sappun.infra.s3.S3Util;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +29,10 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final S3Util s3Util;
+
+    @Value("${default.image.url}")
+    private String defaultBoardImage;
 
     @Transactional(readOnly = true)
     public BoardGetRes getBoard(Long boardId) {
@@ -53,16 +61,22 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardSaveRes saveBoard(BoardSaveReq boardSaveReq) {
+    public BoardSaveRes saveBoard(BoardSaveReq boardSaveReq, MultipartFile multipartFile) {
         User user = getUserById(boardSaveReq.getUserId());
         user.updateScore(100); // 게시글 작성하면 점수 +100
+
+        String boardImage = null;
+        if (multipartFile != null && !multipartFile.isEmpty()) {
+            S3Validator.isProfileImageFile(multipartFile);
+            boardImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
+        }
 
         return BoardServiceMapper.INSTANCE.toBoardSaveRes(
                 boardRepository.save(
                         Board.builder()
                                 .title(boardSaveReq.getTitle())
                                 .content(boardSaveReq.getContent())
-                                .fileURL(boardSaveReq.getFileURL())
+                                .fileURL(boardImage)
                                 .departure(boardSaveReq.getDeparture())
                                 .destination(boardSaveReq.getDestination())
                                 .stopover(boardSaveReq.getStopover())
@@ -74,11 +88,20 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardUpdateRes updateBoard(BoardUpdateReq boardUpdateReq) {
+    public BoardUpdateRes updateBoard(BoardUpdateReq boardUpdateReq, MultipartFile multipartFile) {
         Board board = getBoardById(boardUpdateReq.getBoardId());
         User user = getUserById(boardUpdateReq.getUserId());
         BoardValidator.checkBoardUser(board.getUser().getId(), user.getId()); // 수정 가능한 사용자인지 확인
-        board.update(boardUpdateReq);
+
+        String boardImage = board.getFileURL();
+        if (multipartFile != null && !multipartFile.isEmpty()) {
+            if (boardImage != null && !boardImage.isEmpty()) {
+                s3Util.deleteFile(boardImage, S3Util.FilePath.BOARD);
+            }
+            S3Validator.isProfileImageFile(multipartFile);
+            boardImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
+        }
+        board.update(boardUpdateReq, boardImage);
 
         return BoardServiceMapper.INSTANCE.toBoardUpdateRes(board);
     }
@@ -91,8 +114,12 @@ public class BoardService {
 
         user.updateScore(-100); // 게시글 삭제하면 점수 -100
 
-        boardRepository.delete(board);
+        String boardImage = board.getFileURL();
+        if (boardImage != null && !boardImage.isEmpty()) {
+            s3Util.deleteFile(boardImage, S3Util.FilePath.BOARD);
+        }
 
+        boardRepository.delete(board);
         return new BoardDeleteRes();
     }
 

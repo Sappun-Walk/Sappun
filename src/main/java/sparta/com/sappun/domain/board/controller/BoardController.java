@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.board.dto.response.*;
@@ -38,7 +39,6 @@ public class BoardController {
             @RequestParam("isAsc") boolean isAsc) {
         Page<BoardGetRes> responseDto =
                 boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
-        // BoardListGetRes responseDto = boardService.getBoardList(region);
         return CommonResponse.success(responseDto);
     }
 
@@ -59,21 +59,23 @@ public class BoardController {
     // 게시글 작성
     @PostMapping
     public CommonResponse<BoardSaveRes> saveBoard(
-            @RequestBody BoardSaveReq boardSaveReq,
+            @RequestPart(name = "data") @Valid BoardSaveReq boardSaveReq,
+            @RequestPart(name = "image", required = false) MultipartFile multipartfile,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         boardSaveReq.setUserId(userDetails.getUser().getId());
-        return CommonResponse.success(boardService.saveBoard(boardSaveReq));
+        return CommonResponse.success(boardService.saveBoard(boardSaveReq, multipartfile));
     }
 
     // 게시글 수정
     @PatchMapping("/{boardId}")
     public CommonResponse<BoardUpdateRes> updateBoard(
             @PathVariable Long boardId,
-            @RequestBody @Valid BoardUpdateReq boardUpdateReq,
+            @RequestPart(name = "data") @Valid BoardUpdateReq boardUpdateReq,
+            @RequestPart(name = "image", required = false) MultipartFile multipartfile,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         boardUpdateReq.setBoardId(boardId);
         boardUpdateReq.setUserId(userDetails.getUser().getId());
-        return CommonResponse.success(boardService.updateBoard(boardUpdateReq));
+        return CommonResponse.success(boardService.updateBoard(boardUpdateReq, multipartfile));
     }
 
     // 게시글 삭제

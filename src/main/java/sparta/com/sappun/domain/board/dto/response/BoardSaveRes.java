@@ -19,6 +19,8 @@ public class BoardSaveRes {
     private String destination;
     private List<String> stopover;
     private RegionEnum region;
+    private Integer likeCount;
+    private Integer reportCount;
 
     @Builder
     private BoardSaveRes(
@@ -30,7 +32,9 @@ public class BoardSaveRes {
             String departure,
             String destination,
             List<String> stopover,
-            RegionEnum region) {
+            RegionEnum region,
+            Integer likeCount,
+            Integer reportCount) {
         this.nickname = nickname;
         this.id = id;
         this.title = title;
@@ -40,5 +44,7 @@ public class BoardSaveRes {
         this.destination = destination;
         this.stopover = stopover;
         this.region = region;
+        this.likeCount = likeCount;
+        this.reportCount = reportCount;
     }
 }

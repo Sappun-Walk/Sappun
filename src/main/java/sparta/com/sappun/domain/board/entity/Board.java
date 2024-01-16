@@ -78,10 +78,10 @@ public class Board extends TimeStamp {
         this.reportCount = reportCount;
     }
 
-    public void update(BoardUpdateReq boardUpdateReq) {
+    public void update(BoardUpdateReq boardUpdateReq, String fileURL) {
         this.title = boardUpdateReq.getTitle();
         this.content = boardUpdateReq.getContent();
-        this.fileURL = boardUpdateReq.getFileURL();
+        this.fileURL = fileURL;
         this.departure = boardUpdateReq.getDeparture();
         this.destination = boardUpdateReq.getDestination();
         this.stopover = boardUpdateReq.getStopover();

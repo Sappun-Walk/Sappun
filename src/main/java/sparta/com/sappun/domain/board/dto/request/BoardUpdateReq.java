@@ -13,7 +13,6 @@ public class BoardUpdateReq {
 
     private String title;
     private String content;
-    private String fileURL;
     private String departure;
     private String destination;
     private List<String> stopover;
@@ -24,7 +23,6 @@ public class BoardUpdateReq {
             Long boardId,
             String title,
             String content,
-            String fileURL,
             String departure,
             String destination,
             List<String> stopover,
@@ -32,7 +30,6 @@ public class BoardUpdateReq {
         this.boardId = boardId;
         this.title = title;
         this.content = content;
-        this.fileURL = fileURL;
         this.departure = departure;
         this.destination = destination;
         this.stopover = stopover;
