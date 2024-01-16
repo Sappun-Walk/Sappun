@@ -12,27 +12,30 @@ public class BoardSaveReq {
 
     private String title;
     private String content;
-    private String fileURL;
     private String departure;
     private String destination;
     private List<String> stopover;
     private RegionEnum region;
+    private Integer likeCount;
+    private Integer reportCount;
 
     @Builder
     private BoardSaveReq(
             String title,
             String content,
-            String fileURL,
             String departure,
             String destination,
             List<String> stopover,
-            RegionEnum region) {
+            RegionEnum region,
+            Integer likeCount,
+            Integer reportCount) {
         this.title = title;
         this.content = content;
-        this.fileURL = fileURL;
         this.departure = departure;
         this.destination = destination;
         this.stopover = stopover;
         this.region = region;
+        this.likeCount = likeCount;
+        this.reportCount = reportCount;
     }
 }
