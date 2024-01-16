@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.Disabled;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,7 +42,7 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
 
     @BeforeAll
     static void setUpProfile() throws IOException {
-        String imageUrl = "images/image1.jpg";
+        String imageUrl = "static/images/image1.jpg";
         Resource fileResource = new ClassPathResource(imageUrl);
 
         multipartFile =
