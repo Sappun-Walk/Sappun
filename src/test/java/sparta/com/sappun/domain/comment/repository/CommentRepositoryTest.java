@@ -44,6 +44,7 @@
         void findByIdTest() {
             // given
             userRepository.save(TEST_USER);
+            boardRepository.save(TEST_BOARD);
             Comment comment = commentRepository.save(TEST_COMMENT);
 
             // when
@@ -58,6 +59,7 @@
         void deleteTest() {
             // given
             userRepository.save(TEST_USER);
+            boardRepository.save(TEST_BOARD);
             Comment comment = commentRepository.save(TEST_COMMENT);
 
             // when
