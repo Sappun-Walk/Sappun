@@ -9,6 +9,9 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +40,10 @@ public class S3Util {
     }
 
     private static ObjectMetadata setObjectMetadata(MultipartFile multipartFile) {
-        // ObjectMetadata 객체 생성
+        // 업로드할 파일의 메타데이터를 설정하는 메소드
         ObjectMetadata metadata = new ObjectMetadata();
-        // 업로드할 파일의 길이 설정
         metadata.setContentLength(multipartFile.getSize());
-        // 업로드할 파일의 컨텐츠 타입 설정
         metadata.setContentType(multipartFile.getContentType());
-        // 생성한 ObjectMetadata 객체 반환
         return metadata;
     }
 
@@ -54,6 +54,12 @@ public class S3Util {
         }
         // 업로드할 파일의 고유한 파일명 생성
         String fileName = createFileName(multipartFile.getOriginalFilename());
+        // 파일명을 UTF-8로 디코딩
+        try {
+            fileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            throw new GlobalException(SYSTEM_ERROR);
+        }
         // 업로드할 파일의 메타데이터 생성
         ObjectMetadata metadata = setObjectMetadata(multipartFile);
 
@@ -95,11 +101,19 @@ public class S3Util {
     public void deleteFile(String fileUrl, FilePath filePath) {
         // 주어진 파일 URL로부터 파일명을 추출
         String fileName = getFileNameFromFileUrl(fileUrl, filePath);
+        // 파일명을 UTF-8로 디코딩
+        try {
+            fileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8.toString());
+            System.out.println(fileName);
+        } catch (UnsupportedEncodingException e) {
+            throw new GlobalException(SYSTEM_ERROR);
+        }
         // 파일명이 비어있거나 해당 파일이 존재하지 않으면 예외 발생
         if (fileName.isBlank()
                 || !amazonS3Client.doesObjectExist(bucketName, filePath.getPath() + fileName)) {
             throw new GlobalException(NOT_FOUND_FILE);
         }
+
         // S3에서 파일 삭제
         amazonS3Client.deleteObject(bucketName, filePath.getPath() + fileName);
     }
