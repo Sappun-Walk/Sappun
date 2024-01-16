@@ -8,9 +8,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -23,7 +27,7 @@ public class JwtUtil {
     public static final String ACCESS_TOKEN_HEADER = "AccessToken"; // Access Token KEY 값
     public static final String REFRESH_TOKEN_HEADER = "RefreshToken"; // Refresh Token KEY 값
     public static final String AUTHORIZATION_KEY = "auth"; // 사용자 권한 값의 KEY
-    public static final String BEARER_PREFIX = "Bearer "; // Token 식별자
+    public static final String BEARER_PREFIX = "Bearer%20"; // Token 식별자
     private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // 액세스 토큰 만료시간 60분
     private static final long REFRESH_TOKEN_TIME = 14 * 24 * 60 * 60 * 1000L; // 리프레시 토큰 만료시간 2주
 
@@ -68,12 +72,30 @@ public class JwtUtil {
                         .compact();
     }
 
-    /** header 에서 JWT 가져오기 */
+    /** Bearer 없는 JWT 가져오기 */
     public String getTokenWithoutBearer(String bearerToken) {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(9);
         }
         return null;
+    }
+
+    /** cookie 에서 JWT 가져오기 */
+    public Map<String, String> getTokensFromCookie(HttpServletRequest request) {
+        Cookie[] list = request.getCookies();
+        Map<String, String> tokens = new HashMap<>();
+        if (list == null) {
+            return null;
+        }
+        for (Cookie cookie : list) {
+            if (cookie.getName().equals(JwtUtil.ACCESS_TOKEN_HEADER)) {
+                tokens.put(ACCESS_TOKEN_HEADER, cookie.getValue().substring(9));
+            } else if (cookie.getName().equals(JwtUtil.REFRESH_TOKEN_HEADER)) {
+                tokens.put(REFRESH_TOKEN_HEADER, cookie.getValue().substring(9));
+            }
+        }
+
+        return tokens;
     }
 
     /** 토큰 검증 */
