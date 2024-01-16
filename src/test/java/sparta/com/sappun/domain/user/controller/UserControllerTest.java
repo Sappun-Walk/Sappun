@@ -42,7 +42,7 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
 
     @BeforeAll
     static void setUpProfile() throws IOException {
-        String imageUrl = "images/image1.jpg";
+        String imageUrl = "static/images/image1.jpg";
         Resource fileResource = new ClassPathResource(imageUrl);
 
         multipartFile =
