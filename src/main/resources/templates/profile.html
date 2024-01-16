@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <style>
+      div.profile-page {
+        display: flex; /* Flexbox 사용 */
+        flex-direction: column; /* 세로로 정렬 */
+        align-items: center; /* 가운데 정렬 */
+      }
+
+      div.profile-header {
+        padding: 10px; /* 여백 설정 */
+        width: 100%; /* 전체 너비로 확장 */
+      }
+
+      #mainLogoImage {
+        cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+        width: 200px; /* 로고 버튼의 너비 */
+        height: 100px; /* 로고 버튼의 높이 */
+        float: left; /* 왼쪽 맨 위로 */
+        margin-top: 10px; /* 맨 위에서 10px 만큼 떨어지도록 조절 */
+        margin-left: 20px;
+      }
+
+      div.profile-header-buttons {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 50px;
+        margin-top: 20px;
+      }
+
+      #logout-button {
+        cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+        width: 100px;
+        font-size: 16px; /* 글자 크기를 조절하여 크기를 키움 */
+        padding: 10px; /* 버튼 내부의 여백 */
+        text-decoration: none; /* 밑줄 제거 */
+        color: black; /* 글자 색상 */
+        background-color: white; /* 배경 색상 */
+        border: 1px solid palevioletred; /* 테두리 색상 */
+        border-radius: 4px; /* 둥근 테두리 */
+        margin-top: 10px; /* 맨 위에서 10px 만큼 떨어지도록 조절 */
+        margin-right: 50px;
+      }
+
+      #withdraw-button {
+        cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+        width: 100px;
+        font-size: 16px; /* 글자 크기를 조절하여 크기를 키움 */
+        padding: 10px; /* 버튼 내부의 여백 */
+        text-decoration: none; /* 밑줄 제거 */
+        color: black; /* 글자 색상 */
+        background-color: white; /* 배경 색상 */
+        border: 1px solid palevioletred; /* 테두리 색상 */
+        border-radius: 4px; /* 둥근 테두리 */
+        margin-top: 10px; /* 맨 위에서 10px 만큼 떨어지도록 조절 */
+      }
+
+      div.profile-content {
+        width: 100%; /* 전체 너비로 확장 */
+        padding: 20px; /* 여백 설정 */
+        display: flex;
+        flex-direction: column; /* 세로로 정렬 */
+        align-items: center;
+      }
+
+      div.profile-info-box {
+        width: 1200px;
+        height: 650px;
+        border: 2px solid #F6CEE3;
+        border-radius: 10px; /* 테두리 모서리 둥글기 조절 */
+        display: flex;
+        justify-content: center; /* 가로 중앙 정렬 */
+        align-items: center;
+      }
+
+      div.profile-info {
+        width: 700px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      /* 프로필 이미지를 동그랗게 보여주기 위한 CSS 스타일*/
+      img.profile-image {
+        border-radius: 50%;
+        width: 300px; /* 이미지 크기 조절에 따라 변경 가능 */
+        height: 300px;
+      }
+
+      /* 프로필 이미지와 Score를 나란히 보여줄 프로필 그룹 */
+      div.profile-image-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* 세로 중앙 정렬 */
+        margin-bottom: 10px; /* 그룹 간격 조절 */
+      }
+
+      /* ID, Nickname, Email을 나란히 보여줄 그룹 */
+      div.profile-text-group {
+        display: flex;
+        flex-direction: column; /* 세로 방향으로 나열 */
+        align-items: flex-start; /* 좌측 정렬 */
+        margin-top: 30px; /* 그룹 간격 조절 */
+      }
+
+      div.profile-page-buttons {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 40px;
+      }
+
+      #password-update-button {
+        cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+        width: 130px;
+        font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
+        padding: 10px; /* 버튼 내부의 여백 */
+        text-decoration: none; /* 밑줄 제거 */
+        color: black; /* 글자 색상 */
+        background-color: #F6CEE3; /* 배경 색상 */
+        border: 1px solid #F6CEE3; /* 테두리 색상 */
+        border-radius: 4px; /* 둥근 테두리 */
+        margin-right: 10px;
+        box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      #profile-update-button {
+        cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+        width: 60px;
+        font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
+        padding: 10px; /* 버튼 내부의 여백 */
+        text-decoration: none; /* 밑줄 제거 */
+        color: black; /* 글자 색상 */
+        background-color: #F6CEE3; /* 배경 색상 */
+        border: 1px solid #F6CEE3; /* 테두리 색상 */
+        border-radius: 4px; /* 둥근 테두리 */
+        margin-right: 10px;
+        box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      #back-main-button {
+        cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+        width: 60px;
+        font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
+        padding: 10px; /* 버튼 내부의 여백 */
+        text-decoration: none; /* 밑줄 제거 */
+        color: black; /* 글자 색상 */
+        background-color: #F6CEE3; /* 배경 색상 */
+        border: 1px solid #F6CEE3; /* 테두리 색상 */
+        border-radius: 4px; /* 둥근 테두리 */
+        box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+</head>
+<body>
+<div class="profile-page">
+    <div class="profile-header">
+        <!-- 메인 로고 이미지 -->
+        <img th:src="@{/images/logo.png}" alt="Logo" id="mainLogoImage">
+
+        <script>
+          // JavaScript로 이미지를 클릭했을 때의 동작을 설정
+          document.getElementById('mainLogoImage').addEventListener('click', function () {
+            // 이미지를 클릭했을 때 메인 페이지로 이동하는 코드
+            window.location.href = '/login.html'; // TODO: 페이지 수정
+          });
+        </script>
+
+        <div class="profile-header-buttons">
+
+            <!-- 로그아웃 버튼 -->
+            <div class="logout">
+                <button id="logout-button">로그아웃</button>
+            </div>
+
+            <script>
+              // 로그아웃 버튼 클릭 시 이벤트 핸들러
+              document.getElementById('logout-button').addEventListener('click', function () {
+                // 사용자에게 재확인 알림창 표시
+                var confirmation = confirm('로그아웃 하시겠습니까?');
+
+                // 사용자가 확인을 선택한 경우에만 POST 요청 보내기
+                if (confirmation) {
+                  fetch('/api/users/logout', {method: 'POST'})
+                  .then(response => {
+                    if (response.ok) {
+                      alert('로그아웃이 성공적으로 이루어졌습니다.');
+                      window.location.href = '/login.html'; // TODO: 페이지 수정
+                    } else {
+                      alert('로그아웃 중 오류가 발생했습니다.');
+                    }
+                  })
+                  .catch(error => {
+                    console.error('오류 발생:', error);
+                    alert('로그아웃 중 오류가 발생했습니다.');
+                  });
+                }
+              });
+            </script>
+
+            <!-- 회원 탈퇴 버튼 -->
+            <div class="withdraw">
+                <button id="withdraw-button">회원 탈퇴</button>
+            </div>
+
+            <script>
+              // 회원 탈퇴 버튼 클릭 시 이벤트 핸들러
+              document.getElementById('withdraw-button').addEventListener('click', function () {
+                // 사용자에게 재확인 알림창 표시
+                var confirmation = confirm('정말로 회원 탈퇴하시겠습니까?');
+
+                // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
+                if (confirmation) {
+                  fetch('/api/users', {method: 'DELETE'})
+                  .then(response => {
+                    if (response.ok) {
+                      alert('회원 탈퇴가 성공적으로 이루어졌습니다.');
+                      window.location.href = '/login.html'; // TODO: 페이지 수정
+                    } else {
+                      alert('회원 탈퇴 중 오류가 발생했습니다.');
+                    }
+                  })
+                  .catch(error => {
+                    console.error('오류 발생:', error);
+                    alert('회원 탈퇴 중 오류가 발생했습니다.');
+                  });
+                }
+              });
+            </script>
+        </div>
+    </div>
+
+    <div class="profile-content">
+        <div class="profile-info-box">
+            <div class="profile-info">
+                <div class="profile-image-group">
+                    <img th:src="${userProfile.profileUrl}" alt="Profile Picture"
+                         class="profile-image">
+                    <p><b>Rank</b>
+                        <span th:if="${userProfile.score < 0}">Warned</span>
+                        <span
+                            th:if="${userProfile.score >= 0 and userProfile.score <= 300}">Bronze</span>
+                        <span
+                            th:if="${userProfile.score > 300 and userProfile.score <= 700}">Silver</span>
+                        <span
+                            th:if="${userProfile.score > 700 and userProfile.score <= 1200}">Gold</span>
+                        <span th:if="${userProfile.score > 1200}">Platinum</span>
+                    </p>
+                </div>
+
+                <div class="profile-text-group">
+                    <div class="username">
+                        <p><b>아이디</b></p>
+                        <p><span th:text="${userProfile.username}"></span></p>
+                    </div>
+                    <div class="nickname">
+                        <p><b>닉네임</b></p>
+                        <p><span th:text="${userProfile.nickname}"></span></p>
+                    </div>
+                    <div class="email">
+                        <p><b>이메일</b></p>
+                        <p><span th:text="${userProfile.email}"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-page-buttons">
+            <!-- 비밀번호 수정 버튼 -->
+            <div class="password-update">
+                <button id="password-update-button">비밀번호 수정</button>
+            </div>
+
+            <script>
+              document.getElementById('password-update-button').addEventListener('click', function () {
+                // 클릭했을 때 비밀번호 수정 페이지로 이동하는 코드
+                window.location.href = '/login.html'; // TODO: 페이지 수정
+              });
+            </script>
+
+            <!-- 프로필 수정 버튼 -->
+            <div class="profile-update">
+                <button id="profile-update-button">수정</button>
+            </div>
+
+            <script>
+              document.getElementById('profile-update-button').addEventListener('click', function () {
+                // 클릭했을 때 프로필 수정 페이지로 이동하는 코드
+                window.location.href = '/login.html'; // TODO: 페이지 수정
+              });
+            </script>
+
+            <!-- 뒤로가기 버튼 -->
+            <div class="back-to-main">
+                <button id="back-main-button">뒤로</button>
+            </div>
+
+            <script>
+              document.getElementById('back-main-button').addEventListener('click', function () {
+                // 클릭했을 때 메인 페이지로 이동하는 코드
+                window.location.href = '/login.html'; // TODO: 페이지 수정
+              });
+            </script>
+        </div>
+    </div>
+</div>
+</body>
+</html>
