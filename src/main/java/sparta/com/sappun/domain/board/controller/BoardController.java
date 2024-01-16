@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
@@ -14,7 +16,7 @@ import sparta.com.sappun.domain.board.service.BoardService;
 import sparta.com.sappun.global.response.CommonResponse;
 import sparta.com.sappun.global.security.UserDetailsImpl;
 
-@RestController
+@Controller
 @RequestMapping("/api/boards")
 @RequiredArgsConstructor
 public class BoardController {
@@ -40,12 +42,20 @@ public class BoardController {
         return CommonResponse.success(responseDto);
     }
 
+    //     Best 게시글 조회
+    //    @GetMapping("/best")
+    //    public CommonResponse<BoardBestListGetRes> getBestBoards() {
+    //        return CommonResponse.success(boardService.getBoardBestList());
+    //    }
+
     // Best 게시글 조회
     @GetMapping("/best")
-    public CommonResponse<BoardBestListGetRes> getBestBoards() {
-        return CommonResponse.success(boardService.getBoardBestList());
+    public String getBestBoards(Model model) {
+        BoardBestListGetRes bestBoards = boardService.getBoardBestList();
+        model.addAttribute("bestBoards", bestBoards);
+        model.addAttribute("boardList", bestBoards.getBoards());
+        return "mainPage";
     }
-
     // 게시글 작성
     @PostMapping
     public CommonResponse<BoardSaveRes> saveBoard(
