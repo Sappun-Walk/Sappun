@@ -2,6 +2,7 @@ package sparta.com.sappun.domain.user.service;
 
 import static sparta.com.sappun.global.jwt.JwtUtil.ACCESS_TOKEN_HEADER;
 import static sparta.com.sappun.global.jwt.JwtUtil.REFRESH_TOKEN_HEADER;
+import static sparta.com.sappun.global.redis.RedisUtil.REFRESH_TOKEN_EXPIRED_TIME;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jose.shaded.gson.JsonElement;
@@ -27,6 +28,7 @@ import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.entity.UserSocialEnum;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.jwt.JwtUtil;
+import sparta.com.sappun.global.redis.RedisUtil;
 
 @Slf4j(topic = "NAVER Login")
 @Service
@@ -36,6 +38,7 @@ public class NaverService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final RedisUtil redisUtil;
 
     @Value("${spring.security.oauth2.client.registration.naver.client-id}")
     private String naverClientId;
@@ -121,6 +124,13 @@ public class NaverService {
         String refreshToken = jwtUtil.createRefreshToken();
         returnTokens.put(ACCESS_TOKEN_HEADER, accessToken);
         returnTokens.put(REFRESH_TOKEN_HEADER, refreshToken);
+
+        // refresh token 저장
+        redisUtil.set(
+                jwtUtil.getTokenWithoutBearer(tokens.get(REFRESH_TOKEN_HEADER)),
+                user.getId(),
+                REFRESH_TOKEN_EXPIRED_TIME);
+
         return returnTokens;
     }
 

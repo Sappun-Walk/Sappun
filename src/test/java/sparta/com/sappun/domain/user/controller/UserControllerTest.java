@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Disabled;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -125,8 +126,10 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
         String accessToken = "accessToken";
         String refreshToken = "refreshToken";
 
-        when(jwtUtil.getTokenWithoutBearer(any())).thenReturn(accessToken);
-        when(jwtUtil.getTokenWithoutBearer(any())).thenReturn(refreshToken);
+        when(jwtUtil.getTokensFromCookie(any()).get(JwtUtil.ACCESS_TOKEN_HEADER))
+                .thenReturn(accessToken);
+        when(jwtUtil.getTokensFromCookie(any()).get(JwtUtil.REFRESH_TOKEN_HEADER))
+                .thenReturn(refreshToken);
 
         // when - then
         mockMvc

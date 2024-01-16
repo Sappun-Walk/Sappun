@@ -47,7 +47,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String accessToken =
-                jwtUtil.getTokenWithoutBearer(request.getHeader(ACCESS_TOKEN_HEADER)); // access token 찾음
+                jwtUtil.getTokensFromCookie(request).get(ACCESS_TOKEN_HEADER); // access token 찾음
         log.info("accessToken : {}", accessToken);
 
         // access token 비어있으면 인증 미처리
@@ -74,7 +74,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         // access token 이 만료되면 refresh token 가져옴
         String refreshToken =
-                jwtUtil.getTokenWithoutBearer(request.getHeader(REFRESH_TOKEN_HEADER)); // refresh token 찾음
+                jwtUtil.getTokensFromCookie(request).get(REFRESH_TOKEN_HEADER); // refresh token 찾음
         log.info("refreshToken : {}", refreshToken);
 
         // refresh token 검증

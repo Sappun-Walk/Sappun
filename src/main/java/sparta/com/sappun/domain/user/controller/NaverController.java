@@ -37,8 +37,6 @@ public class NaverController {
         addCookie(tokens.get(ACCESS_TOKEN_HEADER), ACCESS_TOKEN_HEADER, res);
         addCookie(tokens.get(REFRESH_TOKEN_HEADER), REFRESH_TOKEN_HEADER, res);
 
-        // TODO: 리프레시토큰 저장하는 로직
-
         return "redirect:/login.html"; // 로그인 완료시 이동할 페이지
     }
 
