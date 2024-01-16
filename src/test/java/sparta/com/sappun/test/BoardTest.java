@@ -11,9 +11,9 @@ public interface BoardTest extends UserTest {
     String TEST_BOARD_TITLE = "TEST_TITLE";
     String TEST_BOARD_CONTENT = "TEST_CONTENT";
     String TEST_BOARD_URL = "TEST_URL";
-    String TEST_DEPATRURE = "TEST_DEPATURE";
+    String TEST_DEPARTRURE = "TEST_DEPATURE";
     String TEST_DESTINATION = "TEST_DESTINAION";
-    List<String> TEST_STOPVER = List.of("TEST1", "TEST2", "TEST3", "TEST4", "TEST5");
+    List<String> TEST_STOPOVER = List.of("TEST1", "TEST2", "TEST3", "TEST4", "TEST5");
     RegionEnum TEST_REGION1 = RegionEnum.REGION1;
 
     Integer TEST_LIKECOUNT = 0;
@@ -26,9 +26,9 @@ public interface BoardTest extends UserTest {
                     .title(TEST_BOARD_TITLE)
                     .content(TEST_BOARD_CONTENT)
                     .fileURL(TEST_BOARD_URL)
-                    .departure(TEST_DEPATRURE)
+                    .departure(TEST_DEPARTRURE)
                     .destination(TEST_DESTINATION)
-                    .stopover(TEST_STOPVER)
+                    .stopover(TEST_STOPOVER)
                     .region(TEST_REGION1)
                     .likeCount(TEST_LIKECOUNT)
                     .reportCount(TEST_REPORTCOUNT)
