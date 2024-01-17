@@ -27,7 +27,7 @@ class CommentRepositoryTest implements CommentTest {
     void saveTest() {
         // given
         userRepository.save(TEST_USER);
-        // BoardRepositoru 추가 필요
+        boardRepository.save(TEST_BOARD);
 
         // when
         Comment saveComment = commentRepository.save(TEST_COMMENT);
@@ -43,6 +43,7 @@ class CommentRepositoryTest implements CommentTest {
     void findByIdTest() {
         // given
         userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
         Comment comment = commentRepository.save(TEST_COMMENT);
 
         // when
@@ -50,5 +51,22 @@ class CommentRepositoryTest implements CommentTest {
 
         // then
         assertEquals(findComment.getContent(), TEST_COMMENT.getContent());
+    }
+
+    @Test
+    @DisplayName("delete 테스트")
+    void deleteTest() {
+        // given
+        userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
+        Comment comment = commentRepository.save(TEST_COMMENT);
+
+        // when
+        // 데이터베이스에서 삭제
+        commentRepository.delete(comment);
+        Comment findComment = commentRepository.findById(comment.getId());
+
+        // then
+        assertNull(findComment);
     }
 }

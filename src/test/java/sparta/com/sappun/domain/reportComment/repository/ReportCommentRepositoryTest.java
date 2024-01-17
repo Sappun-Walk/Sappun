@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.reportComment.entity.ReportComment;
 import sparta.com.sappun.domain.user.entity.User;
@@ -23,12 +24,14 @@ class ReportCommentRepositoryTest implements ReportCommentTest {
     @Autowired private ReportCommentRepository reportCommentRepository;
     @Autowired private UserRepository userRepository;
     @Autowired private CommentRepository commentRepository;
+    @Autowired private BoardRepository boardRepository;
 
     @Test
     @DisplayName("댓글 신고 save 테스트")
     void saveTest() {
         // given
         userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
         commentRepository.save(TEST_COMMENT);
 
         // when
@@ -45,6 +48,7 @@ class ReportCommentRepositoryTest implements ReportCommentTest {
     void existsReportCommentByCommentAndUserTest() {
         // given
         userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
         commentRepository.save(TEST_COMMENT);
         reportCommentRepository.save(REPORT_COMMENT);
 
@@ -61,6 +65,7 @@ class ReportCommentRepositoryTest implements ReportCommentTest {
     void selectUserByCommentTest() {
         // given
         userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
         commentRepository.save(TEST_COMMENT);
         reportCommentRepository.save(REPORT_COMMENT);
 
@@ -76,6 +81,7 @@ class ReportCommentRepositoryTest implements ReportCommentTest {
     void clearReportCommentByCommentTest() {
         // given
         userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
         commentRepository.save(TEST_COMMENT);
         reportCommentRepository.save(REPORT_COMMENT);
 
@@ -84,5 +90,21 @@ class ReportCommentRepositoryTest implements ReportCommentTest {
 
         // then
         assertEquals(0, reportCommentRepository.selectUserByComment(TEST_COMMENT).size());
+    }
+
+    @Test
+    @DisplayName("댓글 신고 findAllFetchComment 테스트")
+    void findAllFetchComment() {
+        // given
+        userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
+        commentRepository.save(TEST_COMMENT);
+        reportCommentRepository.save(REPORT_COMMENT);
+
+        // when
+        List<ReportComment> result = reportCommentRepository.findAllFetchComment();
+
+        // then
+        assertNotNull(result);
     }
 }

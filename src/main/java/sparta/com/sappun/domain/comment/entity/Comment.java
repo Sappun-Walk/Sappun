@@ -2,8 +2,6 @@ package sparta.com.sappun.domain.comment.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +9,6 @@ import lombok.NoArgsConstructor;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.comment.dto.request.CommentUpdateReq;
-import sparta.com.sappun.domain.likeComment.entity.LikeComment;
-import sparta.com.sappun.domain.reportComment.entity.ReportComment;
 import sparta.com.sappun.domain.user.entity.User;
 
 @Entity
@@ -37,18 +33,23 @@ public class Comment extends TimeStamp {
     @JoinColumn(name = "userId")
     private User user;
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LikeComment> likeComment = new ArrayList<>();
-
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReportComment> reportComment = new ArrayList<>();
+    @Column private Integer reportCount;
+    @Column private Integer likeCount;
 
     @Builder
-    private Comment(String content, String fileURL, User user, Board board) {
+    private Comment(
+            String content,
+            String fileURL,
+            User user,
+            Board board,
+            Integer likeCount,
+            Integer reportCount) {
         this.content = content;
         this.fileURL = fileURL;
         this.user = user;
         this.board = board;
+        this.likeCount = likeCount;
+        this.reportCount = reportCount;
     }
 
     public void update(CommentUpdateReq req, String fileURL) {
@@ -56,11 +57,11 @@ public class Comment extends TimeStamp {
         this.fileURL = fileURL;
     }
 
-    public Integer getLikeCount() {
-        return likeComment.size();
+    public void clickLikeComment(Integer count) {
+        this.likeCount += count;
     }
 
-    public Integer getReportCount() {
-        return reportComment.size();
+    public void clickReportComment(Integer count) {
+        this.reportCount += count;
     }
 }

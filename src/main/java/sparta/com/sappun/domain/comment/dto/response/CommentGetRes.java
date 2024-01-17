@@ -11,12 +11,15 @@ public class CommentGetRes {
     private String nickname;
     private String content;
     private String fileURL;
+    private Integer likeCount;
 
     @Builder
-    private CommentGetRes(Long id, String nickname, String content, String fileURL) {
+    private CommentGetRes(
+            Long id, String nickname, String content, String fileURL, Integer likeCount) {
         this.id = id;
         this.nickname = nickname;
         this.content = content;
         this.fileURL = fileURL;
+        this.likeCount = likeCount;
     }
 }

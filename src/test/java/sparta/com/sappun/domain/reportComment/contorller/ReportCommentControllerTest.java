@@ -2,20 +2,24 @@ package sparta.com.sappun.domain.reportComment.contorller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import sparta.com.sappun.domain.BaseMvcTest;
+import sparta.com.sappun.domain.comment.dto.response.CommentToReportGetRes;
 import sparta.com.sappun.domain.reportComment.controller.ReportCommentController;
 import sparta.com.sappun.domain.reportComment.dto.request.ReportCommentReq;
 import sparta.com.sappun.domain.reportComment.dto.response.DeleteReportCommentRes;
+import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentGetRes;
+import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentListGetRes;
 import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentRes;
 import sparta.com.sappun.domain.reportComment.service.ReportCommentService;
 import sparta.com.sappun.test.ReportCommentTest;
@@ -63,5 +67,45 @@ class ReportCommentControllerTest extends BaseMvcTest implements ReportCommentTe
                 .perform(delete("/api/comments/{commentId}/report", TEST_COMMENT_ID))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("댓글 신고 조회 API 테스트")
+    void getReportCommentListTest() throws Exception {
+        CommentToReportGetRes res =
+                CommentToReportGetRes.builder()
+                        .id(TEST_REPORT_COMMENT_ID)
+                        .nickname(TEST_USER_NICKNAME)
+                        .content(TEST_COMMENT_CONTENT)
+                        .fileURL(TEST_COMMENT_FILEURL)
+                        .likeCount(TEST_LIKE_COUNT)
+                        .reportCount(TEST_REPORT_COUNT)
+                        .build();
+
+        ReportCommentGetRes res1 =
+                ReportCommentGetRes.builder()
+                        .id(TEST_USER_ID)
+                        .boardId(TEST_BOARD_ID)
+                        .nickname(TEST_USER_NICKNAME)
+                        .reason(TEST_COMMENT_REPORT_REASON)
+                        .comment(res)
+                        .build();
+
+        ReportCommentGetRes res2 =
+                ReportCommentGetRes.builder()
+                        .id(TEST_USER_ID)
+                        .boardId(TEST_BOARD_ID)
+                        .nickname(TEST_USER_NICKNAME)
+                        .reason(TEST_COMMENT_REPORT_REASON)
+                        .comment(res)
+                        .build();
+
+        List<ReportCommentGetRes> resList = new ArrayList<>();
+        resList = List.of(res1, res2);
+
+        when(reportCommentService.getReportCommentList())
+                .thenReturn(ReportCommentListGetRes.builder().reportComments(resList).build());
+
+        mockMvc.perform(get("/api/comments/reports")).andDo(print()).andExpect(status().isOk());
     }
 }
