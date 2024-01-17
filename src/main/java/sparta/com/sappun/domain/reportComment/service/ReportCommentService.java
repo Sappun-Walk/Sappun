@@ -36,6 +36,7 @@ public class ReportCommentService {
         ReportCommentValidator.checkReport(
                 reportCommentRepository.existsReportCommentByCommentAndUser(
                         comment, user)); // 이미 신고했다면 예외처리
+        comment.clickReportComment(1);
 
         ReportComment reportComment =
                 reportCommentRepository.save(
@@ -66,7 +67,7 @@ public class ReportCommentService {
 
         // 신고 내역 삭제
         reportCommentRepository.clearReportCommentByComment(comment);
-
+        comment.clickReportComment(-comment.getReportCount());
         return new DeleteReportCommentRes();
     }
 

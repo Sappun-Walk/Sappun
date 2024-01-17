@@ -55,6 +55,8 @@ public class CommentService {
                                 .fileURL(fileImage)
                                 .user(user)
                                 .board(board)
+                                .likeCount(0)
+                                .reportCount(0)
                                 .build()));
     }
 
