@@ -63,13 +63,11 @@ class CommentRepositoryTest implements CommentTest {
         Comment comment = commentRepository.save(TEST_COMMENT);
 
         // when
-        Comment findComment = commentRepository.findById(comment.getId());
-
         // 데이터베이스에서 삭제
         commentRepository.delete(comment);
+        Comment findComment = commentRepository.findById(comment.getId());
 
         // then
-        findComment = commentRepository.findById(comment.getId());
-        assertThat(findComment).isNull();
+        assertNull(findComment);
     }
 }

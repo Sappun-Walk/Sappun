@@ -1,13 +1,13 @@
 package sparta.com.sappun.domain.reportComment.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 import static sparta.com.sappun.global.response.ResultCode.DUPLICATED_REPORT_COMMENT;
 import static sparta.com.sappun.test.BoardTest.TEST_BOARD;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,8 +15,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sparta.com.sappun.domain.comment.dto.response.CommentToReportGetRes;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.reportComment.dto.request.ReportCommentReq;
+import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentGetRes;
+import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentListGetRes;
 import sparta.com.sappun.domain.reportComment.repository.ReportCommentRepository;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
@@ -120,4 +123,52 @@ class ReportCommentServiceTest implements ReportCommentTest {
         assertEquals(-50, user1.getScore());
         assertEquals(commentAuthorScore + 100, TEST_BOARD.getUser().getScore());
     }
+
+//    @Test
+//    @DisplayName("댓글 신고 조회 테스트")
+//    void getReportCommentListTest() {
+//        // given
+//        User user1 =
+//                User.builder()
+//                        .username("username1")
+//                        .nickname("nickname1")
+//                        .password("password1")
+//                        .email("email1@dd.d")
+//                        .role(Role.ADMIN)
+//                        .score(0)
+//                        .build();
+//
+//        CommentToReportGetRes res =
+//                CommentToReportGetRes.builder()
+//                        .id(TEST_USER_ID)
+//                        .nickname(TEST_USER_NICKNAME)
+//                        .content(TEST_COMMENT_CONTENT)
+//                        .fileURL(TEST_COMMENT_FILEURL)
+//                        .likeCount(TEST_LIKECOUNT)
+//                        .reportCount(TEST_REPORTCOUNT)
+//                        .build();
+//
+//        ReportCommentGetRes res2 =
+//                ReportCommentGetRes.builder()
+//                        .id(TEST_USER_ID)
+//                        .boardId(TEST_BOARD_ID)
+//                        .nickname(TEST_USER_NICKNAME)
+//                        .reason(TEST_COMMENT_REPORT_REASON)
+//                        .comment(res)
+//                        .build();
+//
+//        List<ReportCommentGetRes> resList = new ArrayList<>();
+//
+//        when(reportCommentService.getReportCommentList())
+//                .thenReturn(ReportCommentListGetRes.builder().reportComments(resList).build());
+//
+//        // when
+//        reportCommentService.getReportCommentList();
+//
+//        // then
+//
+//        assertNotNull(result); // 결과가 null이 아닌지 확인
+//        assertEquals(resList, result.getReportComments()); // 예상 결과와 실제 결과가 같은지 확인
+//        verify(reportCommentService, times(1)).getReportCommentList(); // 메서드가 정확히 한 번 호출되었는지 확인
+//    }
 }

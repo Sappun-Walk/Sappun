@@ -74,12 +74,21 @@ class ReportCommentControllerTest extends BaseMvcTest implements ReportCommentTe
     void getReportCommentListTest() throws Exception {
         CommentToReportGetRes res =
                 CommentToReportGetRes.builder()
-                        .id(TEST_USER_ID)
+                        .id(TEST_REPORT_COMMENT_ID)
                         .nickname(TEST_USER_NICKNAME)
                         .content(TEST_COMMENT_CONTENT)
                         .fileURL(TEST_COMMENT_FILEURL)
-                        .likeCount(TEST_LIKECOUNT)
-                        .reportCount(TEST_REPORTCOUNT)
+                        .likeCount(TEST_LIKE_COUNT)
+                        .reportCount(TEST_REPORT_COUNT)
+                        .build();
+
+        ReportCommentGetRes res1 =
+                ReportCommentGetRes.builder()
+                        .id(TEST_USER_ID)
+                        .boardId(TEST_BOARD_ID)
+                        .nickname(TEST_USER_NICKNAME)
+                        .reason(TEST_COMMENT_REPORT_REASON)
+                        .comment(res)
                         .build();
 
         ReportCommentGetRes res2 =
@@ -92,6 +101,7 @@ class ReportCommentControllerTest extends BaseMvcTest implements ReportCommentTe
                         .build();
 
         List<ReportCommentGetRes> resList = new ArrayList<>();
+        resList = List.of(res1, res2);
 
         when(reportCommentService.getReportCommentList())
                 .thenReturn(ReportCommentListGetRes.builder().reportComments(resList).build());
