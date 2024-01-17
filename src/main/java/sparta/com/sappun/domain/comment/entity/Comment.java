@@ -33,11 +33,6 @@ public class Comment extends TimeStamp {
     @JoinColumn(name = "userId")
     private User user;
 
-    //    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-    //    private List<LikeComment> likeComment = new ArrayList<>();
-    //
-    //    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-    //    private List<ReportComment> reportComment = new ArrayList<>();
     @Column private Integer reportCount;
     @Column private Integer likeCount;
 
@@ -61,14 +56,6 @@ public class Comment extends TimeStamp {
         this.content = req.getContent();
         this.fileURL = fileURL;
     }
-
-    //    public Integer getLikeCount() {
-    //        return likeComment.size();
-    //    }
-    //
-    //    public Integer getReportCount() {
-    //        return reportComment.size();
-    //    }
 
     public void clickLikeComment(Integer count) {
         this.likeCount += count;
