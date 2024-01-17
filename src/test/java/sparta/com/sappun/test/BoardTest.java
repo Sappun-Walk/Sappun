@@ -21,7 +21,6 @@ public interface BoardTest extends UserTest {
 
     Board TEST_BOARD =
             Board.builder()
-                    .id(TEST_BOARD_ID)
                     .user(TEST_USER)
                     .title(TEST_BOARD_TITLE)
                     .content(TEST_BOARD_CONTENT)

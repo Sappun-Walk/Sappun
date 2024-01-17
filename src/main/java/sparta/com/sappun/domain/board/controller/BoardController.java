@@ -57,6 +57,7 @@ public class BoardController {
         return "mainPage";
     }
     // 게시글 작성
+    @ResponseBody
     @PostMapping
     public CommonResponse<BoardSaveRes> saveBoard(
             @RequestPart(name = "data") @Valid BoardSaveReq boardSaveReq,
