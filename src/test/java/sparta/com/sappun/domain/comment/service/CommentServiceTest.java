@@ -1,5 +1,10 @@
 package sparta.com.sappun.domain.comment.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
+
+import java.io.IOException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,53 +23,36 @@ import sparta.com.sappun.domain.comment.dto.response.CommentSaveRes;
 import sparta.com.sappun.domain.comment.dto.response.CommentUpdateRes;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
-import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
-import sparta.com.sappun.domain.user.service.UserService;
 import sparta.com.sappun.infra.s3.S3Util;
 import sparta.com.sappun.test.CommentTest;
-
-import java.io.IOException;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
-import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest implements CommentTest {
 
-    @Mock
-    CommentRepository commentRepository;
-    @Mock
-    UserRepository userRepository;
-    @Mock
-    BoardRepository boardRepository;
-    @Mock
-    S3Util s3Util;
-    @InjectMocks
-    CommentService commentService;
-    @Captor
-    ArgumentCaptor<Comment> argumentCaptor;
+    @Mock CommentRepository commentRepository;
+    @Mock UserRepository userRepository;
+    @Mock BoardRepository boardRepository;
+    @Mock S3Util s3Util;
+    @InjectMocks CommentService commentService;
+    @Captor ArgumentCaptor<Comment> argumentCaptor;
     static MultipartFile multipartFile;
 
     @BeforeAll
     static void setUpProfile() throws IOException {
-        String imageUrl = "images/image1.jpg";
+        String imageUrl = "static/images/image1.jpg";
         Resource fileResource = new ClassPathResource(imageUrl);
 
         multipartFile =
                 new MockMultipartFile(
                         "image", fileResource.getFilename(), IMAGE_JPEG_VALUE, fileResource.getInputStream());
     }
+
     @Test
     @DisplayName("댓글 저장 테스트")
     void saveCommentTest() {
         // given
-        CommentSaveReq req = CommentSaveReq.builder()
-                .content(TEST_COMMENT_CONTENT)
-                .build();
+        CommentSaveReq req = CommentSaveReq.builder().content(TEST_COMMENT_CONTENT).build();
 
         when(s3Util.uploadFile(any(), any())).thenReturn(TEST_COMMENT_FILEURL);
         when(boardRepository.findById(any())).thenReturn(TEST_BOARD);
@@ -83,17 +71,13 @@ class CommentServiceTest implements CommentTest {
         assertEquals(TEST_USER_NICKNAME, argumentCaptor.getValue().getUser().getNickname());
         assertEquals(TEST_COMMENT_CONTENT, argumentCaptor.getValue().getContent());
         assertEquals(TEST_COMMENT_FILEURL, argumentCaptor.getValue().getFileURL());
-
     }
-
 
     @Test
     @DisplayName("댓글 수정 테스트")
     void updateCommentTest() {
         // Given
-        CommentUpdateReq req = CommentUpdateReq.builder()
-                .content(TEST_COMMENT_CONTENT)
-                .build();
+        CommentUpdateReq req = CommentUpdateReq.builder().content(TEST_COMMENT_CONTENT).build();
         req.setCommentId(TEST_COMMENT_ID);
         req.setUserId(TEST_USER_ID);
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.likeComment.entity.LikeComment;
 import sparta.com.sappun.domain.user.repository.UserRepository;
@@ -23,11 +24,14 @@ class LikeCommentRepositoryTest implements LikeCommentTest {
 
     @Autowired private CommentRepository commentRepository;
 
+    @Autowired private BoardRepository boardRepository;
+
     @Test
     public void testSave() {
 
         // given
         userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
         commentRepository.save(TEST_COMMENT);
 
         // when

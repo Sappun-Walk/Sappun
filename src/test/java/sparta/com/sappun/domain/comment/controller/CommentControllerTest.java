@@ -1,5 +1,15 @@
 package sparta.com.sappun.domain.comment.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,31 +31,18 @@ import sparta.com.sappun.domain.comment.service.CommentService;
 import sparta.com.sappun.domain.user.service.UserService;
 import sparta.com.sappun.test.CommentTest;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @WebMvcTest(controllers = {CommentController.class})
 class CommentControllerTest extends BaseMvcTest implements CommentTest {
 
-    @MockBean
-    private CommentService commentService;
+    @MockBean private CommentService commentService;
 
-    @MockBean
-    private UserService userService;
+    @MockBean private UserService userService;
 
     static MockMultipartFile multipartFile;
 
     @BeforeAll
     static void setUpFileUrl() throws IOException {
-        String imageUrl = "images/image1.jpg";
+        String imageUrl = "static/images/image1.jpg";
         Resource fileResource = new ClassPathResource(imageUrl);
 
         multipartFile =
@@ -57,10 +54,7 @@ class CommentControllerTest extends BaseMvcTest implements CommentTest {
     @DisplayName("댓글 저장 API 테스트")
     void saveCommentTest() throws Exception {
         // given
-        CommentSaveReq commentSaveReq =
-                CommentSaveReq.builder()
-                        .content(TEST_COMMENT_CONTENT)
-                        .build();
+        CommentSaveReq commentSaveReq = CommentSaveReq.builder().content(TEST_COMMENT_CONTENT).build();
 
         MockMultipartFile req =
                 new MockMultipartFile(
@@ -76,7 +70,8 @@ class CommentControllerTest extends BaseMvcTest implements CommentTest {
         // when-then
         mockMvc
                 .perform(
-                        MockMvcRequestBuilders.multipart(HttpMethod.POST, "/api/{boardId}/comments", TEST_BOARD_ID)
+                        MockMvcRequestBuilders.multipart(
+                                        HttpMethod.POST, "/api/{boardId}/comments", TEST_BOARD_ID)
                                 .file(multipartFile)
                                 .file(req)
                                 .accept(MediaType.APPLICATION_JSON)
@@ -91,9 +86,7 @@ class CommentControllerTest extends BaseMvcTest implements CommentTest {
     void updateCommentTest() throws Exception {
         // given
         CommentUpdateReq commentUpdateReq =
-                CommentUpdateReq.builder()
-                        .content(TEST_COMMENT_UPDATE_CONTENT)
-                        .build();
+                CommentUpdateReq.builder().content(TEST_COMMENT_UPDATE_CONTENT).build();
 
         MockMultipartFile req =
                 new MockMultipartFile(
@@ -114,7 +107,8 @@ class CommentControllerTest extends BaseMvcTest implements CommentTest {
         // when - then
         mockMvc
                 .perform(
-                        MockMvcRequestBuilders.multipart(HttpMethod.PATCH, "/api/comments/{commentId}", TEST_COMMENT_ID)
+                        MockMvcRequestBuilders.multipart(
+                                        HttpMethod.PATCH, "/api/comments/{commentId}", TEST_COMMENT_ID)
                                 .file(multipartFile)
                                 .file(req)
                                 .accept(MediaType.APPLICATION_JSON)
@@ -133,8 +127,7 @@ class CommentControllerTest extends BaseMvcTest implements CommentTest {
 
         // when - then
         mockMvc
-                .perform(delete("/api/comments/{commentId}", TEST_COMMENT_ID)
-                        .principal(mockPrincipal))
+                .perform(delete("/api/comments/{commentId}", TEST_COMMENT_ID).principal(mockPrincipal))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
