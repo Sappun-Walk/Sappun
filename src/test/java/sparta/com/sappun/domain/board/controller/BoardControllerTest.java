@@ -13,7 +13,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ClassPathResource;
@@ -28,6 +27,7 @@ import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.board.dto.response.*;
 import sparta.com.sappun.domain.board.service.BoardService;
 import sparta.com.sappun.test.BoardTest;
+
 @Disabled
 @WebMvcTest(controllers = {BoardController.class})
 class BoardControllerTest extends BaseMvcTest implements BoardTest {
