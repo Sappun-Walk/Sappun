@@ -30,16 +30,30 @@ public class BoardController {
     }
 
     // 지역별 게시글 조회
+    //    @GetMapping("/region")
+    //    public CommonResponse<Page<BoardGetRes>> getBoards(
+    //            @RequestParam RegionEnum region,
+    //            @RequestParam("page") int page,
+    //            @RequestParam("size") int size,
+    //            @RequestParam("sortBy") String sortBy,
+    //            @RequestParam("isAsc") boolean isAsc) {
+    //        Page<BoardGetRes> responseDto =
+    //                boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
+    //        return CommonResponse.success(responseDto);
+    //    }
+
     @GetMapping("/region")
-    public CommonResponse<Page<BoardGetRes>> getBoards(
+    public String getBoardsByRegion(
             @RequestParam RegionEnum region,
             @RequestParam("page") int page,
             @RequestParam("size") int size,
             @RequestParam("sortBy") String sortBy,
-            @RequestParam("isAsc") boolean isAsc) {
+            @RequestParam("isAsc") boolean isAsc,
+            Model model) {
         Page<BoardGetRes> responseDto =
                 boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
-        return CommonResponse.success(responseDto);
+        model.addAttribute("responseDto", responseDto);
+        return "regionPage";
     }
 
     //     Best 게시글 조회
@@ -57,6 +71,7 @@ public class BoardController {
         return "mainPage";
     }
     // 게시글 작성
+    @ResponseBody
     @PostMapping
     public CommonResponse<BoardSaveRes> saveBoard(
             @RequestPart(name = "data") @Valid BoardSaveReq boardSaveReq,

@@ -14,7 +14,7 @@
         }
 
         .gallery-item {
-            width: calc(25% - 10px);
+            width: calc(20% - 10px);
             border: 1px solid #ddd;
             border-radius: 5px;
             overflow: hidden;
@@ -54,35 +54,31 @@
 </head>
 <body>
 <div>
-<form th:action="@{/api/boards/region}" method="get" id="regionForm">
-    <select id="region" name="region">
-        <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}" th:value="${enumItem}" th:text="${enumItem.region}"></option>
-    </select>
-    <!-- 페이지 값 (고정) -->
-    <input type="hidden" name="page" value="1" />
-    <!-- 크기 값 (고정) -->
-    <input type="hidden" name="size" value="8" />
-    <!-- 정렬 값 (고정) -->
-    <input type="hidden" name="sortBy" value="createdAt" />
-    <!-- 정렬 방향 값 (고정) -->
-    <input type="hidden" name="isAsc" value="false">
-    <button type="button" onclick="submitForm()">Submit</button>
-</form>
-<div>
+    <form th:action="@{/api/boards/region}" method="get" id="regionForm">
+        <select id="region" name="region">
+            <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}" th:value="${enumItem}" th:text="${enumItem.region}"></option>
+        </select>
+        <!-- 페이지 값 (고정) -->
+        <input type="hidden" name="page" value="1" />
+        <!-- 크기 값 (고정) -->
+        <input type="hidden" name="size" value="8" />
+        <!-- 정렬 값 (고정) -->
+        <input type="hidden" name="sortBy" value="createdAt" />
+        <!-- 정렬 방향 값 (고정) -->
+        <input type="hidden" name="isAsc" value="false">
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
     <div class="btn-write">
-        <button class="btn btn-outline-success" type="submit"  th:onclick="|location.href='@{/api/users/login}'|">로그인</button>
+        <button class="btn btn-outline-success" type="button" th:onclick="|location.href='@{/api/users/login}'|">로그인</button>
     </div>
-</div>
+
 
 <div class="main-img-container">
     <img class="main-img" th:src="@{/images/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|" alt="Main Image">
 </div>
-<div class="inner-div">
-   <h1> 베스트 산책로 TOP3</h1>
-</div>
 <div class="gallery-container">
-    <div class="gallery-item" th:each="board : ${bestBoards.boards}">
-        <<img th:src="${board.fileURL}" alt="게시물 이미지">
+    <div class="gallery-item" th:each="board : ${responseDto.content}">
+        <img th:src="${board.fileURL}" alt="게시물 이미지">
         <div class="gallery-caption">
             <h3 th:text="${board.title}">게시물 제목 1</h3>
             <p th:text="'작성자: ' + ${board.nickname}">작성자: 사용자1</p>
@@ -94,11 +90,11 @@
 <div class="btn-write">
     <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/login}'|">글쓰기</button>
 </div>
-    </div>
-    <script>
-        function submitForm() {
-            document.getElementById('regionForm').submit();
-        }
-    </script>
+</div>
+<script>
+    function submitForm() {
+        document.getElementById('regionForm').submit();
+    }
+</script>
 </body>
 </html>

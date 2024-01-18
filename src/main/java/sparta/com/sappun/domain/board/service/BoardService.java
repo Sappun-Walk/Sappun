@@ -2,7 +2,6 @@ package sparta.com.sappun.domain.board.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,9 +29,6 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final S3Util s3Util;
-
-    @Value("${default.image.url}")
-    private String defaultBoardImage;
 
     @Transactional(readOnly = true)
     public BoardGetRes getBoard(Long boardId) {
