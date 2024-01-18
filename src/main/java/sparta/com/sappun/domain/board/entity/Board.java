@@ -35,13 +35,13 @@ public class Board extends TimeStamp {
     @Column(nullable = false)
     private String destination;
 
-    @ElementCollection private List<String> stopover;
+    @ElementCollection private List<String> stopover = new ArrayList<>();
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private RegionEnum region;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
@@ -54,7 +54,6 @@ public class Board extends TimeStamp {
 
     @Builder
     private Board(
-            Long id,
             String title,
             String content,
             String fileURL,
@@ -65,7 +64,6 @@ public class Board extends TimeStamp {
             User user,
             Integer likeCount,
             Integer reportCount) {
-        this.id = id;
         this.title = title;
         this.content = content;
         this.fileURL = fileURL;
