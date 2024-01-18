@@ -35,6 +35,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     new AntPathRequestMatcher("/api/users/signup", HttpMethod.POST.name()),
                     new AntPathRequestMatcher("/api/users/login", HttpMethod.POST.name()),
                     new AntPathRequestMatcher("/api/users/login-page", HttpMethod.GET.name()),
+                    new AntPathRequestMatcher("/api/users/signup-page", HttpMethod.GET.name()),
                     new AntPathRequestMatcher("/api/boards/best", HttpMethod.GET.name()),
                     new AntPathRequestMatcher("/api/boards/{boardId}", HttpMethod.GET.name()),
                     new AntPathRequestMatcher("/api/boards/region", HttpMethod.GET.name()),

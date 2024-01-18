@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.user.dto.request.*;
 import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.service.UserService;
@@ -50,9 +49,8 @@ public class UserController {
     @ResponseBody
     @PostMapping("/signup")
     public CommonResponse<UserSignupRes> signup(
-            @RequestPart(name = "data") @Valid UserSignupReq req,
-            @RequestPart(name = "image", required = false) MultipartFile multipartfile) {
-        return CommonResponse.success(userService.signup(req, multipartfile));
+            @RequestPart(name = "data") @Valid UserSignupReq req) {
+        return CommonResponse.success(userService.signup(req, req.getMultipartFile()));
     }
 
     @ResponseBody
