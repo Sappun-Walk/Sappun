@@ -43,6 +43,11 @@ public class UserController {
         return CommonResponse.success(userService.signup(req, multipartfile));
     }
 
+    @GetMapping("/login-page")
+    public String loginPage() {
+        return "login";
+    }
+
     @ResponseBody
     @PostMapping("/login")
     public CommonResponse<UserLoginRes> login(

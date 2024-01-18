@@ -34,6 +34,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             List.of(
                     new AntPathRequestMatcher("/api/users/signup", HttpMethod.POST.name()),
                     new AntPathRequestMatcher("/api/users/login", HttpMethod.POST.name()),
+                    new AntPathRequestMatcher("/api/users/login-page", HttpMethod.GET.name()),
                     new AntPathRequestMatcher("/api/boards/best", HttpMethod.GET.name()),
                     new AntPathRequestMatcher("/api/boards/{boardId}", HttpMethod.GET.name()),
                     new AntPathRequestMatcher("/api/boards/region", HttpMethod.GET.name()),
@@ -50,7 +51,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String accessToken =
-                jwtUtil.getTokensFromCookie(request).get(ACCESS_TOKEN_HEADER); // access token 찾음
+                jwtUtil
+                        .getTokensFromCookie(request)
+                        .getOrDefault(
+                                ACCESS_TOKEN_HEADER, null); // get(ACCESS_TOKEN_HEADER); // access token 찾음
         log.info("accessToken : {}", accessToken);
 
         // access token 비어있으면 인증 미처리

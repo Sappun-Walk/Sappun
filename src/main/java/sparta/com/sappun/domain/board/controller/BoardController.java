@@ -29,6 +29,11 @@ public class BoardController {
         return CommonResponse.success(boardService.getBoard(boardId));
     }
 
+    @GetMapping("/boardcreate1")
+    public String boardcreate() {
+        return "saveBoardPage1";
+    }
+
     // 지역별 게시글 조회
     //    @GetMapping("/region")
     //    public CommonResponse<Page<BoardGetRes>> getBoards(
@@ -80,6 +85,13 @@ public class BoardController {
         return CommonResponse.success(boardService.saveBoard(boardSaveReq, multipartfile));
     }
 
+    @GetMapping("/details/{boardId}")
+    public String getBoardDetails(@PathVariable Long boardId, Model model) {
+        // 게시물 상세 정보를 가져오는 로직을 작성하고, Thymeleaf에 필요한 데이터를 Model에 추가
+        // 예시로 게시물 ID를 출력하는 부분
+        model.addAttribute("boardId", boardId);
+        return "getBoardDetail"; // boardDetails는 상세 페이지의 Thymeleaf 템플릿 이름
+    }
     // 게시글 수정
     @PatchMapping("/{boardId}")
     public CommonResponse<BoardUpdateRes> updateBoard(
