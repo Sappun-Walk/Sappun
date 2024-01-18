@@ -1,5 +1,6 @@
 package sparta.com.sappun.domain.user.dto.request;
 
+import jakarta.mail.Multipart;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -7,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Setter
 @Getter
@@ -30,6 +32,8 @@ public class UserSignupReq {
     private String password;
 
     private String confirmPassword;
+
+    private MultipartFile multipartFile;
 
     @Builder
     private UserSignupReq(

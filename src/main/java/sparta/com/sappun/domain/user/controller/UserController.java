@@ -50,9 +50,8 @@ public class UserController {
     @ResponseBody
     @PostMapping("/signup")
     public CommonResponse<UserSignupRes> signup(
-            @RequestPart(name = "data") @Valid UserSignupReq req,
-            @RequestPart(name = "image", required = false) MultipartFile multipartfile) {
-        return CommonResponse.success(userService.signup(req, multipartfile));
+            @RequestPart(name = "data") @Valid UserSignupReq req) {
+        return CommonResponse.success(userService.signup(req, req.getMultipartFile()));
     }
 
     @ResponseBody
