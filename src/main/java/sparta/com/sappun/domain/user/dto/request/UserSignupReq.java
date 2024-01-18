@@ -1,6 +1,5 @@
 package sparta.com.sappun.domain.user.dto.request;
 
-import jakarta.mail.Multipart;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;

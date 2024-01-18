@@ -51,70 +51,86 @@
         <div class="login-id-label">ConfirmPassword</div>
         <input type="confirmPassword" name="confirmPassword" class="login-input-box">
 
-        <button id="login-id-submit"onclick="onsignup()">가입하기</button>
+        <button id="login-id-submit" onclick="onsignup()">가입하기</button>
     </form>
 </div>
 <script>
-    // function onsignup() {
-    //     let username = $('#username').val();
-    //     let nickname = $('#nickname').val();
-    //     let email = $('#email').val();
-    //     let password = $('#password').val();
-    //     let confirmPassword = $('#confirmPassword').val();
-    //
-    //     // 사용자 이름 또는 패스워드가 비어있을 경우 오류 처리
-    //     if (!username) {
-    //         alert('username을 입력하세요.');
-    //         return;
-    //     } else if(!nickname) {
-    //         alert('nickname을 입력하세요.');
-    //         return;
-    //     } else if(!email) {
-    //         alert('email을 입력하세요.');
-    //         return;
-    //     } else if(!password) {
-    //         alert('password을 입력하세요.');
-    //         return;
-    //     } else if(!confirmPassword) {
-    //         alert('confirmPassword을 입력하세요.');
-    //         return;
-    //     }
-    // }
-    //
-    //     // Request DTO 구성
-    //     const UserSignupReq = {
-    //         username: username,
-    //         nickname: nickname,
-    //         email: email,
-    //         password: password,
-    //         confirmPassword: confirmPassword,
-    //     };
-    //
-    //     fetch('/api/users/signup', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(UserSignupReq),
-    //     })
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 throw new Error('Network response was not ok');
-    //             }
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             if (data.code === 200) {
-    //                 // 서버 응답이 200이면 로그인 성공
-    //                 alert('회원가입이 성공적으로 이루어졌습니다.');
-    //                 window.location.href = '/api/users/login-page';
-    //             } else {
-    //                 // 서버 응답이 200이 아니면 로그인 실패
-    //                 alert('회원가입 실패: ' + data.code);
-    //             }
-    //         })
+
+    var isDuplicatedUsername = true;
+    var isDuplicatedNickname = true;
+
+    function checkUsername() {
+        const username = document.getElementById('username').value;
+
+        // Request DTO 구성
+        const usernameVerifyReq = {
+            username: username,
+        };
+
+        fetch('/api/users/username', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(usernameVerifyReq),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    // 중복된 경우 메시지 표시
+                    alert('사용 불가능한 아이디입니다.');
+                    isDuplicatedUsername = true;
+                } else {
+                    // 중복되지 않은 경우 메시지 초기화
+                    alert('사용 가능한 아이디입니다.');
+                    isDuplicatedUsername = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error checking username:', error);
+            });
+    }
+
+    function checkNickname() {
+        const nickname = document.getElementById('nickname').value;
+
+        // Request DTO 구성
+        const nicknameVerifyReq = {
+            nickname: nickname,
+        };
+
+        fetch('/api/users/nickname', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(nicknameVerifyReq),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    // 중복된 경우 메시지 표시
+                    alert('사용 불가능한 닉네임입니다.');
+                    isDuplicatedNickname = true;
+                } else {
+                    // 중복되지 않은 경우 메시지 초기화
+                    alert('사용 가능한 닉네임입니다.');
+                    isDuplicatedNickname = false;
+                    updateUpdateButtonState();
+                }
+            })
+            .catch(error => {
+                console.error('Error checking nickname:', error);
+            });
+    }
 
     function onsignup() {
+        let username = $('#username').val();
+        let nickname = $('#nickname').val();
+        let email = $('#email').val();
+        let password = $('#password').val();
+        let confirmPassword = $('#confirmPassword').val();
+
         let formData = new FormData();
         formData.append("image", document.getElementById('image').files[0]);
         formData.append("username", document.getElementById('username').value);
@@ -127,16 +143,16 @@
         if (!username) {
             alert('username을 입력하세요.');
             return;
-        } else if(!nickname) {
+        } else if (!nickname) {
             alert('nickname을 입력하세요.');
             return;
-        } else if(!email) {
+        } else if (!email) {
             alert('email을 입력하세요.');
             return;
-        } else if(!password) {
+        } else if (!password) {
             alert('password을 입력하세요.');
             return;
-        } else if(!confirmPassword) {
+        } else if (!confirmPassword) {
             alert('confirmPassword을 입력하세요.');
             return;
         }
