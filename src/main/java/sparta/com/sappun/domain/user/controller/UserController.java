@@ -99,7 +99,8 @@ public class UserController {
 
     // 프로필 수정 입력 화면 출력
     @GetMapping("/profile")
-    public String getProfileForInput(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public String getProfileForInput(
+            Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         UserProfileRes res = userService.getProfile(userDetails.getUser().getId());
 
         model.addAttribute("userProfile", res);
@@ -131,8 +132,7 @@ public class UserController {
     // 아이디 중복 확인
     @ResponseBody
     @PostMapping("/username")
-    public Boolean verifyUsername(
-            @RequestBody @Valid UsernameVerifyReq req) {
+    public Boolean verifyUsername(@RequestBody @Valid UsernameVerifyReq req) {
         UsernameVerifyRes res = userService.verifyUsername(req);
         return res.getIsDuplicated();
     }
@@ -140,8 +140,7 @@ public class UserController {
     // 닉네임 중복확인
     @ResponseBody
     @PostMapping("/nickname")
-    public Boolean verifyNickname(
-            @RequestBody @Valid NicknameVerifyReq req) {
+    public Boolean verifyNickname(@RequestBody @Valid NicknameVerifyReq req) {
         NicknameVerifyRes res = userService.verifyNickname(req);
         return res.getIsDuplicated();
     }
