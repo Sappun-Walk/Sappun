@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>마이페이지</title>
+    <title>마이페이지 수정</title>
     <style>
       div.profile-page {
         display: flex; /* Flexbox 사용 */
@@ -105,27 +105,58 @@
         margin-top: 30px; /* 그룹 간격 조절 */
       }
 
-      div.profile-page-buttons {
+      div.username {
         display: flex;
-        justify-content: flex-end;
-        margin-top: 40px;
+        flex-direction: column;
       }
 
-      #password-update-button {
+      #username {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      #username-check-button {
         cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
-        width: 130px;
-        font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
-        padding: 10px; /* 버튼 내부의 여백 */
+        width: 90px;
+        font-size: 13px; /* 글자 크기를 조절하여 크기를 키움 */
+        padding: 5px; /* 버튼 내부의 여백 */
         text-decoration: none; /* 밑줄 제거 */
         color: black; /* 글자 색상 */
         background-color: #F6CEE3; /* 배경 색상 */
         border: 1px solid #F6CEE3; /* 테두리 색상 */
         border-radius: 4px; /* 둥근 테두리 */
         margin-right: 10px;
-        box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
       }
 
-      #profile-update-button {
+      div.nickname {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #nickname {
+        margin-top: 10px;
+      }
+
+      #nickname-check-button {
+        cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+        width: 90px;
+        font-size: 13px; /* 글자 크기를 조절하여 크기를 키움 */
+        padding: 5px; /* 버튼 내부의 여백 */
+        text-decoration: none; /* 밑줄 제거 */
+        color: black; /* 글자 색상 */
+        background-color: #F6CEE3; /* 배경 색상 */
+        border: 1px solid #F6CEE3; /* 테두리 색상 */
+        border-radius: 4px; /* 둥근 테두리 */
+        margin-right: 10px;
+      }
+
+      div.profile-page-buttons {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 40px;
+      }
+
+      #update-complete-button {
         cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
         width: 60px;
         font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
@@ -139,7 +170,7 @@
         box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
       }
 
-      #back-main-button {
+      #back-profile-button {
         cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
         width: 60px;
         font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
@@ -234,9 +265,12 @@
     <div class="profile-content">
         <div class="profile-info-box">
             <div class="profile-info">
+
                 <div class="profile-image-group">
                     <img th:src="${userProfile.profileUrl}" alt="Profile Picture"
                          class="profile-image">
+                    <input type="file" id="image" name="image">
+
                     <p><b>Rank</b>
                         <span th:if="${userProfile.score < 0}">Warned</span>
                         <span
@@ -251,12 +285,25 @@
 
                 <div class="profile-text-group">
                     <div class="username">
-                        <p><b>아이디</b></p>
-                        <p><span th:text="${userProfile.username}"></span></p>
+                        <label for="username"><b>아이디</b></label>
+                        <div class="username-input">
+                            <input type="text" id="username" name="username" required
+                                   placeholder="영어, 숫자만 포함 가능">
+                            <button id="username-check-button" onclick="checkUsername()">중복확인
+                            </button>
+                            <span id="usernameMessage"></span>
+
+                        </div>
                     </div>
                     <div class="nickname">
-                        <p><b>닉네임</b></p>
-                        <p><span th:text="${userProfile.nickname}"></span></p>
+                        <label for="nickname"><b>닉네임</b></label>
+                        <div class="nickname-input">
+                            <input type="text" id="nickname" name="nickname" required
+                                   placeholder="한글, 영어, 숫자만 포함 가능">
+                            <button id="nickname-check-button" onclick="checkNickname()">중복확인
+                            </button>
+                            <span id="nicknameMessage"></span>
+                        </div>
                     </div>
                     <div class="email">
                         <p><b>이메일</b></p>
@@ -266,20 +313,129 @@
             </div>
         </div>
 
+
         <div class="profile-page-buttons">
-            <!-- 비밀번호 수정 버튼 -->
-            <div class="password-update">
-                <button th:onclick="|location.href='/api/users/profile/password'|" id="password-update-button">비밀번호 수정</button>
+            <!-- 수정 완료 버튼 -->
+            <div class="update-complete">
+                <button id="update-complete-button" onclick="updateProfile()">완료</button>
             </div>
 
-            <!-- 프로필 수정 버튼 -->
-            <div class="profile-update">
-                <button th:onclick="|location.href='/api/users/profile'|" id="profile-update-button">수정</button>
-            </div>
+            <script>
+              var isDuplicatedUsername = true;
+              var isDuplicatedNickname = true;
 
-            <!-- 뒤로가기 버튼 : 메인 페이지로 -->
-            <div class="back-to-main">
-                <button th:onclick="|location.href='/api/boards/best'|" id="back-main-button">뒤로</button>
+              function checkUsername() {
+                const username = document.getElementById('username').value;
+
+                // Request DTO 구성
+                const usernameVerifyReq = {
+                  username: username,
+                };
+
+                fetch('/api/users/username', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(usernameVerifyReq),
+                })
+                .then(response => response.json())
+                .then(data => {
+                  if (data) {
+                    // 중복된 경우 메시지 표시
+                    alert('사용 불가능한 아이디입니다.');
+                    isDuplicatedUsername = true;
+                  } else {
+                    // 중복되지 않은 경우 메시지 초기화
+                    alert('사용 가능한 아이디입니다.');
+                    isDuplicatedUsername = false;
+                  }
+                })
+                .catch(error => {
+                  console.error('Error checking username:', error);
+                });
+              }
+
+              function checkNickname() {
+                const nickname = document.getElementById('nickname').value;
+
+                // Request DTO 구성
+                const nicknameVerifyReq = {
+                  nickname: nickname,
+                };
+
+                fetch('/api/users/nickname', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(nicknameVerifyReq),
+                })
+                .then(response => response.json())
+                .then(data => {
+                  if (data) {
+                    // 중복된 경우 메시지 표시
+                    alert('사용 불가능한 닉네임입니다.');
+                    isDuplicatedNickname = true;
+                  } else {
+                    // 중복되지 않은 경우 메시지 초기화
+                    alert('사용 가능한 닉네임입니다.');
+                    isDuplicatedNickname = false;
+                    updateUpdateButtonState();
+                  }
+                })
+                .catch(error => {
+                  console.error('Error checking nickname:', error);
+                });
+              }
+
+              function updateUpdateButtonState() {
+                // 두 버튼의 결과가 모두 false일 때만 수정 버튼을 활성화
+                var updateButton = document.getElementById("update-complete-button");
+                updateButton.disabled = (isDuplicatedUsername === true || isDuplicatedNickname === true);
+              }
+
+              function updateProfile() {
+                const formData = new FormData();
+                formData.append("username", document.getElementById('username').value);
+                formData.append("nickname", document.getElementById('nickname').value);
+                formData.append("multipartFile", document.getElementById('image').value);
+
+                // 요청 보내기
+                fetch('/api/users/profile', {
+                  method: 'PATCH',
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  },
+                  body: formData
+                })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  if (data.code === 200) {
+                    // 서버 응답이 200이면 로그인 성공
+                    alert('프로필 수정이 성공적으로 이루어졌습니다.');
+                    window.location.href = '/api/boards/best';
+                  } else {
+                    // 서버 응답이 200이 아니면 로그인 실패
+                    alert('프로필 수정 실패: ' + data.code);
+                  }
+                })
+                .catch(error => {
+                  console.error('Error updating profile:', error);
+                  // 오류 발생 시의 로직을 추가할 수 있습니다.
+                });
+              }
+            </script>
+
+            <!-- 뒤로 버튼 -->
+            <div class="back-to-profile">
+                <button th:onclick="|location.href='/api/users'|" id="back-profile-button">뒤로
+                </button>
             </div>
         </div>
     </div>
