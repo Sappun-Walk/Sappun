@@ -99,15 +99,26 @@ public class UserController {
         return "profile";
     }
 
+    // 프로필 수정 입력 화면 출력
+    @GetMapping("/profile")
+    public String getProfileForInput(
+            Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UserProfileRes res = userService.getProfile(userDetails.getUser().getId());
+
+        model.addAttribute("userProfile", res);
+
+        return "profile-update";
+    }
+
     // 프로필 수정
-    @ResponseBody
     @PatchMapping("/profile")
-    public CommonResponse<UserProfileUpdateRes> updateProfile(
+    public String updateProfile(
             @RequestPart(name = "data") @Valid UserProfileUpdateReq req,
             @RequestPart(name = "image", required = false) MultipartFile multipartfile,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) { // TODO: 프로필 사진 입력받기
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         req.setId(userDetails.getUser().getId());
-        return CommonResponse.success(userService.updateProfile(req, multipartfile));
+        userService.updateProfile(req, multipartfile);
+        return "redirect:/api/users";
     }
 
     // 비밀번호 수정
@@ -123,17 +134,17 @@ public class UserController {
     // 아이디 중복 확인
     @ResponseBody
     @PostMapping("/username")
-    public CommonResponse<UsernameVerifyRes> verifyUsername(
-            @RequestBody @Valid UsernameVerifyReq req) {
-        return CommonResponse.success(userService.verifyUsername(req));
+    public Boolean verifyUsername(@RequestBody @Valid UsernameVerifyReq req) {
+        UsernameVerifyRes res = userService.verifyUsername(req);
+        return res.getIsDuplicated();
     }
 
     // 닉네임 중복확인
     @ResponseBody
     @PostMapping("/nickname")
-    public CommonResponse<NicknameVerifyRes> verifyNickname(
-            @RequestBody @Valid NicknameVerifyReq req) {
-        return CommonResponse.success(userService.verifyNickname(req));
+    public Boolean verifyNickname(@RequestBody @Valid NicknameVerifyReq req) {
+        NicknameVerifyRes res = userService.verifyNickname(req);
+        return res.getIsDuplicated();
     }
 
     private static void addCookie(String cookieValue, String header, HttpServletResponse res) {
