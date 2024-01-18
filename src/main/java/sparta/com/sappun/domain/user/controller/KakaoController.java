@@ -41,7 +41,7 @@ public class KakaoController {
         addCookie(tokens.get(ACCESS_TOKEN_HEADER), ACCESS_TOKEN_HEADER, res);
         addCookie(tokens.get(REFRESH_TOKEN_HEADER), REFRESH_TOKEN_HEADER, res);
 
-        return "redirect:/login.html"; // 로그인 완료시 이동할 페이지
+        return "redirect:/api/boards/best"; // 로그인 완료시 이동할 페이지
     }
 
     private static void addCookie(String cookieValue, String header, HttpServletResponse res) {
