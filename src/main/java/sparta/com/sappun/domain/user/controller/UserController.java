@@ -37,6 +37,16 @@ public class UserController {
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
 
+    @GetMapping("/login-page")
+    public String loginPage() {
+        return "login";
+    }
+
+    @GetMapping("/signup-page")
+    public String signupPage() {
+        return "signup";
+    }
+
     @ResponseBody
     @PostMapping("/signup")
     public CommonResponse<UserSignupRes> signup(
