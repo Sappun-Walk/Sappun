@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +27,7 @@ import sparta.com.sappun.global.redis.RedisUtil;
 import sparta.com.sappun.global.response.CommonResponse;
 import sparta.com.sappun.global.security.UserDetailsImpl;
 
+@Slf4j
 @Controller
 @RequestMapping("/api/users")
 @RequiredArgsConstructor

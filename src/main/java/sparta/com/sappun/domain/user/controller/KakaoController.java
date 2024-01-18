@@ -8,6 +8,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import sparta.com.sappun.domain.user.service.KakaoService;
 import sparta.com.sappun.global.jwt.JwtUtil;
 import sparta.com.sappun.global.redis.RedisUtil;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/api/users")
@@ -41,7 +43,7 @@ public class KakaoController {
         addCookie(tokens.get(ACCESS_TOKEN_HEADER), ACCESS_TOKEN_HEADER, res);
         addCookie(tokens.get(REFRESH_TOKEN_HEADER), REFRESH_TOKEN_HEADER, res);
 
-        return "redirect:/login.html"; // 로그인 완료시 이동할 페이지
+        return "redirect:/api/boards/best"; // 로그인 완료시 이동할 페이지
     }
 
     private static void addCookie(String cookieValue, String header, HttpServletResponse res) {
