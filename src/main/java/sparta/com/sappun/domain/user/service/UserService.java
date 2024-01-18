@@ -6,9 +6,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import sparta.com.sappun.domain.user.dto.request.*;
-import sparta.com.sappun.domain.user.dto.response.*;
+import sparta.com.sappun.domain.user.dto.request.NicknameVerifyReq;
+import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
+import sparta.com.sappun.domain.user.dto.request.UserPasswordUpdateReq;
+import sparta.com.sappun.domain.user.dto.request.UserProfileUpdateReq;
+import sparta.com.sappun.domain.user.dto.request.UserSignupReq;
+import sparta.com.sappun.domain.user.dto.request.UsernameVerifyReq;
+import sparta.com.sappun.domain.user.dto.response.NicknameVerifyRes;
+import sparta.com.sappun.domain.user.dto.response.UserDeleteRes;
+import sparta.com.sappun.domain.user.dto.response.UserLoginRes;
+import sparta.com.sappun.domain.user.dto.response.UserPasswordUpdateRes;
+import sparta.com.sappun.domain.user.dto.response.UserProfileRes;
 import sparta.com.sappun.domain.user.dto.response.UserProfileUpdateRes;
+import sparta.com.sappun.domain.user.dto.response.UserSignupRes;
+import sparta.com.sappun.domain.user.dto.response.UsernameVerifyRes;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.entity.UserSocialEnum;
@@ -90,10 +101,10 @@ public class UserService {
     public UserProfileUpdateRes updateProfile(UserProfileUpdateReq req, MultipartFile multipartFile) {
         User user = getUserById(req.getId()); // 사용자가 존재하는지 확인
 
-        //        UserValidator.checkDuplicatedUsername(
-        //            userRepository.existsByUsername(req.getUsername())); // username 중복확인
-        //        UserValidator.checkDuplicatedNickname(
-        //            userRepository.existsByNickname(req.getNickname())); // nickname 중복확인
+        UserValidator.checkDuplicatedUsername(
+                userRepository.existsByUsername(req.getUsername())); // username 중복확인
+        UserValidator.checkDuplicatedNickname(
+                userRepository.existsByNickname(req.getNickname())); // nickname 중복확인
 
         // 프로필 사진 관련 로직
         String imageUrl = user.getProfileUrl(); // 기존 프로필 이미지
