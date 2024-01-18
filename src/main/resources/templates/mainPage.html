@@ -70,10 +70,11 @@
 </form>
 <div>
     <div class="btn-write">
-        <p id="AccessTokenMessage" style="display:none;">
+        <p th:if="${username != null}">
             <button class="btn btn-outline-success" type="button" th:onclick="|location.href='@{/api/users/logout}'|">로그아웃</button>
         </p>
-        <p id="noAccessTokenMessage" style="display:none;">
+        <!-- 비로그인 상태인 경우 -->
+        <p th:if="${username == null}">
             <button class="btn btn-outline-success" type="button" th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
         </p>
     </div>
@@ -100,26 +101,14 @@
     <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/boardcreate1}'|">글쓰기</button>
 </div>
     </div>
-    <script th:inline="javascript">
+    <script>
         function submitForm() {
             document.getElementById('regionForm').submit();
         }
-        /*<![CDATA[*/
         function getBoardDetails(boardId) {
             // 게시물 상세 페이지로 이동하는 로직을 작성
             window.location.href = '/api/boards/details/' + boardId;
         }
-        /*]]>*/
-            // 자바스크립트로 액세스 토큰 존재 여부 확인
-            var AccessToken = document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1");
-            // 액세스 토큰이 있는 경우
-            if (AccessToken) {
-            document.getElementById('accessTokenMessage').style.display = 'block';
-        } else {
-            // 액세스 토큰이 없는 경우
-            document.getElementById('noAccessTokenMessage').style.display = 'block';
-        }
-    </script>
     </script>
 </body>
 </html>

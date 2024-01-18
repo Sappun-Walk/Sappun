@@ -70,7 +70,13 @@
     </form>
     <div>
         <div class="btn-write">
-            <button class="btn btn-outline-success" type="button" th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
+            <p th:if="${username != null}">
+                <button class="btn btn-outline-success" type="button" th:onclick="|location.href='@{/api/users/logout}'|">로그아웃</button>
+            </p>
+            <!-- 비로그인 상태인 경우 -->
+            <p th:if="${username == null}">
+                <button class="btn btn-outline-success" type="button" th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
+            </p>
         </div>
     </div>
 
@@ -88,7 +94,6 @@
         </div>
     </div>
 </div>
-
 <div class="btn-write">
     <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/boardcreate1}'|">글쓰기</button>
 </div>
