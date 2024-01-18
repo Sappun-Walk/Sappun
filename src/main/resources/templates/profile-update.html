@@ -396,16 +396,21 @@
               }
 
               function updateProfile() {
+                const data = {
+                  "username": document.getElementById('username').value,
+                  "nickname": document.getElementById('nickname').value
+                };
                 const formData = new FormData();
-                formData.append("username", document.getElementById('username').value);
-                formData.append("nickname", document.getElementById('nickname').value);
-                formData.append("multipartFile", document.getElementById('image').value);
+                formData.append("data", JSON.stringify(data));
+                // formData.append("username", document.getElementById('username').value);
+                // formData.append("nickname", document.getElementById('nickname').value);
+                formData.append("image", document.getElementById('image').value);
 
                 // 요청 보내기
                 fetch('/api/users/profile', {
                   method: 'PATCH',
                   headers: {
-                    'Content-Type': 'multipart/form-data'
+                    "Content-Type" : "multipart/form-data"
                   },
                   body: formData
                 })
