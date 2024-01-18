@@ -124,6 +124,7 @@ public class UserService {
     }
 
     // 비밀번호 수정
+    @Transactional
     public UserPasswordUpdateRes updatePassword(UserPasswordUpdateReq req) {
         User user = getUserById(req.getId()); // 사용자가 존재하는지 확인
 

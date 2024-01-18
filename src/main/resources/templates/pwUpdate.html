@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>비밀번호 수정</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 </head>
 <body>
 <div class="pwUpdate-page">
@@ -20,20 +23,69 @@
 
         <div class="profile-header-buttons">
             <div class="login-id-label">기존 비밀번호</div>
-            <input type="text" name="password" id="prePw" class="login-input-box">
+            <input type="text" name="prePassword" id="prePassword">
 
             <div class="login-id-label">비밀번호</div>
-            <input type="text" name="password" id="newPw" class="login-input-box">
+            <input type="text" name="newPassword" id="newPassword">
 
             <div class="login-id-label">비밀번호 확인</div>
-            <input type="text" name="password" id="confirmPw" class="login-input-box">
+            <input type="text" name="confirmPassword" id="confirmPassword">
 
             <div class="change">
-                <button id="change-button">변경하기</button>
+                <button onclick="onPasswordUpdate()" id="change-button">변경하기</button>
             </div>
         </div>
     </div>
 </div>
+<script>
+    // JavaScript로 이미지를 클릭했을 때의 동작을 설정
+    document.getElementById('mainLogoImage').addEventListener('click', function () {
+        // 이미지를 클릭했을 때 메인 페이지로 이동하는 코드
+        window.location.href = 'boards/best';
+    });
 
+    function onPasswordUpdate() {
+        let prePassword = $('#prePassword').val();
+        let newPassword = $('#newPassword').val();
+        let confirmPassword = $('#confirmPassword').val();
+
+        // 패스워드 입력란이 비어있을 경우 오류 처리
+        if (!prePassword || !newPassword || !confirmPassword) {
+            alert('공란을 빠짐없이 입력해주세요.');
+            return;
+        }
+
+        // Request DTO 구성
+        const pwUpdateReq = {
+            prePassword: prePassword,
+            newPassword: newPassword,
+            confirmPassword: confirmPassword
+        };
+
+        fetch('/api/users/profile/password', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(pwUpdateReq),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200) {
+                    // 서버 응답이 200이면 로그인 성공
+                    alert('비밀번호 변경이 이루어졌습니다.');
+                    window.location.href = '/api/users';
+                } else {
+                    // 서버 응답이 200이 아니면 로그인 실패
+                    alert('비밀번호 변경이 실패했습니다: ' + data.code);
+                }
+            })
+    }
+</script>
 </body>
 </html>
