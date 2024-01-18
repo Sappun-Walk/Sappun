@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 작성 페이지 2</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        div.getBoardDetailPage {
+            display: flex;
+            flex-direction: column;
+        }
+
+        div.getBoardDetail-header {
+            padding: 10px;
+            width: 100%;
+        }
+
+        #mainLogoImage {
+            cursor: pointer;
+            width: 200px;
+            height: 100px;
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+
+        #profileImage{
+            cursor: pointer;
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 10px;
+            right: 30px;
+            padding: 10px;
+        }
+
+        h1 {
+            margin: 0;
+            padding: 0;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 120px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .user-name{
+            position: absolute;
+            top: 5px;
+            right: 200px;
+            padding: 10px;
+        }
+
+        section {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #region{
+            width: 100px;
+        }
+        #titleInput{
+            left: 200px;
+            width: 500px;
+        }
+        #mapImage{
+            width: 500px;
+            height: 300px;
+        }
+        .mapImage{
+            width: 500px;
+            height: 300px;
+        }
+        .buttons{
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 100px;
+        }
+        .buttons button {
+            margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
+        }
+
+    </style>
+</head>
+<body>
+<div class="getBoardDetailPage">
+    <div class="getBoardDetail-header">
+        <img th:src="@{/images/logo.png}" alt="Logo" id="mainLogoImage">
+        <script>
+            document.getElementById('mainLogoImage').addEventListener('click', function () {
+                window.location.href = '/login.html';
+            });
+        </script>
+        <button class="logout-btn">로그아웃</button>
+        <p class="user-name">유저 네임</p>
+        <img th:src="@{/images/profile.png}" alt="profile" id="profileImage">
+
+    </div>
+    <div class="getBoardDetail-body">
+        <div class="title-and-buttons">
+            <section>
+                <p>출발지</p>
+                <input id="departure">
+                <p>경유지</p>
+                <input id="stopover">
+                <button>+</button>
+                <p>목적지</p>
+                <input id="destination">
+                <button>길찾기</button>
+            </section>
+        </div>
+        <section>
+            <img src="지도이미지주소" alt="지도 이미지" id="mapImage" class="mapImage">
+        </section>
+        <div class="buttons">
+            <button>다음</button>
+            <button>취소</button>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
