@@ -121,6 +121,12 @@ public class UserController {
         return "redirect:/api/users";
     }
 
+    // 비밀번호 수정 페이지로 이동
+    @GetMapping("/profile/password")
+    public String updatePasswordPage() {
+        return "pwUpdate";
+    }
+
     // 비밀번호 수정
     @ResponseBody
     @PatchMapping("/profile/password")
