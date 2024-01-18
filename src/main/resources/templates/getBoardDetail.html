@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세 조회 페이지</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        div.getBoardDetailPage {
+            display: flex;
+            flex-direction: column;
+        }
+
+        div.getBoardDetail-header {
+            padding: 10px;
+            width: 100%;
+        }
+
+        #mainLogoImage {
+            cursor: pointer;
+            width: 200px;
+            height: 100px;
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            padding: 0;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .login-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        section {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .buttons {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        .like-btn {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .like-comment-btn {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<div class="getBoardDetailPage">
+    <div class="getBoardDetail-header">
+        <img th:src="@{/images/logo.png}" alt="Logo" id="mainLogoImage">
+        <script>
+            document.getElementById('mainLogoImage').addEventListener('click', function () {
+                window.location.href = '/login.html';
+            });
+        </script>
+        <button class="login-btn">로그인</button>
+    </div>
+    <div class="getBoardDetail-body">
+        <div class="title-and-buttons">
+            <section>
+                <div class="buttons">
+
+                    <button>수정</button>
+                    <button>삭제</button>
+                    <button>신고</button>
+                    <h1>게시글 제목</h1>
+                </div>
+            </section>
+        </div>
+
+        <section>
+            <img src="지도이미지주소" alt="지도 이미지">
+            <p>게시글 내용</p>
+            <ul>
+                <li>출발지: 출발지 정보</li>
+                <li>도착지: 도착지 정보</li>
+                <li>경유지: 경유지 정보</li>
+            </ul>
+        </section>
+
+        <button class="like-btn">좋아요</button>
+
+        <div>
+            <section>
+                <h2>댓글</h2>
+                <div class="comment">댓글 내용
+                    <div class="like-comment-btn">
+                        <button>좋아요</button>
+                        <button>수정</button>
+                        <button>삭제</button>
+                        <button>신고</button>
+                    </div>
+                </div>
+                <div class="comment">댓글 내용
+                    <div class="like-comment-btn">
+                        <button>좋아요</button>
+                        <button>수정</button>
+                        <button>삭제</button>
+                        <button>신고</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+</html>
