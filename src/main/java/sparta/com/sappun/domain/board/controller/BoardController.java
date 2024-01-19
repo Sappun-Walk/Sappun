@@ -29,6 +29,11 @@ public class BoardController {
         return CommonResponse.success(boardService.getBoard(boardId));
     }
 
+    @GetMapping("/createPage1")
+    public String createPage1() {
+        return "saveBoardPage1";
+    }
+
     @GetMapping("/details/{boardId}")
     public String getBoardDetails(@PathVariable Long boardId, Model model) {
         // 게시물 상세 정보를 가져오는 로직을 작성하고, Thymeleaf에 필요한 데이터를 Model에 추가
