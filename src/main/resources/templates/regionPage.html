@@ -133,14 +133,6 @@
         <select id="region" name="region">
             <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}" th:value="${enumItem}" th:text="${enumItem.region}"></option>
         </select>
-        <!-- 페이지 값 (고정) -->
-        <input type="hidden" name="page" value="1" />
-        <!-- 크기 값 (고정) -->
-        <input type="hidden" name="size" value="8" />
-        <!-- 정렬 값 (고정) -->
-        <input type="hidden" name="sortBy" value="createdAt" />
-        <!-- 정렬 방향 값 (고정) -->
-        <input type="hidden" name="isAsc" value="false">
         <button type="button" onclick="submitForm()">Submit</button>
     </form>
     <div class="btn-write">
