@@ -58,7 +58,7 @@ class BoardControllerTest extends BaseMvcTest implements BoardTest {
                         .stopover(TEST_STOPOVER)
                         .destination(TEST_DESTINATION)
                         .region(TEST_REGION1)
-                        .likeCount(TEST_LIKECOUNT)
+                        .likeCount(TEST_LIKE_COUNT)
                         .build();
 
         // when

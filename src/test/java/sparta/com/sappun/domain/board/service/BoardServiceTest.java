@@ -69,7 +69,7 @@ class BoardServiceTest implements BoardTest {
         assertEquals(TEST_DESTINATION, res.getDestination());
         assertEquals(TEST_STOPOVER, res.getStopover());
         assertEquals(TEST_REGION1, res.getRegion());
-        assertEquals(TEST_LIKECOUNT, res.getLikeCount());
+        assertEquals(TEST_LIKE_COUNT, res.getLikeCount());
     }
 
     @Test
@@ -84,8 +84,8 @@ class BoardServiceTest implements BoardTest {
         //                        .destination(TEST_DESTINATION)
         //                        .stopover(TEST_STOPOVER)
         //                        .region(TEST_REGION1)
-        //                        .likeCount(TEST_LIKECOUNT)
-        //                        .reportCount(TEST_REPORTCOUNT)
+        //                        .likeCount(TEST_LIKE_COUNT)
+        //                        .reportCount(TEST_REPORT_COUNT)
         //                        .build();
         //        req.setUserId(TEST_USER_ID);
         //
@@ -105,7 +105,7 @@ class BoardServiceTest implements BoardTest {
         //        assertEquals(TEST_DESTINATION, argumentCaptor.getValue().getDestination());
         //        assertEquals(TEST_STOPOVER, argumentCaptor.getValue().getStopover());
         //        assertEquals(TEST_REGION1, argumentCaptor.getValue().getRegion());
-        //        assertEquals(TEST_LIKECOUNT, argumentCaptor.getValue().getReportCount());
-        //        assertEquals(TEST_REPORTCOUNT, argumentCaptor.getValue().getLikeCount());
+        //        assertEquals(TEST_LIKE_COUNT, argumentCaptor.getValue().getReportCount());
+        //        assertEquals(TEST_REPORT_COUNT, argumentCaptor.getValue().getLikeCount());
     }
 }
