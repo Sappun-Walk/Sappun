@@ -136,7 +136,12 @@
         <button type="button" onclick="submitForm()">Submit</button>
     </form>
     <div class="btn-write">
-        <button class="btn btn-outline-success" type="button" th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
+        <p th:if="${username == null}">
+            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
+        </p>
+        <p th:if="${username != null}">
+            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/logout}'|">로그아웃</button>
+        </p>
     </div>
 
 

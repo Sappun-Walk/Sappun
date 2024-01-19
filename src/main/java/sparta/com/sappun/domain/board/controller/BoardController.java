@@ -62,7 +62,11 @@ public class BoardController {
             @RequestParam(value = "size", defaultValue = "8") int size,
             @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
             @RequestParam(value = "isAsc", defaultValue = "false") boolean isAsc,
-            Model model) {
+            Model model,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails != null) {
+            model.addAttribute("username", userDetails.getUsername());
+        }
         Page<BoardGetRes> responseDto =
                 boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
         model.addAttribute("region", region.getRegion());
