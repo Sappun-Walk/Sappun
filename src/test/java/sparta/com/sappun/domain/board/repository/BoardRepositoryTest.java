@@ -79,6 +79,7 @@ class BoardRepositoryTest implements BoardTest {
     @DisplayName("delete 테스트")
     void deleteTest() {
         // given
+        User user = userRepository.save(TEST_USER);
         Board board = boardRepository.save(TEST_BOARD);
         // when
         boardRepository.delete(board);
@@ -92,6 +93,7 @@ class BoardRepositoryTest implements BoardTest {
     @DisplayName("findAllByRegion 테스트")
     void findAllByRegionTest() {
         // given
+        User user = userRepository.save(TEST_USER);
         Board board = boardRepository.save(TEST_BOARD);
         Pageable pageable = PageRequest.ofSize(1);
 

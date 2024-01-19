@@ -127,13 +127,10 @@ public class BoardController {
     }
 
     @GetMapping("/update/{boardId}")
-    public String updateBoardDetails(@PathVariable Long boardId, Model model
-            // ,@AuthenticationPrincipal UserDetailsImpl userDetails
-            ) {
+    public String updateBoardDetails(@PathVariable Long boardId, Model model) {
         BoardUpdateRes boardUpdateRes = boardService.getBoardUpdateRes(boardId);
         model.addAttribute("board", boardUpdateRes);
-        //        model.addAttribute("userId", userDetails.getUser().getId());
-        return "getBoardDetail"; // boardDetails는 상세 페이지의 Thymeleaf 템플릿 이름
+        return "updateBoardPage";
     }
 
     // 게시글 삭제
