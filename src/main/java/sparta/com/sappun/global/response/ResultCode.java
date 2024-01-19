@@ -18,6 +18,7 @@ public enum ResultCode {
     SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 에러가 발생했습니다."),
     NULL_FILE_TYPE(HttpStatus.BAD_REQUEST, "해당 파일의 확장자를 찾을 수 없습니다."),
     INVALID_PROFILE_IMAGE_FILE(HttpStatus.BAD_REQUEST, "이미지 파일만 업로드 가능합니다."),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "입력값 형식에 맞지 않습니다."),
 
     // 유저
     NOT_MATCHED_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),

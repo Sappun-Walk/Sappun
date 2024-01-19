@@ -235,8 +235,8 @@ class UserServiceTest implements UserTest {
     @DisplayName("프로필 수정 테스트")
     void updateProfileTest() {
         // given
-        String updatedUsername = "updatedUsername";
-        String updatedNickname = "updatedNickname";
+        String updatedUsername = "newName1";
+        String updatedNickname = "newName2";
 
         UserProfileUpdateReq req =
                 UserProfileUpdateReq.builder().username(updatedUsername).nickname(updatedNickname).build();

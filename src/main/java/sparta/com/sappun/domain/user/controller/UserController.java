@@ -118,14 +118,13 @@ public class UserController {
     }
 
     // 프로필 수정
+    @ResponseBody
     @PatchMapping("/profile")
-    public String updateProfile(
-            @Valid UserProfileUpdateReq req,
-            //        @RequestPart(name = "image", required = false) MultipartFile multipartfile,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public CommonResponse<UserProfileUpdateRes> updateProfile(
+            @Valid UserProfileUpdateReq req, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         req.setId(userDetails.getUser().getId());
-        userService.updateProfile(req, req.getImage());
-        return "redirect:/api/users";
+        UserProfileUpdateRes res = userService.updateProfile(req, req.getImage());
+        return CommonResponse.success(res);
     }
 
     // 비밀번호 수정 페이지로 이동
