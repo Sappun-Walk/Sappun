@@ -13,14 +13,6 @@
         <!-- 메인 로고 이미지 -->
         <img th:src="@{/images/logo.png}" alt="Logo" id="mainLogoImage">
 
-        <script>
-            // JavaScript로 이미지를 클릭했을 때의 동작을 설정
-            document.getElementById('mainLogoImage').addEventListener('click', function () {
-                // 이미지를 클릭했을 때 메인 페이지로 이동하는 코드
-                window.location.href = '/login.html'; // TODO: 페이지 수정
-            });
-        </script>
-
         <div class="profile-header-buttons">
             <div class="login-id-label">기존 비밀번호</div>
             <input type="text" name="prePassword" id="prePassword">
@@ -38,7 +30,7 @@
     </div>
 </div>
 <script>
-    // JavaScript로 이미지를 클릭했을 때의 동작을 설정
+    // 로고 이미지를 클릭했을 때의 동작을 설정
     document.getElementById('mainLogoImage').addEventListener('click', function () {
         // 이미지를 클릭했을 때 메인 페이지로 이동하는 코드
         window.location.href = 'boards/best';
