@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Setter
 @Getter
@@ -30,6 +31,8 @@ public class UserSignupReq {
     private String password;
 
     private String confirmPassword;
+
+    private MultipartFile image;
 
     @Builder
     private UserSignupReq(

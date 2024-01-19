@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.user.dto.request.*;
 import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.service.UserService;
@@ -37,12 +36,20 @@ public class UserController {
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
 
+    @GetMapping("/login-page")
+    public String loginPage() {
+        return "login";
+    }
+
+    @GetMapping("/signup-page")
+    public String signupPage() {
+        return "signup";
+    }
+
     @ResponseBody
     @PostMapping("/signup")
-    public CommonResponse<UserSignupRes> signup(
-            @RequestPart(name = "data") @Valid UserSignupReq req,
-            @RequestPart(name = "image", required = false) MultipartFile multipartfile) {
-        return CommonResponse.success(userService.signup(req, multipartfile));
+    public CommonResponse<UserSignupRes> signup(@Valid UserSignupReq req) {
+        return CommonResponse.success(userService.signup(req, req.getImage()));
     }
 
     @GetMapping("/login-page")
@@ -118,11 +125,11 @@ public class UserController {
     // 프로필 수정
     @PatchMapping("/profile")
     public String updateProfile(
-            @RequestPart(name = "data") @Valid UserProfileUpdateReq req,
-            @RequestPart(name = "image", required = false) MultipartFile multipartfile,
+            @Valid UserProfileUpdateReq req,
+            //        @RequestPart(name = "image", required = false) MultipartFile multipartfile,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         req.setId(userDetails.getUser().getId());
-        userService.updateProfile(req, multipartfile);
+        userService.updateProfile(req, req.getImage());
         return "redirect:/api/users";
     }
 
