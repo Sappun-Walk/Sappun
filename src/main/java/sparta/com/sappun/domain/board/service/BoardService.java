@@ -38,6 +38,12 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
+    public BoardUpdateRes getBoardUpdateRes(Long boardId) {
+        Board board = getBoardById(boardId);
+        return BoardServiceMapper.INSTANCE.toBoardUpdateRes(board);
+    }
+
+    @Transactional(readOnly = true)
     public Page<BoardGetRes> getBoardList(
             RegionEnum region, int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;

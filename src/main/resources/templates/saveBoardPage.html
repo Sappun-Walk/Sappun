@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>게시글 작성 페이지 1</title>
@@ -27,7 +27,7 @@
             margin-left: 20px;
         }
 
-        #profileImage{
+        #profileImage {
             cursor: pointer;
             position: absolute;
             width: 50px;
@@ -52,7 +52,8 @@
             padding: 10px;
             cursor: pointer;
         }
-        .user-name{
+
+        .user-name {
             position: absolute;
             top: 5px;
             right: 200px;
@@ -90,30 +91,34 @@
             cursor: pointer;
         }
 
-        #region{
+        #region {
             width: 100px;
         }
-        #titleInput{
+
+        #titleInput {
             left: 200px;
             width: 500px;
         }
-        #mapImage{
+
+        #mapImage {
             width: 500px;
             height: 300px;
         }
-        .mapImage{
+
+        .mapImage {
             width: 500px;
             height: 300px;
         }
-        .buttons{
+
+        .buttons {
             display: flex;
             justify-content: flex-end;
             margin-right: 100px;
         }
+
         .buttons button {
             margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
         }
-
     </style>
 </head>
 <body>
@@ -134,24 +139,38 @@
         <div class="title-and-buttons">
             <section>
                 <select id="region" name="region">
-                    <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}" th:value="${enumItem}" th:text="${enumItem.region}"></option>
+                    <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}"
+                            th:value="${enumItem}" th:text="${enumItem.region}"></option>
                 </select>
                 <input id="titleInput">
 
             </section>
         </div>
+        <div class="getBoardDetail-body">
+            <div class="title-and-buttons">
+                <section>
+                    <p>출발지</p>
+                    <input id="departure">
+                    <p>경유지</p>
+                    <input id="stopover">
+                    <button>+</button>
+                    <p>목적지</p>
+                    <input id="destination">
+                    <button>길찾기</button>
+                </section>
+            </div>
+            <section>
+                <img src="지도이미지주소" alt="지도 이미지" id="mapImage" class="mapImage">
+            </section>
+            <section>
+                <input id="">
+            </section>
+            <div class="buttons">
+                <button>완료</button>
+                <button>취소</button>
+            </div>
 
-        <section>
-            <img src="지도이미지주소" alt="지도 이미지" id="mapImage" class="mapImage">
-        </section>
-        <section>
-            <input id="">
-        </section>
-        <div class="buttons">
-            <button>완료</button>
-            <button>취소</button>
         </div>
-
     </div>
 </div>
 </body>

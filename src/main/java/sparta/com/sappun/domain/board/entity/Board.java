@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.comment.entity.Comment;
@@ -35,13 +36,15 @@ public class Board extends TimeStamp {
     @Column(nullable = false)
     private String destination;
 
-    @ElementCollection private List<String> stopover = new ArrayList<>();
+    @ElementCollection
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<String> stopover = new ArrayList<>();
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private RegionEnum region;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
