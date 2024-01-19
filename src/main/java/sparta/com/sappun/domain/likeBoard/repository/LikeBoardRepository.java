@@ -1,5 +1,8 @@
 package sparta.com.sappun.domain.likeBoard.repository;
 
+import java.util.List;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.likeBoard.entity.LikeBoard;
@@ -12,4 +15,11 @@ public interface LikeBoardRepository {
     boolean existsLikeBoardByBoardAndUser(Board board, User user);
 
     void deleteLikeBoardByBoardAndUser(Board board, User user);
+
+    @Query(value = "select r FROM LikeBoard r WHERE r.user = :user")
+    List<LikeBoard> selectLikeBoardByUser(User user);
+
+    @Modifying
+    @Query(value = "delete from LikeBoard lb where lb in :likeBoards")
+    void deleteAll(List<LikeBoard> likeBoards);
 }

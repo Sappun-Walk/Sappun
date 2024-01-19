@@ -7,8 +7,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static sparta.com.sappun.global.response.ResultCode.*;
+import static sparta.com.sappun.test.LikeBoardTest.TEST_LIKE_BOARD;
+import static sparta.com.sappun.test.LikeCommentTest.TEST_LIKE_COMMENT;
+import static sparta.com.sappun.test.ReportBoardTest.REPORT_BOARD;
+import static sparta.com.sappun.test.ReportCommentTest.REPORT_COMMENT;
 
 import java.io.IOException;
+import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +29,12 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
+import sparta.com.sappun.domain.board.repository.BoardRepository;
+import sparta.com.sappun.domain.comment.repository.CommentRepository;
+import sparta.com.sappun.domain.likeBoard.repository.LikeBoardRepository;
+import sparta.com.sappun.domain.likeComment.repository.LikeCommentRepository;
+import sparta.com.sappun.domain.reportBoard.repository.ReportBoardRepository;
+import sparta.com.sappun.domain.reportComment.repository.ReportCommentRepository;
 import sparta.com.sappun.domain.user.dto.request.*;
 import sparta.com.sappun.domain.user.dto.response.*;
 import sparta.com.sappun.domain.user.entity.Role;
@@ -36,6 +47,12 @@ import sparta.com.sappun.test.UserTest;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest implements UserTest {
     @Mock UserRepository userRepository;
+    @Mock ReportBoardRepository reportBoardRepository;
+    @Mock ReportCommentRepository reportCommentRepository;
+    @Mock LikeBoardRepository likeBoardRepository;
+    @Mock LikeCommentRepository likeCommentRepository;
+    @Mock BoardRepository boardRepository;
+    @Mock CommentRepository commentRepository;
 
     @Mock PasswordEncoder passwordEncoder;
 
@@ -163,6 +180,12 @@ class UserServiceTest implements UserTest {
     @DisplayName("deleteUser 테스트")
     void deleteUserTest() {
         // given
+        when(reportBoardRepository.selectReportBoardByUser(any())).thenReturn(List.of(REPORT_BOARD));
+        when(reportCommentRepository.selectReportCommentByUser(any()))
+                .thenReturn(List.of(REPORT_COMMENT));
+        when(likeBoardRepository.selectLikeBoardByUser(any())).thenReturn(List.of(TEST_LIKE_BOARD));
+        when(likeCommentRepository.selectLikeCommentByUser(any()))
+                .thenReturn(List.of(TEST_LIKE_COMMENT));
         when(userRepository.findById(any())).thenReturn(TEST_USER);
 
         // when
