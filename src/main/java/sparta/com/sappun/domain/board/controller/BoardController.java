@@ -64,8 +64,11 @@ public class BoardController {
 
     // Best 게시글 조회
     @GetMapping("/best")
-    public String getBestBoards(Model model) {
+    public String getBestBoards(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         BoardBestListGetRes bestBoards = boardService.getBoardBestList();
+        if (userDetails != null) {
+            model.addAttribute("username", userDetails.getUsername());
+        }
         model.addAttribute("bestBoards", bestBoards);
         model.addAttribute("boardList", bestBoards.getBoards());
         return "mainPage";
