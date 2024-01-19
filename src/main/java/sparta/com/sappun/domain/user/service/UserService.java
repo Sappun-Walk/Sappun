@@ -1,11 +1,22 @@
 package sparta.com.sappun.domain.user.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import sparta.com.sappun.domain.board.repository.BoardRepository;
+import sparta.com.sappun.domain.comment.repository.CommentRepository;
+import sparta.com.sappun.domain.likeBoard.entity.LikeBoard;
+import sparta.com.sappun.domain.likeBoard.repository.LikeBoardRepository;
+import sparta.com.sappun.domain.likeComment.entity.LikeComment;
+import sparta.com.sappun.domain.likeComment.repository.LikeCommentRepository;
+import sparta.com.sappun.domain.reportBoard.entity.ReportBoard;
+import sparta.com.sappun.domain.reportBoard.repository.ReportBoardRepository;
+import sparta.com.sappun.domain.reportComment.entity.ReportComment;
+import sparta.com.sappun.domain.reportComment.repository.ReportCommentRepository;
 import sparta.com.sappun.domain.user.dto.request.NicknameVerifyReq;
 import sparta.com.sappun.domain.user.dto.request.UserLoginReq;
 import sparta.com.sappun.domain.user.dto.request.UserPasswordUpdateReq;
@@ -34,6 +45,12 @@ import sparta.com.sappun.infra.s3.S3Util.FilePath;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ReportBoardRepository reportBoardRepository;
+    private final ReportCommentRepository reportCommentRepository;
+    private final LikeBoardRepository likeBoardRepository;
+    private final LikeCommentRepository likeCommentRepository;
+    private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
     private final PasswordEncoder passwordEncoder;
     private final S3Util s3Util;
 
@@ -83,8 +100,47 @@ public class UserService {
     public UserDeleteRes deleteUser(Long id) {
         User user = getUserById(id); // 사용자가 존재하는지 확인
 
-        // TODO: 회원 탈퇴 시 회원의 게시글과 댓글, 좋아요 등의 처리를 어떻게 할 것인지 정하기
+        // 사용자가 신고한 게시글 및 댓글의 작성자 점수 +50 후 신고 삭제
+        List<ReportBoard> reportBoards = reportBoardRepository.selectReportBoardByUser(user);
+        for (ReportBoard reportBoard : reportBoards) {
+            User reportedUser = reportBoard.getBoard().getUser();
+            reportedUser.updateScore(+50);
+        }
+        reportBoardRepository.deleteAll(reportBoards);
 
+        List<ReportComment> reportComments = reportCommentRepository.selectReportCommentByUser(user);
+        for (ReportComment reportComment : reportComments) {
+            User reportedUser = reportComment.getComment().getUser();
+            reportedUser.updateScore(+50);
+        }
+        reportCommentRepository.deleteAll(reportComments);
+
+        // 사용자가 좋아요를 누른 게시글 및 댓글의 작성자 점수 -10 후 좋아요 삭제
+        List<LikeBoard> likeBoards = likeBoardRepository.selectLikeBoardByUser(user);
+        for (LikeBoard likeBoard : likeBoards) {
+            User reportedUser = likeBoard.getBoard().getUser();
+            reportedUser.updateScore(-10);
+        }
+        likeBoardRepository.deleteAll(likeBoards);
+
+        List<LikeComment> likeComments = likeCommentRepository.selectLikeCommentByUser(user);
+        for (LikeComment likeComment : likeComments) {
+            User reportedUser = likeComment.getComment().getUser();
+            reportedUser.updateScore(-10);
+        }
+        likeCommentRepository.deleteAll(likeComments);
+
+        // 사용자가 작성한 댓글 삭제
+        commentRepository.deleteAllByUser(user);
+
+        // 사용자가 작성한 게시글 삭제
+        boardRepository.deleteAllByUser(user);
+
+        // 사용자 삭제
+        String imageUrl = user.getProfileUrl(); // 기존 프로필 이미지
+        if (!imageUrl.equals(defaultProfileImage)) { // 기존 이미지가 기본 프로필이 아닌 경우
+            s3Util.deleteFile(imageUrl, FilePath.PROFILE); // 기존 이미지 삭제
+        }
         userRepository.delete(user);
 
         return new UserDeleteRes();
