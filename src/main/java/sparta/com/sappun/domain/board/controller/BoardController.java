@@ -58,17 +58,22 @@ public class BoardController {
     @GetMapping("/region")
     public String getBoardsByRegion(
             @RequestParam RegionEnum region,
-            @RequestParam("page") int page,
-            @RequestParam("size") int size,
-            @RequestParam("sortBy") String sortBy,
-            @RequestParam("isAsc") boolean isAsc,
-            Model model) {
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "8") int size,
+            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
+            @RequestParam(value = "isAsc", defaultValue = "false") boolean isAsc,
+            Model model,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails != null) {
+            model.addAttribute("username", userDetails.getUsername());
+        }
         Page<BoardGetRes> responseDto =
                 boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
+        model.addAttribute("region", region.getRegion());
         model.addAttribute("responseDto", responseDto);
+        model.addAttribute("maxPage", 5);
         return "regionPage";
     }
-
     //     Best 게시글 조회
     //    @GetMapping("/best")
     //    public CommonResponse<BoardBestListGetRes> getBestBoards() {
