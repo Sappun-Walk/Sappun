@@ -71,7 +71,9 @@ public class WebSecurityConfig {
                                         "/api/users/signup",
                                         "/api/users/login",
                                         "/api/users/login-page",
-                                        "/api/users/signup-page")
+                                        "/api/users/signup-page",
+                                        "/api/users/username",
+                                        "/api/users/nickname")
                                 .permitAll() // 회원가입, 로그인 API만 접근 허용
                                 .requestMatchers("/api/users/kakao/callback/**")
                                 .permitAll()

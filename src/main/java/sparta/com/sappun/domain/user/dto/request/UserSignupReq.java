@@ -32,7 +32,7 @@ public class UserSignupReq {
 
     private String confirmPassword;
 
-    private MultipartFile multipartFile;
+    private MultipartFile image;
 
     @Builder
     private UserSignupReq(

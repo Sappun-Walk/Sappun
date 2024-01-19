@@ -18,41 +18,53 @@
     <div id="login-title">
         <h2>회원가입<h3>Sign</h3></h2>
     </div>
-    <div id="사진 보여주기">
-        <!-- 프로필사진 보여주는 부분 -->
-        <img th:src="${profilePicture}" alt="Profile Picture"
-             class="profile-image">
-        <input type="file" id="image" name="image">
-    </div>
 
-    <div class="login-id-label">프로필 사진</div>
-    <input type="file" name="profilePicture" accept="image/*">
-    <!-- 이미지를 바로 보여주기 위한 코드 추가 -->
-    <img id="profilePreview" src="#" alt="프로필 미리보기" style="max-width: 200px; max-height: 200px; display: none;">
+    <div>
 
+        <div class="login-id-label">프로필 사진</div>
+        <input type="file" name="profilePicture" accept="image/*" id="image">
+        <!-- 이미지를 바로 보여주기 위한 코드 추가 -->
+        <img id="profilePreview" src="#" alt="프로필 미리보기" style="max-width: 200px; max-height: 200px; display: none;">
 
-    <form action="/api/user/signup" method="post">
+        <!--        <div class="login-id-label">Username</div>-->
+        <!--        <input type="text" name="username" placeholder="Username" class="login-input-box">-->
+        <!--        <button id="username-check-button" onclick="checkUsername()">중복확인</button>-->
+        <!--        <div class="login-id-label">Nickname</div>-->
+        <!--        <input type="text" name="nickname" placeholder="nickname" class="login-input-box">-->
+        <!--        <button id="nickname-check-button" onclick="checkNickname()">중복확인</button>-->
 
-        <button>
-            <input type="file" name="profilePicture" accept="image/*">
-        </button>
-        <div class="login-id-label">Username</div>
-        <input type="text" name="username" placeholder="Username" class="login-input-box">
-        <button id="username-check-button" onclick="checkUsername()">중복확인</button>
-        <div class="login-id-label">Nickname</div>
-        <input type="text" name="nickname" placeholder="Username" class="login-input-box">
-        <button id="nickname-check-button" onclick="checkNickname()">중복확인</button>
+        <div class="username">
+            <label for="username"><b>아이디</b></label>
+            <div class="username-input">
+                <input type="text" id="username" name="username" required
+                       placeholder="영어, 숫자만 포함 가능">
+                <button id="username-check-button" onclick="checkUsername()">중복확인
+                </button>
+                <span id="usernameMessage"></span>
+
+            </div>
+        </div>
+        <div class="nickname">
+            <label for="nickname"><b>닉네임</b></label>
+            <div class="nickname-input">
+                <input type="text" id="nickname" name="nickname" required
+                       placeholder="한글, 영어, 숫자만 포함 가능">
+                <button id="nickname-check-button" onclick="checkNickname()">중복확인
+                </button>
+                <span id="nicknameMessage"></span>
+            </div>
+        </div>
         <div class="login-id-label">E-mail</div>
-        <input type="text" name="email" placeholder="E-mail" class="login-input-box">
+        <input type="text" name="email" id="email" class="login-input-box">
 
         <div class="login-id-label">Password</div>
-        <input type="password" name="password" class="login-input-box">
+        <input type="password" name="password" id="password" class="login-input-box">
 
         <div class="login-id-label">ConfirmPassword</div>
-        <input type="confirmPassword" name="confirmPassword" class="login-input-box">
+        <input type="password" name="confirmPassword"  id="confirmPassword" class="login-input-box">
 
-        <button id="login-id-submit" onclick="onsignup()">가입하기</button>
-    </form>
+        <button onclick="signup()">가입하기</button>
+    </div>
 </div>
 <script>
 
@@ -124,13 +136,7 @@
             });
     }
 
-    function onsignup() {
-        let username = $('#username').val();
-        let nickname = $('#nickname').val();
-        let email = $('#email').val();
-        let password = $('#password').val();
-        let confirmPassword = $('#confirmPassword').val();
-
+    function signup() {
         let formData = new FormData();
         formData.append("image", document.getElementById('image').files[0]);
         formData.append("username", document.getElementById('username').value);
@@ -143,7 +149,8 @@
         if (!username) {
             alert('username을 입력하세요.');
             return;
-        } else if (!nickname) {
+        }
+        if (!nickname) {
             alert('nickname을 입력하세요.');
             return;
         } else if (!email) {
@@ -172,14 +179,14 @@
                 if (data.code === 200) {
                     // 서버 응답이 200이면 로그인 성공
                     alert('회원가입이 성공적으로 이루어졌습니다.');
-                    window.location.href = '/api/boards/best';
+                    window.location.href = '/api/users/login-page';
                 } else {
                     // 서버 응답이 200이 아니면 로그인 실패
                     alert('회원가입 수정 실패: ' + data.code);
                 }
             })
             .catch(error => {
-                console.error('Error updating profile:', error);
+                console.error('Error signup:', error);
                 // 오류 발생 시의 로직을 추가할 수 있습니다.
             });
     }
