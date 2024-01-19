@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.reportBoard.entity.ReportBoard;
 import sparta.com.sappun.domain.user.entity.User;
@@ -83,5 +84,51 @@ class ReportBoardRepositoryTest implements ReportBoardTest {
 
         // then
         assertEquals(0, reportBoardRepository.selectUserByBoard(TEST_BOARD).size());
+    }
+
+    @Test
+    @DisplayName("게시글 신고 selectReportBoardByUser 테스트")
+    void selectReportBoardByUserTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+        Board board = boardRepository.save(TEST_BOARD);
+        reportBoardRepository.save(REPORT_BOARD);
+
+        // when
+        List<ReportBoard> reportBoardList = reportBoardRepository.selectReportBoardByUser(user);
+
+        // then
+        assertEquals(reportBoardList.get(0).getBoard(), board);
+    }
+
+    @Test
+    @DisplayName("게시글 신고 deleteAll 테스트")
+    public void deleteAllTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+        Board board = boardRepository.save(TEST_BOARD);
+        ReportBoard reportBoard = reportBoardRepository.save(REPORT_BOARD);
+
+        // when
+        reportBoardRepository.deleteAll(List.of(reportBoard));
+        boolean isExist = reportBoardRepository.existsReportBoardByBoardAndUser(board, user);
+
+        // then
+        assertFalse(isExist);
+    }
+
+    @Test
+    @DisplayName("게시글 신고 findAllFetchBoard 테스트")
+    void findAllFetchBoardTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+        Board board = boardRepository.save(TEST_BOARD);
+        ReportBoard reportBoard = reportBoardRepository.save(REPORT_BOARD);
+
+        // when
+        List<ReportBoard> reportBoardList = reportBoardRepository.findAllFetchBoard();
+
+        // then
+        assertEquals(reportBoardList.get(0), reportBoard);
     }
 }
