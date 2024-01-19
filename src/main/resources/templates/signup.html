@@ -178,11 +178,6 @@
     <logo>
         <img class="main-img" th:src="@{/images/logo.png}" alt="Logo" id="mainLogoImage"
              th:onclick="|location.href='@{/api/boards/best}'|">
-        <script>
-            document.getElementById('mainLogoImage').addEventListener('click', function () {
-                window.location.href = '/api/boards/best';
-            });
-        </script>
     </logo>
     <div class="login">
         <div class="login_title">
@@ -239,6 +234,11 @@
     </div>
 </div>
 <script>
+  // 로고 이미지 클릭 시 메인페이지로
+  document.getElementById('mainLogoImage').addEventListener('click', function () {
+    window.location.href = '/api/boards/best';
+  });
+
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();

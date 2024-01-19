@@ -200,11 +200,6 @@
     <logo>
         <img class="main-img" th:src="@{/images/logo.png}" alt="Logo" id="mainLogoImage"
              th:onclick="|location.href='@{/api/boards/best}'|">
-        <script>
-            document.getElementById('mainLogoImage').addEventListener('click', function () {
-                window.location.href = '/api/boards/best';
-            });
-        </script>
     </logo>
 
     <div class="login">
@@ -239,20 +234,6 @@
 </div>
 </body>
 <script>
-    $(document).ready(function () {
-        // 토큰 삭제
-        Cookies.remove('Authorization', {path: '/'});
-    });
-
-    const href = location.href;
-    const queryString = href.substring(href.indexOf("?") + 1)
-    if (queryString === 'error') {
-        const errorDiv = document.getElementById('login-failed');
-        errorDiv.style.display = 'block';
-    }
-
-    const host = 'http://' + window.location.host;
-
     function onLogin() {
         let username = $('#username').val();
         let password = $('#password').val();

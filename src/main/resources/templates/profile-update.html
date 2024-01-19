@@ -190,14 +190,6 @@
         <!-- 메인 로고 이미지 -->
         <img th:src="@{/images/logo.png}" alt="Logo" id="mainLogoImage">
 
-        <script>
-          // JavaScript로 이미지를 클릭했을 때의 동작을 설정
-          document.getElementById('mainLogoImage').addEventListener('click', function () {
-            // 이미지를 클릭했을 때 메인 페이지로 이동하는 코드
-            window.location.href = 'boards/best';
-          });
-        </script>
-
         <div class="profile-header-buttons">
 
             <!-- 로그아웃 버튼 -->
@@ -205,111 +197,63 @@
                 <button id="logout-button">로그아웃</button>
             </div>
 
-            <script>
-              // 로그아웃 버튼 클릭 시 이벤트 핸들러
-              document.getElementById('logout-button').addEventListener('click', function () {
-                // 사용자에게 재확인 알림창 표시
-                var confirmation = confirm('로그아웃 하시겠습니까?');
-
-                // 사용자가 확인을 선택한 경우에만 POST 요청 보내기
-                if (confirmation) {
-                  fetch('/api/users/logout', {method: 'POST'})
-                  .then(response => {
-                    if (response.ok) {
-                      alert('로그아웃이 성공적으로 이루어졌습니다.');
-                      window.location.href = '/api/boards/best';
-                    } else {
-                      alert('로그아웃 중 오류가 발생했습니다.');
-                    }
-                  })
-                  .catch(error => {
-                    console.error('오류 발생:', error);
-                    alert('로그아웃 중 오류가 발생했습니다.');
-                  });
-                }
-              });
-            </script>
-
             <!-- 회원 탈퇴 버튼 -->
             <div class="withdraw">
                 <button id="withdraw-button">회원 탈퇴</button>
             </div>
 
-            <script>
-              // 회원 탈퇴 버튼 클릭 시 이벤트 핸들러
-              document.getElementById('withdraw-button').addEventListener('click', function () {
-                // 사용자에게 재확인 알림창 표시
-                var confirmation = confirm('정말로 회원 탈퇴하시겠습니까?');
 
-                // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
-                if (confirmation) {
-                  fetch('/api/users', {method: 'DELETE'})
-                  .then(response => {
-                    if (response.ok) {
-                      alert('회원 탈퇴가 성공적으로 이루어졌습니다.');
-                      window.location.href = '/api/boards/best';
-                    } else {
-                      alert('회원 탈퇴 중 오류가 발생했습니다.');
-                    }
-                  })
-                  .catch(error => {
-                    console.error('오류 발생:', error);
-                    alert('회원 탈퇴 중 오류가 발생했습니다.');
-                  });
-                }
-              });
-            </script>
         </div>
     </div>
 
     <div class="profile-content">
         <div class="profile-info-box">
-                <div class="profile-info">
-                    <div class="profile-image-group">
-                        <img th:src="${userProfile.profileUrl}" alt="Profile Picture"
-                             class="profile-image">
-                        <input type="file" id="image" name="image">
+            <div class="profile-info">
+                <div class="profile-image-group">
+                    <img th:src="${userProfile.profileUrl}" alt="Profile Picture"
+                         class="profile-image">
+                    <input type="file" id="image" name="image">
 
-                        <p><b>Rank</b>
-                            <span th:if="${userProfile.score < 0}">Warned</span>
-                            <span
-                                th:if="${userProfile.score >= 0 and userProfile.score <= 300}">Bronze</span>
-                            <span
-                                th:if="${userProfile.score > 300 and userProfile.score <= 700}">Silver</span>
-                            <span
-                                th:if="${userProfile.score > 700 and userProfile.score <= 1200}">Gold</span>
-                            <span th:if="${userProfile.score > 1200}">Platinum</span>
-                        </p>
+                    <p><b>Rank</b>
+                        <span th:if="${userProfile.score < 0}">Warned</span>
+                        <span
+                            th:if="${userProfile.score >= 0 and userProfile.score <= 300}">Bronze</span>
+                        <span
+                            th:if="${userProfile.score > 300 and userProfile.score <= 700}">Silver</span>
+                        <span
+                            th:if="${userProfile.score > 700 and userProfile.score <= 1200}">Gold</span>
+                        <span th:if="${userProfile.score > 1200}">Platinum</span>
+                    </p>
+                </div>
+
+                <div class="profile-text-group">
+                    <div class="username">
+                        <label for="username"><b>아이디</b></label>
+                        <div class="username-input">
+                            <input type="text" id="username" name="username" required
+                                   placeholder="영어, 숫자만 포함 가능">
+                            <button id="username-check-button" onclick="checkUsername()">중복확인
+                            </button>
+                            <span id="usernameMessage"></span>
+
+                        </div>
                     </div>
-
-                    <div class="profile-text-group">
-                        <div class="username">
-                            <label for="username"><b>아이디</b></label>
-                            <div class="username-input">
-                                <input type="text" id="username" name="username" required
-                                       placeholder="영어, 숫자만 포함 가능">
-                                <button id="username-check-button" onclick="checkUsername()">중복확인
-                                </button>
-                                <span id="usernameMessage"></span>
-
-                            </div>
+                    <div class="nickname">
+                        <label for="nickname"><b>닉네임</b></label>
+                        <div class="nickname-input">
+                            <input type="text" id="nickname" name="nickname" required
+                                   placeholder="한글, 영어, 숫자만 포함 가능">
+                            <button id="nickname-check-button" onclick="checkNickname()">중복확인
+                            </button>
+                            <span id="nicknameMessage"></span>
                         </div>
-                        <div class="nickname">
-                            <label for="nickname"><b>닉네임</b></label>
-                            <div class="nickname-input">
-                                <input type="text" id="nickname" name="nickname" required
-                                       placeholder="한글, 영어, 숫자만 포함 가능">
-                                <button id="nickname-check-button" onclick="checkNickname()">중복확인
-                                </button>
-                                <span id="nicknameMessage"></span>
-                            </div>
-                        </div>
-                        <div class="email">
-                            <p><b>이메일</b></p>
-                            <p><span th:text="${userProfile.email}"></span></p>
-                        </div>
+                    </div>
+                    <div class="email">
+                        <p><b>이메일</b></p>
+                        <p><span th:text="${userProfile.email}"></span></p>
                     </div>
                 </div>
+            </div>
         </div>
 
 
@@ -319,143 +263,6 @@
                 <button id="update-complete-button" onclick="updateProfile()">완료</button>
             </div>
 
-            <script>
-              var isDuplicatedUsername = true;
-              var isDuplicatedNickname = true;
-
-              function checkUsername() {
-                const username = document.getElementById('username').value;
-
-                // Request DTO 구성
-                const usernameVerifyReq = {
-                  username: username,
-                };
-
-                fetch('/api/users/username', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(usernameVerifyReq),
-                })
-                .then(response => response.json())
-                .then(data => {
-                  if (data) {
-                    // 중복된 경우 메시지 표시
-                    alert('사용 불가능한 아이디입니다.');
-                    isDuplicatedUsername = true;
-                  } else {
-                    // 중복되지 않은 경우 메시지 초기화
-                    alert('사용 가능한 아이디입니다.');
-                    isDuplicatedUsername = false;
-                  }
-                })
-                .catch(error => {
-                  console.error('Error checking username:', error);
-                });
-              }
-
-              function checkNickname() {
-                const nickname = document.getElementById('nickname').value;
-
-                // Request DTO 구성
-                const nicknameVerifyReq = {
-                  nickname: nickname,
-                };
-
-                fetch('/api/users/nickname', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(nicknameVerifyReq),
-                })
-                .then(response => response.json())
-                .then(data => {
-                  if (data) {
-                    // 중복된 경우 메시지 표시
-                    alert('사용 불가능한 닉네임입니다.');
-                    isDuplicatedNickname = true;
-                  } else {
-                    // 중복되지 않은 경우 메시지 초기화
-                    alert('사용 가능한 닉네임입니다.');
-                    isDuplicatedNickname = false;
-                    updateUpdateButtonState();
-                  }
-                })
-                .catch(error => {
-                  console.error('Error checking nickname:', error);
-                });
-              }
-
-              function updateUpdateButtonState() {
-                // 입력이 있는 경우, 두 버튼의 결과가 모두 false일 때만 수정 버튼을 활성화
-                var updateButton = document.getElementById("update-complete-button");
-
-                if ((document.getElementById('username').value.trim() !== '' && isDuplicatedUsername) ||
-                    (document.getElementById('nickname').value.trim() !== '' && isDuplicatedNickname)) {
-                  // 입력값이 있고, 중복된 경우
-                  alert("중복 확인을 해주세요.");
-                  // 버튼 비활성화
-                  updateButton.disabled = true;
-                } else {
-                  // 입력값이 없거나 중복이 아닌 경우
-                  // 버튼 활성화
-                  updateButton.disabled = false;
-                }
-              }
-
-              function updateProfile() {
-                var image = document.getElementById('image');
-                var username = document.getElementById('username').value;
-                var nickname = document.getElementById('nickname').value;
-
-                if (image.files.length === 0 && !username && !nickname) {
-                  alert('입력값이 없습니다.');
-                  return;
-                }
-
-                let formData = new FormData();
-                formData.append("username", username);
-                formData.append("nickname", nickname);
-
-                // 파일이 선택되지 않은 경우 빈 파일 전송
-                if (image.files.length > 0) {
-                  formData.append('image', image.files[0]);
-                } else {
-                  // 빈 파일 생성 및 전송
-                  const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
-                  formData.append('image', emptyFile);
-                }
-
-                // 요청 보내기
-                fetch('/api/users/profile', {
-                  method: 'PATCH',
-                  body: formData
-                })
-                .then(response => {
-                  if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                  }
-                  return response.json();
-                })
-                .then(data => {
-                  if (data.code === 200) {
-                    // 서버 응답이 200이면 로그인 성공
-                    alert('프로필 수정이 성공적으로 이루어졌습니다.');
-                    window.location.href = '/api/users';
-                  } else {
-                    // 서버 응답이 200이 아니면 로그인 실패
-                    alert('프로필 수정 실패: ' + data.code);
-                  }
-                })
-                .catch(error => {
-                  console.error('Error updating profile:', error);
-                  // 오류 발생 시의 로직을 추가할 수 있습니다.
-                });
-              }
-            </script>
-
             <!-- 뒤로 버튼 -->
             <div class="back-to-profile">
                 <button th:onclick="|location.href='/api/users'|" id="back-profile-button">뒤로
@@ -464,5 +271,193 @@
         </div>
     </div>
 </div>
+<script>
+  // 로고 이미지를 클릭했을 때의 동작을 설정
+  document.getElementById('mainLogoImage').addEventListener('click', function () {
+    // 이미지를 클릭했을 때 메인 페이지로 이동하는 코드
+    window.location.href = 'boards/best';
+  });
+
+  // 로그아웃 버튼 클릭 시 이벤트 핸들러
+  document.getElementById('logout-button').addEventListener('click', function () {
+    // 사용자에게 재확인 알림창 표시
+    var confirmation = confirm('로그아웃 하시겠습니까?');
+
+    // 사용자가 확인을 선택한 경우에만 POST 요청 보내기
+    if (confirmation) {
+      fetch('/api/users/logout', {method: 'POST'})
+      .then(response => {
+        if (response.ok) {
+          alert('로그아웃이 성공적으로 이루어졌습니다.');
+          window.location.href = '/api/boards/best';
+        } else {
+          alert('로그아웃 중 오류가 발생했습니다.');
+        }
+      })
+      .catch(error => {
+        console.error('오류 발생:', error);
+        alert('로그아웃 중 오류가 발생했습니다.');
+      });
+    }
+  });
+
+  // 회원 탈퇴 버튼 클릭 시 이벤트 핸들러
+  document.getElementById('withdraw-button').addEventListener('click', function () {
+    // 사용자에게 재확인 알림창 표시
+    var confirmation = confirm('정말로 회원 탈퇴하시겠습니까?');
+
+    // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
+    if (confirmation) {
+      fetch('/api/users', {method: 'DELETE'})
+      .then(response => {
+        if (response.ok) {
+          alert('회원 탈퇴가 성공적으로 이루어졌습니다.');
+          window.location.href = '/api/boards/best';
+        } else {
+          alert('회원 탈퇴 중 오류가 발생했습니다.');
+        }
+      })
+      .catch(error => {
+        console.error('오류 발생:', error);
+        alert('회원 탈퇴 중 오류가 발생했습니다.');
+      });
+    }
+  });
+
+  var isDuplicatedUsername = true;
+  var isDuplicatedNickname = true;
+
+  function checkUsername() {
+    const username = document.getElementById('username').value;
+
+    // Request DTO 구성
+    const usernameVerifyReq = {
+      username: username,
+    };
+
+    fetch('/api/users/username', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(usernameVerifyReq),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data) {
+        // 중복된 경우 메시지 표시
+        alert('사용 불가능한 아이디입니다.');
+        isDuplicatedUsername = true;
+      } else {
+        // 중복되지 않은 경우 메시지 초기화
+        alert('사용 가능한 아이디입니다.');
+        isDuplicatedUsername = false;
+      }
+    })
+    .catch(error => {
+      console.error('Error checking username:', error);
+    });
+  }
+
+  function checkNickname() {
+    const nickname = document.getElementById('nickname').value;
+
+    // Request DTO 구성
+    const nicknameVerifyReq = {
+      nickname: nickname,
+    };
+
+    fetch('/api/users/nickname', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(nicknameVerifyReq),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data) {
+        // 중복된 경우 메시지 표시
+        alert('사용 불가능한 닉네임입니다.');
+        isDuplicatedNickname = true;
+      } else {
+        // 중복되지 않은 경우 메시지 초기화
+        alert('사용 가능한 닉네임입니다.');
+        isDuplicatedNickname = false;
+        updateUpdateButtonState();
+      }
+    })
+    .catch(error => {
+      console.error('Error checking nickname:', error);
+    });
+  }
+
+  function updateUpdateButtonState() {
+    // 입력이 있는 경우, 두 버튼의 결과가 모두 false일 때만 수정 버튼을 활성화
+    var updateButton = document.getElementById("update-complete-button");
+
+    if ((document.getElementById('username').value.trim() !== '' && isDuplicatedUsername) ||
+        (document.getElementById('nickname').value.trim() !== '' && isDuplicatedNickname)) {
+      // 입력값이 있고, 중복된 경우
+      alert("중복 확인을 해주세요.");
+      // 버튼 비활성화
+      updateButton.disabled = true;
+    } else {
+      // 입력값이 없거나 중복이 아닌 경우
+      // 버튼 활성화
+      updateButton.disabled = false;
+    }
+  }
+
+  function updateProfile() {
+    var image = document.getElementById('image');
+    var username = document.getElementById('username').value;
+    var nickname = document.getElementById('nickname').value;
+
+    if (image.files.length === 0 && !username && !nickname) {
+      alert('입력값이 없습니다.');
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append("username", username);
+    formData.append("nickname", nickname);
+
+    // 파일이 선택되지 않은 경우 빈 파일 전송
+    if (image.files.length > 0) {
+      formData.append('image', image.files[0]);
+    } else {
+      // 빈 파일 생성 및 전송
+      const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
+      formData.append('image', emptyFile);
+    }
+
+    // 요청 보내기
+    fetch('/api/users/profile', {
+      method: 'PATCH',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.code === 200) {
+        // 서버 응답이 200이면 로그인 성공
+        alert('프로필 수정이 성공적으로 이루어졌습니다.');
+        window.location.href = '/api/users';
+      } else {
+        // 서버 응답이 200이 아니면 로그인 실패
+        alert('프로필 수정 실패: ' + data.code);
+      }
+    })
+    .catch(error => {
+      console.error('Error updating profile:', error);
+      // 오류 발생 시의 로직을 추가할 수 있습니다.
+    });
+  }
+</script>
 </body>
 </html>
