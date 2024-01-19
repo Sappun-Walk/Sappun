@@ -159,14 +159,6 @@
         <!-- 메인 로고 이미지 -->
         <img th:src="@{/images/logo.png}" alt="Logo" id="mainLogoImage">
 
-        <script>
-          // JavaScript로 이미지를 클릭했을 때의 동작을 설정
-          document.getElementById('mainLogoImage').addEventListener('click', function () {
-            // 이미지를 클릭했을 때 메인 페이지로 이동하는 코드
-            window.location.href = 'boards/best';
-          });
-        </script>
-
         <div class="profile-header-buttons">
 
             <!-- 로그아웃 버튼 -->
@@ -237,6 +229,12 @@
     </div>
 </div>
 <script>
+  // JavaScript로 이미지를 클릭했을 때의 동작을 설정
+  document.getElementById('mainLogoImage').addEventListener('click', function () {
+    // 이미지를 클릭했을 때 메인 페이지로 이동하는 코드
+    window.location.href = 'boards/best';
+  });
+
   // 로그아웃 버튼 클릭 시 이벤트 핸들러
   document.getElementById('logout-button').addEventListener('click', function () {
     // 사용자에게 재확인 알림창 표시

@@ -83,7 +83,7 @@ public class WebSecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/boards/region", "/api/boards/best", "/api/boards/{boardId}")
                                 .permitAll() // 게시글 단건 조회, 게시글 목록 조회, 좋아요 Best 3 게시글 목록 조회 접근 허용
-                                .requestMatchers("/api/boards/details", "/api/boards/update")
+                                .requestMatchers("/api/boards/details/**", "/api/boards/update/**")
                                 .permitAll() // 게시글 상세보기 허용
                                 .requestMatchers(DELETE, "/api/boards/{boardId}/report")
                                 .hasAuthority(ADMIN.getAuthority()) // 게시글 신고 삭제는 관리자만 가능
