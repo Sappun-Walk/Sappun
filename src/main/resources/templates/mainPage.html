@@ -70,7 +70,12 @@
 </form>
 <div>
     <div class="btn-write">
-        <button class="btn btn-outline-success" type="submit"  th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
+        <p th:if="${username == null}">
+            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
+        </p>
+        <p th:if="${username != null}">
+            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/logout}'|">로그아웃</button>
+        </p>
     </div>
 </div>
 
@@ -81,7 +86,7 @@
    <h1> 베스트 산책로 TOP3</h1>
 </div>
 <div class="gallery-container">
-    <div class="gallery-item" th:each="board : ${bestBoards.boards}">
+    <div class="gallery-item" th:each="board : ${bestBoards.boards}" th:id="${'board-' + board.id}" th:onclick="'getBoardDetails(' + ${board.id} + ')'" style="cursor: pointer;">
         <<img th:src="${board.fileURL}" alt="게시물 이미지">
         <div class="gallery-caption">
             <h3 th:text="${board.title}">게시물 제목 1</h3>
@@ -92,12 +97,16 @@
 </div>
 
 <div class="btn-write">
-    <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/login}'|">글쓰기</button>
+    <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/createPage1}'|">글쓰기</button>
 </div>
     </div>
     <script>
         function submitForm() {
             document.getElementById('regionForm').submit();
+        }
+        function getBoardDetails(boardId) {
+            // 게시물 상세 페이지로 이동하는 로직을 작성
+            window.location.href = '/api/boards/details/' + boardId;
         }
     </script>
 </body>
