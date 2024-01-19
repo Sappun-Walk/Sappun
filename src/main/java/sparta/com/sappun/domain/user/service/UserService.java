@@ -1,6 +1,7 @@
 package sparta.com.sappun.domain.user.service;
 
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -156,20 +157,15 @@ public class UserService {
     @Transactional
     public UserProfileUpdateRes updateProfile(UserProfileUpdateReq req, MultipartFile multipartFile) {
         User user = getUserById(req.getId()); // 사용자가 존재하는지 확인
-
-        UserValidator.checkDuplicatedUsername(
-                userRepository.existsByUsername(req.getUsername())); // username 중복확인
-        UserValidator.checkDuplicatedNickname(
-                userRepository.existsByNickname(req.getNickname())); // nickname 중복확인
+        UserValidator.validate(req);
+        if (Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) multipartFile = null;
 
         // 프로필 사진 관련 로직
         String imageUrl = user.getProfileUrl(); // 기존 프로필 이미지
-        if (!imageUrl.equals(defaultProfileImage)) { // 기존 이미지가 기본 프로필이 아닌 경우
-            s3Util.deleteFile(imageUrl, FilePath.PROFILE); // 기존 이미지 삭제
-        }
-        if (multipartFile == null || multipartFile.isEmpty()) { // 새로 입력한 이미지 파일이 없는 경우
-            imageUrl = defaultProfileImage; // 기본 이미지로
-        } else {
+        if (multipartFile != null && !multipartFile.isEmpty()) { // 새로 입력한 이미지 파일이 있는 경우
+            if (!imageUrl.equals(defaultProfileImage)) { // 기존 이미지가 기본 프로필이 아닌 경우
+                s3Util.deleteFile(imageUrl, FilePath.PROFILE); // 기존 이미지 삭제
+            }
             S3Validator.isProfileImageFile(multipartFile); // 이미지 파일인지 확인
             imageUrl = s3Util.uploadFile(multipartFile, FilePath.PROFILE); // 업로드 후 프로필로 설정
         }

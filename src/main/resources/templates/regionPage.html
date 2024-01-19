@@ -50,6 +50,17 @@
             margin: auto;
             text-align: center;
         }
+        .ul1 {
+            list-style:none;
+            padding:0;
+            display: table; margin: auto; padding:0;
+        }
+
+        .li1 {
+
+            border : 1px;
+            float: left;
+        }
     </style>
 </head>
 <body>
@@ -58,18 +69,15 @@
         <select id="region" name="region">
             <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}" th:value="${enumItem}" th:text="${enumItem.region}"></option>
         </select>
-        <!-- 페이지 값 (고정) -->
-        <input type="hidden" name="page" value="1" />
-        <!-- 크기 값 (고정) -->
-        <input type="hidden" name="size" value="8" />
-        <!-- 정렬 값 (고정) -->
-        <input type="hidden" name="sortBy" value="createdAt" />
-        <!-- 정렬 방향 값 (고정) -->
-        <input type="hidden" name="isAsc" value="false">
         <button type="button" onclick="submitForm()">Submit</button>
     </form>
     <div class="btn-write">
-        <button class="btn btn-outline-success" type="button" th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
+        <p th:if="${username == null}">
+            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
+        </p>
+        <p th:if="${username != null}">
+            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/logout}'|">로그아웃</button>
+        </p>
     </div>
 
 
@@ -87,9 +95,19 @@
     </div>
 </div>
 
+    <div class="page-num"  th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
+              end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)})" >
+        <ul class="ul1">
+            <li class="li1" th:each="pageNum: ${#numbers.sequence(start, end)}">
+                <a th:href="@{/api/boards/region(region=${region}, page=${pageNum})}" th:text="${pageNum}"></a>
+            </li>
+        </ul>
+
 <div class="btn-write">
     <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/createPage1}'|">글쓰기</button>
 </div>
+</div>
+
 </div>
 <script>
     function submitForm() {
