@@ -264,53 +264,59 @@
 
     <div class="profile-content">
         <div class="profile-info-box">
-            <div class="profile-info">
+<!--            <form th:action=“@{/api/users/profile}” th:method="patch" enctype="multipart/form-data">-->
+                <div class="profile-info">
 
-                <div class="profile-image-group">
-                    <img th:src="${userProfile.profileUrl}" alt="Profile Picture"
-                         class="profile-image">
-                    <input type="file" id="image" name="image">
+                    <div class="profile-image-group">
+                        <img th:src="${userProfile.profileUrl}" alt="Profile Picture"
+                             class="profile-image">
+                        <input type="file" id="image" name="image">
 
-                    <p><b>Rank</b>
-                        <span th:if="${userProfile.score < 0}">Warned</span>
-                        <span
-                            th:if="${userProfile.score >= 0 and userProfile.score <= 300}">Bronze</span>
-                        <span
-                            th:if="${userProfile.score > 300 and userProfile.score <= 700}">Silver</span>
-                        <span
-                            th:if="${userProfile.score > 700 and userProfile.score <= 1200}">Gold</span>
-                        <span th:if="${userProfile.score > 1200}">Platinum</span>
-                    </p>
-                </div>
+                        <p><b>Rank</b>
+                            <span th:if="${userProfile.score < 0}">Warned</span>
+                            <span
+                                th:if="${userProfile.score >= 0 and userProfile.score <= 300}">Bronze</span>
+                            <span
+                                th:if="${userProfile.score > 300 and userProfile.score <= 700}">Silver</span>
+                            <span
+                                th:if="${userProfile.score > 700 and userProfile.score <= 1200}">Gold</span>
+                            <span th:if="${userProfile.score > 1200}">Platinum</span>
+                        </p>
+                    </div>
 
-                <div class="profile-text-group">
-                    <div class="username">
-                        <label for="username"><b>아이디</b></label>
-                        <div class="username-input">
-                            <input type="text" id="username" name="username" required
-                                   placeholder="영어, 숫자만 포함 가능">
-                            <button id="username-check-button" onclick="checkUsername()">중복확인
-                            </button>
-                            <span id="usernameMessage"></span>
+                    <div class="profile-text-group">
+                        <div class="username">
+                            <label for="username"><b>아이디</b></label>
+                            <div class="username-input">
+                                <input type="text" id="username" name="username" required
+                                       placeholder="영어, 숫자만 포함 가능">
+                                <button id="username-check-button" onclick="checkUsername()">중복확인
+                                </button>
+                                <span id="usernameMessage"></span>
 
+                            </div>
+                        </div>
+                        <div class="nickname">
+                            <label for="nickname"><b>닉네임</b></label>
+                            <div class="nickname-input">
+                                <input type="text" id="nickname" name="nickname" required
+                                       placeholder="한글, 영어, 숫자만 포함 가능">
+                                <button id="nickname-check-button" onclick="checkNickname()">중복확인
+                                </button>
+                                <span id="nicknameMessage"></span>
+                            </div>
+                        </div>
+                        <div class="email">
+                            <p><b>이메일</b></p>
+                            <p><span th:text="${userProfile.email}"></span></p>
                         </div>
                     </div>
-                    <div class="nickname">
-                        <label for="nickname"><b>닉네임</b></label>
-                        <div class="nickname-input">
-                            <input type="text" id="nickname" name="nickname" required
-                                   placeholder="한글, 영어, 숫자만 포함 가능">
-                            <button id="nickname-check-button" onclick="checkNickname()">중복확인
-                            </button>
-                            <span id="nicknameMessage"></span>
-                        </div>
-                    </div>
-                    <div class="email">
-                        <p><b>이메일</b></p>
-                        <p><span th:text="${userProfile.email}"></span></p>
-                    </div>
                 </div>
-            </div>
+<!--                <div class="update-complete">-->
+<!--                    <input type="submit">-->
+<!--                </div>-->
+<!--            </form>-->
+
         </div>
 
 
@@ -396,17 +402,14 @@
               }
 
               function updateProfile() {
-                const formData = new FormData();
+                let formData = new FormData();
                 formData.append("username", document.getElementById('username').value);
                 formData.append("nickname", document.getElementById('nickname').value);
-                formData.append("multipartFile", document.getElementById('image').value);
+                formData.append("image", document.getElementById('image').files[0]);
 
                 // 요청 보내기
                 fetch('/api/users/profile', {
                   method: 'PATCH',
-                  headers: {
-                    'Content-Type': 'multipart/form-data'
-                  },
                   body: formData
                 })
                 .then(response => {
