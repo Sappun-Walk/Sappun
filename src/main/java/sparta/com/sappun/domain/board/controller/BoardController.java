@@ -7,7 +7,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.board.dto.response.*;
@@ -24,6 +23,7 @@ public class BoardController {
     private final BoardService boardService;
 
     // 게시글 단건 조회
+    @ResponseBody
     @GetMapping("/{boardId}")
     public CommonResponse<BoardGetRes> getBoard(@PathVariable Long boardId) {
         return CommonResponse.success(boardService.getBoard(boardId));
@@ -31,14 +31,18 @@ public class BoardController {
 
     @GetMapping("/createPage1")
     public String createPage1() {
-        return "saveBoardPage1";
+        return "saveBoardPage";
     }
 
     @GetMapping("/details/{boardId}")
-    public String getBoardDetails(@PathVariable Long boardId, Model model) {
+    public String getBoardDetails(@PathVariable Long boardId, Model model
+            // ,@AuthenticationPrincipal UserDetailsImpl userDetails
+            ) {
         // 게시물 상세 정보를 가져오는 로직을 작성하고, Thymeleaf에 필요한 데이터를 Model에 추가
         // 예시로 게시물 ID를 출력하는 부분
-        model.addAttribute("boardId", boardId);
+        BoardGetRes boardGetRes = boardService.getBoard(boardId);
+        model.addAttribute("board", boardGetRes);
+        //        model.addAttribute("userId", userDetails.getUser().getId());
         return "getBoardDetail"; // boardDetails는 상세 페이지의 Thymeleaf 템플릿 이름
     }
 
@@ -91,30 +95,49 @@ public class BoardController {
         model.addAttribute("boardList", bestBoards.getBoards());
         return "mainPage";
     }
+
     // 게시글 작성
     @ResponseBody
     @PostMapping
     public CommonResponse<BoardSaveRes> saveBoard(
-            @RequestPart(name = "data") @Valid BoardSaveReq boardSaveReq,
-            @RequestPart(name = "image", required = false) MultipartFile multipartfile,
+            @Valid BoardSaveReq boardSaveReq,
+            // @RequestPart(name = "image", required = false) MultipartFile multipartfile,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         boardSaveReq.setUserId(userDetails.getUser().getId());
-        return CommonResponse.success(boardService.saveBoard(boardSaveReq, multipartfile));
+        return CommonResponse.success(boardService.saveBoard(boardSaveReq, boardSaveReq.getImage()));
     }
 
     // 게시글 수정
+    @ResponseBody
     @PatchMapping("/{boardId}")
     public CommonResponse<BoardUpdateRes> updateBoard(
             @PathVariable Long boardId,
-            @RequestPart(name = "data") @Valid BoardUpdateReq boardUpdateReq,
-            @RequestPart(name = "image", required = false) MultipartFile multipartfile,
+            @Valid BoardUpdateReq boardUpdateReq,
+            // @RequestPart(name = "image", required = false) MultipartFile multipartfile,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         boardUpdateReq.setBoardId(boardId);
         boardUpdateReq.setUserId(userDetails.getUser().getId());
-        return CommonResponse.success(boardService.updateBoard(boardUpdateReq, multipartfile));
+        return CommonResponse.success(
+                boardService.updateBoard(boardUpdateReq, boardUpdateReq.getImage()));
+    }
+
+    @GetMapping("/update")
+    public String updateBoardPage() {
+        return "updateBoardPage";
+    }
+
+    @GetMapping("/update/{boardId}")
+    public String updateBoardDetails(@PathVariable Long boardId, Model model
+            // ,@AuthenticationPrincipal UserDetailsImpl userDetails
+            ) {
+        BoardUpdateRes boardUpdateRes = boardService.getBoardUpdateRes(boardId);
+        model.addAttribute("board", boardUpdateRes);
+        //        model.addAttribute("userId", userDetails.getUser().getId());
+        return "getBoardDetail"; // boardDetails는 상세 페이지의 Thymeleaf 템플릿 이름
     }
 
     // 게시글 삭제
+    @ResponseBody
     @DeleteMapping("/{boardId}")
     public CommonResponse<BoardDeleteRes> deleteBoard(
             @PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {

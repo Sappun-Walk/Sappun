@@ -21,6 +21,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    @ResponseBody
     @PostMapping("/{boardId}/comments")
     public CommonResponse<CommentSaveRes> saveComment(
             @PathVariable Long boardId,
