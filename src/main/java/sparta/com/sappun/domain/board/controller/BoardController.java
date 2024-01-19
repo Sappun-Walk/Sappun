@@ -35,9 +35,13 @@ public class BoardController {
     }
 
     @GetMapping("/details/{boardId}")
-    public String getBoardDetails(@PathVariable Long boardId, Model model
-            // ,@AuthenticationPrincipal UserDetailsImpl userDetails
-            ) {
+    public String getBoardDetails(
+            @PathVariable Long boardId,
+            Model model,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails != null) {
+            model.addAttribute("user", userDetails.getUser());
+        }
         // 게시물 상세 정보를 가져오는 로직을 작성하고, Thymeleaf에 필요한 데이터를 Model에 추가
         // 예시로 게시물 ID를 출력하는 부분
         BoardGetRes boardGetRes = boardService.getBoard(boardId);

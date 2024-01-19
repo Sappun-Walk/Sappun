@@ -18,7 +18,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -37,11 +36,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     new AntPathRequestMatcher("/api/users/login", HttpMethod.POST.name()),
                     new AntPathRequestMatcher("/api/users/login-page", HttpMethod.GET.name()),
                     new AntPathRequestMatcher("/api/users/signup-page", HttpMethod.GET.name()),
-                    // new AntPathRequestMatcher("/api/boards/best", HttpMethod.GET.name()),
-                    new RegexRequestMatcher("api/boards/(\\d)", HttpMethod.GET.name()), // 단건 조회 {boardId}
-                    // new AntPathRequestMatcher("/api/boards/details/{boardId}",
+                    //                     new AntPathRequestMatcher("/api/boards/best",
                     // HttpMethod.GET.name()),
-                    // new AntPathRequestMatcher("/api/boards/region", HttpMethod.GET.name()),
+                    //                    new RegexRequestMatcher("api/boards/(\\d)", HttpMethod.GET.name()),
+                    // // 단건 조회 {boardId}
+                    //                     new AntPathRequestMatcher("/api/boards/details/{boardId}",
+                    //                     HttpMethod.GET.name()),
+                    //                     new AntPathRequestMatcher("/api/boards/region",
+                    // HttpMethod.GET.name()),
                     new AntPathRequestMatcher("/api/boards/upadate", HttpMethod.GET.name()),
                     new AntPathRequestMatcher("/api/users/naver/callback/**", HttpMethod.GET.name()),
                     new AntPathRequestMatcher("/api/users/kakao/callback/**", HttpMethod.GET.name()),
