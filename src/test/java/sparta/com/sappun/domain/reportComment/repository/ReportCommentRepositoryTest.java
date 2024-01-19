@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
+import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.reportComment.entity.ReportComment;
 import sparta.com.sappun.domain.user.entity.User;
@@ -106,5 +107,38 @@ class ReportCommentRepositoryTest implements ReportCommentTest {
 
         // then
         assertNotNull(result);
+    }
+
+    @Test
+    @DisplayName("댓글 신고 selectReportCommentByUser 테스트")
+    void selectReportCommentByUserTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
+        commentRepository.save(TEST_COMMENT);
+        ReportComment reportComment = reportCommentRepository.save(REPORT_COMMENT);
+
+        // when
+        List<ReportComment> reportCommentList = reportCommentRepository.selectReportCommentByUser(user);
+
+        // then
+        assertEquals(reportCommentList.get(0), reportComment);
+    }
+
+    @Test
+    @DisplayName("댓글 신고 deleteAll 테스트")
+    public void deleteAllTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
+        Comment comment = commentRepository.save(TEST_COMMENT);
+        ReportComment reportComment = reportCommentRepository.save(REPORT_COMMENT);
+
+        // when
+        reportCommentRepository.deleteAll(List.of(reportComment));
+        boolean isExist = reportCommentRepository.existsReportCommentByCommentAndUser(comment, user);
+
+        // then
+        assertFalse(isExist);
     }
 }
