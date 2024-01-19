@@ -17,6 +17,13 @@ public interface ReportBoardRepository {
     @Query(value = "select r.user FROM ReportBoard r WHERE r.board = :board")
     List<User> selectUserByBoard(Board board);
 
+    @Query(value = "select r FROM ReportBoard r WHERE r.user = :user")
+    List<ReportBoard> selectReportBoardByUser(User user);
+
+    @Modifying
+    @Query(value = "delete from ReportBoard rb where rb in :reportBoards")
+    void deleteAll(List<ReportBoard> reportBoards);
+
     @Modifying // select 외의 쿼리를 사용하기 위해서 필요함
     @Query(value = "delete from ReportBoard r where r.board = :board")
     void clearReportBoardByBoard(Board board);
