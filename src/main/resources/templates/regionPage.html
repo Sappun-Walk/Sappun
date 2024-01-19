@@ -50,16 +50,68 @@
             margin: auto;
             text-align: center;
         }
-        .ul1 {
-            list-style:none;
-            padding:0;
-            display: table; margin: auto; padding:0;
+        .page-nation li{
+
+            list-style: none;
+
         }
 
-        .li1 {
+        .page-wrap {
 
-            border : 1px;
-            float: left;
+            text-align:center;
+
+            font-size:0;
+
+        }
+
+        .page-nation  {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            margin-top:20px;
+
+        }
+
+        .page-nation a {
+
+            display:block;
+
+            margin:0 3px;
+
+            float:left;
+
+            border:1px solid #e6e6e6;
+
+            width:28px;
+
+            height:28px;
+
+            line-height:28px;
+
+            text-align:center;
+
+            background-color:#fff;
+
+            font-size:13px;
+
+            color:black;
+
+            text-decoration:none;
+
+            font-weight:bold;
+
+        }
+
+        .page-nation a:hover{
+
+            background-color:gray;
+
+            color:white;
+
         }
     </style>
 </head>
@@ -97,7 +149,7 @@
 
     <div class="page-num"  th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
               end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)})" >
-        <ul class="ul1">
+        <ul class="page-nation">
             <li class="li1" th:each="pageNum: ${#numbers.sequence(start, end)}">
                 <a th:href="@{/api/boards/region(region=${region}, page=${pageNum})}" th:text="${pageNum}"></a>
             </li>
