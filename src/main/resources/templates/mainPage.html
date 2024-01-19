@@ -67,6 +67,7 @@
 </head>
 <body>
 <div>
+
 <form th:action="@{/api/boards/region}" method="get" id="regionForm">
     <select class="sl1" id="region" name="region">
         <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}" th:value="${enumItem}" th:text="${enumItem.region}"></option>
