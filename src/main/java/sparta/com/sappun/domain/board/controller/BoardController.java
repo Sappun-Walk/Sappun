@@ -74,6 +74,7 @@ public class BoardController {
         model.addAttribute("maxPage", 5);
         return "regionPage";
     }
+
     //     Best 게시글 조회
     //    @GetMapping("/best")
     //    public CommonResponse<BoardBestListGetRes> getBestBoards() {
