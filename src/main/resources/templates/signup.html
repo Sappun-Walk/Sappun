@@ -9,64 +9,247 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <meta charset="UTF-8">
     <title>회원가입 페이지</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        b {
+            font-size: 14px;
+        }
+
+        logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .wrap {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .login {
+            width: 35%;
+            height: 700px;
+            background: pink;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .login_title {
+            width: 80%;
+            margin-left: 5%;
+            margin-bottom: 5%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            align-items: row;
+        }
+
+        h2 {
+            color: black;
+            font-size: 2em;
+            text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            color: gray;
+            margin-left: 20px;
+            text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h5 {
+            color: gray;
+            margin-top: 30px;
+            margin-bottom: 5px;
+        }
+
+        .signup_1 {
+            margin-top: 10px;
+            width: 70%;
+        }
+
+        .preview-wrap {
+            display: flex;
+            width: 70%; /* 이미지 크기 조절에 따라 변경 가능 */
+            height: 150px;
+        }
+
+        .preview {
+            border-radius: 50%;
+            width: 150px; /* 이미지 크기 조절에 따라 변경 가능 */
+            max-height: 150px;
+            background-color: gray;
+            display: flex;
+        }
+
+        .preview-label {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file {
+            margin-top: auto;
+        }
+
+        .signup_1 input {
+            width: 100%;
+            height: 35px;
+            border-radius: 30px;
+            margin-top: 10px;
+            padding: 0px 20px;
+            border: 1px solid lightgray;
+            outline: none;
+        }
+
+        .signup-input {
+            display: flex;
+        }
+
+        .check-button {
+            width: 20%;
+            height: 30px;
+            border-radius: 30px;
+            margin-top: 15px;
+            margin-left: 5px;
+            padding: 0px 20px;
+            border: 1px solid lightgray;
+            outline: none;
+        }
+
+        .submit {
+            margin-top: 20px;
+            width: 50%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .submit input {
+            width: 100%;
+            height: 35px;
+            margin-left: 15px;
+            margin-right: 15px;
+            border: 0;
+            outline: none;
+            border-radius: 40px;
+            background: linear-gradient(to left, rgb(255, 77, 46), rgb(255, 155, 47));
+            color: white;
+            font-size: 1.2em;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        #mainLogoImage {
+            cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+            width: 200px; /* 로고 버튼의 너비 */
+            height: 100px; /* 로고 버튼의 높이 */
+            float: left; /* 왼쪽 맨 위로 */
+            margin-top: 10px; /* 맨 위에서 10px 만큼 떨어지도록 조절 */
+            margin-left: 20px;
+        }
+    </style>
 </head>
 <body>
-<div id="signup-form">
-    <!-- 메인 로고 이미지 -->
-    <img th:src="@{/images/logo.png}" alt="Logo" id="mainLogoImage">
-
-    <div id="login-title">
-        <h2>회원가입<h3>Sign</h3></h2>
-    </div>
-
-    <div>
-
-        <div class="login-id-label">프로필 사진</div>
-        <input type="file" name="profilePicture" accept="image/*" id="image">
-        <!-- 이미지를 바로 보여주기 위한 코드 추가 -->
-        <img id="profilePreview" src="#" alt="프로필 미리보기" style="max-width: 200px; max-height: 200px; display: none;">
-
-        <!--        <div class="login-id-label">Username</div>-->
-        <!--        <input type="text" name="username" placeholder="Username" class="login-input-box">-->
-        <!--        <button id="username-check-button" onclick="checkUsername()">중복확인</button>-->
-        <!--        <div class="login-id-label">Nickname</div>-->
-        <!--        <input type="text" name="nickname" placeholder="nickname" class="login-input-box">-->
-        <!--        <button id="nickname-check-button" onclick="checkNickname()">중복확인</button>-->
-
-        <div class="username">
+<div class="wrap">
+    <logo>
+        <img class="main-img" th:src="@{/images/logo.png}" alt="Logo" id="mainLogoImage"
+             th:onclick="|location.href='@{/api/boards/best}'|">
+        <script>
+            document.getElementById('mainLogoImage').addEventListener('click', function () {
+                window.location.href = '/api/boards/best';
+            });
+        </script>
+    </logo>
+    <div class="login">
+        <div class="login_title">
+            <h2>회원가입<h3>SignUp</h3></h2>
+        </div>
+        <div class="preview-wrap">
+            <img class="preview" id="preview"/>
+            <div class="preview-label">
+                프로필 사진
+                <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
+            </div>
+        </div>
+        <div class="signup_1">
             <label for="username"><b>아이디</b></label>
-            <div class="username-input">
-                <input type="text" id="username" name="username" required
-                       placeholder="영어, 숫자만 포함 가능">
-                <button id="username-check-button" onclick="checkUsername()">중복확인
-                </button>
+            <div class="signup-input">
+                <input type="text" id="username" name="username" required placeholder="2~10자 이내의 영어, 숫자로 작성 바랍니다.">
+                <button class="check-button" onclick="checkUsername()" th:text="확인"></button>
                 <span id="usernameMessage"></span>
 
             </div>
         </div>
-        <div class="nickname">
+        <div class="signup_1">
             <label for="nickname"><b>닉네임</b></label>
-            <div class="nickname-input">
-                <input type="text" id="nickname" name="nickname" required
-                       placeholder="한글, 영어, 숫자만 포함 가능">
-                <button id="nickname-check-button" onclick="checkNickname()">중복확인
-                </button>
+            <div class="signup-input">
+                <input type="text" id="nickname" name="nickname" required placeholder="2~10자 이내의 한글, 영어, 숫자로 작성 바랍니다.">
+                <button class="check-button" onclick="checkNickname()" th:text="확인"></button>
                 <span id="nicknameMessage"></span>
             </div>
         </div>
-        <div class="login-id-label">E-mail</div>
-        <input type="text" name="email" id="email" class="login-input-box">
-
-        <div class="login-id-label">Password</div>
-        <input type="password" name="password" id="password" class="login-input-box">
-
-        <div class="login-id-label">ConfirmPassword</div>
-        <input type="password" name="confirmPassword"  id="confirmPassword" class="login-input-box">
-
-        <button onclick="signup()">가입하기</button>
+        <div class="signup_1">
+            <label for="email"><b>E-mail</b></label>
+            <div class="email-input">
+                <input type="text" id="email" name="email" required placeholder="이메일을 입력해주세요.">
+                <span id="emailMessage"></span>
+            </div>
+        </div>
+        <div class="signup_1">
+            <label for="password"><b>Password</b></label>
+            <div class="password-input">
+                <input type="password" id="password" name="password" required placeholder="6~15자 이내의 영어, 숫자, 특수문자 모두 사용 바랍니다. ">
+                <span id="passwordMessage"></span>
+            </div>
+        </div>
+        <div class="signup_1">
+            <label for="confirmPassword"><b>ConfirmPassword</b></label>
+            <div class="confirmPassword-input">
+                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="비밀번호를 한번 더 입력해주세요.">
+                <span id="confirmPasswordMessage"></span>
+            </div>
+        </div>
+        <div class="submit">
+            <input type="button" onclick="signup()" value="회원가입"/>
+        </div>
     </div>
 </div>
 <script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('preview').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            document.getElementById('preview').src = "";
+        }
+    }
 
     var isDuplicatedUsername = true;
     var isDuplicatedNickname = true;
