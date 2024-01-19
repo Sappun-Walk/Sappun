@@ -6,6 +6,18 @@
     <title>Page Title</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
+        .sl1{
+            width: 200px;
+            border: 1px solid #C4C4C4;
+            box-sizing: border-box;
+            border-radius: 10px;
+            padding: 12px 13px;
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 16px;
+        }
         .gallery-container {
             display: flex;
             flex-wrap: wrap;
@@ -50,69 +62,6 @@
             margin: auto;
             text-align: center;
         }
-        .page-nation li{
-
-            list-style: none;
-
-        }
-
-        .page-wrap {
-
-            text-align:center;
-
-            font-size:0;
-
-        }
-
-        .page-nation  {
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            margin-top:20px;
-
-        }
-
-        .page-nation a {
-
-            display:block;
-
-            margin:0 3px;
-
-            float:left;
-
-            border:1px solid #e6e6e6;
-
-            width:28px;
-
-            height:28px;
-
-            line-height:28px;
-
-            text-align:center;
-
-            background-color:#fff;
-
-            font-size:13px;
-
-            color:black;
-
-            text-decoration:none;
-
-            font-weight:bold;
-
-        }
-
-        .page-nation a:hover{
-
-            background-color:gray;
-
-            color:white;
-
-        }
     </style>
 </head>
 <body>
@@ -121,15 +70,18 @@
         <select id="region" name="region">
             <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}" th:value="${enumItem}" th:text="${enumItem.region}"></option>
         </select>
+        <!-- 페이지 값 (고정) -->
+        <input type="hidden" name="page" value="1" />
+        <!-- 크기 값 (고정) -->
+        <input type="hidden" name="size" value="8" />
+        <!-- 정렬 값 (고정) -->
+        <input type="hidden" name="sortBy" value="createdAt" />
+        <!-- 정렬 방향 값 (고정) -->
+        <input type="hidden" name="isAsc" value="false">
         <button type="button" onclick="submitForm()">Submit</button>
     </form>
     <div class="btn-write">
-        <p th:if="${username == null}">
-            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
-        </p>
-        <p th:if="${username != null}">
-            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/logout}'|">로그아웃</button>
-        </p>
+        <button class="btn btn-outline-success" type="button" th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
     </div>
 
 
@@ -147,19 +99,9 @@
     </div>
 </div>
 
-    <div class="page-num"  th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
-              end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)})" >
-        <ul class="page-nation">
-            <li class="li1" th:each="pageNum: ${#numbers.sequence(start, end)}">
-                <a th:href="@{/api/boards/region(region=${region}, page=${pageNum})}" th:text="${pageNum}"></a>
-            </li>
-        </ul>
-
 <div class="btn-write">
     <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/createPage1}'|">글쓰기</button>
 </div>
-</div>
-
 </div>
 <script>
     function submitForm() {
