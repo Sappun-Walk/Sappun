@@ -95,7 +95,7 @@ public class BoardController {
     public String getBestBoards(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         BoardBestListGetRes bestBoards = boardService.getBoardBestList();
         if (userDetails != null) {
-            model.addAttribute("username", userDetails.getUsername());
+            model.addAttribute("user", userDetails.getUser());
         }
         model.addAttribute("bestBoards", bestBoards);
         model.addAttribute("boardList", bestBoards.getBoards());
