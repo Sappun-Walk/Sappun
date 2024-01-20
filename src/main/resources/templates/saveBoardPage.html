@@ -130,7 +130,7 @@
 <div class="getBoardDetailPage">
     <div class="getBoardDetail-header">
         <img th:src="@{/images/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|" alt="Logo" id="mainLogoImage">
-        <button class="logout-btn" id="logout-button">로그아웃</button>
+        <button class="logout-btn" id="logout-button" onclick="logout()">로그아웃</button>
         <p th:text="${user.nickname}" class="user-name"></p>
         <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile" id="profileImage">
     </div>
@@ -168,10 +168,10 @@
             <section>
                 <img src="지도이미지주소" alt="지도 이미지" id="mapImage" class="mapImage">
             </section>
-            <div class="preview-label">
+            <section class="preview-label">
                 이미지 업로드 :
                 <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
-            </div>
+            </section>
             <section>
                 <label for="content">내용:</label>
                 <textarea id="content" name="content" required></textarea>
@@ -184,8 +184,8 @@
     </div>
 </div>
 <script>
-  // 로그아웃 버튼 클릭 시 이벤트 핸들러
-  document.getElementById('logout-button').addEventListener('click', function () {
+  // 로그아웃
+  function logout() {
     // 사용자에게 재확인 알림창 표시
     var confirmation = confirm('로그아웃 하시겠습니까?');
 
@@ -210,7 +210,7 @@
         }
       })
     }
-  });
+  }
 
   function addStopover() {
     // 현재 경유지 입력란 개수 확인

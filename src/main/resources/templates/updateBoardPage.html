@@ -131,7 +131,7 @@
 <div class="getBoardDetailPage">
     <div class="getBoardDetail-header">
         <img th:src="@{/images/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|" alt="Logo" id="mainLogoImage">
-        <button id="logout-button" class="logout-btn">로그아웃</button>
+        <button id="logout-button" class="logout-btn" onclick="logout()">로그아웃</button>
         <p th:text="${user.nickname}" class="user-nickname"></p>
         <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|"  alt="profile" id="profileImage">
     </div>
@@ -185,8 +185,8 @@
     </div>
 </div>
 <script>
-  // 로그아웃 버튼 클릭 시 이벤트 핸들러
-  document.getElementById('logout-button').addEventListener('click', function () {
+  // 로그아웃
+  function logout() {
     // 사용자에게 재확인 알림창 표시
     var confirmation = confirm('로그아웃 하시겠습니까?');
 
@@ -211,7 +211,7 @@
         }
       })
     }
-  });
+  }
 
   // 경유지 추가
   function addStopover() {

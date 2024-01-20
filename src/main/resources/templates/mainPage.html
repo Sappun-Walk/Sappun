@@ -187,7 +187,7 @@
                 </button>
             </p>
             <p th:if="${user != null}">
-                <button class="btn btn-outline-success" id="logout-button" type="submit">
+                <button class="btn btn-outline-success" id="logout-button" type="submit" onclick="logout()">
                     로그아웃
                 </button>
             </p>
@@ -220,8 +220,8 @@
 
 
 <script>
-  // 로그아웃 버튼 클릭 시 이벤트 핸들러
-  document.getElementById('logout-button').addEventListener('click', function () {
+  // 로그아웃
+  function logout() {
     // 사용자에게 재확인 알림창 표시
     var confirmation = confirm('로그아웃 하시겠습니까?');
 
@@ -246,7 +246,7 @@
         }
       })
     }
-  });
+  }
 
     function openNav() {
         document.getElementById("sidebar").style.width = "250px";
@@ -282,7 +282,7 @@
 
     function redirectToCreatePage() {
         // JavaScript로 페이지 이동 처리
-        window.location.href = '/api/boards/createPage1';
+        window.location.href = '/api/boards/create-page';
     }
 
   // 쿠키 삭제 함수
