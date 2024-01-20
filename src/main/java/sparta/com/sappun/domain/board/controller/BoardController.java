@@ -32,7 +32,8 @@ public class BoardController {
 
     @GetMapping("/createPage1")
     @PreAuthorize("isAuthenticated()")
-    public String createPage1() {
+    public String createPage1(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        model.addAttribute("user", userDetails.getUser());
         return "saveBoardPage";
     }
 
@@ -106,9 +107,7 @@ public class BoardController {
     @ResponseBody
     @PostMapping
     public CommonResponse<BoardSaveRes> saveBoard(
-            @Valid BoardSaveReq boardSaveReq,
-            // @RequestPart(name = "image", required = false) MultipartFile multipartfile,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+            @Valid BoardSaveReq boardSaveReq, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         boardSaveReq.setUserId(userDetails.getUser().getId());
         return CommonResponse.success(boardService.saveBoard(boardSaveReq, boardSaveReq.getImage()));
     }
