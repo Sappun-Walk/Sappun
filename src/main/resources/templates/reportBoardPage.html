@@ -226,18 +226,19 @@
     </div>
 
     <div class="gallery-container">
-        <div class="gallery-item" th:each="reportBoard : ${responseDto.content}" th:id="${'reportBoard-' + reportBoard.id}"
-             th:onclick="'getBoardDetails(' + ${reportBoard.board.id} + ')'" style="cursor: pointer;">
-            <img th:src="${reportBoard.board.fileURL}" alt="게시물 이미지">
-            <div class="gallery-caption">
-                <h5 th:text="${reportBoard.board.title}"></h5>
-                <p th:text="'신고자: ' + ${reportBoard.nickname}"></p>
-                <p th:text="'신고 사유: ' + ${reportBoard.reason}"></p>
-                <p th:text="'게시글 총 신고 수: ' + ${reportBoard.board.reportCount}"></p>
-                <button class="btn btn-outline-success">
-                    취소
-                </button>
+        <div class="gallery-item" th:each="reportBoard : ${responseDto.content}" th:id="${'reportBoard-' + reportBoard.id}" style="cursor: pointer;">
+            <div th:onclick="'getBoardDetails(' + ${reportBoard.board.id} + ')'">
+                <img th:src="${reportBoard.board.fileURL}" alt="게시물 이미지">
+                <div class="gallery-caption">
+                    <h5 th:text="${reportBoard.board.title}"></h5>
+                    <p th:text="'신고자: ' + ${reportBoard.nickname}"></p>
+                    <p th:text="'신고 사유: ' + ${reportBoard.reason}"></p>
+                    <p th:text="'게시글 총 신고 수: ' + ${reportBoard.board.reportCount}"></p>
+                </div>
             </div>
+            <button class="btn btn-outline-success" th:onclick="'cancelReportBoard(' + ${reportBoard.board.id} + ')'">
+                취소
+            </button>
         </div>
     </div>
 
@@ -314,6 +315,32 @@
   function getBoardDetails(boardId) {
     // 게시물 상세 페이지로 이동하는 로직을 작성
     window.location.href = '/api/boards/details/' + boardId;
+  }
+
+  function cancelReportBoard(boardId) {
+    // 사용자에게 재확인 알림창 표시
+    var confirmation = confirm('신고 취소 하시겠습니까?');
+
+    // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
+    if (confirmation) {
+      fetch('/api/boards/' + boardId + '/report', {method: 'DELETE'})
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.code === 200) {
+          // 서버 응답이 200이면 신고 취소 성공
+          alert('신고 취소가 성공적으로 이루어졌습니다.');
+          window.location.href = '/api/boards/reports';
+        } else {
+          // 서버 응답이 200이 아니면 신고 취소 실패
+          alert('신고 취소 실패: ' + data.message);
+        }
+      })
+    }
   }
 
   function changeRegionAndPage(element) {
