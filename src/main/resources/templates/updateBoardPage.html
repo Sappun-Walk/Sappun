@@ -197,8 +197,8 @@
                 <textarea id="content" name="content" required></textarea>
             </section>
             <div class="buttons">
-                <button th:onclick="'updateBoard(' + ${board.id} + ')'">완료</button>
-                <button th:onclick="'goBackDetailPage(' + ${board.id} + ')'">취소</button>
+                <button th:onclick="'updateBoard(' + ${boardId} + ')'">완료</button>
+                <button th:onclick="'goBackDetailPage(' + ${boardId} + ')'">취소</button>
             </div>
         </div>
     </div>
