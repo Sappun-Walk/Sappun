@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UsernameVerifyReq {
 
-    @Size(min = 4, max = 10)
+    @Size(min = 4, max = 15)
     @Pattern(regexp = "^[a-zA-Z0-9]*$")
     private String username;
 

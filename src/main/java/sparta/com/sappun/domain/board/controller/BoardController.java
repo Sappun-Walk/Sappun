@@ -63,7 +63,7 @@ public class BoardController {
             Model model,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails != null) {
-            model.addAttribute("username", userDetails.getUsername());
+            model.addAttribute("user", userDetails.getUser());
         }
         Page<BoardToListGetRes> responseDto =
                 boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
