@@ -69,7 +69,7 @@ public class BoardService {
         user.updateScore(100); // 게시글 작성하면 점수 +100
 
         String boardImage = null;
-        if (multipartFile != null && !multipartFile.isEmpty()) {
+        if (!Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) {
             S3Validator.isProfileImageFile(multipartFile);
             boardImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
         }

@@ -187,7 +187,7 @@
                 </button>
             </p>
             <p th:if="${user != null}">
-                <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/logout}'|">
+                <button class="btn btn-outline-success" id="logout-button" type="submit">
                     로그아웃
                 </button>
             </p>
@@ -220,6 +220,34 @@
 
 
 <script>
+  // 로그아웃 버튼 클릭 시 이벤트 핸들러
+  document.getElementById('logout-button').addEventListener('click', function () {
+    // 사용자에게 재확인 알림창 표시
+    var confirmation = confirm('로그아웃 하시겠습니까?');
+
+    // 사용자가 확인을 선택한 경우에만 POST 요청 보내기
+    if (confirmation) {
+      fetch('/api/users/logout', {method: 'POST'})
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.code === 200) {
+          // 서버 응답이 200이면 로그아웃 성공
+          alert('로그아웃이 성공적으로 이루어졌습니다.');
+          deleteCookie();
+          window.location.href = '/api/boards/best';
+        } else {
+          // 서버 응답이 200이 아니면 로그아웃 실패
+          alert('로그아웃 실패: ' + data.message);
+        }
+      })
+    }
+  });
+
     function openNav() {
         document.getElementById("sidebar").style.width = "250px";
         document.getElementById("main").style.mginLeft = "250px";
@@ -257,6 +285,11 @@
         window.location.href = '/api/boards/createPage1';
     }
 
+  // 쿠키 삭제 함수
+  function deleteCookie() {
+    document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }
 </script>
 </body>
 </html>

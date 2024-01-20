@@ -194,18 +194,22 @@
     if (confirmation) {
       fetch('/api/users/logout', {method: 'POST'})
       .then(response => {
-        if (response.ok) {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.code === 200) {
+          // 서버 응답이 200이면 로그아웃 성공
           alert('로그아웃이 성공적으로 이루어졌습니다.');
           deleteCookie();
           window.location.href = '/api/boards/best';
         } else {
-          alert('로그아웃 중 오류가 발생했습니다.');
+          // 서버 응답이 200이 아니면 로그아웃 실패
+          alert('로그아웃 실패: ' + data.message);
         }
       })
-      .catch(error => {
-        console.error('오류 발생:', error);
-        alert('로그아웃 중 오류가 발생했습니다.');
-      });
     }
   });
 
@@ -293,11 +297,11 @@
     })
     .then(data => {
       if (data.code === 200) {
-        // 서버 응답이 200이면 로그인 성공
+        // 서버 응답이 200이면 게시글 수정 성공
         alert('게시글 수정이 성공적으로 이루어졌습니다.');
         window.location.href = '/api/boards/details/' + boardId;
       } else {
-        // 서버 응답이 200이 아니면 로그인 실패
+        // 서버 응답이 200이 아니면 게시글 수정 실패
         alert('게시글 수정 실패: ' + data.message);
       }
     })
@@ -305,6 +309,12 @@
       console.error('Error updating profile:', error);
       // 오류 발생 시의 로직을 추가할 수 있습니다.
     });
+  }
+
+  // 쿠키 삭제 함수
+  function deleteCookie() {
+    document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }
 </script>
 </body>
