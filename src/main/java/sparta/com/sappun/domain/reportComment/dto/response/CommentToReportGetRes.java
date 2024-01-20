@@ -1,4 +1,4 @@
-package sparta.com.sappun.domain.comment.dto.response;
+package sparta.com.sappun.domain.reportComment.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.comment.entity.Comment;
@@ -101,9 +104,10 @@ class ReportCommentRepositoryTest implements ReportCommentTest {
         boardRepository.save(TEST_BOARD);
         commentRepository.save(TEST_COMMENT);
         reportCommentRepository.save(REPORT_COMMENT);
+        Pageable pageable = PageRequest.ofSize(1);
 
         // when
-        List<ReportComment> result = reportCommentRepository.findAllFetchComment();
+        Page<ReportComment> result = reportCommentRepository.findAllFetchComment(pageable);
 
         // then
         assertNotNull(result);

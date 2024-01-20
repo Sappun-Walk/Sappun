@@ -3,13 +3,16 @@ package sparta.com.sappun.domain.reportComment.service;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.reportComment.dto.request.ReportCommentReq;
 import sparta.com.sappun.domain.reportComment.dto.response.DeleteReportCommentRes;
 import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentGetRes;
-import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentListGetRes;
 import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentRes;
 import sparta.com.sappun.domain.reportComment.entity.ReportComment;
 import sparta.com.sappun.domain.reportComment.repository.ReportCommentRepository;
@@ -72,11 +75,15 @@ public class ReportCommentService {
     }
 
     @Transactional
-    public ReportCommentListGetRes getReportCommentList() {
-        List<ReportCommentGetRes> reportComments =
-                ReportCommentServiceMapper.INSTANCE.toReportCommentListGetRes(
-                        reportCommentRepository.findAllFetchComment());
-        return ReportCommentListGetRes.builder().reportComments(reportComments).build();
+    public Page<ReportCommentGetRes> getReportCommentList(
+            int page, int size, String sortBy, boolean isAsc) {
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<ReportComment> reportComments = reportCommentRepository.findAllFetchComment(pageable);
+
+        return reportComments.map(ReportCommentServiceMapper.INSTANCE::toReportCommentGetRes);
     }
 
     private Comment findCommentById(Long commentId) {
