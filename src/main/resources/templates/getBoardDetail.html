@@ -104,6 +104,7 @@
                       .then(response => {
                         if (response.ok) {
                           alert('로그아웃이 성공적으로 이루어졌습니다.');
+                          deleteCookie();
                           window.location.href = '/api/boards/best';
                         } else {
                           alert('로그아웃 중 오류가 발생했습니다.');
@@ -185,9 +186,15 @@
             <p th:text="'출발지: ' + ${board.departure}"></p>
             <p th:text="'경유지: ' + ${board.stopover}"></p>
             <p th:text="'도착지: ' + ${board.destination}"></p>
+            <p th:text="'좋아요 수: ' + ${board.likeCount}"></p>
         </div>
 
-        <button class="like-btn">좋아요</button>
+        <div th:if="${user != null}">
+            <button class="like-btn" th:onclick="'likeBoard(' + ${board.id} + ')'">좋아요</button>
+        </div>
+        <div th:if="${user == null}">
+            <button class="like-btn" onclick="needToLogin()">좋아요</button>
+        </div>
 
         <div>
             <h2>댓글</h2>
@@ -195,31 +202,53 @@
                  th:id="${'comment-' + comment.id}">
                 <div class="comment">
                     <div class="gallery-caption">
-                        <p th:text="'작성자: ' + ${comment.nickname}">작성자: 사용자1</p>
+                        <p th:text="'작성자: ' + ${comment.nickname}"></p>
                         <img th:src="${comment.fileURL}" alt="댓글 이미지">
-                        <p th:text="'내용: ' + ${comment.content}">내용: 내용1</p>
+                        <p th:text="'내용: ' + ${comment.content}"></p>
+                        <p th:text="'좋아요 수: ' + ${comment.likeCount}"></p>
                     </div>
                 </div>
                 <div class="like-comment-btn">
-                    <button>좋아요</button>
+                    <div th:if="${user != null}">
+                        <button class="like-btn" th:onclick="'likeComment(' + ${board.id} + ',' + ${comment.id} + ')'">좋아요</button>
+                    </div>
+                    <div th:if="${user == null}">
+                        <button class="like-btn" onclick="needToLogin()">좋아요</button>
+                    </div>
                     <button>수정</button>
                     <button>삭제</button>
-                    <button>신고</button>
+                    <div th:if="${user != null}">
+                        <button th:onclick="showCommentInputForm()">신고</button>
+                        <div id="commentInputForm" style="display: none;">
+                            <form id="myCommentForm">
+                                <label for="commentReason">신고 사유:</label>
+                                <input type="text" id="commentReason" name="commentReason" required>
+                                <button type="button" th:onclick="'reportComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div th:if="${user == null}">
+                        <button onclick="needToLogin()">신고</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script th:inline="javascript">
+  // 로그인 요청
   function needToLogin() {
     alert("로그인한 사용자만 가능합니다.");
   }
 
+  // 게시글 신고 사유 입력
   function showInputForm() {
     var inputForm = document.getElementById('inputForm');
     inputForm.style.display = 'block';
   }
 
+  // 게시글 신고
   function reportBoard(boardId) {
     const reason = document.getElementById('reason').value;
 
@@ -228,33 +257,129 @@
       reason: reason,
     };
 
-      fetch('/api/boards/'+boardId+'/report', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(request),
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.code === 200) {
-          // 서버 응답이 200이면 로그인 성공
-          alert('게시글 신고가 성공적으로 이루어졌습니다.');
-          window.location.href = '/api/boards/details/' + boardId;
-        } else {
-          // 서버 응답이 200이 아니면 로그인 실패
-          alert('게시글 신고 중 오류가 발생했습니다: ' + data.code);
-        }
-      })
+    fetch('/api/boards/' + boardId + '/report', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.code === 200) {
+        // 서버 응답이 200이면 게시글 신고 성공
+        alert('게시글 신고가 성공적으로 이루어졌습니다.');
+        window.location.href = '/api/boards/details/' + boardId;
+      } else {
+        // 서버 응답이 200이 아니면 게시글 신고 실패
+        alert('게시글 신고 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
+      }
+    })
 
     // API 호출이 완료되면 아래 코드로 입력창을 숨길 수 있습니다.
     var inputForm = document.getElementById('inputForm');
     inputForm.style.display = 'none';
+  }
+
+  // 게시글 좋아요
+  function likeBoard(boardId) {
+    fetch('/api/boards/' + boardId + '/like', {
+      method: 'POST',
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.code === 200) {
+        // 서버 응답이 200이면 게시글 좋아요 성공
+        alert('게시글 좋아요가 성공적으로 이루어졌습니다.');
+        window.location.href = '/api/boards/details/' + boardId;
+      } else {
+        // 서버 응답이 200이 아니면 게시글 좋아요 실패
+        alert('게시글 좋아요 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
+      }
+    })
+  }
+
+  // 댓글 신고 사유 입력
+  function showCommentInputForm() {
+    var inputForm = document.getElementById('commentInputForm');
+    inputForm.style.display = 'block';
+  }
+
+  // 댓글 신고
+  function reportComment(boardId, commentId) {
+    const reason = document.getElementById('commentReason').value;
+
+    // Request DTO 구성
+    const request = {
+      reason: reason,
+    };
+
+    fetch('/api/comments/' + commentId + '/report', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.code === 200) {
+        // 서버 응답이 200이면 댓글 신고 성공
+        alert('댓글 신고가 성공적으로 이루어졌습니다.');
+        window.location.href = '/api/boards/details/' + boardId;
+      } else {
+        // 서버 응답이 200이 아니면 댓글 신고 실패
+        alert('댓글 신고 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
+      }
+    })
+
+    // API 호출이 완료되면 아래 코드로 입력창을 숨길 수 있습니다.
+    var inputForm = document.getElementById('commentInputForm');
+    inputForm.style.display = 'none';
+  }
+
+  // 댓글 좋아요
+  function likeComment(boardId, commentId) {
+    fetch('/api/comments/' + commentId + '/like', {
+      method: 'POST',
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.code === 200) {
+        // 서버 응답이 200이면 댓글 좋아요 성공
+        alert('댓글 좋아요가 성공적으로 이루어졌습니다.');
+        window.location.href = '/api/boards/details/' + boardId;
+      } else {
+        // 서버 응답이 200이 아니면 댓글 좋아요 실패
+        alert('댓글 좋아요 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
+      }
+    })
+  }
+
+  // 쿠키 삭제 함수
+  function deleteCookie() {
+    document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }
 </script>
 </body>
