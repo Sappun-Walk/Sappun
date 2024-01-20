@@ -101,7 +101,7 @@ public class CommentService {
         // 사용자가 존재하는지 확인
         User user = getUserById(userId);
         // 사용자가 작성자 또는 관리자인지 확인
-        CommentValidator.checkCommentUser(comment.getUser(), user);
+        CommentValidator.checkCommentUser(user, comment.getUser());
 
         // 기존 이미지
         String imageURL = comment.getFileURL();
