@@ -123,7 +123,7 @@ public class BoardService {
     public BoardDeleteRes deleteBoard(Long boardId, Long userId) {
         Board board = getBoardById(boardId);
         User user = getUserById(userId);
-        BoardValidator.checkBoardUser(board.getUser(), user); // 삭제 가능한 사용자인지 확인
+        BoardValidator.checkBoardUser(user, board.getUser()); // 삭제 가능한 사용자인지 확인
 
         user.updateScore(-100); // 게시글 삭제하면 점수 -100
 
