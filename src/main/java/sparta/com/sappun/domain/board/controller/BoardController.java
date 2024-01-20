@@ -127,11 +127,6 @@ public class BoardController {
                 boardService.updateBoard(boardUpdateReq, boardUpdateReq.getImage()));
     }
 
-    @GetMapping("/update")
-    public String updateBoardPage() {
-        return "updateBoardPage";
-    }
-
     @GetMapping("/update/{boardId}")
     public String updateBoardDetails(@PathVariable Long boardId, Model model) {
         BoardUpdateRes boardUpdateRes = boardService.getBoardUpdateRes(boardId);
