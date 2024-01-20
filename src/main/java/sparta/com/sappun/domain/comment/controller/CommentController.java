@@ -36,12 +36,11 @@ public class CommentController {
     @PatchMapping("/comments/{commentId}")
     public CommonResponse<CommentUpdateRes> updateComment(
             @PathVariable Long commentId,
-            @RequestPart(name = "data") @Valid CommentUpdateReq req,
-            @RequestPart(name = "image", required = false) MultipartFile multipartfile,
+            @Valid CommentUpdateReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         req.setCommentId(commentId);
         req.setUserId(userDetails.getUser().getId());
-        return CommonResponse.success(commentService.updateComment(req, multipartfile));
+        return CommonResponse.success(commentService.updateComment(req, req.getImage()));
     }
 
     @DeleteMapping("/comments/{commentId}")

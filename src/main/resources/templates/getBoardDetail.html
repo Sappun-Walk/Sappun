@@ -203,20 +203,42 @@
                 <div class="comment">
                     <div class="gallery-caption">
                         <p th:text="'작성자: ' + ${comment.nickname}"></p>
-                        <img th:src="${comment.fileURL}" alt="댓글 이미지">
+                        <img th:src="${comment.fileURL}" id="commentImage" alt="댓글 이미지">
                         <p th:text="'내용: ' + ${comment.content}"></p>
                         <p th:text="'좋아요 수: ' + ${comment.likeCount}"></p>
                     </div>
                 </div>
                 <div class="like-comment-btn">
+                    <!--댓글 좋아요-->
                     <div th:if="${user != null}">
                         <button class="like-btn" th:onclick="'likeComment(' + ${board.id} + ',' + ${comment.id} + ')'">좋아요</button>
                     </div>
                     <div th:if="${user == null}">
                         <button class="like-btn" onclick="needToLogin()">좋아요</button>
                     </div>
-                    <button>수정</button>
+
+                    <!--댓글 수정-->
+                    <div th:if="${user != null}">
+                        <button th:onclick="showCommentUpdateForm()">수정</button>
+                        <div id="commentUpdateForm" style="display: none;">
+                            <form id="UpdateCommentForm">
+                                <label for="inputCommentContent">내용:</label>
+                                <input type="text" id="inputCommentContent" name="commentContent" required>
+                                <label for="inputCommentImage">첨부파일:</label>
+                                <input type="file" id="inputCommentImage" name="commentImage">
+                                <button type="button" th:onclick="'updateComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div th:if="${user == null}">
+                        <button onclick="needToLogin()">수정</button>
+                    </div>
+
+                    <!--댓글 삭제-->
                     <button>삭제</button>
+
+                    <!--댓글 신고-->
                     <div th:if="${user != null}">
                         <button th:onclick="showCommentInputForm()">신고</button>
                         <div id="commentInputForm" style="display: none;">
@@ -231,6 +253,7 @@
                     <div th:if="${user == null}">
                         <button onclick="needToLogin()">신고</button>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -240,6 +263,60 @@
   // 로그인 요청
   function needToLogin() {
     alert("로그인한 사용자만 가능합니다.");
+  }
+
+  // 댓글 수정 사유 입력
+  function showCommentUpdateForm() {
+    var inputForm = document.getElementById('commentUpdateForm');
+    inputForm.style.display = 'block';
+  }
+
+  // 댓글 수정
+  function updateComment(boardId, commentId) {
+    const commentContent = document.getElementById('inputCommentContent').value;
+    const commentImage = document.getElementById('inputCommentImage');
+
+    if (!commentContent) {
+      alert('내용을 입력해주세요.');
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append("content", commentContent);
+
+    // 파일이 선택되지 않은 경우 빈 파일 전송
+    if (commentImage.files.length > 0) {
+      formData.append('image', commentImage.files[0]);
+    } else {
+      // 빈 파일 생성 및 전송
+      const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
+      formData.append('image', emptyFile);
+    }
+
+    fetch('/api/comments/' + commentId, {
+      method: 'PATCH',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.code === 200) {
+        // 서버 응답이 200이면 댓글 수정 성공
+        alert('댓글 수정이 성공적으로 이루어졌습니다.');
+        window.location.href = '/api/boards/details/' + boardId;
+      } else {
+        // 서버 응답이 200이 아니면 댓글 수정 실패
+        alert('댓글 수정 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
+      }
+    })
+
+    // API 호출이 완료되면 아래 코드로 입력창을 숨길 수 있습니다.
+    var inputForm = document.getElementById('commentUpdateForm');
+    inputForm.style.display = 'none';
   }
 
   // 게시글 신고 사유 입력

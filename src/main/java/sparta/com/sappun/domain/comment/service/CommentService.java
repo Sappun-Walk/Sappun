@@ -1,5 +1,6 @@
 package sparta.com.sappun.domain.comment.service;
 
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,12 +72,15 @@ public class CommentService {
 
         // 기존 이미지
         String imageURL = comment.getFileURL();
-        // 이미지 입력이 있는 경우
-        if (multipartFile != null && !multipartFile.isEmpty()) {
-            // 기존 이미지가 있으면 삭제
-            if (imageURL != null && !imageURL.isEmpty()) {
-                s3Util.deleteFile(imageURL, S3Util.FilePath.COMMENT);
-            }
+        // 기존 이미지가 있으면 삭제
+        if (imageURL != null && !imageURL.isEmpty()) {
+            s3Util.deleteFile(imageURL, S3Util.FilePath.COMMENT);
+        }
+
+        // 입력 파일이 없는 경우
+        if (Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) {
+            imageURL = null;
+        } else {
             // 이미지 파일인지 확인
             S3Validator.isProfileImageFile(multipartFile);
             // 이미지 업로드
