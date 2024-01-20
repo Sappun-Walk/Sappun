@@ -165,11 +165,6 @@
 
         #mainLogoImage {
             cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
-            width: 200px; /* 로고 버튼의 너비 */
-            height: 100px; /* 로고 버튼의 높이 */
-            float: left; /* 왼쪽 맨 위로 */
-            margin-top: 10px; /* 맨 위에서 10px 만큼 떨어지도록 조절 */
-            margin-left: 20px;
         }
     </style>
 </head>
@@ -217,14 +212,16 @@
         <div class="signup_1">
             <label for="password"><b>Password</b></label>
             <div class="password-input">
-                <input type="password" id="password" name="password" required placeholder="6~15자 이내의 영어, 숫자, 특수문자 모두 사용 바랍니다. ">
+                <input type="password" id="password" name="password" required
+                       placeholder="6~15자 이내의 영어, 숫자, 특수문자 모두 사용 바랍니다. ">
                 <span id="passwordMessage"></span>
             </div>
         </div>
         <div class="signup_1">
             <label for="confirmPassword"><b>ConfirmPassword</b></label>
             <div class="confirmPassword-input">
-                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="비밀번호를 한번 더 입력해주세요.">
+                <input type="password" id="confirmPassword" name="confirmPassword" required
+                       placeholder="비밀번호를 한번 더 입력해주세요.">
                 <span id="confirmPasswordMessage"></span>
             </div>
         </div>
@@ -234,10 +231,10 @@
     </div>
 </div>
 <script>
-  // 로고 이미지 클릭 시 메인페이지로
-  document.getElementById('mainLogoImage').addEventListener('click', function () {
-    window.location.href = '/api/boards/best';
-  });
+    // 로고 이미지 클릭 시 메인페이지로
+    document.getElementById('mainLogoImage').addEventListener('click', function () {
+        window.location.href = '/api/boards/best';
+    });
 
     function readURL(input) {
         if (input.files && input.files[0]) {
@@ -320,20 +317,20 @@
     }
 
     function signup() {
-        let formData = new FormData();
-        formData.append("image", document.getElementById('image').files[0]);
-        formData.append("username", document.getElementById('username').value);
-        formData.append("nickname", document.getElementById('nickname').value);
-        formData.append("email", document.getElementById('email').value);
-        formData.append("password", document.getElementById('password').value);
-        formData.append("confirmPassword", document.getElementById('confirmPassword').value);
+
 
         // 사용자 이름 또는 패스워드가 비어있을 경우 오류 처리
+        let username = document.getElementById('username').value;
+        let nickname = document.getElementById('nickname').value;
+        let email = document.getElementById('email').value;
+        let password = document.getElementById('password').value;
+        let confirmPassword = document.getElementById('confirmPassword').value;
+        let image = document.getElementById('image').files[0];
+
         if (!username) {
             alert('username을 입력하세요.');
             return;
-        }
-        if (!nickname) {
+        } else if (!nickname) {
             alert('nickname을 입력하세요.');
             return;
         } else if (!email) {
@@ -346,6 +343,14 @@
             alert('confirmPassword을 입력하세요.');
             return;
         }
+
+        let formData = new FormData();
+        formData.append("image", document.getElementById('image').files[0]);
+        formData.append("username", document.getElementById('username').value);
+        formData.append("nickname", document.getElementById('nickname').value);
+        formData.append("email", document.getElementById('email').value);
+        formData.append("password", document.getElementById('password').value);
+        formData.append("confirmPassword", document.getElementById('confirmPassword').value);
 
         // 요청 보내기
         fetch('/api/users/signup', {

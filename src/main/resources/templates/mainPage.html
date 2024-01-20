@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
         .sl1{
             width: 200px;
@@ -18,25 +19,30 @@
             font-size: 14px;
             line-height: 16px;
         }
+
         .gallery-container {
+            margin-top: 50px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 30px;
         }
 
         .gallery-item {
             width: calc(25% - 10px);
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            border: 1px solid deeppink;
+            border-radius: 30px;
             overflow: hidden;
             margin-bottom: 20px;
-
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
         }
 
         .gallery-item img {
-            width: 100%;
-            height: auto;
+            background-size: cover;
+            width: 450px;
+            height: 450px;
+            justify-content: center;
+            text-align: center;
         }
 
         .gallery-caption {
@@ -45,108 +51,202 @@
         }
 
         .main-img-container {
-            display: flex;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
             justify-content: center;
         }
 
         .main-img {
             margin-top: 20px;
+            transform: scale(1.7);
         }
 
         .btn-write {
-            margin-left: -20px;
+            width: 250px;
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: 30px;
             text-align: right;
         }
+
         .inner-div {
-            width: 1400px;
+            border-radius: 50px;
+            height: 50px;
+            width: 1000px;
             border: solid #dddddd;
-            margin: auto;
+            margin-top: 20px;
+            margin-right: auto;
+            margin-left: auto;
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: h1;
+            margin-top: auto;
+            margin-bottom: auto;
             text-align: center;
+            justify-content: center;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgba(17, 17, 17, 0.8);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        #sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        #sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        #main {
+            transition: margin-left 0.5s;
+            padding: 16px;
+            display: flex;
+        }
+
+        #openBtn {
+            font-size: 20px;
+            width: 250px;
+            margin-right: auto;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0);
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            display: flex;
+        }
+
+        #openBtn.hide {
+            visibility: hidden;
         }
     </style>
 </head>
 <body>
-<div>
-
-    <form th:action="@{/api/boards/region}" method="get" id="regionForm">
-        <select class="sl1" id="region" name="region">
-            <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}" th:value="${enumItem}" th:text="${enumItem.region}"></option>
-        </select>
-        <button type="button" onclick="submitForm()">Submit</button>
-    </form>
-    <div>
-        <div class="btn-write">
-            <p th:if="${username == null}">
-                <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
-            </p>
-            <p th:if="${username != null}">
-                <button class="btn btn-outline-success" type="submit" id="logout-button">로그아웃</button>
-                <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users}'|">프로필</button>
-            </p>
-        </div>
-    </div>
-    <div class="main-img-container">
-        <img class="main-img" th:src="@{/images/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|" alt="Main Image">
-    </div>
-    <div class="inner-div">
-        <h1> 베스트 산책로 TOP3</h1>
-    </div>
-    <div class="gallery-container">
-        <div class="gallery-item" th:each="board : ${bestBoards.boards}" th:id="${'board-' + board.id}" th:onclick="'getBoardDetails(' + ${board.id} + ')'" style="cursor: pointer;">
-            <img th:src="${board.fileURL}" alt="게시물 이미지">
-            <div class="gallery-caption">
-                <h3 th:text="${board.title}">게시물 제목 1</h3>
-                <p th:text="'작성자: ' + ${board.nickname}">작성자: 사용자1</p>
-                <p th:text="'작성자: ' + ${board.region}">지역: 지역1</p>
-            </div>
-        </div>
-    </div>
-
-    <div th:if="${#authorization.expression('isAuthenticated()')}">
-        <div class="btn-write">
-            <button class="btn btn-outline-success" type="button" onclick="redirectToCreatePage()">글쓰기</button>
-        </div>
+<div id="sidebar">
+    <a href="#" onclick="navigateTo('/api/boards/best')">Best Top 3</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION1')">서울특별시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION2')">부산광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION3')">대구광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION4')">인천광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION5')">광주광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION6')">울산광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION7')">세종특별차치시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION8')">경기도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION9')">강원특별자치도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION10')">충청북도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION11')">충청남도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION12')">전북특별차치도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION13')">전라남도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION14')">경상북도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION15')">경상남도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION16')">제주특별자치도</a>
 </div>
-<script>
-    // 로그아웃 버튼 클릭 시 이벤트 핸들러
-    document.getElementById('logout-button').addEventListener('click', function () {
-        // 사용자에게 재확인 알림창 표시
-        var confirmation = confirm('로그아웃 하시겠습니까?');
+<div id="main">
+    <button id="openBtn" onclick="openNav()">☰</button>
+    <div class="main-img-container">
+        <img class="main-img" th:src="@{/images/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|"
+             alt="Main Image">
+    </div>
+    <div class="btn-write">
+        <p th:if="${username == null}">
+            <button class="btn btn-outline-success" type="submit"
+                    th:onclick="|location.href='@{/api/users/login-page}'|">로그인
+            </button>
+        </p>
+        <p th:if="${username != null}">
+            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/logout}'|">
+                로그아웃
+            </button>
+            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users}'|">프로필
+            </button>
+        </p>
+    </div>
+</div>
 
-        // 사용자가 확인을 선택한 경우에만 POST 요청 보내기
-        if (confirmation) {
-            fetch('/api/users/logout', {method: 'POST'})
-                .then(response => {
-                    if (response.ok) {
-                        alert('로그아웃이 성공적으로 이루어졌습니다.');
-                        // 쿠키 삭제 호출
-                        deleteCookie();
-                        window.location.href = '/api/boards/best';
-                    } else {
-                        alert('로그아웃 중 오류가 발생했습니다.');
-                    }
-                })
-                .catch(error => {
-                    console.error('오류 발생:', error);
-                    alert('로그아웃 중 오류가 발생했습니다.');
-                });
-        }
-    });
-    function submitForm() {
-        document.getElementById('regionForm').submit();
+<div class="inner-div">
+    <h1>Best 산책로 TOP3</h1>
+</div>
+<div class="gallery-container">
+    <div class="gallery-item" th:each="board : ${bestBoards.boards}" th:id="${'board-' + board.id}"
+         th:onclick="'getBoardDetails(' + ${board.id} + ')'" style="cursor: pointer;">
+        <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
+        <div class="gallery-caption">
+            <h3 th:text="${board.title}">
+            </h3>
+            <p th:text="'작성자: ' + ${board.nickname}"></p>
+            <p th:text="'지역: ' + ${board.region.getRegion()}"></p>
+        </div>
+    </div>
+</div>
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+    <div class="btn-write">
+        <button class="btn btn-outline-success" type="button" onclick="redirectToCreatePage()">글쓰기</button>
+    </div>
+</div>
+
+
+<script>
+    function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("main").style.mginLeft = "250px";
+        document.getElementById("openBtn").classList.add("hide");
+        document.addEventListener("click", closeNavOutside);
     }
+
+    function closeNav() {
+        document.getElementById("sidebar").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+        document.getElementById("openBtn").classList.remove("hide");
+        document.removeEventListener("click", closeNavOutside);
+    }
+
+    function closeNavOutside(event) {
+        var sidebar = document.getElementById("sidebar");
+        var openBtn = document.getElementById("openBtn");
+        if (event.target !== sidebar && event.target !== openBtn && !sidebar.contains(event.target)) {
+            closeNav();
+        }
+    }
+
+    function navigateTo(url) {
+        closeNav(); // 사이드바를 닫습니다.
+        window.location.href = url; // 지정된 URL로 이동합니다.
+    }
+
     function getBoardDetails(boardId) {
         // 게시물 상세 페이지로 이동하는 로직을 작성
         window.location.href = '/api/boards/details/' + boardId;
     }
+
     function redirectToCreatePage() {
         // JavaScript로 페이지 이동 처리
         window.location.href = '/api/boards/createPage1';
     }
-    function deleteCookie() {
-        document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    }
+
 </script>
 </body>
 </html>
