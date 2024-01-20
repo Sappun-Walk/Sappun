@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserSignupReq {
 
-    @Size(min = 4, max = 10)
+    @Size(min = 4, max = 15)
     @Pattern(regexp = "^[a-zA-Z0-9]*$")
     private String username;
 
