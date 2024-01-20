@@ -19,8 +19,8 @@ public class LikeBoardController {
 
     @PostMapping("/{boardId}/like")
     public CommonResponse<LikeBoardSaveRes> likeBoard(
-            @PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userId) {
+            @PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return CommonResponse.success(
-                likeBoardService.clickLikeBoard(boardId, userId.getUser().getId()));
+                likeBoardService.clickLikeBoard(boardId, userDetails.getUser().getId()));
     }
 }
