@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.user.entity.User;
@@ -17,6 +19,7 @@ public class LikeComment extends TimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     @JoinColumn(name = "comment_id", nullable = false)
     private Comment comment;
