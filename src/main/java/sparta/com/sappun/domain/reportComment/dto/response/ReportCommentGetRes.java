@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sparta.com.sappun.domain.comment.dto.response.CommentToReportGetRes;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

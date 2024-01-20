@@ -1,6 +1,8 @@
 package sparta.com.sappun.domain.reportComment.repository;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
@@ -30,5 +32,5 @@ public interface ReportCommentRepository {
     void clearReportCommentByComment(Comment comment);
 
     @Query("SELECT rc FROM ReportComment rc JOIN FETCH rc.comment")
-    List<ReportComment> findAllFetchComment();
+    Page<ReportComment> findAllFetchComment(Pageable pageable);
 }

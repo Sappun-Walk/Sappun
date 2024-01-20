@@ -50,9 +50,7 @@ public class ReportBoardController {
             @RequestParam(value = "isAsc", defaultValue = "false") boolean isAsc,
             Model model,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails != null) {
-            model.addAttribute("user", userDetails.getUser());
-        }
+        model.addAttribute("user", userDetails.getUser());
         Page<ReportBoardGetRes> responseDto =
                 reportBoardService.getReportBoardList(page - 1, size, sortBy, isAsc);
         model.addAttribute("responseDto", responseDto);

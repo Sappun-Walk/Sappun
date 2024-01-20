@@ -99,13 +99,17 @@
       }
 
       .btn-write {
-        width: 100px;
         margin-top: 30px;
         margin-left: auto;
-        margin-right: 120px;
-        text-align: right;
+        margin-right: 100px;
+        display: flex;
+        flex-direction: row-reverse;
       }
 
+      .btn-write button {
+        width: auto;
+        margin-right: 10px;
+      }
       h5 {
         font-size: h5;
         margin-top: auto;
@@ -210,6 +214,11 @@
                 </button>
             </p>
             <p th:if="${user != null}">
+                <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/comments/reports}'|">
+                    댓글 관리
+                </button>
+            </p>
+            <p th:if="${user != null}">
                 <button class="btn btn-outline-success" type="submit" id="logout-button" onclick="logout()">로그아웃</button>
                 <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|"  alt="profile" id="profileImage">
             </p>
@@ -223,7 +232,6 @@
             <div class="gallery-caption">
                 <h5 th:text="${reportBoard.board.title}"></h5>
                 <p th:text="'신고자: ' + ${reportBoard.nickname}"></p>
-                <p th:text="'지역: ' + ${reportBoard.board.region.getRegion()}"></p>
                 <p th:text="'신고 사유: ' + ${reportBoard.reason}"></p>
                 <p th:text="'게시글 총 신고 수: ' + ${reportBoard.board.reportCount}"></p>
                 <button class="btn btn-outline-success">
