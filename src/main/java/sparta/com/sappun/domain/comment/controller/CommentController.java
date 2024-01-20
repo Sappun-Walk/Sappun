@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.comment.dto.request.CommentSaveReq;
 import sparta.com.sappun.domain.comment.dto.request.CommentUpdateReq;
 import sparta.com.sappun.domain.comment.dto.response.CommentDeleteRes;
@@ -25,12 +24,11 @@ public class CommentController {
     @PostMapping("/{boardId}/comments")
     public CommonResponse<CommentSaveRes> saveComment(
             @PathVariable Long boardId,
-            @RequestPart(name = "data") @Valid CommentSaveReq req,
-            @RequestPart(name = "image", required = false) MultipartFile multipartfile,
+            @Valid CommentSaveReq req,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         req.setBoardId(boardId);
         req.setUserId(userDetails.getUser().getId());
-        return CommonResponse.success(commentService.saveComment(req, multipartfile));
+        return CommonResponse.success(commentService.saveComment(req, req.getImage()));
     }
 
     @PatchMapping("/comments/{commentId}")

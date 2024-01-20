@@ -108,7 +108,7 @@
                 </div>
 
                 <div th:if="${user != null}">
-                <button id="board-delete-button" th:attr="data-board-id=${boardId}">삭제</button>
+                    <button id="board-delete-button" th:attr="data-board-id=${boardId}">삭제</button>
                 </div>
                 <div th:if="${user == null}">
                     <button onclick="needToLogin()">삭제</button>
@@ -180,6 +180,21 @@
         </div>
         <div th:if="${user == null}">
             <button class="like-btn" onclick="needToLogin()">좋아요</button>
+        </div>
+
+        <!--댓글 작성-->
+        <div>
+            <label for="commentContent">내용:</label>
+            <input type="text" id="commentContent" name="commentContent" required>
+            <label for="commentImageInput">첨부파일:</label>
+            <input type="file" id="commentImageInput" name="commentImageInput">
+        </div>
+
+        <div th:if="${user != null}">
+            <button type="button" th:onclick="|saveComment(${board.id})|">확인</button>
+        </div>
+        <div th:if="${user == null}">
+            <button type="button" onclick="needToLogin()">확인</button>
         </div>
 
         <div>
@@ -281,7 +296,7 @@
         </div>
     </div>
 </div>
-<script th:inline="javascript">
+<script>
   // 로그아웃
   function logout() {
     // 사용자에게 재확인 알림창 표시
@@ -321,7 +336,51 @@
     window.location.href = '/api/boards/update/' + boardId;
   }
 
-  // 댓글 수정 사유 입력
+  // 댓글 작성
+  function saveComment(boardId) {
+    const content = document.getElementById('commentContent').value;
+    const image = document.getElementById('commentImageInput');
+
+    if (!content) {
+      alert('내용을 입력해주세요.');
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append("content", content);
+
+    // 파일이 선택되지 않은 경우 빈 파일 전송
+    if (image.files.length > 0) {
+      formData.append('image', image.files[0]);
+    } else {
+      // 빈 파일 생성 및 전송
+      const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
+      formData.append('image', emptyFile);
+    }
+
+    fetch('/api/' + boardId + '/comments' , {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.code === 200) {
+        // 서버 응답이 200이면 댓글 작성 성공
+        alert('댓글 작성이 성공적으로 이루어졌습니다.');
+        window.location.href = '/api/boards/details/' + boardId;
+      } else {
+        // 서버 응답이 200이 아니면 댓글 작성 실패
+        alert('댓글 작성 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
+      }
+    })
+  }
+
+  // 댓글 수정 입력
   function showCommentUpdateForm() {
     var inputForm = document.getElementById('commentUpdateForm');
     inputForm.style.display = 'block';
