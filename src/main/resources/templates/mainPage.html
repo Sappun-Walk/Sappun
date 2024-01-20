@@ -7,18 +7,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
-        .sl1{
-            width: 200px;
-            border: 1px solid #C4C4C4;
-            box-sizing: border-box;
-            border-radius: 10px;
-            padding: 12px 13px;
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 16px;
-        }
+          #profileImage {
+            cursor: pointer;
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            top: 20px;
+            right: 30px;
+            padding: 10px;
+            border-radius: 50%;
+          }
 
         .gallery-container {
             margin-top: 50px;
@@ -63,11 +61,18 @@
         }
 
         .btn-write {
-            width: 250px;
+            width: auto;
             margin-top: 30px;
             margin-left: auto;
-            margin-right: 30px;
+            margin-right: 100px;
             text-align: right;
+            flex-direction: row;
+            display: flex;
+        }
+
+        .btn-write button {
+          width: auto;
+          margin-right: 10px;
         }
 
         .inner-div {
@@ -82,7 +87,6 @@
         }
 
         h1 {
-            font-size: h1;
             margin-top: auto;
             margin-bottom: auto;
             text-align: center;
@@ -172,19 +176,26 @@
              alt="Main Image">
     </div>
     <div class="btn-write">
-        <p th:if="${username == null}">
+        <p th:if="${user == null}">
             <button class="btn btn-outline-success" type="submit"
                     th:onclick="|location.href='@{/api/users/login-page}'|">로그인
             </button>
         </p>
-        <p th:if="${username != null}">
-            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/logout}'|">
-                로그아웃
-            </button>
-            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users}'|">프로필
-            </button>
-        </p>
+            <p th:if="${user != null && user.role == T(sparta.com.sappun.domain.user.entity.Role).ADMIN}">
+                <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/reports}'|">
+                    게시판 관리
+                </button>
+            </p>
+            <p th:if="${user != null}">
+                <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/logout}'|">
+                    로그아웃
+                </button>
+            </p>
     </div>
+    <p th:if="${user != null}">
+        <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|"  alt="profile" id="profileImage">
+    </p>
+
 </div>
 
 <div class="inner-div">
