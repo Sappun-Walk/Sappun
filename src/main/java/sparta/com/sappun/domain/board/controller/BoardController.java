@@ -80,7 +80,7 @@ public class BoardController {
         }
         Page<BoardGetRes> responseDto =
                 boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
-        model.addAttribute("region", region.getRegion());
+        model.addAttribute("region", region);
         model.addAttribute("responseDto", responseDto);
         model.addAttribute("maxPage", 5);
         return "regionPage";

@@ -206,8 +206,7 @@
          th:onclick="'getBoardDetails(' + ${board.id} + ')'" style="cursor: pointer;">
         <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
         <div class="gallery-caption">
-            <h3 th:text="${board.title}">
-            </h3>
+            <h3 th:text="${board.title}"></h3>
             <p th:text="'작성자: ' + ${board.nickname}"></p>
             <p th:text="'지역: ' + ${board.region.getRegion()}"></p>
         </div>
