@@ -5,73 +5,73 @@
     <title>게시글 상세 조회 페이지</title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-      }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
 
-      div.getBoardDetailPage {
-        display: flex;
-        flex-direction: column;
-      }
+        div.getBoardDetailPage {
+            display: flex;
+            flex-direction: column;
+        }
 
-      div.getBoardDetail-header {
-        padding: 10px;
-        width: 100%;
-      }
+        div.getBoardDetail-header {
+            padding: 10px;
+            width: 100%;
+        }
 
-      h1 {
-        margin: 0;
-        padding: 0;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 10px;
-      }
+        h1 {
+            margin: 0;
+            padding: 0;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
 
-      .login-btn {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        padding: 10px;
-        cursor: pointer;
-      }
+        .login-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            cursor: pointer;
+        }
 
 
-      img {
-        max-width: 100%;
-        height: auto;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        margin-bottom: 10px;
-      }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
 
-      ul {
-        list-style: none;
-        padding: 0;
-      }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
 
-      li {
-        margin-bottom: 10px;
-      }
+        li {
+            margin-bottom: 10px;
+        }
 
-      button {
-        padding: 10px;
-        cursor: pointer;
-      }
+        button {
+            padding: 10px;
+            cursor: pointer;
+        }
 
-      .buttons {
-        text-align: right;
-        margin-bottom: 10px;
-      }
+        .buttons {
+            text-align: right;
+            margin-bottom: 10px;
+        }
 
-      .like-btn {
-        display: block;
-        margin: 0 auto;
-      }
+        .like-btn {
+            display: block;
+            margin: 0 auto;
+        }
 
-      .like-comment-btn {
-        text-align: right;
-      }
+        .like-comment-btn {
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -93,29 +93,29 @@
                     </button>
                 </p>
                 <script>
-                  // 로그아웃 버튼 클릭 시 이벤트 핸들러
-                  document.getElementById('logout-button').addEventListener('click', function () {
-                    // 사용자에게 재확인 알림창 표시
-                    var confirmation = confirm('로그아웃 하시겠습니까?');
+                    // 로그아웃 버튼 클릭 시 이벤트 핸들러
+                    document.getElementById('logout-button').addEventListener('click', function () {
+                        // 사용자에게 재확인 알림창 표시
+                        var confirmation = confirm('로그아웃 하시겠습니까?');
 
-                    // 사용자가 확인을 선택한 경우에만 POST 요청 보내기
-                    if (confirmation) {
-                      fetch('/api/users/logout', {method: 'POST'})
-                      .then(response => {
-                        if (response.ok) {
-                          alert('로그아웃이 성공적으로 이루어졌습니다.');
-                          deleteCookie();
-                          window.location.href = '/api/boards/best';
-                        } else {
-                          alert('로그아웃 중 오류가 발생했습니다.');
+                        // 사용자가 확인을 선택한 경우에만 POST 요청 보내기
+                        if (confirmation) {
+                            fetch('/api/users/logout', {method: 'POST'})
+                                .then(response => {
+                                    if (response.ok) {
+                                        alert('로그아웃이 성공적으로 이루어졌습니다.');
+                                        deleteCookie();
+                                        window.location.href = '/api/boards/best';
+                                    } else {
+                                        alert('로그아웃 중 오류가 발생했습니다.');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('오류 발생:', error);
+                                    alert('로그아웃 중 오류가 발생했습니다.');
+                                });
                         }
-                      })
-                      .catch(error => {
-                        console.error('오류 발생:', error);
-                        alert('로그아웃 중 오류가 발생했습니다.');
-                      });
-                    }
-                  });
+                    });
                 </script>
             </div>
         </div>
@@ -123,33 +123,42 @@
     <div class="getBoardDetail-body">
         <div class="title-and-buttons">
             <div class="buttons">
+                <div th:if="${user != null}">
                 <button th:onclick="|location.href='/api/boards/update'|" id="board-update-button">
                     수정
                 </button>
+                </div>
+                <div th:if="${user == null}">
+                    <button onclick="needToLogin()">수정</button>
+                </div>
+                <div th:if="${user != null}">
                 <button id="board-delete-button" th:attr="data-board-id=${boardId}">삭제</button>
-
+                </div>
+                <div th:if="${user == null}">
+                    <button onclick="needToLogin()">삭제</button>
+                </div>
                 <script th:inline="javascript">
-                  document.getElementById('board-delete-button').addEventListener('click',
-                      function () {
-                        var boardId = this.getAttribute('data-board-id');
+                    document.getElementById('board-delete-button').addEventListener('click',
+                        function () {
+                            var boardId = this.getAttribute('data-board-id');
 
-                        // DELETE 요청 보내기
-                        console.log(boardId);
-                        fetch('/api/boards/' + boardId, {method: 'DELETE'})
-                        .then(response => {
-                          if (response.ok) {
-                            alert('게시글 삭제가 성공하였습니다.');
-                            // 성공 시 리다이렉트 등의 작업 수행
-                            window.location.href = '/api/boards/best';
-                          } else {
-                            alert('게시글 삭제 중 오류가 발생했습니다.');
-                          }
-                        })
-                        .catch(error => {
-                          console.error('오류 발생:', error);
-                          alert('게시글 삭제 중 오류가 발생했습니다.');
+                            // DELETE 요청 보내기
+                            console.log(boardId);
+                            fetch('/api/boards/' + boardId, {method: 'DELETE'})
+                                .then(response => {
+                                    if (response.ok) {
+                                        alert('게시글 삭제가 성공하였습니다.');
+                                        // 성공 시 리다이렉트 등의 작업 수행
+                                        window.location.href = '/api/boards/best';
+                                    } else {
+                                        alert('게시글 삭제 중 오류가 발생했습니다.');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('오류 발생:', error);
+                                    alert('게시글 삭제 중 오류가 발생했습니다.');
+                                });
                         });
-                      });
                 </script>
                 <div th:if="${user != null}">
                     <button th:onclick="showInputForm()">신고</button>
@@ -174,13 +183,13 @@
             <script type="text/javascript"
                     src="//dapi.kakao.com/v2/maps/sdk.js?appkey=93eeece0b333bf5a99127edc145aa398"></script>
             <script>
-              var container = document.getElementById('map');
-              var options = {
-                center: new kakao.maps.LatLng(33.450701, 126.570667),
-                level: 3
-              };
+                var container = document.getElementById('map');
+                var options = {
+                    center: new kakao.maps.LatLng(33.450701, 126.570667),
+                    level: 3
+                };
 
-              var map = new kakao.maps.Map(container, options);
+                var map = new kakao.maps.Map(container, options);
             </script>
             <p th:text="'내용: ' + ${board.content}"></p>
             <p th:text="'출발지: ' + ${board.departure}"></p>
@@ -210,20 +219,56 @@
                 </div>
                 <div class="like-comment-btn">
                     <div th:if="${user != null}">
-                        <button class="like-btn" th:onclick="'likeComment(' + ${board.id} + ',' + ${comment.id} + ')'">좋아요</button>
+                        <button class="like-btn" th:onclick="'likeComment(' + ${board.id} + ',' + ${comment.id} + ')'">
+                            좋아요
+                        </button>
                     </div>
                     <div th:if="${user == null}">
                         <button class="like-btn" onclick="needToLogin()">좋아요</button>
                     </div>
                     <button>수정</button>
-                    <button>삭제</button>
+                    <div th:if="${user != null}">
+                    <button id="comment-delete-button"
+                            th:attr="data-commentId-id= ${comment.id} ,data-board-id = ${boardId}">삭제
+                    </button>
+                    </div>
+                    <div th:if="${user == null}">
+                        <button onclick="needToLogin()">삭제</button>
+                    </div>
+                    <script th:inline="javascript">
+                        document.getElementById('comment-delete-button').addEventListener('click', function () {
+                            var commentId = this.getAttribute('data-commentId-id');
+                            var boardId = this.getAttribute('data-board-id');
+                            // DELETE 요청 보내기
+                            fetch('/api/comments/' + commentId, {method: 'DELETE'})
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data.code === 200) {
+                                        alert('댓글 삭제가 성공하였습니다.');
+                                        window.location.href = '/api/boards/details/' + boardId;
+                                    } else {
+                                        alert('댓글 삭제 중 오류가 발생했습니다.');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('오류 발생:', error);
+                                    alert('댓글 삭제 중 오류가 발생했습니다.');
+                                });
+                        });
+                    </script>
                     <div th:if="${user != null}">
                         <button th:onclick="showCommentInputForm()">신고</button>
                         <div id="commentInputForm" style="display: none;">
                             <form id="myCommentForm">
                                 <label for="commentReason">신고 사유:</label>
                                 <input type="text" id="commentReason" name="commentReason" required>
-                                <button type="button" th:onclick="'reportComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
+                                <button type="button"
+                                        th:onclick="'reportComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
                                 </button>
                             </form>
                         </div>
@@ -237,150 +282,150 @@
     </div>
 </div>
 <script th:inline="javascript">
-  // 로그인 요청
-  function needToLogin() {
-    alert("로그인한 사용자만 가능합니다.");
-  }
+    // 로그인 요청
+    function needToLogin() {
+        alert("로그인한 사용자만 가능합니다.");
+    }
 
-  // 게시글 신고 사유 입력
-  function showInputForm() {
-    var inputForm = document.getElementById('inputForm');
-    inputForm.style.display = 'block';
-  }
+    // 게시글 신고 사유 입력
+    function showInputForm() {
+        var inputForm = document.getElementById('inputForm');
+        inputForm.style.display = 'block';
+    }
 
-  // 게시글 신고
-  function reportBoard(boardId) {
-    const reason = document.getElementById('reason').value;
+    // 게시글 신고
+    function reportBoard(boardId) {
+        const reason = document.getElementById('reason').value;
 
-    // Request DTO 구성
-    const request = {
-      reason: reason,
-    };
+        // Request DTO 구성
+        const request = {
+            reason: reason,
+        };
 
-    fetch('/api/boards/' + boardId + '/report', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(request),
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.code === 200) {
-        // 서버 응답이 200이면 게시글 신고 성공
-        alert('게시글 신고가 성공적으로 이루어졌습니다.');
-        window.location.href = '/api/boards/details/' + boardId;
-      } else {
-        // 서버 응답이 200이 아니면 게시글 신고 실패
-        alert('게시글 신고 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
-      }
-    })
+        fetch('/api/boards/' + boardId + '/report', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200) {
+                    // 서버 응답이 200이면 게시글 신고 성공
+                    alert('게시글 신고가 성공적으로 이루어졌습니다.');
+                    window.location.href = '/api/boards/details/' + boardId;
+                } else {
+                    // 서버 응답이 200이 아니면 게시글 신고 실패
+                    alert('게시글 신고 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
+                }
+            })
 
-    // API 호출이 완료되면 아래 코드로 입력창을 숨길 수 있습니다.
-    var inputForm = document.getElementById('inputForm');
-    inputForm.style.display = 'none';
-  }
+        // API 호출이 완료되면 아래 코드로 입력창을 숨길 수 있습니다.
+        var inputForm = document.getElementById('inputForm');
+        inputForm.style.display = 'none';
+    }
 
-  // 게시글 좋아요
-  function likeBoard(boardId) {
-    fetch('/api/boards/' + boardId + '/like', {
-      method: 'POST',
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.code === 200) {
-        // 서버 응답이 200이면 게시글 좋아요 성공
-        alert('게시글 좋아요가 성공적으로 이루어졌습니다.');
-        window.location.href = '/api/boards/details/' + boardId;
-      } else {
-        // 서버 응답이 200이 아니면 게시글 좋아요 실패
-        alert('게시글 좋아요 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
-      }
-    })
-  }
+    // 게시글 좋아요
+    function likeBoard(boardId) {
+        fetch('/api/boards/' + boardId + '/like', {
+            method: 'POST',
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200) {
+                    // 서버 응답이 200이면 게시글 좋아요 성공
+                    // alert('게시글 좋아요가 성공적으로 이루어졌습니다.');
+                    window.location.href = '/api/boards/details/' + boardId;
+                } else {
+                    // 서버 응답이 200이 아니면 게시글 좋아요 실패
+                    alert('게시글 좋아요 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
+                }
+            })
+    }
 
-  // 댓글 신고 사유 입력
-  function showCommentInputForm() {
-    var inputForm = document.getElementById('commentInputForm');
-    inputForm.style.display = 'block';
-  }
+    // 댓글 신고 사유 입력
+    function showCommentInputForm() {
+        var inputForm = document.getElementById('commentInputForm');
+        inputForm.style.display = 'block';
+    }
 
-  // 댓글 신고
-  function reportComment(boardId, commentId) {
-    const reason = document.getElementById('commentReason').value;
+    // 댓글 신고
+    function reportComment(boardId, commentId) {
+        const reason = document.getElementById('commentReason').value;
 
-    // Request DTO 구성
-    const request = {
-      reason: reason,
-    };
+        // Request DTO 구성
+        const request = {
+            reason: reason,
+        };
 
-    fetch('/api/comments/' + commentId + '/report', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(request),
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.code === 200) {
-        // 서버 응답이 200이면 댓글 신고 성공
-        alert('댓글 신고가 성공적으로 이루어졌습니다.');
-        window.location.href = '/api/boards/details/' + boardId;
-      } else {
-        // 서버 응답이 200이 아니면 댓글 신고 실패
-        alert('댓글 신고 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
-      }
-    })
+        fetch('/api/comments/' + commentId + '/report', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200) {
+                    // 서버 응답이 200이면 댓글 신고 성공
+                    // alert('댓글 신고가 성공적으로 이루어졌습니다.');
+                    window.location.href = '/api/boards/details/' + boardId;
+                } else {
+                    // 서버 응답이 200이 아니면 댓글 신고 실패
+                    alert('댓글 신고 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
+                }
+            })
 
-    // API 호출이 완료되면 아래 코드로 입력창을 숨길 수 있습니다.
-    var inputForm = document.getElementById('commentInputForm');
-    inputForm.style.display = 'none';
-  }
+        // API 호출이 완료되면 아래 코드로 입력창을 숨길 수 있습니다.
+        var inputForm = document.getElementById('commentInputForm');
+        inputForm.style.display = 'none';
+    }
 
-  // 댓글 좋아요
-  function likeComment(boardId, commentId) {
-    fetch('/api/comments/' + commentId + '/like', {
-      method: 'POST',
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.code === 200) {
-        // 서버 응답이 200이면 댓글 좋아요 성공
-        alert('댓글 좋아요가 성공적으로 이루어졌습니다.');
-        window.location.href = '/api/boards/details/' + boardId;
-      } else {
-        // 서버 응답이 200이 아니면 댓글 좋아요 실패
-        alert('댓글 좋아요 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
-      }
-    })
-  }
+    // 댓글 좋아요
+    function likeComment(boardId, commentId) {
+        fetch('/api/comments/' + commentId + '/like', {
+            method: 'POST',
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200) {
+                    // 서버 응답이 200이면 댓글 좋아요 성공
+                    alert('댓글 좋아요가 성공적으로 이루어졌습니다.');
+                    window.location.href = '/api/boards/details/' + boardId;
+                } else {
+                    // 서버 응답이 200이 아니면 댓글 좋아요 실패
+                    alert('댓글 좋아요 중 ' + data.code + '오류가 발생했습니다: ' + data.message);
+                }
+            })
+    }
 
-  // 쿠키 삭제 함수
-  function deleteCookie() {
-    document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  }
+    // 쿠키 삭제 함수
+    function deleteCookie() {
+        document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
 </script>
 </body>
 </html>
