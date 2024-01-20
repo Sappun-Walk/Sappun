@@ -32,7 +32,7 @@ public class BoardController {
 
     @GetMapping("/create-page")
     @PreAuthorize("isAuthenticated()")
-    public String createPage1(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public String createPage(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         model.addAttribute("user", userDetails.getUser());
         return "saveBoardPage";
     }
@@ -53,19 +53,6 @@ public class BoardController {
         return "getBoardDetail"; // boardDetails는 상세 페이지의 Thymeleaf 템플릿 이름
     }
 
-    // 지역별 게시글 조회
-    //    @GetMapping("/region")
-    //    public CommonResponse<Page<BoardGetRes>> getBoards(
-    //            @RequestParam RegionEnum region,
-    //            @RequestParam("page") int page,
-    //            @RequestParam("size") int size,
-    //            @RequestParam("sortBy") String sortBy,
-    //            @RequestParam("isAsc") boolean isAsc) {
-    //        Page<BoardGetRes> responseDto =
-    //                boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
-    //        return CommonResponse.success(responseDto);
-    //    }
-
     @GetMapping("/region")
     public String getBoardsByRegion(
             @RequestParam RegionEnum region,
@@ -78,18 +65,13 @@ public class BoardController {
         if (userDetails != null) {
             model.addAttribute("username", userDetails.getUsername());
         }
-        Page<BoardGetRes> responseDto =
+        Page<BoardToListGetRes> responseDto =
                 boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
         model.addAttribute("region", region);
         model.addAttribute("responseDto", responseDto);
         model.addAttribute("maxPage", 5);
         return "regionPage";
     }
-    //     Best 게시글 조회
-    //    @GetMapping("/best")
-    //    public CommonResponse<BoardBestListGetRes> getBestBoards() {
-    //        return CommonResponse.success(boardService.getBoardBestList());
-    //    }
 
     // Best 게시글 조회
     @GetMapping("/best")

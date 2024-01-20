@@ -1,6 +1,8 @@
 package sparta.com.sappun.domain.reportBoard.repository;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
@@ -29,5 +31,5 @@ public interface ReportBoardRepository {
     void clearReportBoardByBoard(Board board);
 
     @Query("SELECT rb FROM ReportBoard rb JOIN FETCH rb.board")
-    List<ReportBoard> findAllFetchBoard();
+    Page<ReportBoard> findAllFetchBoard(Pageable pageable);
 }

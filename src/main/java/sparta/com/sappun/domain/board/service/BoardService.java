@@ -41,18 +41,18 @@ public class BoardService {
     @Transactional(readOnly = true)
     public BoardUpdateRes getBoardUpdateRes(Long boardId) {
         Board board = getBoardById(boardId);
-        return BoardServiceMapper.INSTANCE.toBoardUpdateRes(board);
+        return new BoardUpdateRes();
     }
 
     @Transactional(readOnly = true)
-    public Page<BoardGetRes> getBoardList(
+    public Page<BoardToListGetRes> getBoardList(
             RegionEnum region, int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
         Page<Board> boardList = boardRepository.findAllByRegion(region, pageable);
-        return boardList.map(BoardServiceMapper.INSTANCE::toBoardPageGetRes);
+        return boardList.map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
     }
 
     @Transactional(readOnly = true)
@@ -74,20 +74,21 @@ public class BoardService {
             boardImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
         }
 
-        return BoardServiceMapper.INSTANCE.toBoardSaveRes(
-                boardRepository.save(
-                        Board.builder()
-                                .title(boardSaveReq.getTitle())
-                                .content(boardSaveReq.getContent())
-                                .fileURL(boardImage)
-                                .departure(boardSaveReq.getDeparture())
-                                .destination(boardSaveReq.getDestination())
-                                .stopover(boardSaveReq.getStopover())
-                                .region(boardSaveReq.getRegion())
-                                .likeCount(0)
-                                .reportCount(0)
-                                .user(user)
-                                .build()));
+        boardRepository.save(
+                Board.builder()
+                        .title(boardSaveReq.getTitle())
+                        .content(boardSaveReq.getContent())
+                        .fileURL(boardImage)
+                        .departure(boardSaveReq.getDeparture())
+                        .destination(boardSaveReq.getDestination())
+                        .stopover(boardSaveReq.getStopover())
+                        .region(boardSaveReq.getRegion())
+                        .likeCount(0)
+                        .reportCount(0)
+                        .user(user)
+                        .build());
+
+        return new BoardSaveRes();
     }
 
     @Transactional
@@ -115,7 +116,7 @@ public class BoardService {
 
         board.update(boardUpdateReq, imageURL);
 
-        return BoardServiceMapper.INSTANCE.toBoardUpdateRes(board);
+        return new BoardUpdateRes();
     }
 
     @Transactional

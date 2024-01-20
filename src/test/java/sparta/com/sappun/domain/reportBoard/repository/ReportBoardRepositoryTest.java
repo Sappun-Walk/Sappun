@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
@@ -124,11 +127,12 @@ class ReportBoardRepositoryTest implements ReportBoardTest {
         User user = userRepository.save(TEST_USER);
         Board board = boardRepository.save(TEST_BOARD);
         ReportBoard reportBoard = reportBoardRepository.save(REPORT_BOARD);
+        Pageable pageable = PageRequest.ofSize(1);
 
         // when
-        List<ReportBoard> reportBoardList = reportBoardRepository.findAllFetchBoard();
+        Page<ReportBoard> reportBoardList = reportBoardRepository.findAllFetchBoard(pageable);
 
         // then
-        assertEquals(reportBoardList.get(0), reportBoard);
+        assertEquals(reportBoard, reportBoardList.getContent().get(0));
     }
 }
