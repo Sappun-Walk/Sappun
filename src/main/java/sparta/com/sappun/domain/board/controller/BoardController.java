@@ -119,7 +119,6 @@ public class BoardController {
     public CommonResponse<BoardUpdateRes> updateBoard(
             @PathVariable Long boardId,
             @Valid BoardUpdateReq boardUpdateReq,
-            // @RequestPart(name = "image", required = false) MultipartFile multipartfile,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         boardUpdateReq.setBoardId(boardId);
         boardUpdateReq.setUserId(userDetails.getUser().getId());
@@ -128,9 +127,13 @@ public class BoardController {
     }
 
     @GetMapping("/update/{boardId}")
-    public String updateBoardDetails(@PathVariable Long boardId, Model model) {
+    public String updateBoardDetails(
+            @PathVariable Long boardId,
+            Model model,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         BoardUpdateRes boardUpdateRes = boardService.getBoardUpdateRes(boardId);
         model.addAttribute("board", boardUpdateRes);
+        model.addAttribute("user", userDetails.getUser());
         return "updateBoardPage";
     }
 

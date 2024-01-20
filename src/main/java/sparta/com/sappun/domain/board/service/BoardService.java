@@ -1,6 +1,7 @@
 package sparta.com.sappun.domain.board.service;
 
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -95,15 +96,24 @@ public class BoardService {
         User user = getUserById(boardUpdateReq.getUserId());
         BoardValidator.checkBoardUser(board.getUser().getId(), user.getId()); // 수정 가능한 사용자인지 확인
 
-        String boardImage = board.getFileURL();
-        if (multipartFile != null && !multipartFile.isEmpty()) {
-            if (boardImage != null && !boardImage.isEmpty()) {
-                s3Util.deleteFile(boardImage, S3Util.FilePath.BOARD);
-            }
-            S3Validator.isProfileImageFile(multipartFile);
-            boardImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
+        // 기존 이미지
+        String imageURL = board.getFileURL();
+        // 기존 이미지가 있으면 삭제
+        if (imageURL != null && !imageURL.isEmpty()) {
+            s3Util.deleteFile(imageURL, S3Util.FilePath.COMMENT);
         }
-        board.update(boardUpdateReq, boardImage);
+
+        // 입력 파일이 없는 경우
+        if (Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) {
+            imageURL = null;
+        } else {
+            // 이미지 파일인지 확인
+            S3Validator.isProfileImageFile(multipartFile);
+            // 이미지 업로드
+            imageURL = s3Util.uploadFile(multipartFile, S3Util.FilePath.COMMENT);
+        }
+
+        board.update(boardUpdateReq, imageURL);
 
         return BoardServiceMapper.INSTANCE.toBoardUpdateRes(board);
     }
