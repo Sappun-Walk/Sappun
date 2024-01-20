@@ -1,6 +1,5 @@
 package sparta.com.sappun.domain.reportBoard.service;
 
-import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -17,8 +16,6 @@ public interface ReportBoardServiceMapper {
     @Mapping(source = "board.id", target = "reportedBoardId")
     @Mapping(source = "user.id", target = "reporterUserId")
     ReportBoardRes toReportBoardRes(ReportBoard reportBoard);
-
-    List<ReportBoardGetRes> toReportBoardListGetRes(List<ReportBoard> reportBoards);
 
     @Mapping(source = "user.nickname", target = "nickname")
     ReportBoardGetRes toReportBoardGetRes(ReportBoard reportBoard);

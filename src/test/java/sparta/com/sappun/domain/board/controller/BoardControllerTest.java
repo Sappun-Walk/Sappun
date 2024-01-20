@@ -92,7 +92,7 @@ class BoardControllerTest extends BaseMvcTest implements BoardTest {
                         "application/json",
                         objectMapper.writeValueAsString(boardSaveReq).getBytes(StandardCharsets.UTF_8));
 
-        BoardSaveRes res = BoardSaveRes.builder().id(TEST_BOARD_ID).build();
+        BoardSaveRes res = new BoardSaveRes();
 
         // when
         when(boardService.saveBoard(any(), any())).thenReturn(res);
@@ -163,18 +163,7 @@ class BoardControllerTest extends BaseMvcTest implements BoardTest {
                         "application/json",
                         objectMapper.writeValueAsString(boardUpdateReq).getBytes(StandardCharsets.UTF_8));
 
-        BoardUpdateRes res =
-                BoardUpdateRes.builder()
-                        .id(TEST_BOARD_ID)
-                        .nickname(TEST_USER_NICKNAME)
-                        .title(TEST_BOARD_TITLE)
-                        .content(TEST_BOARD_CONTENT)
-                        .fileURL(TEST_BOARD_URL)
-                        .departure(TEST_DEPARTURE)
-                        .stopover(TEST_STOPOVER)
-                        .destination(TEST_DESTINATION)
-                        .region(TEST_REGION1)
-                        .build();
+        BoardUpdateRes res = new BoardUpdateRes();
         // when
 
         when(boardService.updateBoard(any(), any())).thenReturn(res);

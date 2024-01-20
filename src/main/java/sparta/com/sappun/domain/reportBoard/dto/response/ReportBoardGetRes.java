@@ -10,7 +10,7 @@ import sparta.com.sappun.domain.board.dto.response.BoardToReportGetRes;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReportBoardGetRes {
     private Long id;
-    private String nickname;
+    private String nickname; // 신고자
     private String reason;
     private BoardToReportGetRes board;
 
