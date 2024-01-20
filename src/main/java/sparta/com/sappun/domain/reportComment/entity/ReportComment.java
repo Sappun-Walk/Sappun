@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import sparta.com.sappun.domain.TimeStamp;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.user.entity.User;
@@ -21,6 +23,7 @@ public class ReportComment extends TimeStamp {
 
     @Column private String reason;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     @JoinColumn(name = "commentId", nullable = false)
     private Comment comment;
