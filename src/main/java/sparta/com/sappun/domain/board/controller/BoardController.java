@@ -30,7 +30,7 @@ public class BoardController {
         return CommonResponse.success(boardService.getBoard(boardId));
     }
 
-    @GetMapping("/createPage1")
+    @GetMapping("/create-page")
     @PreAuthorize("isAuthenticated()")
     public String createPage1(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         model.addAttribute("user", userDetails.getUser());
