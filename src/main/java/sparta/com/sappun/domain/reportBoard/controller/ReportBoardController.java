@@ -2,9 +2,11 @@ package sparta.com.sappun.domain.reportBoard.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import sparta.com.sappun.domain.reportBoard.dto.request.ReportBoardReq;
@@ -15,13 +17,15 @@ import sparta.com.sappun.domain.reportBoard.service.ReportBoardService;
 import sparta.com.sappun.global.response.CommonResponse;
 import sparta.com.sappun.global.security.UserDetailsImpl;
 
-@RestController
+@Slf4j
+@Controller
 @RequestMapping("/api/boards")
 @RequiredArgsConstructor
 public class ReportBoardController {
 
     @Autowired private ReportBoardService reportBoardService;
 
+    @ResponseBody
     @PostMapping("/{boardId}/report")
     public CommonResponse<ReportBoardRes> reportBoard(
             @PathVariable Long boardId,
@@ -31,6 +35,7 @@ public class ReportBoardController {
         return CommonResponse.success(reportBoardService.clickReportBoard(boardId, req));
     }
 
+    @ResponseBody
     @DeleteMapping("/{boardId}/report") // 필터에서 관리자만 접근하도록 막기
     public CommonResponse<DeleteReportBoardRes> deleteReportedBoard(@PathVariable Long boardId) {
         return CommonResponse.success(reportBoardService.deleteReportBoard(boardId));
@@ -51,6 +56,7 @@ public class ReportBoardController {
         Page<ReportBoardGetRes> responseDto =
                 reportBoardService.getReportBoardList(page - 1, size, sortBy, isAsc);
         model.addAttribute("responseDto", responseDto);
+        model.addAttribute("maxPage", 5);
         return "reportBoardPage";
     }
 }
