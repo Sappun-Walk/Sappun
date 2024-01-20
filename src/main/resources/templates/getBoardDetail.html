@@ -124,9 +124,9 @@
         <div class="title-and-buttons">
             <div class="buttons">
                 <div th:if="${user != null}">
-                <button th:onclick="|location.href='/api/boards/update'|" id="board-update-button">
-                    수정
-                </button>
+                    <button th:onclick="'updateBoard(' + ${boardId} + ')'" id="board-update-button">
+                        수정
+                    </button>
                 </div>
                 <div th:if="${user == null}">
                     <button onclick="needToLogin()">수정</button>
@@ -307,16 +307,17 @@
     </div>
 </div>
 <script th:inline="javascript">
-    // 로그인 요청
-    function needToLogin() {
-        alert("로그인한 사용자만 가능합니다.");
-    }
+  // 로그인 요청
+  function needToLogin() {
+    alert("로그인한 사용자만 가능합니다.");
+  }
 
-    // 게시글 신고 사유 입력
-    function showInputForm() {
-        var inputForm = document.getElementById('inputForm');
-        inputForm.style.display = 'block';
-    }
+  // 수정 페이지 이동
+  function updateBoard(boardId) {
+    // 게시물 업데이트 페이지로 이동하는 로직을 작성
+    window.location.href = '/api/boards/update/' + boardId;
+  }
+
   // 댓글 수정 사유 입력
   function showCommentUpdateForm() {
     var inputForm = document.getElementById('commentUpdateForm');
@@ -496,7 +497,7 @@
             .then(data => {
                 if (data.code === 200) {
                     // 서버 응답이 200이면 댓글 좋아요 성공
-                    alert('댓글 좋아요가 성공적으로 이루어졌습니다.');
+                    // alert('댓글 좋아요가 성공적으로 이루어졌습니다.');
                     window.location.href = '/api/boards/details/' + boardId;
                 } else {
                     // 서버 응답이 200이 아니면 댓글 좋아요 실패
