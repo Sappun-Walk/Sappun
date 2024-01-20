@@ -131,8 +131,7 @@
             <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/login-page}'|">로그인</button>
         </p>
         <p th:if="${username != null}">
-            <button class="btn btn-outline-success" type="submit" id="logout-button">로그아웃</button>
-            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users}'|">프로필</button>
+            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/users/logout}'|">로그아웃</button>
         </p>
     </div>
 
@@ -160,51 +159,17 @@
         </ul>
 
         <a th:href="@{/api/boards/region(region=${region}, page=${pageNum})}" th:text="${pageNum}"></a>
-        <div th:if="${#authorization.expression('isAuthenticated()')}">
-            <div class="btn-write">
-                <button class="btn btn-outline-success" type="button" onclick="redirectToCreatePage()">글쓰기</button>
-            </div>
+        <div class="btn-write">
+            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/createPage1}'|">글쓰기</button>
         </div>
     </div>
     <script>
-        // 로그아웃 버튼 클릭 시 이벤트 핸들러
-        document.getElementById('logout-button').addEventListener('click', function () {
-            // 사용자에게 재확인 알림창 표시
-            var confirmation = confirm('로그아웃 하시겠습니까?');
-
-            // 사용자가 확인을 선택한 경우에만 POST 요청 보내기
-            if (confirmation) {
-                fetch('/api/users/logout', {method: 'POST'})
-                    .then(response => {
-                        if (response.ok) {
-                            alert('로그아웃이 성공적으로 이루어졌습니다.');
-                            // 쿠키 삭제 호출
-                            deleteCookie();
-                            window.location.href = '/api/boards/best';
-                        } else {
-                            alert('로그아웃 중 오류가 발생했습니다.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('오류 발생:', error);
-                        alert('로그아웃 중 오류가 발생했습니다.');
-                    });
-            }
-        });
         function submitForm() {
             document.getElementById('regionForm').submit();
         }
         function getBoardDetails(boardId) {
             // 게시물 상세 페이지로 이동하는 로직을 작성
             window.location.href = '/api/boards/details/' + boardId;
-        }
-        function redirectToCreatePage() {
-            // JavaScript로 페이지 이동 처리
-            window.location.href = '/api/boards/createPage1';
-        }
-        function deleteCookie() {
-            document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         }
     </script>
 </body>

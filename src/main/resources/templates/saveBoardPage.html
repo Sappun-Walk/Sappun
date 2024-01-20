@@ -4,15 +4,6 @@
     <meta charset="UTF-8">
     <title>게시글 작성 페이지 1</title>
     <style>
-        .stopover-section {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .stopover-section input {
-            margin-right: 5px;
-        }
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -142,8 +133,8 @@
         <button class="logout-btn">로그아웃</button>
         <p class="user-name">유저 네임</p>
         <img th:src="@{/images/profile.png}" alt="profile" id="profileImage">
+
     </div>
-    <form id="boardForm" th:action="@{/api/boards}" method="post" enctype="multipart/form-data">
     <div class="getBoardDetail-body">
         <div class="title-and-buttons">
             <section>
@@ -151,77 +142,36 @@
                     <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}"
                             th:value="${enumItem}" th:text="${enumItem.region}"></option>
                 </select>
-                <label for="title">제목:</label>
-                <input type="text" id="title" name="title" required>
+                <input id="titleInput">
 
             </section>
         </div>
         <div class="getBoardDetail-body">
             <div class="title-and-buttons">
                 <section>
-                    <label for="departure">출발지:</label>
-                    <input type="text" id="departure" name="departure" required>
-                    <div id="stopovers-container">
-                        <div class="stopover-section">
-                            <label>경유지:</label>
-                            <input type="text" name="stopover">
-                        </div>
-                    </div>
-
-                    <button type="button" onclick="addStopover()">+</button>
-
-                    <label for="destination">목적지:</label>
-                    <input type="text" id="destination" name="destination" required>
+                    <p>출발지</p>
+                    <input id="departure">
+                    <p>경유지</p>
+                    <input id="stopover">
+                    <button>+</button>
+                    <p>목적지</p>
+                    <input id="destination">
                     <button>길찾기</button>
                 </section>
             </div>
             <section>
                 <img src="지도이미지주소" alt="지도 이미지" id="mapImage" class="mapImage">
             </section>
-            <div class="preview-label">
-                이미지 업로드 :
-                <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
-            </div>
             <section>
-                <label for="content">내용:</label>
-                <textarea id="content" name="content" required></textarea>
+                <input id="">
             </section>
             <div class="buttons">
                 <button>완료</button>
                 <button>취소</button>
             </div>
+
         </div>
     </div>
 </div>
-<script>
-    function addStopover() {
-        // 현재 경유지 입력란 개수 확인
-        var stopoverContainer = document.getElementById('stopovers-container');
-        var stopoverSections = stopoverContainer.getElementsByClassName('stopover-section');
-
-        if (stopoverSections.length < 5) {
-            // 5개 미만일 때만 새로운 경유지 입력란 생성
-            var newStopoverSection = document.createElement('div');
-            newStopoverSection.classList.add('stopover-section');
-
-            var label = document.createElement('label');
-            label.setAttribute('for', 'stopover');
-            label.textContent = '경유지:';
-
-            var input = document.createElement('input');
-            input.setAttribute('type', 'text');
-            input.setAttribute('name', 'stopover');
-
-            newStopoverSection.appendChild(label);
-            newStopoverSection.appendChild(input);
-
-            // 생성된 입력란을 컨테이너에 추가
-            stopoverContainer.appendChild(newStopoverSection);
-        } else {
-            alert('경유지는 최대 5개까지만 입력 가능합니다.');
-        }
-    }
-</script>
-</script>
 </body>
 </html>
