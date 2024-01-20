@@ -101,7 +101,7 @@ public class BoardService {
         String imageURL = board.getFileURL();
         // 기존 이미지가 있으면 삭제
         if (imageURL != null && !imageURL.isEmpty()) {
-            s3Util.deleteFile(imageURL, S3Util.FilePath.COMMENT);
+            s3Util.deleteFile(imageURL, S3Util.FilePath.BOARD);
         }
 
         // 입력 파일이 없는 경우
@@ -111,7 +111,7 @@ public class BoardService {
             // 이미지 파일인지 확인
             S3Validator.isProfileImageFile(multipartFile);
             // 이미지 업로드
-            imageURL = s3Util.uploadFile(multipartFile, S3Util.FilePath.COMMENT);
+            imageURL = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
         }
 
         board.update(boardUpdateReq, imageURL);

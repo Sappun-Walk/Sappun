@@ -125,6 +125,19 @@
       .buttons button {
         margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
       }
+
+      #map {
+          width: 640px;
+          height: 600px;
+      }
+
+      #capturedImage {
+          margin-top: 20px;
+      }
+
+      #drawLine, #captureImage, #locateCurrentPosition {
+          margin: 5px;
+      }
     </style>
 </head>
 <body>
@@ -150,6 +163,12 @@
         <div class="getBoardDetail-body">
             <div class="title-and-buttons">
                 <section>
+                    <!--지도 div-->
+                    <div id="map"></div>
+                    <button id="locateCurrentPosition">현재 위치 찾기</button>
+                    <button id="drawLine">산책로 그리기</button>
+                    <button id="captureImage">지도 캡쳐</button>
+
                     <label for="departure">출발지:</label>
                     <input type="text" id="departure" name="departure" required>
                     <div id="stopovers-container">
@@ -160,14 +179,14 @@
                     </div>
 
                     <button type="button" onclick="addStopover()">+</button>
-
+                    <br>
                     <label for="destination">목적지:</label>
                     <input type="text" id="destination" name="destination" required>
-                    <button>길찾기</button>
                 </section>
             </div>
             <section>
-                <img src="지도이미지주소" alt="지도 이미지" id="mapImage" class="mapImage">
+                <!--지도 캡쳐한 이미지 div-->
+                <div id="capturedImage"></div>
             </section>
             <section class="preview-label">
                 이미지 업로드 :
@@ -178,8 +197,8 @@
                 <textarea id="content" name="content" required></textarea>
             </section>
             <div class="buttons">
-                <button th:onclick="'updateBoard(' + ${board.id} + ')'">완료</button>
-                <button th:onclick="'goBackDetailPage(' + ${board.id} + ')'">취소</button>
+                <button th:onclick="'updateBoard(' + ${boardId} + ')'">완료</button>
+                <button th:onclick="'goBackDetailPage(' + ${boardId} + ')'">취소</button>
             </div>
         </div>
     </div>
@@ -311,11 +330,120 @@
     });
   }
 
+  //지도 관련 Script
+  let map, drawingManager, polyline;
+
+  function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+          center: {lat: 37.5665, lng: 126.9780},
+          zoom: 12,
+      });
+
+      // Drawing Manager 초기화
+      drawingManager = new google.maps.drawing.DrawingManager({
+          drawingControl: false,
+          drawingMode: google.maps.drawing.OverlayType.POLYLINE,
+      });
+      drawingManager.setMap(map);
+
+      // 선이 그려질 때 이벤트 리스너 등록
+      google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+          if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
+              // 새로운 선이 그려질 때마다 기존의 선을 모두 제거
+              clearPolylines();
+              polyline = event.overlay;
+          }
+      });
+
+      // 선 그리기 버튼 클릭 시 이벤트 핸들러
+      document.getElementById('drawLine').addEventListener('click', function () {
+          drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE);
+      });
+
+      // 이미지 캡처 버튼 클릭 시 이벤트 핸들러
+      document.getElementById('captureImage').addEventListener('click', function () {
+          captureMapImage();
+      });
+
+      // 현재 위치 찾기 버튼 클릭 시 이벤트 핸들러
+      document.getElementById('locateCurrentPosition').addEventListener('click', function () {
+          locateCurrentPosition();
+      });
+  }
+
+  function clearPolylines() {
+      if (polyline) {
+          polyline.setMap(null);
+          polyline = null;
+      }
+  }
+
+  function captureMapImage() {
+      if (!polyline) {
+          alert('산책로를 먼저 그려주세요.');
+          return;
+      }
+
+      const staticMapOptions = {
+          center: polyline.getPath().getArray()[0].toJSON(),
+          zoom: map.getZoom(),
+          size: '640x600',
+          maptype: 'roadmap',
+      };
+
+      // 현재까지 그려진 선을 추가
+      const path = google.maps.geometry.encoding.encodePath(polyline.getPath());
+      staticMapOptions.path = `color:0x0000ff|weight:5|enc:${path}`;
+
+      const imageUrl = `https://maps.googleapis.com/maps/api/staticmap?${serializeObject(staticMapOptions)}&key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg`;
+
+      // 이미지를 Blob으로 변환
+      fetch(imageUrl)
+          .then(response => response.blob())
+          .then(blob => {
+              // Blob을 사용하여 이미지 다운로드
+              const link = document.createElement('a');
+              link.href = URL.createObjectURL(blob);
+              link.download = 'captured_map.png';
+              link.click();
+          });
+
+      // 캡처 결과를 화면에 표시
+      const capturedImageDiv = document.getElementById('capturedImage');
+      capturedImageDiv.innerHTML = `<img src="${imageUrl}" alt="Captured Map">`;
+  }
+
+  function locateCurrentPosition() {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+              const currentPos = {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude
+              };
+
+              map.setCenter(currentPos);
+          }, function () {
+              alert('현재 위치를 가져올 수 없습니다.');
+          });
+      } else {
+          alert('브라우저가 Geolocation API를 지원하지 않습니다.');
+      }
+  }
+
+  // 객체를 쿼리 문자열로 직렬화하는 함수
+  function serializeObject(obj) {
+      return Object.keys(obj)
+          .map(key => `${key}=${encodeURIComponent(obj[key])}`)
+          .join('&');
+  }
+
   // 쿠키 삭제 함수
   function deleteCookie() {
     document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }
 </script>
+<!-- Google Maps API 및 Drawing 라이브러리 로드 -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg&callback=initMap&libraries=drawing" async defer></script>
 </body>
 </html>
