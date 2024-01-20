@@ -210,9 +210,8 @@
         <div class="profile-info-box">
             <div class="profile-info">
                 <div class="profile-image-group">
-                    <img th:src="${userProfile.profileUrl}" alt="Profile Picture"
-                         class="profile-image">
-                    <input type="file" id="image" name="image">
+                    <img id="preview" th:src="${userProfile.profileUrl}" alt="Profile Picture" class="profile-image">
+                    <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
 
                     <p><b>Rank</b>
                         <span th:if="${userProfile.score < 0}">Warned</span>
@@ -277,6 +276,18 @@
     // 이미지를 클릭했을 때 메인 페이지로 이동하는 코드
     window.location.href = 'boards/best';
   });
+
+  function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              document.getElementById('preview').src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+      } else {
+          document.getElementById('preview').src = "";
+      }
+  }
 
   // 로그아웃
   function logout() {
