@@ -3,13 +3,16 @@ package sparta.com.sappun.domain.reportBoard.service;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.reportBoard.dto.request.ReportBoardReq;
 import sparta.com.sappun.domain.reportBoard.dto.response.DeleteReportBoardRes;
 import sparta.com.sappun.domain.reportBoard.dto.response.ReportBoardGetRes;
-import sparta.com.sappun.domain.reportBoard.dto.response.ReportBoardListGetRes;
 import sparta.com.sappun.domain.reportBoard.dto.response.ReportBoardRes;
 import sparta.com.sappun.domain.reportBoard.entity.ReportBoard;
 import sparta.com.sappun.domain.reportBoard.repository.ReportBoardRepository;
@@ -78,10 +81,14 @@ public class ReportBoardService {
     }
 
     @Transactional
-    public ReportBoardListGetRes getReportBoardList() {
-        List<ReportBoardGetRes> reportBoards =
-                ReportBoardServiceMapper.INSTANCE.toReportBoardListGetRes(
-                        reportBoardRepository.findAllFetchBoard());
-        return ReportBoardListGetRes.builder().reportBoards(reportBoards).build();
+    public Page<ReportBoardGetRes> getReportBoardList(
+            int page, int size, String sortBy, boolean isAsc) {
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<ReportBoard> reportBoards = reportBoardRepository.findAllFetchBoard(pageable);
+
+        return reportBoards.map(ReportBoardServiceMapper.INSTANCE::toReportBoardGetRes);
     }
 }
