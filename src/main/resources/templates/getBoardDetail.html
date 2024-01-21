@@ -67,7 +67,7 @@
 <body>
 <div class="getBoardDetailPage">
     <div class="getBoardDetail-header">
-        <img class="main-img" th:src="@{/images/logo.png}"
+        <img class="main-img" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}"
              th:onclick="|location.href='@{/api/boards/best}'|" alt="Main Image">
         <div>
             <div class="btn-write">
@@ -115,6 +115,7 @@
 
         <div class="boardContent">
             <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
+            <p th:text="'작성자: ' + ${board.nickname}"></p>
             <p th:text="'내용: ' + ${board.content}"></p>
             <p th:text="'출발지: ' + ${board.departure}"></p>
             <p th:text="'경유지: ' + ${board.stopover}"></p>

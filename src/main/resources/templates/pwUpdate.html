@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>비밀번호 수정 페이지</title>
     <style>
         * {
@@ -119,7 +120,8 @@
     <div class="pwUpdate-header">
         <!-- 메인 로고 이미지 -->
         <logo>
-            <img class="main-img" th:src="@{/images/logo.png}" alt="Logo" id="mainLogoImage"
+            <img class="main-img" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}"
+                 alt="Logo" id="mainLogoImage"
                  th:onclick="|location.href='@{/api/boards/best}'|">
         </logo>
         <div class="login">
