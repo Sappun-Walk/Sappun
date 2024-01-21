@@ -88,21 +88,12 @@
     <div class="getBoardDetail-body">
         <div class="title-and-buttons">
             <div class="buttons">
-                <div th:if="${user != null}">
-                    <button th:onclick="'getUpdateBoard(' + ${boardId} + ')'" id="board-update-button">
-                        수정
-                    </button>
-                </div>
-                <div th:if="${user == null}">
-                    <button onclick="needToLogin()">수정</button>
-                </div>
+                <button th:if="${user != null && user.nickname eq board.nickname}" th:onclick="'getUpdateBoard(' + ${boardId} + ')'" id="board-update-button">
+                    수정
+                </button>
 
-                <div th:if="${user != null}">
-                    <button th:onclick="'deleteBoard(' + ${boardId} + ')'" id="board-delete-button">삭제</button>
-                </div>
-                <div th:if="${user == null}">
-                    <button onclick="needToLogin()">삭제</button>
-                </div>
+                <button th:if="${user != null && user.nickname eq board.nickname}" th:onclick="'deleteBoard(' + ${boardId} + ')'" id="board-delete-button">삭제</button>
+
 
                 <div th:if="${user != null}">
                     <button th:onclick="showInputForm()">신고</button>
@@ -685,7 +676,7 @@
                 .then(data => {
                     if (data.code === 200) {
                         alert('신고 취소가 성공적으로 이루어졌습니다.');
-                        window.location.href = boardUrl + report;
+                        window.location.href = boardUrl + '/report';
                     } else {
                         alert('신고 취소 실패: ' + data.message);
                     }
@@ -883,7 +874,7 @@
                 .then(data => {
                     if (data.code === 200) {
                         alert('신고 취소가 성공적으로 이루어졌습니다.');
-                        window.location.href = commentUrl + report;
+                        window.location.href = commentUrl + '/report';
                     } else {
                         alert('신고 취소 실패: ' + data.message);
                     }
