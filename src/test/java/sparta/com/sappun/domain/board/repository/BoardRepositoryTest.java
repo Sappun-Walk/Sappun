@@ -98,7 +98,8 @@ class BoardRepositoryTest implements BoardTest {
         Pageable pageable = PageRequest.ofSize(1);
 
         // when
-        Page<Board> boardPage = boardRepository.findAllByRegion(board.getRegion(), pageable);
+        Page<Board> boardPage =
+                boardRepository.findAllByReportCountLessThanAndRegion(5, board.getRegion(), pageable);
 
         // then
         assertEquals(TEST_BOARD_TITLE, boardPage.getContent().get(0).getTitle());
@@ -164,7 +165,7 @@ class BoardRepositoryTest implements BoardTest {
         boardRepository.save(board2);
 
         // when
-        List<Board> top3Boards = boardRepository.findTop3ByOrderByLikeCountDesc();
+        List<Board> top3Boards = boardRepository.findTop3ByReportCountLessThanOrderByLikeCountDesc(5);
 
         // then
         assertEquals(3, top3Boards.size());

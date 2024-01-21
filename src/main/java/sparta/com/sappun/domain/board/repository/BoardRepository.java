@@ -16,9 +16,10 @@ public interface BoardRepository {
 
     Board findById(Long boardId);
 
-    Page<Board> findAllByRegion(RegionEnum region, Pageable pageable);
+    Page<Board> findAllByReportCountLessThanAndRegion(
+            int reportCount, RegionEnum region, Pageable pageable);
 
-    List<Board> findTop3ByOrderByLikeCountDesc();
+    List<Board> findTop3ByReportCountLessThanOrderByLikeCountDesc(int reportCount);
 
     Board save(Board board);
 

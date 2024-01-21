@@ -51,7 +51,9 @@ public class BoardService {
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<Board> boardList = boardRepository.findAllByRegion(region, pageable);
+        Page<Board> boardList =
+                boardRepository.findAllByReportCountLessThanAndRegion(
+                        5, region, pageable); // 신고된 횟수가 5회 미만인 게시글 찾기
         return boardList.map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
     }
 
@@ -59,7 +61,8 @@ public class BoardService {
     public BoardBestListGetRes getBoardBestList() {
         List<BoardToListGetRes> boardGetRes =
                 BoardServiceMapper.INSTANCE.toBoardBestListGetRes(
-                        boardRepository.findTop3ByOrderByLikeCountDesc());
+                        boardRepository.findTop3ByReportCountLessThanOrderByLikeCountDesc(
+                                5)); // 신고된 횟수가 5회 미만인 게시글 찾기
         return BoardBestListGetRes.builder().boards(boardGetRes).build();
     }
 
