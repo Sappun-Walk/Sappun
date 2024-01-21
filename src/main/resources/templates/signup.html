@@ -6,11 +6,166 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <link th:href="@{/css/signup.css}" rel="stylesheet">
-    <script type="text/javascript" th:src="@{/js/basic.js}"></script>
     <meta charset="UTF-8">
     <title>회원가입 페이지</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        b {
+            font-size: 14px;
+        }
+
+        logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .wrap {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .login {
+            width: 35%;
+            height: 700px;
+            background: pink;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .login_title {
+            width: 80%;
+            margin-left: 5%;
+            margin-bottom: 5%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            align-items: row;
+        }
+
+        h2 {
+            color: black;
+            font-size: 2em;
+            text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            color: gray;
+            margin-left: 20px;
+            text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h5 {
+            color: gray;
+            margin-top: 30px;
+            margin-bottom: 5px;
+        }
+
+        .signup_1 {
+            margin-top: 10px;
+            width: 70%;
+        }
+
+        .preview-wrap {
+            display: flex;
+            width: 70%; /* 이미지 크기 조절에 따라 변경 가능 */
+            height: 150px;
+        }
+
+        .preview {
+            border-radius: 50%;
+            width: 150px; /* 이미지 크기 조절에 따라 변경 가능 */
+            max-height: 150px;
+            background-color: gray;
+            display: flex;
+        }
+
+        .preview-label {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file {
+            margin-top: auto;
+        }
+
+        .signup_1 input {
+            width: 100%;
+            height: 35px;
+            border-radius: 30px;
+            margin-top: 10px;
+            padding: 0px 20px;
+            border: 1px solid lightgray;
+            outline: none;
+        }
+
+        .signup-input {
+            display: flex;
+        }
+
+        .check-button {
+            width: 20%;
+            height: 30px;
+            border-radius: 30px;
+            margin-top: 15px;
+            margin-left: 5px;
+            padding: 0px 20px;
+            border: 1px solid lightgray;
+            outline: none;
+        }
+
+        .submit {
+            margin-top: 20px;
+            width: 50%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .submit input {
+            width: 100%;
+            height: 35px;
+            margin-left: 15px;
+            margin-right: 15px;
+            border: 0;
+            outline: none;
+            border-radius: 40px;
+            background: linear-gradient(to left, rgb(255, 77, 46), rgb(255, 155, 47));
+            color: white;
+            font-size: 1.2em;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        #mainLogoImage {
+            cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+        }
+    </style>
 </head>
 <body>
 <div class="wrap">
