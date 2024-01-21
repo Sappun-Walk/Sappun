@@ -76,12 +76,12 @@
               end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)})">
         <ul class="page-nation">
             <li class="li1" th:each="pageNum: ${#numbers.sequence(start, end)}">
-                <a href="#" th:data-region="${region}" th:data-page="${pageNum}" onclick="changeRegionAndPage(this)">
+                <a href="#" th:data-page="${pageNum}" onclick="changeBoardPage(this)">
                     <span th:text="${pageNum}"></span>
                 </a>
             </li>
         </ul>
-        <a href="#" th:data-page="${pageNum}" onclick="changeRegionAndPage(this)">
+        <a href="#" th:data-page="${pageNum}" onclick="changeBoardPage(this)">
             <span th:text="${pageNum}"></span>
         </a>
     </div>
