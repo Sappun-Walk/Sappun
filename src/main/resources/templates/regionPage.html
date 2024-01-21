@@ -50,6 +50,11 @@
         </div>
     </div>
 
+    <div class="view-div">
+        <button type="button" onclick="changeSortAndPage('createdAt')" class="btn btn-outline-dark float-right">생성순</button>
+        <button type="button" onclick="changeSortAndPage('likeCount')" class="btn btn-outline-dark float-right">좋아요순</button>
+    </div>
+
     <div class="gallery-container">
         <div class="gallery-item" th:each="board : ${responseDto.content}" th:id="${'board-' + board.id}"
              th:onclick="'getBoardDetails(' + ${board.id} + ')'" style="cursor: pointer;">

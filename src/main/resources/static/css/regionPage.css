@@ -164,3 +164,11 @@ body {
 #openBtn.hide {
   visibility: hidden;
 }
+
+.view-div {
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: 18%;
+  display: flex;
+  flex-direction: row-reverse;
+}

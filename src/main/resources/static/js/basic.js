@@ -12,6 +12,40 @@ const report = '/report'
 const like = '/like'
 const updatePassword = '/api/users/profile/password';
 
+
+//좋아요, 최신순 정렬기능
+function changeSortAndPage(sortBy) {
+    var currentUrl = window.location.href;
+    var updatedUrl;
+
+    // 정렬 기준이 이미 존재하는 경우
+    if (currentUrl.includes('&sortBy=')) {
+        updatedUrl = currentUrl.replace(/&sortBy=[^&]*/, '&sortBy=' + sortBy);
+    } else {
+        // 정렬 기준이 존재하지 않는 경우
+        if (currentUrl.includes('?')) {
+            updatedUrl = currentUrl + '&sortBy=' + sortBy;
+        } else {
+            updatedUrl = currentUrl + '?sortBy=' + sortBy;
+        }
+    }
+
+    // size 파라미터가 이미 존재하는 경우
+    if (currentUrl.includes('&size=')) {
+        updatedUrl = updatedUrl.replace(/&size=[^&]*/, '&size=8'); // 1 대신 적절한 값을 사용
+    } else {
+        // size 파라미터가 존재하지 않는 경우
+        if (currentUrl.includes('?')) {
+            updatedUrl = updatedUrl + '&size=8'; // 1 대신 적절한 값을 사용
+        } else {
+            updatedUrl = updatedUrl + '?size=8'; // 1 대신 적절한 값을 사용
+        }
+    }
+
+    // 새로운 URL로 페이지 이동
+    window.location.href = updatedUrl;
+}
+
 // 로그인
 function onLogin() {
     let username = $('#username').val();
