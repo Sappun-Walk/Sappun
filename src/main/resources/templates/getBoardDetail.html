@@ -102,7 +102,9 @@
                 <div class="comment">
                     <div class="gallery-caption">
                         <p th:text="'작성자: ' + ${comment.nickname}"></p>
-                        <img th:src="${comment.fileURL}" id="commentImage" alt="댓글 이미지">
+                        <p th:if="${comment.fileURL != null}">
+                            <img th:src="${comment.fileURL}" id="commentImage" alt="댓글 이미지">
+                        </p>
                         <p th:text="'내용: ' + ${comment.content}"></p>
                         <p th:text="'좋아요 수: ' + ${comment.likeCount}"></p>
                     </div>
