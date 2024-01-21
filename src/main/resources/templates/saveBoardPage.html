@@ -15,66 +15,62 @@
         <p th:text="${user.nickname}" class="user-name"></p>
         <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile" id="profileImage">
     </div>
-</div>
-<div class="getBoardDetail-body">
-    <div class="title-and-buttons">
-        <div class="title1">
-            <section1>
+    <div class="getBoardDetail-body">
+        <div class="title-and-buttons">
+            <section>
                 <select id="region" name="region">
                     <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}"
                             th:value="${enumItem}" th:text="${enumItem.region}"></option>
                 </select>
-            </section1>
-            <section2>
-                <label for="title">제목: </label>
+                <label for="title">제목:</label>
                 <input type="text" id="title" name="title" required>
-            </section2>
-            </divtitle1>
+
+            </section>
         </div>
-    </div>
-</div>
-<div class="getBoardDetail-body">
-    <div class="title-and-buttons">
-        <section>
-            <h3>추천하고 싶은 산책로를 그려주세요!</h3>
-            <!--지도 div-->
-            <div id="map"></div>
-            <button id="locateCurrentPosition">현재 위치 찾기</button>
-            <button id="drawLine">산책로 그리기</button>
-            <button id="captureImage">지도 캡쳐</button>
+        <div class="getBoardDetail-body">
+            <div class="title-and-buttons">
+                <section>
+                    <h3>추천하고 싶은 산책로를 그려주세요!</h3>
+                    <!--지도 div-->
+                    <div id="map"></div>
+                    <button id="locateCurrentPosition">현재 위치 찾기</button>
+                    <button id="drawLine">산책로 그리기</button>
+                    <button id="captureImage">지도 캡쳐</button>
 
-            <br>
-            <label for="departure">출발지:</label>
-            <input type="text" id="departure" name="departure" required>
-            <div id="stopovers-container">
-                <div class="stopover-section">
-                    <label>경유지:</label>
-                    <input type="text" id="stopover" name="stopover">
-                </div>
+                    <br>
+                    <label for="departure">출발지:</label>
+                    <input type="text" id="departure" name="departure" required>
+                    <div id="stopovers-container">
+                        <div class="stopover-section">
+                            <label>경유지:</label>
+                            <input type="text" id="stopover" name="stopover">
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="addStopover()">+</button>
+                    <br>
+                    <label for="destination">목적지:</label>
+                    <input type="text" id="destination" name="destination" required>
+                </section>
             </div>
-
-            <button type="button" onclick="addStopover()">+</button>
-            <br>
-            <label for="destination">목적지:</label>
-            <input type="text" id="destination" name="destination" required>
-        </section>
-    </div>
-    <section>
-        <h3>산책로를 캡처 후 첨부해주세요!</h3>
-        <!--지도 캡쳐한 이미지 div-->
-        <div id="capturedImage"></div>
-    </section>
-    <section class="preview-label">
-        이미지 업로드 :
-        <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
-    </section>
-    <section>
-        <label for="content">내용:</label>
-        <textarea id="content" name="content" required></textarea>
-    </section>
-    <div class="buttons">
-        <button th:onclick="saveBoard()">완료</button>
-        <button th:onclick="|location.href='@{/api/boards/best}'|">취소</button>
+            <section>
+                <h3>산책로를 캡처 후 첨부해주세요!</h3>
+                <!--지도 캡쳐한 이미지 div-->
+                <div id="capturedImage"></div>
+            </section>
+            <section class="preview-label">
+                이미지 업로드 :
+                <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
+            </section>
+            <section>
+                <label for="content">내용:</label>
+                <textarea id="content" name="content" required></textarea>
+            </section>
+            <div class="buttons">
+                <button th:onclick="saveBoard()">완료</button>
+                <button th:onclick="|location.href='@{/api/boards/best}'|">취소</button>
+            </div>
+        </div>
     </div>
 </div>
 <script>
@@ -186,7 +182,6 @@
     }
 </script>
 <!-- Google Maps API 및 Drawing 라이브러리 로드 -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg&callback=initMap&libraries=drawing"
-        async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg&callback=initMap&libraries=drawing" async defer></script>
 </body>
 </html>
