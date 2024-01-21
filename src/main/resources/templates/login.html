@@ -6,9 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
-            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/basic.js}"></script>
     <title>로그인 페이지</title>
     <style>
         * {
@@ -226,46 +224,4 @@
     </div>
 </div>
 </body>
-<script>
-    function onLogin() {
-        let username = $('#username').val();
-        let password = $('#password').val();
-
-        // 사용자 이름 또는 패스워드가 비어있을 경우 오류 처리
-        if (!username || !password) {
-            alert('사용자 이름과 패스워드를 입력하세요.');
-            return;
-        }
-
-        // Request DTO 구성
-        const UserLoginReq = {
-            username: username,
-            password: password
-        };
-
-        fetch('/api/users/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(UserLoginReq),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    // 서버 응답이 200이면 로그인 성공
-                    alert('로그인이 성공적으로 이루어졌습니다.');
-                    window.location.href = '/api/boards/best';
-                } else {
-                    // 서버 응답이 200이 아니면 로그인 실패
-                    alert('로그인 실패: ' + data.code);
-                }
-            })
-    }
-</script>
 </html>

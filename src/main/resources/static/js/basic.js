@@ -1,92 +1,685 @@
 const host = 'http://' + window.location.host;
-let targetId;
-let folderTargetId;
+const loginPage = '/api/users/login';
+const logoutUrl = '/api/users/logout';
+const mainPage = '/api/boards/best';
+const createPage = '/api/boards/create-page';
+const updatePage = '/api/boards/update/';
+const regionPage = '/api/boards/region'
+const userUrl = '/api/users'
+const boardUrl = '/api/boards';
+const commentUrl = '/api/comments'
+const report = '/report'
+const like = '/like'
+const updatePassword = '/api/users/profile/password';
 
-$(document).ready(function () {
-    const auth = getToken();
+// 로그인
+function onLogin() {
+    let username = $('#username').val();
+    let password = $('#password').val();
 
-    if (auth !== undefined && auth !== '') {
-        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-            jqXHR.setRequestHeader('Authorization', auth);
-        });
-    } else {
-        window.location.href = host + '/api/users/login-page';
+    // 사용자 이름 또는 패스워드가 비어있을 경우 오류 처리
+    if (!username || !password) {
+        alert('사용자 이름과 패스워드를 입력하세요.');
         return;
     }
 
-    $.ajax({
-        type: 'GET',
-        url: `/api/user-info`,
-        contentType: 'application/json',
+    // Request DTO 구성
+    const UserLoginReq = {
+        username: username,
+        password: password
+    };
+
+    fetch(loginPage, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(UserLoginReq),
     })
-        .done(function (res, status, xhr) {
-            const username = res.username;
-            const isAdmin = !!res.admin;
-
-            if (!username) {
-                window.location.href = '/api/users/login-page';
-                return;
-            }
-
-            $('#username').text(username);
-            if (isAdmin) {
-                $('#admin').text(true);
-                showProduct();
-            } else {
-                showProduct();
-            }
-
-            // 로그인한 유저의 폴더
-            $.ajax({
-                type: 'GET',
-                url: `/api/user-folder`,
-                error(error) {
-                    logout();
-                }
-            }).done(function (fragment) {
-                $('#fragment').replaceWith(fragment);
-            });
-
-        })
-        .fail(function (jqXHR, textStatus) {
-            logout();
-        });
-
-    // id 가 query 인 녀석 위에서 엔터를 누르면 execSearch() 함수를 실행하라는 뜻입니다.
-    $('#query').on('keypress', function (e) {
-        if (e.key == 'Enter') {
-            execSearch();
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    });
-    $('#close').on('click', function () {
-        $('#container').removeClass('active');
+        return response.json();
     })
-    $('#close2').on('click', function () {
-        $('#container2').removeClass('active');
+    .then(data => {
+        if (data.code === 200) {
+            // 서버 응답이 200이면 로그인 성공
+            alert('로그인이 성공적으로 이루어졌습니다.');
+            window.location.href = mainPage;
+        } else {
+            // 서버 응답이 200이 아니면 로그인 실패
+            alert('로그인 실패: ' + data.message);
+        }
     })
-    $('.nav div.nav-see').on('click', function () {
-        $('div.nav-see').addClass('active');
-        $('div.nav-search').removeClass('active');
-
-        $('#see-area').show();
-        $('#search-area').hide();
-    })
-    $('.nav div.nav-search').on('click', function () {
-        $('div.nav-see').removeClass('active');
-        $('div.nav-search').addClass('active');
-
-        $('#see-area').hide();
-        $('#search-area').show();
-    })
-
-    $('#see-area').show();
-    $('#search-area').hide();
-})
-
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+// 로그인 요청
+function needToLogin() {
+    alert("로그인한 사용자만 가능합니다.");
+}
+
+// 로그아웃
+function logout() {
+    var confirmation = confirm('로그아웃 하시겠습니까?');
+
+    if (confirmation) {
+        fetch(logoutUrl, {method: 'POST'})
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.code === 200) {
+                alert('로그아웃이 성공적으로 이루어졌습니다.');
+                deleteCookie();
+                window.location.href = mainPage;
+            } else {
+                alert('로그아웃 실패: ' + data.message);
+            }
+        })
+    }
+}
+
+// 쿠키 삭제
+function deleteCookie() {
+    document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+
+// 비밀번호 수정
+function onPasswordUpdate() {
+    let prePassword = $('#prePassword').val();
+    let newPassword = $('#newPassword').val();
+    let confirmPassword = $('#confirmPassword').val();
+
+    if (!prePassword || !newPassword || !confirmPassword) {
+        alert('공란을 빠짐없이 입력해주세요.');
+        return;
+    }
+
+    const pwUpdateReq = {
+        prePassword: prePassword,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword
+    };
+
+    fetch(updatePassword, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(pwUpdateReq),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.code === 200) {
+            alert('비밀번호 변경이 이루어졌습니다.');
+            window.location.href = userUrl;
+        } else {
+            alert('비밀번호 변경 실패: ' + data.message);
+        }
+    })
+}
+
+// 회원 탈퇴
+function deleteUser() {
+    var confirmation = confirm('정말로 회원 탈퇴하시겠습니까?');
+
+    // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
+    if (confirmation) {
+        fetch(userUrl, {method: 'DELETE'})
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.code === 200) {
+                alert('회원 탈퇴가 성공적으로 이루어졌습니다.');
+                window.location.href = mainPage;
+            } else {
+                alert('회원 탈퇴 실패: ' + data.message);
+            }
+        })
+    }
+}
+
+// 메인 페이지로 이동
+function getMainPage() {
+    window.location.href = mainPage;
+}
+
+// 상세 페이지로 이동
+function getBoardDetails(boardId) {
+    window.location.href = boardUrl + '/' + boardId;
+}
+
+// 게시글 작성 페이지로 이동
+function redirectToCreatePage() {
+    window.location.href = createPage;
+}
+
+// 게시글 수정 페이지 이동
+function getUpdateBoard(boardId) {
+    window.location.href = updatePage + boardId;
+}
+
+// 지역 페이지
+function submitForm() {
+    document.getElementById('regionForm').submit();
+}
+
+function changeRegionAndPage(element) {
+    var region = element.getAttribute('data-region');
+    var page = element.getAttribute('data-page');
+    window.location.href = regionPage + '?region=' + region + '&page=' + page;
+}
+
+// 게시글 작성 페이지 경유지 추가
+function addStopover() {
+    // 현재 경유지 입력란 개수 확인
+    var stopoverContainer = document.getElementById('stopovers-container');
+    var stopoverSections = stopoverContainer.getElementsByClassName('stopover-section');
+
+    if (stopoverSections.length < 5) {
+        // 5개 미만일 때만 새로운 경유지 입력란 생성
+        var newStopoverSection = document.createElement('div');
+        newStopoverSection.classList.add('stopover-section');
+
+        var label = document.createElement('label');
+        label.setAttribute('for', 'stopover');
+        label.textContent = '경유지:';
+
+        var input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.setAttribute('name', 'stopover');
+
+        newStopoverSection.appendChild(label);
+        newStopoverSection.appendChild(input);
+
+        // 생성된 입력란을 컨테이너에 추가
+        stopoverContainer.appendChild(newStopoverSection);
+    } else {
+        alert('경유지는 최대 5개까지만 입력 가능합니다.');
+    }
+}
+
+//게시글 작성
+function saveBoard() {
+    // 경유지 입력란의 값을 가져오는 함수
+    var stopoverContainer = document.getElementById('stopovers-container');
+    var stopoverInputs = stopoverContainer.querySelectorAll('.stopover-section input[name="stopover"]');
+
+    var region = document.getElementById('region').value;
+    var title = document.getElementById('title').value;
+    var departure = document.getElementById('departure').value;
+    var destination = document.getElementById('destination').value;
+    var content = document.getElementById('content').value;
+    var image = document.getElementById('image');
+
+    if (!title && !departure && !destination && !content) {
+        alert('입력을 다시 확인해주세요.');
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("region", region);
+    formData.append("title", title);
+    formData.append("departure", departure);
+    stopoverInputs.forEach(function (input) {
+        formData.append("stopover", input.value);
+    });
+    formData.append("destination", destination);
+    formData.append("content", content);
+
+    // 파일이 선택되지 않은 경우 빈 파일 전송
+    if (image.files.length > 0) {
+        formData.append('image', image.files[0]);
+    } else {
+        // 빈 파일 생성 및 전송
+        const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
+        formData.append('image', emptyFile);
+    }
+
+    // 요청 보내기
+    fetch(boardUrl, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.code === 200) {
+            alert('게시글 작성이 성공적으로 이루어졌습니다.');
+            window.location.href = mainPage;
+        } else {
+            alert('게시글 작성 실패: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error updating profile:', error);
+    });
+}
+
+// 게시글 수정
+function updateBoard(boardId) {
+    // 경유지 입력란의 값을 가져오는 함수
+    var stopoverContainer = document.getElementById('stopovers-container');
+    var stopoverInputs = stopoverContainer.querySelectorAll('.stopover-section input[name="stopover"]');
+
+    var region = document.getElementById('region').value;
+    var title = document.getElementById('title').value;
+    var departure = document.getElementById('departure').value;
+    var destination = document.getElementById('destination').value;
+    var content = document.getElementById('content').value;
+    var image = document.getElementById('image');
+
+    if (!title && !departure && !destination && !content) {
+        alert('입력을 다시 확인해주세요.');
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("region", region);
+    formData.append("title", title);
+    formData.append("departure", departure);
+    stopoverInputs.forEach(function(input) {
+        formData.append("stopover", input.value);
+    });
+    formData.append("destination", destination);
+    formData.append("content", content);
+
+    // 파일이 선택되지 않은 경우 빈 파일 전송
+    if (image.files.length > 0) {
+        formData.append('image', image.files[0]);
+    } else {
+        // 빈 파일 생성 및 전송
+        const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
+        formData.append('image', emptyFile);
+    }
+
+    // 요청 보내기
+    fetch(boardUrl + '/' + boardId, {
+        method: 'PATCH',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.code === 200) {
+            alert('게시글 수정이 성공적으로 이루어졌습니다.');
+            window.location.href = boardUrl + '/' + boardId;
+        } else {
+            alert('게시글 수정 실패: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error updating profile:', error);
+    });
+}
+
+// 게시글 삭제
+function deleteBoard(boardId) {
+    fetch(boardUrl + '/' + boardId, {method: 'DELETE'})
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.code === 200) {
+            alert('게시글 삭제가 성공적으로 이루어졌습니다.');
+            window.location.href = mainPage;
+        } else {
+            alert('게시글 삭제 실패: ' + data.message);
+        }
+    });
+}
+
+// 게시글 신고 사유 입력
+function showInputForm() {
+    var inputForm = document.getElementById('inputForm');
+    inputForm.style.display = 'block';
+}
+
+// 게시글 신고
+function reportBoard(boardId) {
+    const reason = document.getElementById('reason').value;
+
+    // Request DTO 구성
+    const request = {
+        reason: reason,
+    };
+
+    fetch(boardUrl + '/' + boardId + report, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.code === 200) {
+            alert('게시글 신고가 성공적으로 이루어졌습니다.');
+            window.location.href = boardUrl + '/' + boardId;
+        } else {
+            alert('게시글 신고 실패: ' + data.message);
+        }
+    })
+
+    var inputForm = document.getElementById('inputForm');
+    inputForm.style.display = 'none';
+}
+
+// 게시글 신고 취소
+function cancelReportBoard(boardId) {
+    // 사용자에게 재확인 알림창 표시
+    var confirmation = confirm('신고 취소 하시겠습니까?');
+
+    // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
+    if (confirmation) {
+        fetch(boardUrl + '/' + boardId + report, {method: 'DELETE'})
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.code === 200) {
+                alert('신고 취소가 성공적으로 이루어졌습니다.');
+                window.location.href = boardUrl + report;
+            } else {
+                alert('신고 취소 실패: ' + data.message);
+            }
+        })
+    }
+}
+
+// 게시글 좋아요
+function likeBoard(boardId) {
+    fetch(boardUrl + '/' + boardId + like, {
+        method: 'POST',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.code === 200) {
+            window.location.href = boardUrl + '/' + boardId;
+        } else {
+            alert('게시글 좋아요 실패: ' + data.message);
+        }
+    })
+}
+
+// 댓글 작성
+function saveComment(boardId) {
+    const content = document.getElementById('commentContent').value;
+    const image = document.getElementById('commentImageInput');
+
+    if (!content) {
+        alert('내용을 입력해주세요.');
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("boardId", boardId);
+    formData.append("content", content);
+
+    // 파일이 선택되지 않은 경우 빈 파일 전송
+    if (image.files.length > 0) {
+        formData.append('image', image.files[0]);
+    } else {
+        // 빈 파일 생성 및 전송
+        const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
+        formData.append('image', emptyFile);
+    }
+
+    fetch(commentUrl, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.code === 200) {
+            alert('댓글 작성이 성공적으로 이루어졌습니다.');
+            window.location.href = boardUrl + '/' + boardId;
+        } else {
+            alert('댓글 작성 실패: ' + data.message);
+        }
+    })
+}
+
+// 댓글 수정 입력창
+function showCommentUpdateForm() {
+    var inputForm = document.getElementById('commentUpdateForm');
+    inputForm.style.display = 'block';
+}
+
+// 댓글 수정
+function updateComment(boardId, commentId) {
+    const commentContent = document.getElementById('inputCommentContent').value;
+    const commentImage = document.getElementById('inputCommentImage');
+
+    if (!commentContent) {
+        alert('내용을 입력해주세요.');
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("content", commentContent);
+
+    // 파일이 선택되지 않은 경우 빈 파일 전송
+    if (commentImage.files.length > 0) {
+        formData.append('image', commentImage.files[0]);
+    } else {
+        // 빈 파일 생성 및 전송
+        const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
+        formData.append('image', emptyFile);
+    }
+
+    fetch(commentUrl + '/' + commentId, {
+        method: 'PATCH',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.code === 200) {
+            alert('댓글 수정이 성공적으로 이루어졌습니다.');
+            window.location.href = boardUrl + '/' + boardId;
+        } else {
+            alert('댓글 수정 실패: ' + data.message);
+        }
+    })
+
+    // 입력창을 숨기기
+    var inputForm = document.getElementById('commentUpdateForm');
+    inputForm.style.display = 'none';
+}
+
+// 댓글 삭제
+function deleteComment(boardId, commentId) {
+    fetch(commentUrl + '/' + commentId, {method: 'DELETE'})
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.code === 200) {
+            alert('댓글 삭제가 성공적으로 이루어졌습니다.');
+            window.location.href = boardUrl + '/' + boardId;
+        } else {
+            alert('댓글 삭제 실패: ' + data.message);
+        }
+    });
+}
+
+// 댓글 신고 사유 입력
+function showCommentInputForm() {
+    var inputForm = document.getElementById('commentInputForm');
+    inputForm.style.display = 'block';
+}
+
+// 댓글 신고
+function reportComment(boardId, commentId) {
+    const reason = document.getElementById('commentReason').value;
+
+    const request = {
+        reason: reason,
+    };
+
+    fetch(commentUrl + '/' + commentId + report, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.code === 200) {
+            window.location.href = boardUrl + '/' + boardId;
+        } else {
+            alert('댓글 신고 실패: ' + data.message);
+        }
+    })
+
+    var inputForm = document.getElementById('commentInputForm');
+    inputForm.style.display = 'none';
+}
+
+// 댓글 신고 취소
+function cancelReportComment(commentId) {
+    // 사용자에게 재확인 알림창 표시
+    var confirmation = confirm('신고 취소 하시겠습니까?');
+
+    // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
+    if (confirmation) {
+        fetch(commentUrl+ '/' + commentId + report, {method: 'DELETE'})
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.code === 200) {
+                alert('신고 취소가 성공적으로 이루어졌습니다.');
+                window.location.href = commentUrl + report;
+            } else {
+                alert('신고 취소 실패: ' + data.message);
+            }
+        })
+    }
+}
+
+// 댓글 좋아요
+function likeComment(boardId, commentId) {
+    fetch(commentUrl + '/' + commentId + like, {
+        method: 'POST',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.code === 200) {
+            window.location.href = boardUrl + '/' + boardId;
+        } else {
+            alert('댓글 좋아요 실패: ' + data.message);
+        }
+    })
+}
+
+// 이미지 미리보기
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('preview').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        document.getElementById('preview').src = "";
+    }
+}
+
+// 사이드 메뉴바
+function openNav() {
+    document.getElementById("sidebar").style.width = "250px";
+    document.getElementById("main").style.mginLeft = "250px";
+    document.getElementById("openBtn").classList.add("hide");
+    document.addEventListener("click", closeNavOutside);
+}
+
+function closeNav() {
+    document.getElementById("sidebar").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+    document.getElementById("openBtn").classList.remove("hide");
+    document.removeEventListener("click", closeNavOutside);
+}
+
+function closeNavOutside(event) {
+    var sidebar = document.getElementById("sidebar");
+    var openBtn = document.getElementById("openBtn");
+    if (event.target !== sidebar && event.target !== openBtn && !sidebar.contains(event.target)) {
+        closeNav();
+    }
+}
+
+function navigateTo(url) {
+    closeNav(); // 사이드바를 닫습니다.
+    window.location.href = url; // 지정된 URL로 이동합니다.
+}
+
+// --------------------------------------------------------
 function execSearch() {
     /**
      * 검색어 input id: query
@@ -120,54 +713,6 @@ function execSearch() {
         }
     })
 
-}
-
-function addHTML(itemDto) {
-    /**
-     * class="search-itemDto" 인 녀석에서
-     * image, title, lprice, addProduct 활용하기
-     * 참고) onclick='addProduct(${JSON.stringify(itemDto)})'
-     */
-    return `<div class="search-itemDto">
-        <div class="search-itemDto-left">
-            <img src="${itemDto.image}" alt="">
-        </div>
-        <div class="search-itemDto-center">
-            <div>${itemDto.title}</div>
-            <div class="price">
-                ${numberWithCommas(itemDto.lprice)}
-                <span class="unit">원</span>
-            </div>
-        </div>
-        <div class="search-itemDto-right">
-            <img src="../images/icon-save.png" alt="" onclick='addProduct(${JSON.stringify(itemDto)})'>
-        </div>
-    </div>`
-}
-
-function addProduct(itemDto) {
-    /**
-     * modal 뜨게 하는 법: $('#container').addClass('active');
-     * data를 ajax로 전달할 때는 두 가지가 매우 중요
-     * 1. contentType: "application/json",
-     * 2. data: JSON.stringify(itemDto),
-     */
-
-    // 1. POST /api/products 에 관심 상품 생성 요청
-    $.ajax({
-        type: 'POST',
-        url: '/api/products',
-        contentType: 'application/json',
-        data: JSON.stringify(itemDto),
-        success: function (response) {
-            // 2. 응답 함수에서 modal을 뜨게 하고, targetId 를 reponse.id 로 설정
-            $('#container').addClass('active');
-            targetId = response.id;
-        },
-        error(error, status, request) {
-            logout();
-        }
-    });
 }
 
 function showProduct(folderId = null) {
@@ -226,219 +771,4 @@ function showProduct(folderId = null) {
             }
         }
     });
-}
-
-// Folder 관련 기능
-function openFolder(folderId) {
-    folderTargetId = folderId;
-    $("button.product-folder").removeClass("folder-active");
-    if (!folderId) {
-        $("button#folder-all").addClass('folder-active');
-    } else {
-        $(`button[value='${folderId}']`).addClass('folder-active');
-    }
-    showProduct(folderId);
-}
-
-// 폴더 추가 팝업
-function openAddFolderPopup() {
-    $('#container2').addClass('active');
-}
-
-// 폴더 Input 추가
-function addFolderInput() {
-    $('#folders-input').append(
-        `<input type="text" class="folderToAdd" placeholder="추가할 폴더명">
-       <span onclick="closeFolderInput(this)" style="margin-right:5px">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30px" fill="red" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
-            </svg>
-       </span>
-      `
-    );
-}
-
-function closeFolderInput(folder) {
-    $(folder).prev().remove();
-    $(folder).next().remove();
-    $(folder).remove();
-}
-
-function addFolder() {
-    const folderNames = $('.folderToAdd').toArray().map(input => input.value);
-    try {
-        folderNames.forEach(name => {
-            if (name === '') {
-                alert('올바른 폴더명을 입력해주세요');
-                throw new Error("stop loop");
-            }
-        });
-    } catch (e) {
-        console.log(e);
-        return;
-    }
-
-    $.ajax({
-        type: "POST",
-        url: `/api/folders`,
-        contentType: "application/json",
-        data: JSON.stringify({
-            folderNames
-        })
-    }).done(function (data, textStatus, xhr) {
-        if(data !== '') {
-            alert("중복된 폴더입니다.");
-            return;
-        }
-        $('#container2').removeClass('active');
-        alert('성공적으로 등록되었습니다.');
-        window.location.reload();
-    })
-        .fail(function(xhr, textStatus, errorThrown) {
-            alert("중복된 폴더입니다.");
-        });
-}
-
-function addProductItem(product) {
-    const folders = product.productFolderList.map(folder =>
-        `
-            <span onclick="openFolder(${folder.id})">
-                #${folder.name}
-            </span>
-        `
-    );
-    return `<div class="product-card">
-                <div onclick="window.location.href='${product.link}'">
-                    <div class="card-header">
-                        <img src="${product.image}"
-                             alt="">
-                    </div>
-                    <div class="card-body">
-                        <div class="title">
-                            ${product.title}
-                        </div>
-                        <div class="lprice">
-                            <span>${numberWithCommas(product.lprice)}</span>원
-                        </div>
-                        <div class="isgood ${product.lprice > product.myprice ? 'none' : ''}">
-                            최저가
-                        </div>
-                    </div>
-                </div>
-                <div class="product-tags" style="margin-bottom: 20px;">
-                    ${folders}
-                    <span onclick="addInputForProductToFolder(${product.id}, this)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30px" fill="currentColor" class="bi bi-folder-plus" viewBox="0 0 16 16">
-                            <path d="M.5 3l.04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.684.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z"/>
-                            <path d="M13.5 10a.5.5 0 0 1 .5.5V12h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V13h-1.5a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z"/>
-                        </svg>
-                    </span>
-                </div>
-            </div>`;
-}
-
-function addInputForProductToFolder(productId, button) {
-    $.ajax({
-        type: 'GET',
-        url: `/api/folders`,
-        success: function (folders) {
-            const options = folders.map(folder => `<option value="${folder.id}">${folder.name}</option>`)
-            const form = `
-                <span>
-                    <form id="folder-select" method="post" autocomplete="off" action="/api/products/${productId}/folder">
-                        <select name="folderId" form="folder-select">
-                            ${options}
-                        </select>
-                        <input type="submit" value="추가" style="padding: 5px; font-size: 12px; margin-left: 5px;">
-                    </form>
-                </span>
-            `;
-            $(form).insertBefore(button);
-            $(button).remove();
-            $("#folder-select").on('submit', function (e) {
-                e.preventDefault();
-                $.ajax({
-                    type: $(this).prop('method'),
-                    url: $(this).prop('action'),
-                    data: $(this).serialize(),
-                }).done(function (data, textStatus, xhr) {
-                    if(data !== '') {
-                        alert("중복된 폴더입니다.");
-                        return;
-                    }
-                    alert('성공적으로 등록되었습니다.');
-                    window.location.reload();
-                })
-                    .fail(function(xhr, textStatus, errorThrown) {
-                        alert("중복된 폴더입니다.");
-                    });
-            });
-        },
-        error(error, status, request) {
-            logout();
-        }
-    });
-}
-
-function setMyprice() {
-    /**
-     * 1. id가 myprice 인 input 태그에서 값을 가져온다.
-     * 2. 만약 값을 입력하지 않았으면 alert를 띄우고 중단한다.
-     * 3. PUT /api/product/${targetId} 에 data를 전달한다.
-     *    주의) contentType: "application/json",
-     *         data: JSON.stringify({myprice: myprice}),
-     *         빠뜨리지 말 것!
-     * 4. 모달을 종료한다. $('#container').removeClass('active');
-     * 5, 성공적으로 등록되었음을 알리는 alert를 띄운다.
-     * 6. 창을 새로고침한다. window.location.reload();
-     */
-        // 1. id가 myprice 인 input 태그에서 값을 가져온다.
-    let myprice = $('#myprice').val();
-    // 2. 만약 값을 입력하지 않았으면 alert를 띄우고 중단한다.
-    if (myprice == '') {
-        alert('올바른 가격을 입력해주세요');
-        return;
-    }
-
-    // 3. PUT /api/product/${targetId} 에 data를 전달한다.
-    $.ajax({
-        type: 'PUT',
-        url: `/api/products/${targetId}`,
-        contentType: 'application/json',
-        data: JSON.stringify({myprice: myprice}),
-        success: function (response) {
-
-            // 4. 모달을 종료한다. $('#container').removeClass('active');
-            $('#container').removeClass('active');
-            // 5. 성공적으로 등록되었음을 알리는 alert를 띄운다.
-            alert('성공적으로 등록되었습니다.');
-            // 6. 창을 새로고침한다. window.location.reload();
-            window.location.reload();
-        },
-        error(error, status, request) {
-            logout();
-        }
-    })
-}
-
-function logout() {
-    // 토큰 삭제
-    Cookies.remove('Authorization', {path: '/'});
-    window.location.href = host + '/api/users/login-page';
-}
-
-function getToken() {
-
-    let auth = Cookies.get('Authorization');
-
-    if(auth === undefined) {
-        return '';
-    }
-
-    // kakao 로그인 사용한 경우 Bearer 추가
-    if(auth.indexOf('Bearer') === -1 && auth !== ''){
-        auth = 'Bearer ' + auth;
-    }
-
-    return auth;
 }

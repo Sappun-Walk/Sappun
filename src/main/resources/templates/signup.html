@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script type="text/javascript" th:src="@{/js/basic.js}"></script>
     <meta charset="UTF-8">
     <title>회원가입 페이지</title>
     <style>
@@ -231,23 +232,6 @@
     </div>
 </div>
 <script>
-    // 로고 이미지 클릭 시 메인페이지로
-    document.getElementById('mainLogoImage').addEventListener('click', function () {
-        window.location.href = '/api/boards/best';
-    });
-
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                document.getElementById('preview').src = e.target.result;
-            };
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            document.getElementById('preview').src = "";
-        }
-    }
-
     var isDuplicatedUsername = true;
     var isDuplicatedNickname = true;
 
