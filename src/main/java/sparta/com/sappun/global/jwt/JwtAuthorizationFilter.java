@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,8 +49,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String accessToken =
-                jwtUtil.getTokensFromCookie(request).get(ACCESS_TOKEN_HEADER); // access token 찾음
+
+        Map<String, String> tokens = jwtUtil.getTokensFromCookie(request);
+        String accessToken = null;
+        String refreshToken = null;
+
+        if (tokens != null) {
+            accessToken =
+                    jwtUtil.getTokensFromCookie(request).get(ACCESS_TOKEN_HEADER); // access token 찾음
+        }
         log.info("accessToken : {}", accessToken);
 
         // access token 비어있으면 인증 미처리
@@ -73,10 +81,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         log.info("accessToken 만료");
-
-        // access token 이 만료되면 refresh token 가져옴
-        String refreshToken =
-                jwtUtil.getTokensFromCookie(request).get(REFRESH_TOKEN_HEADER); // refresh token 찾음
+        if (tokens != null) {
+            // access token 이 만료되면 refresh token 가져옴
+            refreshToken =
+                    jwtUtil.getTokensFromCookie(request).get(REFRESH_TOKEN_HEADER); // refresh token 찾음
+        }
         log.info("refreshToken : {}", refreshToken);
 
         // refresh token 검증
