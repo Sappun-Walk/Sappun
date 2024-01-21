@@ -214,11 +214,11 @@
         <h5>다른 방법으로 로그인하기</h5>
         <div class="login_sns">
             <button class="sbutton" id="login-kakao-btn">
-                <a href="https://kauth.kakao.com/oauth/authorize?client_id=eb63c9db76c1cd5b08e311f603565bfc&amp;redirect_uri=http://localhost:8080/api/users/kakao/callback&amp;response_type=code"
+                <a href="https://kauth.kakao.com/oauth/authorize?client_id=eb63c9db76c1cd5b08e311f603565bfc&amp;redirect_uri=http://43.203.41.214:8080/api/users/kakao/callback&amp;response_type=code"
                    target=""><i class="custom-kakao"></i></a>
             </button>
             <button class="sbutton" id="login-naver-btn">
-                <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&amp;client_id=DkMAKxIfQr40yq4hYpwZ&amp;redirect_uri=http://localhost:8080/api/users/naver/callback&amp;state=test"
+                <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&amp;client_id=DkMAKxIfQr40yq4hYpwZ&amp;redirect_uri=http://43.203.41.214:8080/api/users/naver/callback&amp;state=test"
                    target=""><i class="custom-naver"></i></a>
             </button>
         </div>
@@ -681,7 +681,7 @@
                 .then(data => {
                     if (data.code === 200) {
                         alert('신고 취소가 성공적으로 이루어졌습니다.');
-                        window.location.href = boardUrl + report;
+                        window.location.href = boardUrl + '/report';
                     } else {
                         alert('신고 취소 실패: ' + data.message);
                     }
@@ -879,7 +879,7 @@
                 .then(data => {
                     if (data.code === 200) {
                         alert('신고 취소가 성공적으로 이루어졌습니다.');
-                        window.location.href = commentUrl + report;
+                        window.location.href = commentUrl + '/report';
                     } else {
                         alert('신고 취소 실패: ' + data.message);
                     }
