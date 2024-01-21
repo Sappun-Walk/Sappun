@@ -52,7 +52,7 @@
                         <label for="username"><b>아이디</b></label>
                         <div class="username-input">
                             <input type="text" id="username" name="username" required
-                                   placeholder="영어, 숫자만 포함 가능">
+                                   th:placeholder="|${userProfile.username}|">
                             <button id="username-check-button" onclick="checkUsername()">중복확인
                             </button>
                             <span id="usernameMessage"></span>
@@ -63,7 +63,7 @@
                         <label for="nickname"><b>닉네임</b></label>
                         <div class="nickname-input">
                             <input type="text" id="nickname" name="nickname" required
-                                   placeholder="한글, 영어, 숫자만 포함 가능">
+                                   th:placeholder="${userProfile.nickname}">
                             <button id="nickname-check-button" onclick="checkNickname()">중복확인
                             </button>
                             <span id="nicknameMessage"></span>
@@ -214,17 +214,14 @@
     })
     .then(data => {
       if (data.code === 200) {
-        // 서버 응답이 200이면 로그인 성공
         alert('프로필 수정이 성공적으로 이루어졌습니다.');
         window.location.href = '/api/users';
       } else {
-        // 서버 응답이 200이 아니면 로그인 실패
-        alert('프로필 수정 실패: ' + data.code);
+        alert('프로필 수정 실패: ' + data.message);
       }
     })
     .catch(error => {
       console.error('Error updating profile:', error);
-      // 오류 발생 시의 로직을 추가할 수 있습니다.
     });
   }
 

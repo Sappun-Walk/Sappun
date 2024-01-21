@@ -12,6 +12,40 @@ const report = '/report'
 const like = '/like'
 const updatePassword = '/api/users/profile/password';
 
+
+//좋아요, 최신순 정렬기능
+function changeSortAndPage(sortBy) {
+    var currentUrl = window.location.href;
+    var updatedUrl;
+
+    // 정렬 기준이 이미 존재하는 경우
+    if (currentUrl.includes('&sortBy=')) {
+        updatedUrl = currentUrl.replace(/&sortBy=[^&]*/, '&sortBy=' + sortBy);
+    } else {
+        // 정렬 기준이 존재하지 않는 경우
+        if (currentUrl.includes('?')) {
+            updatedUrl = currentUrl + '&sortBy=' + sortBy;
+        } else {
+            updatedUrl = currentUrl + '?sortBy=' + sortBy;
+        }
+    }
+
+    // size 파라미터가 이미 존재하는 경우
+    if (currentUrl.includes('&size=')) {
+        updatedUrl = updatedUrl.replace(/&size=[^&]*/, '&size=8'); // 1 대신 적절한 값을 사용
+    } else {
+        // size 파라미터가 존재하지 않는 경우
+        if (currentUrl.includes('?')) {
+            updatedUrl = updatedUrl + '&size=8'; // 1 대신 적절한 값을 사용
+        } else {
+            updatedUrl = updatedUrl + '?size=8'; // 1 대신 적절한 값을 사용
+        }
+    }
+
+    // 새로운 URL로 페이지 이동
+    window.location.href = updatedUrl;
+}
+
 // 로그인
 function onLogin() {
     let username = $('#username').val();
@@ -241,13 +275,11 @@ function saveBoard() {
     formData.append("destination", destination);
     formData.append("content", content);
 
-    // 파일이 선택되지 않은 경우 빈 파일 전송
+    // 파일이 선택되지 않은 경우 알림창이 뜨도록 함
     if (image.files.length > 0) {
         formData.append('image', image.files[0]);
     } else {
-        // 빈 파일 생성 및 전송
-        const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
-        formData.append('image', emptyFile);
+        alert("파일을 첨부해주세요!");
     }
 
     // 요청 보내기
@@ -677,98 +709,4 @@ function closeNavOutside(event) {
 function navigateTo(url) {
     closeNav(); // 사이드바를 닫습니다.
     window.location.href = url; // 지정된 URL로 이동합니다.
-}
-
-// --------------------------------------------------------
-function execSearch() {
-    /**
-     * 검색어 input id: query
-     * 검색결과 목록: #search-result-box
-     * 검색결과 HTML 만드는 함수: addHTML
-     */
-        // 1. 검색창의 입력값을 가져온다.
-    let query = $('#query').val();
-
-    // 2. 검색창 입력값을 검사하고, 입력하지 않았을 경우 focus.
-    if (query == '') {
-        alert('검색어를 입력해주세요');
-        $('#query').focus();
-        return;
-    }
-    // 3. GET /api/search?query=${query} 요청
-    $.ajax({
-        type: 'GET',
-        url: `/api/search?query=${query}`,
-        success: function (response) {
-            $('#search-result-box').empty();
-            // 4. for 문마다 itemDto를 꺼내서 HTML 만들고 검색결과 목록에 붙이기!
-            for (let i = 0; i < response.length; i++) {
-                let itemDto = response[i];
-                let tempHtml = addHTML(itemDto);
-                $('#search-result-box').append(tempHtml);
-            }
-        },
-        error(error, status, request) {
-            logout();
-        }
-    })
-
-}
-
-function showProduct(folderId = null) {
-    /**
-     * 관심상품 목록: #product-container
-     * 검색결과 목록: #search-result-box
-     * 관심상품 HTML 만드는 함수: addProductItem
-     */
-
-    let dataSource = null;
-
-    var sorting = $("#sorting option:selected").val();
-    var isAsc = $(':radio[name="isAsc"]:checked').val();
-
-    if (folderId) {
-        dataSource = `/api/folders/${folderId}/products?sortBy=${sorting}&isAsc=${isAsc}`;
-    } else if(folderTargetId === undefined) {
-        dataSource = `/api/products?sortBy=${sorting}&isAsc=${isAsc}&folderId=${folderId}`;
-    } else {
-        dataSource = `/api/folders/${folderTargetId}/products?sortBy=${sorting}&isAsc=${isAsc}`;
-    }
-
-    $('#product-container').empty();
-    $('#search-result-box').empty();
-    $('#pagination').pagination({
-        dataSource,
-        locator: 'content',
-        alias: {
-            pageNumber: 'page',
-            pageSize: 'size'
-        },
-        totalNumberLocator: (response) => {
-            return response.totalElements;
-        },
-        pageSize: 10,
-        showPrevious: true,
-        showNext: true,
-        ajax: {
-            beforeSend: function () {
-                $('#product-container').html('상품 불러오는 중...');
-            },
-            error(error, status, request) {
-                if (error.status === 403) {
-                    $('html').html(error.responseText);
-                    return;
-                }
-                logout();
-            }
-        },
-        callback: function (response, pagination) {
-            $('#product-container').empty();
-            for (let i = 0; i < response.length; i++) {
-                let product = response[i];
-                let tempHtml = addProductItem(product);
-                $('#product-container').append(tempHtml);
-            }
-        }
-    });
 }

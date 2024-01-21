@@ -39,19 +39,15 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public BoardUpdateRes getBoardUpdateRes(Long boardId) {
-        Board board = getBoardById(boardId);
-        return new BoardUpdateRes();
-    }
-
-    @Transactional(readOnly = true)
     public Page<BoardToListGetRes> getBoardList(
             RegionEnum region, int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<Board> boardList = boardRepository.findAllByRegion(region, pageable);
+        Page<Board> boardList =
+                boardRepository.findAllByReportCountLessThanAndRegion(
+                        5, region, pageable); // 신고된 횟수가 5회 미만인 게시글 찾기
         return boardList.map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
     }
 
@@ -59,7 +55,8 @@ public class BoardService {
     public BoardBestListGetRes getBoardBestList() {
         List<BoardToListGetRes> boardGetRes =
                 BoardServiceMapper.INSTANCE.toBoardBestListGetRes(
-                        boardRepository.findTop3ByOrderByLikeCountDesc());
+                        boardRepository.findTop3ByReportCountLessThanOrderByLikeCountDesc(
+                                5)); // 신고된 횟수가 5회 미만인 게시글 찾기
         return BoardBestListGetRes.builder().boards(boardGetRes).build();
     }
 
@@ -69,10 +66,8 @@ public class BoardService {
         user.updateScore(100); // 게시글 작성하면 점수 +100
 
         String boardImage = null;
-        if (!Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) {
-            S3Validator.isProfileImageFile(multipartFile);
-            boardImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
-        }
+        S3Validator.isProfileImageFile(multipartFile);
+        boardImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
 
         boardRepository.save(
                 Board.builder()
@@ -97,17 +92,14 @@ public class BoardService {
         User user = getUserById(boardUpdateReq.getUserId());
         BoardValidator.checkBoardUser(board.getUser().getId(), user.getId()); // 수정 가능한 사용자인지 확인
 
-        // 기존 이미지
+        // 입력 파일이 없는 경우 기존 이미지 파일로
         String imageURL = board.getFileURL();
-        // 기존 이미지가 있으면 삭제
-        if (imageURL != null && !imageURL.isEmpty()) {
-            s3Util.deleteFile(imageURL, S3Util.FilePath.BOARD);
-        }
 
-        // 입력 파일이 없는 경우
-        if (Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) {
-            imageURL = null;
-        } else {
+        // 입력 파일이 있는 경우
+        if (!Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) {
+            if (imageURL != null && !imageURL.isEmpty()) { // 기존 이미지 파일 삭제
+                s3Util.deleteFile(imageURL, S3Util.FilePath.BOARD);
+            }
             // 이미지 파일인지 확인
             S3Validator.isProfileImageFile(multipartFile);
             // 이미지 업로드

@@ -104,8 +104,8 @@ public class BoardController {
             @PathVariable Long boardId,
             Model model,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        BoardUpdateRes boardUpdateRes = boardService.getBoardUpdateRes(boardId);
-        model.addAttribute("board", boardUpdateRes);
+        BoardGetRes boardGetRes = boardService.getBoard(boardId);
+        model.addAttribute("board", boardGetRes);
         model.addAttribute("user", userDetails.getUser());
         return "updateBoardPage";
     }

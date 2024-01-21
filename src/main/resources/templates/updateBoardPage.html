@@ -17,37 +17,45 @@
     <div class="getBoardDetail-body">
         <div class="title-and-buttons">
             <section>
-                <select id="region" name="region">
+                <select id="region" name="region" th:value="${board.region}">
                     <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}"
                             th:value="${enumItem}" th:text="${enumItem.region}"></option>
                 </select>
                 <label for="title">제목:</label>
-                <input type="text" id="title" name="title" required>
+                <input type="text" id="title" name="title" th:value="${board.title}" required>
 
             </section>
         </div>
         <div class="getBoardDetail-body">
             <div class="title-and-buttons">
                 <section>
-                    <!--지도 div-->
-                    <div id="map"></div>
-                    <button id="locateCurrentPosition">현재 위치 찾기</button>
-                    <button id="drawLine">산책로 그리기</button>
-                    <button id="captureImage">지도 캡쳐</button>
-
-                    <label for="departure">출발지:</label>
-                    <input type="text" id="departure" name="departure" required>
-                    <div id="stopovers-container">
-                        <div class="stopover-section">
-                            <label>경유지:</label>
-                            <input type="text" id="stopover" name="stopover">
+                    <div class="board-maps">
+                        <!--지도 div-->
+                        <div>
+                            <div id="map"></div>
+                            <button id="locateCurrentPosition">현재 위치 찾기</button>
+                            <button id="drawLine">산책로 그리기</button>
+                            <button id="captureImage">지도 캡쳐</button>
+                        </div>
+                        <!--기존 파일-->
+                        <div>
+                            <h4>기존 산책로</h4>
+                            <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
                         </div>
                     </div>
-
-                    <button type="button" onclick="addStopover()">+</button>
+                    <label for="departure">출발지:</label>
+                    <input type="text" id="departure" name="departure" th:value="${board.departure}" required>
+                    <div id="stopovers-container">
+                        <!-- 경유지 리스트를 반복하며 각 항목을 표시 -->
+                        <div th:each="stopover, iterStat : ${board.stopover}" class="stopover-section">
+                            <label th:for="${'stopover-' + iterStat.index}">경유지:</label>
+                            <input type="text" th:id="${'stopover-' + iterStat.index}" th:name="${'stopover[' + iterStat.index + ']'}" th:value="${stopover}">
+                        </div>
+                    </div>
+                    <button type="button" th:onclick="addStopover()">+</button>
                     <br>
                     <label for="destination">목적지:</label>
-                    <input type="text" id="destination" name="destination" required>
+                    <input type="text" id="destination" name="destination" th:value="${board.destination}" required>
                 </section>
             </div>
             <section>
@@ -60,7 +68,7 @@
             </section>
             <section>
                 <label for="content">내용:</label>
-                <textarea id="content" name="content" required></textarea>
+                <input id="content" name="content" th:value="${board.destination}" required>
             </section>
             <div class="buttons">
                 <button th:onclick="'updateBoard(' + ${boardId} + ')'">완료</button>

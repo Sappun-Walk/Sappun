@@ -126,7 +126,7 @@
                         <div id="commentUpdateForm" style="display: none;">
                             <form id="UpdateCommentForm">
                                 <label for="inputCommentContent">내용:</label>
-                                <input type="text" id="inputCommentContent" name="commentContent" required>
+                                <input type="text" id="inputCommentContent" name="commentContent" required th:value="${comment.content}">
                                 <label for="inputCommentImage">첨부파일:</label>
                                 <input type="file" id="inputCommentImage" name="commentImage">
                                 <button type="button" th:onclick="'updateComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
