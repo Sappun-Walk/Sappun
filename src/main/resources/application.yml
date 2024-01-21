@@ -54,7 +54,7 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: 43.203.41.214
       port: 6379
 
 logging:
