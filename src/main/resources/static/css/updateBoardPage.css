@@ -65,6 +65,12 @@ h1 {
   padding: 10px;
 }
 
+.board-maps {
+  display: flex;
+  justify-content: space-between; /* 요소들을 가로로 균등하게 배치 */
+  align-items: center; /* 요소들을 세로로 가운데 정렬 */
+}
+
 section {
   width: 80%;
   margin: 20px auto;
