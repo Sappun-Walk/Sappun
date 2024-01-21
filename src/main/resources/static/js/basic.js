@@ -218,6 +218,16 @@ function changeRegionAndPage(element) {
     window.location.href = regionPage + '?region=' + region + '&page=' + page;
 }
 
+function changeBoardPage(element) {
+    var page = element.getAttribute('data-page');
+    window.location.href = boardUrl + '/reports' + '?page=' + page;
+}
+
+function changeCommentPage(element) {
+    var page = element.getAttribute('data-page');
+    window.location.href = commentUrl + '/reports' + '?page=' + page;
+}
+
 // 게시글 작성 페이지 경유지 추가
 function addStopover() {
     // 현재 경유지 입력란 개수 확인
@@ -296,7 +306,7 @@ function saveBoard() {
     .then(data => {
         if (data.code === 200) {
             alert('게시글 작성이 성공적으로 이루어졌습니다.');
-            window.location.href = mainPage;
+            window.location.href = boardUrl + '/region?region=' + region;
         } else {
             alert('게시글 작성 실패: ' + data.message);
         }
