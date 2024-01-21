@@ -64,6 +64,8 @@ public class UserService {
 
         UserValidator.checkEmail(userRepository.existsByEmail(req.getEmail()));
 
+        if (Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) multipartFile = null;
+
         String profileImage = defaultProfileImage; // 기본 프로필 이미지 설정
         if (multipartFile != null && !multipartFile.isEmpty()) { // 이미지 입력이 있는 경우
             S3Validator.isProfileImageFile(multipartFile); // 이미지 파일인지 확인

@@ -144,15 +144,13 @@
     }
 
     function signup() {
-
-
         // 사용자 이름 또는 패스워드가 비어있을 경우 오류 처리
         let username = document.getElementById('username').value;
         let nickname = document.getElementById('nickname').value;
         let email = document.getElementById('email').value;
         let password = document.getElementById('password').value;
         let confirmPassword = document.getElementById('confirmPassword').value;
-        let image = document.getElementById('image').files[0];
+        let image = document.getElementById('image');
 
         if (!username) {
             alert('username을 입력하세요.');
@@ -172,12 +170,11 @@
         }
 
         let formData = new FormData();
-        formData.append("image", document.getElementById('image').files[0]);
-        formData.append("username", document.getElementById('username').value);
-        formData.append("nickname", document.getElementById('nickname').value);
-        formData.append("email", document.getElementById('email').value);
-        formData.append("password", document.getElementById('password').value);
-        formData.append("confirmPassword", document.getElementById('confirmPassword').value);
+        formData.append("username", username);
+        formData.append("nickname", nickname);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("confirmPassword", confirmPassword);
 
         // 파일이 선택되지 않은 경우 빈 파일 전송
         if (image.files.length > 0) {
@@ -206,7 +203,7 @@
                     window.location.href = '/api/users/login-page';
                 } else {
                     // 서버 응답이 200이 아니면 로그인 실패
-                    alert('회원가입 수정 실패: ' + data.code);
+                    alert('회원가입 수정 실패: ' + data.message);
                 }
             })
             .catch(error => {
