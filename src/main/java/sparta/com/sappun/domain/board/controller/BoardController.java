@@ -1,6 +1,7 @@
 package sparta.com.sappun.domain.board.controller;
 
 import jakarta.validation.Valid;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,12 +39,10 @@ public class BoardController {
         if (userDetails != null) {
             model.addAttribute("user", userDetails.getUser());
         }
-        // 게시물 상세 정보를 가져오는 로직을 작성하고, Thymeleaf에 필요한 데이터를 Model에 추가
-        // 예시로 게시물 ID를 출력하는 부분
         BoardGetRes boardGetRes = boardService.getBoard(boardId);
+        Collections.reverse(boardGetRes.getComments());
         model.addAttribute("board", boardGetRes);
-        //        model.addAttribute("userId", userDetails.getUser().getId());
-        return "getBoardDetail"; // boardDetails는 상세 페이지의 Thymeleaf 템플릿 이름
+        return "getBoardDetail";
     }
 
     @GetMapping("/region")
