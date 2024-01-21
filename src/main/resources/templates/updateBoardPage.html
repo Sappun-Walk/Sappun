@@ -149,7 +149,7 @@
 <body>
 <div class="getBoardDetailPage">
     <div class="getBoardDetail-header">
-        <img th:src="@{/images/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|" alt="Logo" id="mainLogoImage">
+        <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|" alt="Logo" id="mainLogoImage">
         <button id="logout-button" class="logout-btn" onclick="logout()">로그아웃</button>
         <p th:text="${user.nickname}" class="user-nickname"></p>
         <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|"  alt="profile" id="profileImage">
