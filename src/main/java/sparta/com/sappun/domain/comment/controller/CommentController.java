@@ -14,24 +14,21 @@ import sparta.com.sappun.global.response.CommonResponse;
 import sparta.com.sappun.global.security.UserDetailsImpl;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/comments")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
 
     @ResponseBody
-    @PostMapping("/{boardId}/comments")
+    @PostMapping()
     public CommonResponse<CommentSaveRes> saveComment(
-            @PathVariable Long boardId,
-            @Valid CommentSaveReq req,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        req.setBoardId(boardId);
+            @Valid CommentSaveReq req, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         req.setUserId(userDetails.getUser().getId());
         return CommonResponse.success(commentService.saveComment(req, req.getImage()));
     }
 
-    @PatchMapping("/comments/{commentId}")
+    @PatchMapping("/{commentId}")
     public CommonResponse<CommentUpdateRes> updateComment(
             @PathVariable Long commentId,
             @Valid CommentUpdateReq req,
@@ -41,7 +38,7 @@ public class CommentController {
         return CommonResponse.success(commentService.updateComment(req, req.getImage()));
     }
 
-    @DeleteMapping("/comments/{commentId}")
+    @DeleteMapping("/{commentId}")
     public CommonResponse<CommentDeleteRes> deleteComment(
             @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return CommonResponse.success(

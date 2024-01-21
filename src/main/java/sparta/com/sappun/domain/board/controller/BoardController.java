@@ -23,13 +23,6 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    // 게시글 단건 조회
-    @ResponseBody
-    @GetMapping("/{boardId}")
-    public CommonResponse<BoardGetRes> getBoard(@PathVariable Long boardId) {
-        return CommonResponse.success(boardService.getBoard(boardId));
-    }
-
     @GetMapping("/create-page")
     @PreAuthorize("isAuthenticated()")
     public String createPage(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -37,7 +30,7 @@ public class BoardController {
         return "saveBoardPage";
     }
 
-    @GetMapping("/details/{boardId}")
+    @GetMapping("/{boardId}")
     public String getBoardDetails(
             @PathVariable Long boardId,
             Model model,

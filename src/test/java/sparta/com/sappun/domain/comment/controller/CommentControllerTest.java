@@ -54,7 +54,8 @@ class CommentControllerTest extends BaseMvcTest implements CommentTest {
     @DisplayName("댓글 저장 API 테스트")
     void saveCommentTest() throws Exception {
         // given
-        CommentSaveReq commentSaveReq = CommentSaveReq.builder().content(TEST_COMMENT_CONTENT).build();
+        CommentSaveReq commentSaveReq =
+                CommentSaveReq.builder().boardId(TEST_BOARD_ID).content(TEST_COMMENT_CONTENT).build();
 
         MockMultipartFile req =
                 new MockMultipartFile(
@@ -70,8 +71,7 @@ class CommentControllerTest extends BaseMvcTest implements CommentTest {
         // when-then
         mockMvc
                 .perform(
-                        MockMvcRequestBuilders.multipart(
-                                        HttpMethod.POST, "/api/{boardId}/comments", TEST_BOARD_ID)
+                        MockMvcRequestBuilders.multipart(HttpMethod.POST, "/api/comments")
                                 .file(multipartFile)
                                 .file(req)
                                 .accept(MediaType.APPLICATION_JSON)
