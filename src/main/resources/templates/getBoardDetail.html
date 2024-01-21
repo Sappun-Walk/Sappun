@@ -92,8 +92,12 @@
                     수정
                 </button>
 
-                <button th:if="${user != null && user.nickname eq board.nickname}" th:onclick="'deleteBoard(' + ${boardId} + ')'" id="board-delete-button">삭제</button>
-
+                <div th:if="${user != null}">
+                    <button th:onclick="'deleteBoard(' + ${boardId} + ')'" id="board-delete-button">삭제</button>
+                </div>
+                <div th:if="${user == null}">
+                    <button onclick="needToLogin()">삭제</button>
+                </div>
 
                 <div th:if="${user != null}">
                     <button th:onclick="showInputForm()">신고</button>
