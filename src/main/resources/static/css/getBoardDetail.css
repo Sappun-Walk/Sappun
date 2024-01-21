@@ -1,0 +1,58 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+div.getBoardDetailPage {
+  display: flex;
+  flex-direction: column;
+}
+
+div.getBoardDetail-header {
+  padding: 10px;
+  width: 100%;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.buttons {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.like-btn {
+  display: block;
+  margin: 0 auto;
+}
+
+.like-comment-btn {
+  text-align: right;
+}
