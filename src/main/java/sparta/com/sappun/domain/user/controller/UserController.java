@@ -114,7 +114,7 @@ public class UserController {
 
         model.addAttribute("userProfile", res);
 
-        return "profile-update";
+        return "profileUpdate";
     }
 
     // 프로필 수정

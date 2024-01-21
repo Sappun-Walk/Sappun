@@ -17,7 +17,8 @@ public class CommentSaveReq {
     private String content;
 
     @Builder
-    private CommentSaveReq(String content) {
+    private CommentSaveReq(Long boardId, String content) {
+        this.boardId = boardId;
         this.content = content;
     }
 }

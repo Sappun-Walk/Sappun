@@ -2,143 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{/js/basic.js}"></script>
+    <link th:href="@{/css/updateBoardPage.css}" rel="stylesheet">
     <title>게시글 수정 페이지</title>
-    <style>
-      .stopover-section {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-      }
-
-      .stopover-section input {
-        margin-right: 5px;
-      }
-
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-      }
-
-      div.getBoardDetailPage {
-        display: flex;
-        flex-direction: column;
-      }
-
-      div.getBoardDetail-header {
-        padding: 10px;
-        width: 100%;
-      }
-
-      #mainLogoImage {
-        cursor: pointer;
-        width: 200px;
-        height: 100px;
-        margin-top: 10px;
-        margin-left: 20px;
-      }
-
-      #profileImage {
-        cursor: pointer;
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        top: 10px;
-        right: 30px;
-        padding: 10px;
-        border-radius: 50%;
-      }
-
-      h1 {
-        margin: 0;
-        padding: 0;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 10px;
-      }
-
-      .logout-btn {
-        position: absolute;
-        top: 20px;
-        right: 120px;
-        padding: 10px;
-        cursor: pointer;
-      }
-
-      .user-nickname {
-        position: absolute;
-        top: 5px;
-        right: 200px;
-        padding: 10px;
-      }
-
-      section {
-        width: 80%;
-        margin: 20px auto;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        background-color: #f9f9f9;
-      }
-
-      img {
-        max-width: 100%;
-        height: auto;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        margin-bottom: 10px;
-      }
-
-      ul {
-        list-style: none;
-        padding: 0;
-      }
-
-      li {
-        margin-bottom: 10px;
-      }
-
-      button {
-        padding: 10px;
-        cursor: pointer;
-      }
-
-      #region {
-        width: 100px;
-      }
-
-      #mapImage {
-        width: 500px;
-        height: 300px;
-      }
-
-      .mapImage {
-        width: 500px;
-        height: 300px;
-      }
-
-      .buttons {
-        display: flex;
-        justify-content: flex-end;
-        margin-right: 100px;
-      }
-
-      .buttons button {
-        margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
-      }
-
-      #map {
-          width: 640px;
-          height: 600px;
-      }
-
-      #capturedImage {
-          margin-top: 20px;
-      }
-
-      #drawLine, #captureImage, #locateCurrentPosition {
-          margin: 5px;
-      }
-    </style>
 </head>
 <body>
 <div class="getBoardDetailPage">
@@ -198,138 +64,12 @@
             </section>
             <div class="buttons">
                 <button th:onclick="'updateBoard(' + ${boardId} + ')'">완료</button>
-                <button th:onclick="'goBackDetailPage(' + ${boardId} + ')'">취소</button>
+                <button th:onclick="'getBoardDetails(' + ${boardId} + ')'">취소</button>
             </div>
         </div>
     </div>
 </div>
 <script>
-  // 로그아웃
-  function logout() {
-    // 사용자에게 재확인 알림창 표시
-    var confirmation = confirm('로그아웃 하시겠습니까?');
-
-    // 사용자가 확인을 선택한 경우에만 POST 요청 보내기
-    if (confirmation) {
-      fetch('/api/users/logout', {method: 'POST'})
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.code === 200) {
-          // 서버 응답이 200이면 로그아웃 성공
-          alert('로그아웃이 성공적으로 이루어졌습니다.');
-          deleteCookie();
-          window.location.href = '/api/boards/best';
-        } else {
-          // 서버 응답이 200이 아니면 로그아웃 실패
-          alert('로그아웃 실패: ' + data.message);
-        }
-      })
-    }
-  }
-
-  // 경유지 추가
-  function addStopover() {
-    // 현재 경유지 입력란 개수 확인
-    var stopoverContainer = document.getElementById('stopovers-container');
-    var stopoverSections = stopoverContainer.getElementsByClassName('stopover-section');
-
-    if (stopoverSections.length < 5) {
-      // 5개 미만일 때만 새로운 경유지 입력란 생성
-      var newStopoverSection = document.createElement('div');
-      newStopoverSection.classList.add('stopover-section');
-
-      var label = document.createElement('label');
-      label.setAttribute('for', 'stopover');
-      label.textContent = '경유지:';
-
-      var input = document.createElement('input');
-      input.setAttribute('type', 'text');
-      input.setAttribute('name', 'stopover');
-
-      newStopoverSection.appendChild(label);
-      newStopoverSection.appendChild(input);
-
-      // 생성된 입력란을 컨테이너에 추가
-      stopoverContainer.appendChild(newStopoverSection);
-    } else {
-      alert('경유지는 최대 5개까지만 입력 가능합니다.');
-    }
-  }
-
-  // 상세 조회 페이지로 되돌아감
-  function goBackDetailPage(boardId) {
-    window.location.href = '/api/boards/details/' + boardId;
-  }
-
-  // 게시글 수정
-  function updateBoard(boardId) {
-    // 경유지 입력란의 값을 가져오는 함수
-    var stopoverContainer = document.getElementById('stopovers-container');
-    var stopoverInputs = stopoverContainer.querySelectorAll('.stopover-section input[name="stopover"]');
-
-    var region = document.getElementById('region').value;
-    var title = document.getElementById('title').value;
-    var departure = document.getElementById('departure').value;
-    var destination = document.getElementById('destination').value;
-    var content = document.getElementById('content').value;
-    var image = document.getElementById('image');
-
-    if (!title && !departure && !destination && !content) {
-      alert('입력을 다시 확인해주세요.');
-      return;
-    }
-
-    let formData = new FormData();
-    formData.append("region", region);
-    formData.append("title", title);
-    formData.append("departure", departure);
-    stopoverInputs.forEach(function(input) {
-      formData.append("stopover", input.value);
-    });
-    formData.append("destination", destination);
-    formData.append("content", content);
-
-    // 파일이 선택되지 않은 경우 빈 파일 전송
-    if (image.files.length > 0) {
-      formData.append('image', image.files[0]);
-    } else {
-      // 빈 파일 생성 및 전송
-      const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
-      formData.append('image', emptyFile);
-    }
-
-    // 요청 보내기
-    fetch('/api/boards/' + boardId, {
-      method: 'PATCH',
-      body: formData
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.code === 200) {
-        // 서버 응답이 200이면 게시글 수정 성공
-        alert('게시글 수정이 성공적으로 이루어졌습니다.');
-        window.location.href = '/api/boards/details/' + boardId;
-      } else {
-        // 서버 응답이 200이 아니면 게시글 수정 실패
-        alert('게시글 수정 실패: ' + data.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error updating profile:', error);
-      // 오류 발생 시의 로직을 추가할 수 있습니다.
-    });
-  }
-
   //지도 관련 Script
   let map, drawingManager, polyline;
 
@@ -437,11 +177,6 @@
           .join('&');
   }
 
-  // 쿠키 삭제 함수
-  function deleteCookie() {
-    document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  }
 </script>
 <!-- Google Maps API 및 Drawing 라이브러리 로드 -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg&callback=initMap&libraries=drawing" async defer></script>
