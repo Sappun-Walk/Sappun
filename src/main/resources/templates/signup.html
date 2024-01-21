@@ -179,6 +179,15 @@
         formData.append("password", document.getElementById('password').value);
         formData.append("confirmPassword", document.getElementById('confirmPassword').value);
 
+        // 파일이 선택되지 않은 경우 빈 파일 전송
+        if (image.files.length > 0) {
+            formData.append('image', image.files[0]);
+        } else {
+            // 빈 파일 생성 및 전송
+            const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
+            formData.append('image', emptyFile);
+        }
+
         // 요청 보내기
         fetch('/api/users/signup', {
             method: 'POST',
