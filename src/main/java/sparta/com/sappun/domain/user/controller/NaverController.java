@@ -31,7 +31,7 @@ public class NaverController {
     }
 
     // 네이버 로그인
-    @GetMapping("/naver/login")
+    @GetMapping("/naver/callback")
     public String naverLogin(@RequestParam String code, HttpServletResponse res)
             throws JsonProcessingException {
         HashMap<String, String> tokens = naverService.naverLogin(code);
