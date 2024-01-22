@@ -27,6 +27,11 @@
             padding-bottom: 10px;
         }
 
+        #commentImage {
+          width: 300px;
+          height: 300px;
+        }
+
         img {
             max-width: 100%;
             height: auto;
@@ -207,16 +212,14 @@
 
                     <!--댓글 신고-->
                     <div th:if="${user != null}">
-                        <button th:onclick="showCommentInputForm()">신고</button>
-                        <div id="commentInputForm" style="display: none;">
-                            <form id="myCommentForm">
-                                <label for="commentReason">신고 사유:</label>
-                                <input type="text" id="commentReason" name="commentReason" required>
-                                <button type="button"
-                                        th:onclick="'reportComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
-                                </button>
-                            </form>
-                        </div>
+                        <button th:onclick="|showCommentInputForm(${comment.id})|">신고</button>
+                        <form th:id="'myCommentForm-' + ${comment.id}" style="display: none;">
+                            <label th:for="'commentReason-' + ${comment.id}">신고 사유:</label>
+                                <input type="text" th:id="'commentReason-' + ${comment.id}" th:name="'commentReason-' + ${comment.id}" required>
+                            <button type="button"
+                                    th:onclick="'reportComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
+                            </button>
+                        </form>
                     </div>
                     <div th:if="${user == null}">
                         <button onclick="needToLogin()">신고</button>
@@ -796,7 +799,7 @@
             })
             .then(data => {
                 if (data.code === 200) {
-                    alert('댓글 수정이 성공적으로 이루어졌습니다.');
+                    alert('댓글이 수정되었습니다.');
                     window.location.href = boardUrl + '/' + boardId;
                 } else {
                     alert('댓글 수정 실패: ' + data.message);
@@ -819,7 +822,7 @@
             })
             .then(data => {
                 if (data.code === 200) {
-                    alert('댓글 삭제가 성공적으로 이루어졌습니다.');
+                    alert('댓글이 삭제되었습니다.');
                     window.location.href = boardUrl + '/' + boardId;
                 } else {
                     alert('댓글 삭제 실패: ' + data.message);
@@ -828,14 +831,19 @@
     }
 
     // 댓글 신고 사유 입력
-    function showCommentInputForm() {
-        var inputForm = document.getElementById('commentInputForm');
-        inputForm.style.display = 'block';
+    function showCommentInputForm(commentId) {
+      var formId = 'myCommentForm-' + commentId;
+      var form = document.getElementById(formId);
+      if (form.style.display === 'none') {
+        form.style.display = 'block';
+      } else {
+        form.style.display = 'none';
+      }
     }
 
     // 댓글 신고
     function reportComment(boardId, commentId) {
-        const reason = document.getElementById('commentReason').value;
+        const reason = document.getElementById('commentReason-' + commentId).value;
 
         const request = {
             reason: reason,
@@ -856,6 +864,7 @@
             })
             .then(data => {
                 if (data.code === 200) {
+                    alert("댓글 신고되었습니다.")
                     window.location.href = boardUrl + '/' + boardId;
                 } else {
                     alert('댓글 신고 실패: ' + data.message);

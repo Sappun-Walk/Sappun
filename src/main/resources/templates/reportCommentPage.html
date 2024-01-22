@@ -228,7 +228,9 @@
     <div class="gallery-container">
         <div class="gallery-item" th:each="reportComment : ${responseDto.content}" th:id="${'reportComment-' + reportComment.id}" style="cursor: pointer;">
             <div th:onclick="'getBoardDetails(' + ${reportComment.boardId} + ')'">
-                <img th:src="${reportComment.comment.fileURL}" alt="게시물 이미지">
+                <p th:if="${reportComment.comment.fileURL != null}">
+                    <img th:src="${reportComment.comment.fileURL}" id="commentImage" alt="댓글 이미지">
+                </p>
                 <div class="gallery-caption">
                     <p th:text="'신고자: ' + ${reportComment.nickname}"></p>
                     <p th:text="'신고 사유: ' + ${reportComment.reason}"></p>
