@@ -6,6 +6,7 @@ import static sparta.com.sappun.global.jwt.JwtUtil.REFRESH_TOKEN_HEADER;
 import com.amazonaws.HttpMethod;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -95,7 +96,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         TokenValidator.checkLoginRequired(jwtUtil.isTokenExpired(refreshToken));
 
         // 응답 헤더에 재발급한 access token 반환
-        response.addHeader(ACCESS_TOKEN_HEADER, renewAccessToken(refreshToken));
+        accessToken = renewAccessToken(refreshToken);
+        Cookie cookie = new Cookie(ACCESS_TOKEN_HEADER, accessToken); // Name-Value
+        cookie.setPath("/");
+        cookie.setMaxAge(30 * 60);
+
+        // Response 객체에 Cookie 추가
+        response.addCookie(cookie);
         log.info("accessToken 재발급 종료");
         log.info("accessToken : {}", accessToken);
 
