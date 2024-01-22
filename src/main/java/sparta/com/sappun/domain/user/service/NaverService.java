@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sparta.com.sappun.domain.user.dto.request.KakaoInsertReq;
+import sparta.com.sappun.domain.user.dto.request.NaverInsertReq;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.entity.UserSocialEnum;
@@ -83,9 +83,9 @@ public class NaverService {
 
     public HashMap<String, String> naverLogin(String code) throws JsonProcessingException {
         // HTML에서 인증 코드(code)를 요청하여 전달받음
-        HashMap<String, String> tokens = getNaverTokens(code); // 인증 코드로 토큰 요청 getKakaoTokens
+        HashMap<String, String> tokens = getNaverTokens(code); // 인증 코드로 토큰 요청 getNaverTokens
         // 받은 access 토큰으로 네이버 사용자 정보를 가져옴
-        KakaoInsertReq userResource = getNaverUserInfo(tokens);
+        NaverInsertReq userResource = getNaverUserInfo(tokens);
         // 가져온 사용자 정보 중 이메일을 꺼냄
         String email = userResource.getEmail();
         // @의 위치를 num으로 지정한다
@@ -113,7 +113,7 @@ public class NaverService {
                             .email(email)
                             .role(Role.USER)
                             .score(0)
-                            .social(UserSocialEnum.KAKAO)
+                            .social(UserSocialEnum.NAVER)
                             .profileUrl(defaultProfileImage)
                             .build();
             user = userRepository.save(newUser);
@@ -193,7 +193,7 @@ public class NaverService {
         return tokens;
     }
 
-    public KakaoInsertReq getNaverUserInfo(HashMap<String, String> tokens) {
+    public NaverInsertReq getNaverUserInfo(HashMap<String, String> tokens) {
         String userInfoUri = "";
         String authenticationMethod = "";
 
@@ -226,7 +226,7 @@ public class NaverService {
             e.printStackTrace();
         }
 
-        return KakaoInsertReq.of(element, tokens);
+        return NaverInsertReq.of(element, tokens);
     }
 
     private String makeRandomName(String name) {
