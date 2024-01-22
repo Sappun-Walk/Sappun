@@ -62,15 +62,12 @@
         .like-comment-btn {
             text-align: right;
         }
-        #mainLogoImage {
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
 <div class="getBoardDetailPage">
     <div class="getBoardDetail-header">
-        <img class="main-img" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}" id="mainLogoImage"
+        <img class="main-img" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}"
              th:onclick="|location.href='@{/api/boards/best}'|" alt="Main Image">
         <div>
             <div class="btn-write">
