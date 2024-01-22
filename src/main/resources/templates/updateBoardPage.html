@@ -208,7 +208,7 @@
             </section>
             <section>
                 <label for="content">내용:</label>
-                <input id="content" name="content" th:value="${board.destination}" required>
+                <input id="content" name="content" th:value="${board.content}" required>
             </section>
             <div class="buttons">
                 <button th:onclick="'updateBoard(' + ${boardId} + ')'">완료</button>
