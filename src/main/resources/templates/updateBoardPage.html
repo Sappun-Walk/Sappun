@@ -467,14 +467,29 @@
             input.setAttribute('type', 'text');
             input.setAttribute('name', 'stopover');
 
+            // 새로운 경유지 입력란에 삭제 버튼 추가
+            var removeStopoverButton = document.createElement('button');
+            removeStopoverButton.setAttribute('type', 'button');
+            removeStopoverButton.textContent = '삭제';
+            removeStopoverButton.addEventListener('click', function () {
+                removeStopover(newStopoverSection);
+            });
+
             newStopoverSection.appendChild(label);
             newStopoverSection.appendChild(input);
+            newStopoverSection.appendChild(removeStopoverButton);
 
             // 생성된 입력란을 컨테이너에 추가
             stopoverContainer.appendChild(newStopoverSection);
         } else {
             alert('경유지는 최대 5개까지만 입력 가능합니다.');
         }
+    }
+
+    // 경유지 입력란 삭제 함수
+    function removeStopover(stopoverSection) {
+        var stopoverContainer = document.getElementById('stopovers-container');
+        stopoverContainer.removeChild(stopoverSection);
     }
 
     //게시글 작성
@@ -558,9 +573,12 @@
         formData.append("region", region);
         formData.append("title", title);
         formData.append("departure", departure);
+
+        // 여러 경유지 값을 배열로 추가
         stopoverInputs.forEach(function(input) {
-            formData.append("stopover", input.value);
+            formData.append("stopover[]", input.value);
         });
+
         formData.append("destination", destination);
         formData.append("content", content);
 
