@@ -191,7 +191,7 @@
                             <label th:for="${'stopover-' + iterStat.index}">경유지:</label>
                             <input type="text" th:id="${'stopover-' + iterStat.index}" name="stopover" th:value="${stopover}">
                             <!-- 삭제 버튼 추가 -->
-                            <button type="button" th:onclick="removeStopover(this)">삭제</button>
+                            <button type="button" th:onclick="removeStopover(this)">-</button>
                         </div>
                     </div>
                     <button type="button" th:onclick="addStopover()">+</button>
@@ -472,7 +472,7 @@
             // 새로운 경유지 입력란에 삭제 버튼 추가
             var removeStopoverButton = document.createElement('button');
             removeStopoverButton.setAttribute('type', 'button');
-            removeStopoverButton.textContent = '삭제';
+            removeStopoverButton.textContent = '-';
             removeStopoverButton.addEventListener('click', function () {
                 addRemoveStopover(newStopoverSection);
             });
