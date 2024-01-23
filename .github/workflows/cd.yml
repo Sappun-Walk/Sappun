@@ -87,12 +87,9 @@ jobs:
           port: ${{ secrets.AWS_PORT }}
           script: |
             docker pull ${{ secrets.DOCKER_USER }}/sappun:latest
-            docker stop sappun
-            docker rm sappun
-            docker run -d --network sappun --name sappun -p 8080:8080 ${{ secrets.DOCKER_USER }}/sappun
-            if docker images -f "dangling=true" -q | grep . > /dev/null; then
-              docker rmi $(docker images -f "dangling=true" -q)
-            fi
+            chmod 777 ./deploy.sh
+            ./deploy.sh
+            docker image prune -f
 
       - name: Remove Github Actions IP from security group
         run: |
