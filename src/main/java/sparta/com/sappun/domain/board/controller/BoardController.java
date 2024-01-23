@@ -73,9 +73,11 @@ public class BoardController {
             @RequestParam(value = "isAsc", defaultValue = "false") boolean isAsc,
             Model model,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Long userId = userDetails.getUser().getId();
+        if (userDetails != null) {
+            model.addAttribute("user", userDetails.getUser());
+        }
         Page<BoardToListGetRes> responseDto =
-                boardService.getBoardAllList(userId, page - 1, size, sortBy, isAsc);
+                boardService.getBoardAllList(page - 1, size, sortBy, isAsc);
         model.addAttribute("responseDto", responseDto);
         model.addAttribute("maxPage", 5);
         return "allBoardPage";

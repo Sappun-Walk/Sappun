@@ -51,15 +51,12 @@ public class BoardService {
         return boardList.map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
     }
 
-    public Page<BoardToListGetRes> getBoardAllList(
-            Long userId, int page, int size, String sortBy, boolean isAsc) {
+    public Page<BoardToListGetRes> getBoardAllList(int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        return boardRepository
-                .findAllUserBoardByUserId(userId, pageable)
-                .map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
+        return boardRepository.findAll(pageable).map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
     }
 
     public Page<BoardToReportGetRes> getBoardUserList(
