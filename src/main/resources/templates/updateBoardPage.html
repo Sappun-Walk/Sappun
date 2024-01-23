@@ -189,7 +189,9 @@
                         <!-- 경유지 리스트를 반복하며 각 항목을 표시 -->
                         <div th:each="stopover, iterStat : ${board.stopover}" class="stopover-section">
                             <label th:for="${'stopover-' + iterStat.index}">경유지:</label>
-                            <input type="text" th:id="${'stopover-' + iterStat.index}" th:name="${'stopover[' + iterStat.index + ']'}" th:value="${stopover}">
+                            <input type="text" th:id="${'stopover-' + iterStat.index}" name="stopover" th:value="${stopover}">
+                            <!-- 삭제 버튼 추가 -->
+                            <button type="button" th:onclick="removeStopover(this)">-</button>
                         </div>
                     </div>
                     <button type="button" th:onclick="addStopover()">+</button>
@@ -467,14 +469,40 @@
             input.setAttribute('type', 'text');
             input.setAttribute('name', 'stopover');
 
+            // 새로운 경유지 입력란에 삭제 버튼 추가
+            var removeStopoverButton = document.createElement('button');
+            removeStopoverButton.setAttribute('type', 'button');
+            removeStopoverButton.textContent = '-';
+            removeStopoverButton.addEventListener('click', function () {
+                addRemoveStopover(newStopoverSection);
+            });
+
             newStopoverSection.appendChild(label);
             newStopoverSection.appendChild(input);
+            newStopoverSection.appendChild(removeStopoverButton);
 
             // 생성된 입력란을 컨테이너에 추가
             stopoverContainer.appendChild(newStopoverSection);
         } else {
             alert('경유지는 최대 5개까지만 입력 가능합니다.');
         }
+    }
+
+    // 공통 함수: 삭제 버튼이 속한 div 요소를 찾아서 삭제
+    function removeFromContainer(element) {
+        var container = document.getElementById('stopovers-container');
+        container.removeChild(element);
+    }
+
+    // 이전 입력된 경유지 입력란 삭제 함수
+    function removeStopover(button) {
+        var stopoverSection = button.parentNode;
+        removeFromContainer(stopoverSection);
+    }
+
+    // 추가 입력할 경유지 입력란 삭제 함수
+    function addRemoveStopover(stopoverSection) {
+        removeFromContainer(stopoverSection);
     }
 
     //게시글 작성
@@ -558,9 +586,12 @@
         formData.append("region", region);
         formData.append("title", title);
         formData.append("departure", departure);
+
+        // 여러 경유지 값을 배열로 추가
         stopoverInputs.forEach(function(input) {
-            formData.append("stopover", input.value);
+            formData.append("stopover[]", input.value);
         });
+
         formData.append("destination", destination);
         formData.append("content", content);
 
