@@ -1,5 +1,6 @@
 package sparta.com.sappun.domain.board.repository;
 
+import io.lettuce.core.dynamic.annotation.Param;
 import java.awt.*;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,9 @@ public interface BoardRepository {
 
     Page<Board> findAllByReportCountLessThanAndRegion(
             int reportCount, RegionEnum region, Pageable pageable);
+
+    @Query("SELECT b FROM Board b WHERE b.user.id = :userId")
+    Page<Board> findAllUserBoardByUserId(@Param("userId") Long userId, Pageable pageable);
 
     Page<Board> findAll(Pageable pageable);
 

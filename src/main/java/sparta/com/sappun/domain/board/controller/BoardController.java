@@ -1,9 +1,13 @@
 package sparta.com.sappun.domain.board.controller;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -12,8 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.board.dto.response.*;
+import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
 import sparta.com.sappun.domain.board.service.BoardService;
+import sparta.com.sappun.domain.reportBoard.dto.response.ReportBoardGetRes;
+import sparta.com.sappun.domain.reportBoard.service.ReportBoardServiceMapper;
 import sparta.com.sappun.global.response.CommonResponse;
 import sparta.com.sappun.global.security.UserDetailsImpl;
 
@@ -65,6 +72,7 @@ public class BoardController {
         return "regionPage";
     }
 
+
     @GetMapping("/all")
     public String getAllBoards(
             @RequestParam(value = "page", defaultValue = "1") int page,
@@ -73,14 +81,30 @@ public class BoardController {
             @RequestParam(value = "isAsc", defaultValue = "false") boolean isAsc,
             Model model,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails != null) {
-            model.addAttribute("user", userDetails.getUser());
-        }
+        Long userId = userDetails.getUser().getId();
         Page<BoardToListGetRes> responseDto =
-                boardService.getBoardAllList(page - 1, size, sortBy, isAsc);
+                boardService.getBoardAllList(userId,page - 1, size, sortBy, isAsc);
         model.addAttribute("responseDto", responseDto);
         model.addAttribute("maxPage", 5);
         return "allBoardPage";
+    }
+    @GetMapping("/user")
+    public String getUserBoardList(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "8") int size,
+            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
+            @RequestParam(value = "isAsc", defaultValue = "false") boolean isAsc,
+            Model model,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUser().getId();
+        model.addAttribute("user", userDetails.getUser());
+
+        // BoardService의 getBoardUserList 메서드를 호출하여 사용자의 보드 목록을 가져옵니다.
+        Page<BoardToReportGetRes> responseDto = boardService.getBoardUserList(userId, page - 1, size, sortBy, isAsc);
+
+        model.addAttribute("responseDto", responseDto);
+        model.addAttribute("maxPage", 5);
+        return "userBoardPage";
     }
 
     // Best 게시글 조회

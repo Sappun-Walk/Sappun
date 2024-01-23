@@ -225,11 +225,6 @@
                 </button>
             </p>
             <p th:if="${user != null}">
-                <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/comments/reports}'|">
-                    댓글 관리
-                </button>
-            </p>
-            <p th:if="${user != null}">
                 <button class="btn btn-outline-success" type="submit" id="logout-button" onclick="logout()">로그아웃</button>
                 <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|"  alt="profile" id="profileImage">
             </p>

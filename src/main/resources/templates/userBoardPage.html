@@ -1,252 +1,273 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>마이페이지</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>개인 게시글 페이지</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
-        div.profile-page {
-            display: flex; /* Flexbox 사용 */
-            flex-direction: column; /* 세로로 정렬 */
-            align-items: center; /* 가운데 정렬 */
+        html {
+            overflow-y: scroll;
+        }
+        #profileImage {
+            cursor: pointer;
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            top: 20px;
+            right: 30px;
+            padding: 10px;
+            border-radius: 50%;
         }
 
-        div.profile-header {
-            padding: 10px; /* 여백 설정 */
-            width: 100%; /* 전체 너비로 확장 */
+        .page-nation li {
+            list-style: none;
         }
 
-        #mainLogoImage {
-            cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
-            width: 200px; /* 로고 버튼의 너비 */
-            height: 100px; /* 로고 버튼의 높이 */
-            float: left; /* 왼쪽 맨 위로 */
-            margin-top: 10px; /* 맨 위에서 10px 만큼 떨어지도록 조절 */
-            margin-left: 20px;
-        }
-
-        div.profile-header-buttons {
+        .page-nation {
             display: flex;
-            justify-content: flex-end;
-            margin-right: 50px;
+            justify-content: center;
+            align-items: center;
             margin-top: 20px;
         }
 
-        #logout-button {
-            cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
-            width: 100px;
-            font-size: 16px; /* 글자 크기를 조절하여 크기를 키움 */
-            padding: 10px; /* 버튼 내부의 여백 */
-            text-decoration: none; /* 밑줄 제거 */
-            color: black; /* 글자 색상 */
-            background-color: white; /* 배경 색상 */
-            border: 1px solid palevioletred; /* 테두리 색상 */
-            border-radius: 4px; /* 둥근 테두리 */
-            margin-top: 10px; /* 맨 위에서 10px 만큼 떨어지도록 조절 */
-            margin-right: 50px;
+        .page-nation a {
+            display: block;
+            margin: 0 3px;
+            float: left;
+            border: 1px solid #e6e6e6;
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            background-color: #fff;
+            font-size: 13px;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
         }
 
-        #withdraw-button {
-            cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
-            width: 100px;
-            font-size: 16px; /* 글자 크기를 조절하여 크기를 키움 */
-            padding: 10px; /* 버튼 내부의 여백 */
-            text-decoration: none; /* 밑줄 제거 */
-            color: black; /* 글자 색상 */
-            background-color: white; /* 배경 색상 */
-            border: 1px solid palevioletred; /* 테두리 색상 */
-            border-radius: 4px; /* 둥근 테두리 */
-            margin-top: 10px; /* 맨 위에서 10px 만큼 떨어지도록 조절 */
+        .page-nation a:hover {
+            background-color: gray;
+            color: white;
+
         }
 
-        div.profile-content {
-            width: 100%; /* 전체 너비로 확장 */
-            padding: 20px; /* 여백 설정 */
+        .gallery-container {
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 50px;
             display: flex;
-            flex-direction: column; /* 세로로 정렬 */
-            align-items: center;
+            flex-wrap: wrap;
+            text-align: center;
+            justify-content: center; /* Distribute items with equal space between them */
+            gap: 80px;
         }
 
-        div.profile-info-box {
-            width: 1200px;
-            height: 650px;
-            border: 2px solid #F6CEE3;
-            border-radius: 10px; /* 테두리 모서리 둥글기 조절 */
+        .gallery-item {
+            width: calc((70% - 0px) / 4); /* Calculate width with 4 items and 3 gaps between them */
+            height: 400px;
+            border: 1px solid deeppink;
+            border-radius: 30px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-item img {
+            background-size: cover;
+            width: auto;
+            height: 200px;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .gallery-caption {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .main-img-container {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .main-img {
+            margin-top: 20px;
+            transform: scale(1.7);
+        }
+
+        .btn-write {
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: 100px;
             display: flex;
-            justify-content: center; /* 가로 중앙 정렬 */
-            align-items: center;
+            flex-direction: row-reverse;
         }
 
-        div.profile-info {
-            width: 700px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* 프로필 이미지를 동그랗게 보여주기 위한 CSS 스타일*/
-        img.profile-image {
-            border-radius: 50%;
-            width: 300px; /* 이미지 크기 조절에 따라 변경 가능 */
-            height: 300px;
-        }
-
-        /* 프로필 이미지와 Score를 나란히 보여줄 프로필 그룹 */
-        div.profile-image-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* 세로 중앙 정렬 */
-            margin-bottom: 10px; /* 그룹 간격 조절 */
-        }
-
-        /* ID, Nickname, Email을 나란히 보여줄 그룹 */
-        div.profile-text-group {
-            display: flex;
-            flex-direction: column; /* 세로 방향으로 나열 */
-            align-items: flex-start; /* 좌측 정렬 */
-            margin-top: 30px; /* 그룹 간격 조절 */
-        }
-
-        div.profile-page-buttons {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 40px;
-        }
-
-        #password-update-button {
-            cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
-            width: 130px;
-            font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
-            padding: 10px; /* 버튼 내부의 여백 */
-            text-decoration: none; /* 밑줄 제거 */
-            color: black; /* 글자 색상 */
-            background-color: #F6CEE3; /* 배경 색상 */
-            border: 1px solid #F6CEE3; /* 테두리 색상 */
-            border-radius: 4px; /* 둥근 테두리 */
+        .btn-write button {
+            width: auto;
             margin-right: 10px;
-            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+        }
+        h5 {
+            font-size: h5;
+            margin-top: auto;
+            margin-bottom: auto;
+            text-align: center;
+            justify-content: center;
+        }
+        p {
+            font-size: 10px;
+            display: flex;
+            flex-direction: column; /*수직 정렬*/
         }
 
-        #profile-update-button {
-            cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
-            width: 60px;
-            font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
-            padding: 10px; /* 버튼 내부의 여백 */
-            text-decoration: none; /* 밑줄 제거 */
-            color: black; /* 글자 색상 */
-            background-color: #F6CEE3; /* 배경 색상 */
-            border: 1px solid #F6CEE3; /* 테두리 색상 */
-            border-radius: 4px; /* 둥근 테두리 */
-            margin-right: 10px;
-            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
 
-        #back-main-button {
-            cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
-            width: 60px;
-            font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
-            padding: 10px; /* 버튼 내부의 여백 */
-            text-decoration: none; /* 밑줄 제거 */
-            color: black; /* 글자 색상 */
-            background-color: #F6CEE3; /* 배경 색상 */
-            border: 1px solid #F6CEE3; /* 테두리 색상 */
-            border-radius: 4px; /* 둥근 테두리 */
-            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+        #sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgba(17, 17, 17, 0.8);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
         }
 
-        #back-user-button {
-            cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
-            width: 100px;
-            font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
-            padding: 10px; /* 버튼 내부의 여백 */
-            text-decoration: none; /* 밑줄 제거 */
-            color: black; /* 글자 색상 */
-            background-color: #F6CEE3; /* 배경 색상 */
-            border: 1px solid #F6CEE3; /* 테두리 색상 */
-            border-radius: 4px; /* 둥근 테두리 */
-            margin-right: 10px;
-            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+        #sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        #sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        #main {
+            transition: margin-left 0.5s;
+            padding: 16px;
+            display: flex;
+        }
+
+        #openBtn {
+            font-size: 20px;
+            width: 250px;
+            margin-right: auto;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0);
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            display: flex;
+        }
+
+        #openBtn.hide {
+            visibility: hidden;
+        }
+        .view-div {
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: 18%;
+            display: flex;
+            flex-direction: row-reverse;
         }
     </style>
 </head>
 <body>
-<div class="profile-page">
-    <div class="profile-header">
-        <!-- 메인 로고 이미지 -->
-        <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}" alt="Logo" id="mainLogoImage" th:onclick="|location.href='@{/api/boards/best}'|">
+<div>
+    <div id="sidebar">
+        <a href="#" onclick="navigateTo('/api/boards/best')">Best Top 3</a>
+        <a href="#" onclick="navigateTo('/api/boards/all?page=1')">전체 게시글 조회</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION1')">서울특별시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION2')">부산광역시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION3')">대구광역시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION4')">인천광역시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION5')">광주광역시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION6')">울산광역시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION7')">세종특별차치시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION8')">경기도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION9')">강원특별자치도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION10')">충청북도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION11')">충청남도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION12')">전북특별차치도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION13')">전라남도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION14')">경상북도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION15')">경상남도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION16')">제주특별자치도</a>
+    </div>
+    <div id="main">
+        <button id="openBtn" onclick="openNav()">☰</button>
+        <div class="main-img-container">
+            <img class="main-img" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|"
+                 alt="Main Image">
+        </div>
 
-        <div class="profile-header-buttons">
-
-            <!-- 로그아웃 버튼 -->
-            <div class="logout">
-                <button id="logout-button" onclick="logout()">로그아웃</button>
+        <div class="btn-write">
+            <p th:if="${user == null}">
+                <button class="btn btn-outline-success" type="submit"
+                        th:onclick="|location.href='@{/api/users/login-page}'|">로그인
+                </button>
+            </p>
+            <p th:if="${user != null}">
+                <button class="btn btn-outline-success" type="submit" id="logout-button" onclick="logout()">로그아웃</button>
+                <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|"  alt="profile" id="profileImage">
+            </p>
+        </div>
+    </div>
+    <div class="view-div">
+        <button type="button" onclick="changeSortAndPage('createdAt')" class="btn btn-outline-dark float-right">생성순</button>
+        <button type="button" onclick="changeSortAndPage('likeCount')" class="btn btn-outline-dark float-right">좋아요순</button>
+    </div>
+    <div class="gallery-container">
+        <div class="gallery-item" th:each="userboard : ${responseDto.content}" th:id="${'allboard-' + userboard.id}"
+             th:onclick="'getBoardDetails(' + ${userboard.id} + ')'" style="cursor: pointer;">
+            <img th:src="${userboard.fileURL}" alt="게시물 이미지">
+            <div class="gallery-caption">
+                <h5 th:text="${userboard.title}"></h5>
+                <p th:text="'작성자: ' + ${userboard.nickname}"></p>
+                <p th:text="'지역: ' + ${userboard.region.getRegion()}"></p>
+                <p th:text="'받은신고 횟수 ' + ${userboard.reportCount}"></p>
             </div>
-
-            <!-- 회원 탈퇴 버튼 -->
-            <div class="withdraw">
-                <button id="withdraw-button" th:onclick="deleteUser()">회원 탈퇴</button>
-            </div>
-
+        </div>
+    </div>
         </div>
     </div>
 
-    <div class="profile-content">
-        <div class="profile-info-box">
-            <div class="profile-info">
-                <div class="profile-image-group">
-                    <img th:src="${userProfile.profileUrl}" alt="Profile Picture"
-                         class="profile-image">
-                    <p><b>Rank</b>
-                        <span th:if="${userProfile.score < 0}">Warned</span>
-                        <span
-                            th:if="${userProfile.score >= 0 and userProfile.score <= 300}">Bronze</span>
-                        <span
-                            th:if="${userProfile.score > 300 and userProfile.score <= 700}">Silver</span>
-                        <span
-                            th:if="${userProfile.score > 700 and userProfile.score <= 1200}">Gold</span>
-                        <span th:if="${userProfile.score > 1200}">Platinum</span>
-                    </p>
-                </div>
-
-                <div class="profile-text-group">
-                    <div class="username">
-                        <p><b>아이디</b></p>
-                        <p><span th:text="${userProfile.username}"></span></p>
-                    </div>
-                    <div class="nickname">
-                        <p><b>닉네임</b></p>
-                        <p><span th:text="${userProfile.nickname}"></span></p>
-                    </div>
-                    <div class="email">
-                        <p><b>이메일</b></p>
-                        <p><span th:text="${userProfile.email}"></span></p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="profile-page-buttons">
-
-            <!-- 본인글 가기 버튼 : 본인 페이지로 -->
-            <div class="back-to-main">
-                <button th:onclick="|location.href='/api/boards/user?page=1'|" id="back-user-button">본인 글</button>
-            </div>
-
-            <!-- 비밀번호 수정 버튼 -->
-            <div class="password-update">
-                <button th:onclick="|location.href='/api/users/profile/password'|" id="password-update-button">비밀번호 수정</button>
-            </div>
-
-            <!-- 프로필 수정 버튼 -->
-            <div class="profile-update">
-                <button th:onclick="|location.href='/api/users/profile'|" id="profile-update-button">수정</button>
-            </div>
-
-            <!-- 뒤로가기 버튼 : 메인 페이지로 -->
-            <div class="back-to-main">
-                <button th:onclick="|location.href='/api/boards/best'|" id="back-main-button">뒤로</button>
-            </div>
-
-        </div>
+    <div class="page-num" th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
+              end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)})">
+        <ul class="page-nation">
+            <li class="li1" th:each="pageNum: ${#numbers.sequence(start, end)}">
+                <a href="#" th:data-page="${pageNum}" onclick="changeUserBoardPage(this)">
+                    <span th:text="${pageNum}"></span>
+                </a>
+            </li>
+        </ul>
+        <a href="#" th:data-page="${pageNum}" onclick="changeUserBoardPage(this)">
+            <span th:text="${pageNum}"></span>
+        </a>
     </div>
+</div>
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+    <div class="btn-write">
+        <button class="btn btn-outline-success" type="button" onclick="redirectToCreatePage()">글쓰기</button>
+    </div>
+</div>
 </div>
 <script>
     const host = 'http://' + window.location.host;
@@ -430,7 +451,6 @@
                 .then(data => {
                     if (data.code === 200) {
                         alert('회원 탈퇴가 성공적으로 이루어졌습니다.');
-                        deleteCookie();
                         window.location.href = mainPage;
                     } else {
                         alert('회원 탈퇴 실패: ' + data.message);
@@ -474,10 +494,24 @@
         var page = element.getAttribute('data-page');
         window.location.href = boardUrl + '/reports' + '?page=' + page;
     }
+    function changeAllBoardPage(element) {
+        var page = element.getAttribute('data-page');
+        window.location.href = boardUrl + '/all' + '?page=' + page;
+    }
+
+    function changeUserBoardPage(element) {
+        var page = element.getAttribute('data-page');
+        window.location.href = boardUrl + '/user' + '?page=' + page;
+    }
+
+    function changeAllBoardPage(element) {
+        var page = element.getAttribute('data-page');
+        window.location.href = boardUrl + '/all' + '?page=' + page;
+    }
 
     function changeCommentPage(element) {
         var page = element.getAttribute('data-page');
-        window.location.href = commentUrl + '/reports' + '?page=' + page;
+        window.location.href = commentUrl + '/reports' +'?page=' + page;
     }
 
     // 게시글 작성 페이지 경유지 추가
@@ -706,7 +740,7 @@
                 .then(data => {
                     if (data.code === 200) {
                         alert('신고 취소가 성공적으로 이루어졌습니다.');
-                        window.location.href = boardUrl + report;
+                        window.location.href = boardUrl + '/reports';
                     } else {
                         alert('신고 취소 실패: ' + data.message);
                     }
@@ -904,7 +938,7 @@
                 .then(data => {
                     if (data.code === 200) {
                         alert('신고 취소가 성공적으로 이루어졌습니다.');
-                        window.location.href = commentUrl + report;
+                        window.location.href = commentUrl + '/reports';
                     } else {
                         alert('신고 취소 실패: ' + data.message);
                     }
