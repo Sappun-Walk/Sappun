@@ -86,6 +86,7 @@ public class Board extends TimeStamp {
         this.departure = boardUpdateReq.getDeparture();
         this.destination = boardUpdateReq.getDestination();
         this.stopover = boardUpdateReq.getStopover();
+        this.region = boardUpdateReq.getRegion();
     }
 
     public void clickLikeBoard(Integer count) {
