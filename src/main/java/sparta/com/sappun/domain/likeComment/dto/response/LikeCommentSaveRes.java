@@ -1,6 +1,17 @@
 package sparta.com.sappun.domain.likeComment.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties
-public class LikeCommentSaveRes {}
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class LikeCommentSaveRes {
+    private Boolean isLiked;
+
+    @Builder
+    private LikeCommentSaveRes(Boolean isLiked) {
+        this.isLiked = isLiked;
+    }
+}
