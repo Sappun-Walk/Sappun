@@ -28,18 +28,21 @@ public class LikeCommentService {
         UserValidator.validate(user);
         Comment comment = commentRepository.findById(commentId);
         CommentValidator.validate(comment);
+        LikeCommentSaveRes res;
 
         if (likeCommentRepository.existsLikeCommentByCommentAndUser(comment, user)) { // 이미 좋아요를 누른 상태라면
             comment.getUser().updateScore(-10); // 좋아요를 받은 댓글의 작성자 점수 -10
             likeCommentRepository.deleteLikeCommentByCommentAndUser(comment, user); // 좋아요 삭제
             comment.clickLikeComment(-1);
+            res = LikeCommentSaveRes.builder().isLiked(false).build();
         } else { // 좋아요를 안 누른 상태라면
             comment.getUser().updateScore(10); // 좋아요를 받은 댓글의 작성자 점수 +10
             likeCommentRepository.save(
                     LikeComment.builder().comment(comment).user(user).build()); // 좋아요 저장
             comment.clickLikeComment(1);
+            res = LikeCommentSaveRes.builder().isLiked(true).build();
         }
 
-        return new LikeCommentSaveRes();
+        return res;
     }
 }

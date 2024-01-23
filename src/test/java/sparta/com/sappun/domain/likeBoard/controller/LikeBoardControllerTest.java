@@ -24,7 +24,7 @@ class LikeBoardControllerTest extends BaseMvcTest implements LikeBoardTest {
     @DisplayName("게시글 좋아요 저장 API 테스트")
     void likeBoard() throws Exception {
         // given
-        LikeBoardSaveRes res = new LikeBoardSaveRes();
+        LikeBoardSaveRes res = LikeBoardSaveRes.builder().isLiked(true).build();
         when(likeBoardService.clickLikeBoard(any(), any())).thenReturn(res);
 
         // when-then

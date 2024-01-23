@@ -1,6 +1,17 @@
 package sparta.com.sappun.domain.likeBoard.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties
-public class LikeBoardSaveRes {}
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class LikeBoardSaveRes {
+    private Boolean isLiked;
+
+    @Builder
+    private LikeBoardSaveRes(Boolean isLiked) {
+        this.isLiked = isLiked;
+    }
+}
