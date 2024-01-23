@@ -57,11 +57,9 @@ public class BoardService {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Board> boardList =
-                boardRepository.findAll(pageable);
+        Page<Board> boardList = boardRepository.findAll(pageable);
         return boardList.map(BoardServiceMapper.INSTANCE::toBoardToListGetAllRes);
     }
-
 
     @Transactional(readOnly = true)
     public BoardBestListGetRes getBoardBestList() {
