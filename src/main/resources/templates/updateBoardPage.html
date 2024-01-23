@@ -189,7 +189,9 @@
                         <!-- 경유지 리스트를 반복하며 각 항목을 표시 -->
                         <div th:each="stopover, iterStat : ${board.stopover}" class="stopover-section">
                             <label th:for="${'stopover-' + iterStat.index}">경유지:</label>
-                            <input type="text" th:id="${'stopover-' + iterStat.index}" th:name="${'stopover[' + iterStat.index + ']'}" th:value="${stopover}">
+                            <input type="text" th:id="${'stopover-' + iterStat.index}" name="stopover" th:value="${stopover}">
+                            <!-- 삭제 버튼 추가 -->
+                            <button type="button" th:onclick="removeStopover(this)">삭제</button>
                         </div>
                     </div>
                     <button type="button" th:onclick="addStopover()">+</button>
@@ -472,7 +474,7 @@
             removeStopoverButton.setAttribute('type', 'button');
             removeStopoverButton.textContent = '삭제';
             removeStopoverButton.addEventListener('click', function () {
-                removeStopover(newStopoverSection);
+                addRemoveStopover(newStopoverSection);
             });
 
             newStopoverSection.appendChild(label);
@@ -486,10 +488,21 @@
         }
     }
 
-    // 경유지 입력란 삭제 함수
-    function removeStopover(stopoverSection) {
-        var stopoverContainer = document.getElementById('stopovers-container');
-        stopoverContainer.removeChild(stopoverSection);
+    // 공통 함수: 삭제 버튼이 속한 div 요소를 찾아서 삭제
+    function removeFromContainer(element) {
+        var container = document.getElementById('stopovers-container');
+        container.removeChild(element);
+    }
+
+    // 이전 입력된 경유지 입력란 삭제 함수
+    function removeStopover(button) {
+        var stopoverSection = button.parentNode;
+        removeFromContainer(stopoverSection);
+    }
+
+    // 추가 입력할 경유지 입력란 삭제 함수
+    function addRemoveStopover(stopoverSection) {
+        removeFromContainer(stopoverSection);
     }
 
     //게시글 작성
