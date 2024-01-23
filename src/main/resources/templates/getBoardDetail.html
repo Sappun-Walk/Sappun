@@ -709,6 +709,12 @@
             })
             .then(data => {
                 if (data.code === 200) {
+                  if(data.data.isLiked === true) {
+                    alert("좋아요를 눌렀습니다.")
+                  }
+                  else {
+                    alert("좋아요를 취소했습니다.")
+                  }
                     window.location.href = boardUrl + '/' + boardId;
                 } else {
                     alert('게시글 좋아요 실패: ' + data.message);
@@ -913,6 +919,12 @@
             })
             .then(data => {
                 if (data.code === 200) {
+                  if(data.data.isLiked === true) {
+                    alert("좋아요를 눌렀습니다.")
+                  }
+                  else {
+                    alert("좋아요를 취소했습니다.")
+                  }
                     window.location.href = boardUrl + '/' + boardId;
                 } else {
                     alert('댓글 좋아요 실패: ' + data.message);
