@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
+import sparta.com.sappun.domain.likeComment.dto.response.LikeCommentSaveRes;
 import sparta.com.sappun.domain.likeComment.repository.LikeCommentRepository;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.test.CommentTest;
@@ -32,10 +33,11 @@ class LikeCommentServiceTest implements CommentTest {
         when(likeCommentRepository.existsLikeCommentByCommentAndUser(any(), any())).thenReturn(false);
 
         // when
-        likecommentService.clickLikeComment(TEST_COMMENT_ID, TEST_USER_ID);
+        LikeCommentSaveRes res = likecommentService.clickLikeComment(TEST_COMMENT_ID, TEST_USER_ID);
 
         // then
         assertEquals(score + 10, TEST_USER.getScore());
+        assertEquals(true, res.getIsLiked());
         verify(userRepository, times(1)).findById(TEST_USER_ID);
         verify(commentRepository, times(1)).findById(TEST_COMMENT_ID);
         verify(likeCommentRepository, times(1)).save(any());
@@ -51,10 +53,11 @@ class LikeCommentServiceTest implements CommentTest {
         when(likeCommentRepository.existsLikeCommentByCommentAndUser(any(), any())).thenReturn(true);
 
         // when
-        likecommentService.clickLikeComment(TEST_COMMENT_ID, TEST_USER_ID);
+        LikeCommentSaveRes res = likecommentService.clickLikeComment(TEST_COMMENT_ID, TEST_USER_ID);
 
         // then
         assertEquals(score - 10, TEST_USER.getScore());
+        assertEquals(false, res.getIsLiked());
         verify(userRepository, times(1)).findById(TEST_USER_ID);
         verify(commentRepository, times(1)).findById(TEST_COMMENT_ID);
         verify(likeCommentRepository, times(1)).deleteLikeCommentByCommentAndUser(any(), any());

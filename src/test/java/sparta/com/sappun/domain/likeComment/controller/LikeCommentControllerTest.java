@@ -24,7 +24,7 @@ class LikeCommentControllerTest extends BaseMvcTest implements LikeCommentTest {
     @DisplayName("댓글 저장 API 테스트")
     void saveCommentTest() throws Exception {
         // given
-        LikeCommentSaveRes res = new LikeCommentSaveRes();
+        LikeCommentSaveRes res = LikeCommentSaveRes.builder().isLiked(true).build();
         when(likeCommentService.clickLikeComment(any(), any())).thenReturn(res);
 
         // when-then
