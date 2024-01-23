@@ -472,7 +472,8 @@
             <label for="commentImageInput">첨부파일:</label>
             <input type="file" id="commentImageInput" name="commentImageInput">
             <div th:if="${user != null}">
-                <button class="btn btn-outline-success" type="button" th:onclick="|saveComment(${board.id})|">확인</button>
+                <button class="btn btn-outline-success" type="button" th:onclick="|saveComment(${board.id})|">확인
+                </button>
             </div>
             <div th:if="${user == null}">
                 <button class="btn btn-outline-success" type="button" onclick="needToLogin()">확인</button>
@@ -507,6 +508,27 @@
                 </div>
             </div>
             <div class="like-comment-btn">
+                <!--댓글 신고-->
+                <div th:if="${user != null}">
+                    <button class="btn btn-outline-success" th:onclick="|showCommentInputForm(${comment.id})|">신고
+                    </button>
+                </div>
+                <div th:if="${user == null}">
+                    <button class="btn btn-outline-success" onclick="needToLogin()">신고</button>
+                </div>
+
+
+                <!--댓글 삭제-->
+                <div th:if="${user != null}">
+                    <button class="btn btn-outline-success"
+                            th:onclick="'deleteComment(' + ${board.id} + ',' + ${comment.id} + ')'"
+                            id="comment-delete-button">삭제
+                    </button>
+                </div>
+                <div th:if="${user == null}">
+                    <button class="btn btn-outline-success" onclick="needToLogin()">삭제</button>
+                </div>
+
                 <!--댓글 수정-->
                 <div th:if="${user != null}">
                     <button class="btn btn-outline-success" th:onclick="showCommentUpdateForm()">수정</button>
@@ -526,36 +548,18 @@
                 <div th:if="${user == null}">
                     <button class="btn btn-outline-success" onclick="needToLogin()">수정</button>
                 </div>
-
-                <!--댓글 삭제-->
-                <div th:if="${user != null}">
-                    <button class="btn btn-outline-success"
-                            th:onclick="'deleteComment(' + ${board.id} + ',' + ${comment.id} + ')'"
-                            id="comment-delete-button">삭제
+            </div>
+            <form th:id="'myCommentForm-' + ${comment.id}" style="display: none;width: 100%">
+                <div style="display: flex;margin-right: 20px;margin-bottom: 20px;flex-direction: row;align-items: center;justify-content: flex-end;">
+                    <label th:for="'commentReason-' + ${comment.id}">신고 사유:</label>
+                    <input type="text" th:id="'commentReason-' + ${comment.id}"
+                           th:name="'commentReason-' + ${comment.id}" required>
+                    <button class="btn btn-outline-success" type="button"
+                            th:onclick="'reportComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
                     </button>
                 </div>
-                <div th:if="${user == null}">
-                    <button class="btn btn-outline-success" onclick="needToLogin()">삭제</button>
-                </div>
-
-                <!--댓글 신고-->
-                <div th:if="${user != null}">
-                    <button class="btn btn-outline-success" th:onclick="|showCommentInputForm(${comment.id})|">신고</button>
-                    <form th:id="'myCommentForm-' + ${comment.id}" style="display: none;">
-                        <label th:for="'commentReason-' + ${comment.id}">신고 사유:</label>
-                        <input type="text" th:id="'commentReason-' + ${comment.id}"
-                               th:name="'commentReason-' + ${comment.id}" required>
-                        <button class="btn btn-outline-success" type="button"
-                                th:onclick="'reportComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
-                        </button>
-                    </form>
-                </div>
-                <div th:if="${user == null}">
-                    <button class="btn btn-outline-success" onclick="needToLogin()">신고</button>
-                </div>
-            </div>
+            </form>
         </div>
-
     </div>
 </div>
 </div>
