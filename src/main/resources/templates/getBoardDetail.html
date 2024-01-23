@@ -1,235 +1,566 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>게시글 상세 조회 페이지</title>
     <style>
+
+        /* 일부 기본 스타일을 초기화하고 기본 스타일을 적용합니다. */
+        body, h1, h2, p {
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: "Helvetica", sans-serif;
+            font-style: normal;
         }
 
-        div.getBoardDetailPage {
-            display: flex;
-            flex-direction: column;
-        }
-
-        div.getBoardDetail-header {
-            padding: 10px;
-            width: 100%;
-        }
-
-        h1 {
-            margin: 0;
-            padding: 0;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-        }
-
-        #commentImage {
-          width: 300px;
-          height: 300px;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
-        }
-
-        button {
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        .buttons {
-            text-align: right;
-            margin-bottom: 10px;
-        }
-
-        .like-btn {
-            display: block;
+        header, main, footer {
+            width: 80%;
             margin: 0 auto;
         }
 
-        .like-comment-btn {
-            text-align: right;
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px 0;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* 미디어 쿼리를 사용하여 반응형 스타일을 추가합니다. */
+        @media screen and (max-width: 600px) {
+            header, main, footer {
+                width: 100%;
+            }
+        }
+
+        #sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgba(17, 17, 17, 0.8);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        #sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        #sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        #main {
+            transition: margin-left 0.5s;
+            padding: 16px;
+            display: flex;
+        }
+
+        #profileImage {
+            cursor: pointer;
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            top: 20px;
+            right: 30px;
+            padding: 10px;
+            border-radius: 50%;
+        }
+
+        .main-img-container {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .btn-write {
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: 100px;
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        .btn-write button {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        #openBtn {
+            font-size: 30px;
+            width: 250px;
+            margin-right: auto;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0);
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            display: flex;
+        }
+
+        #openBtn.hide {
+            visibility: hidden;
         }
 
         #mainLogoImage {
             cursor: pointer;
         }
+
+        .gallery-caption {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .comment-content {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .commentImage {
+            max-width: 100%;
+            width: 400px;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-right: 20px;
+        }
+
+        /* 전역 폰트 스타일 적용 */
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* 컨테이너 스타일 */
+        .getBoardDetail-body {
+            max-width: 70%;
+            margin: 0 auto;
+        }
+
+        .outLine {
+            width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            outline-color: pink;
+            margin: 10px 0;
+        }
+
+        .comment-create {
+            display: flex;
+            padding: 1%;
+            justify-content: space-between;
+        }
+
+        /* 제목 및 버튼 섹션 */
+        .title-and-buttons {
+            display: flex;
+            padding: 1%;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 10px;
+        }
+
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            cursor: pointer;
+        }
+
+        /* 게시물 내용 섹션 */
+        .board-margin {
+            margin-bottom: 20px;
+        }
+
+        .board-content {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            text-align: center;
+            flex-wrap: wrap;
+        }
+
+        .board-content2 {
+            width: 40%;
+            word-wrap: break-word;
+            display: flex;
+            justify-content: flex-start;
+            text-align: left;
+            flex-wrap: wrap;
+            flex-direction: column;
+            margin: 20px;
+            align-content: flex-start;
+        }
+
+        .board-content3 {
+            overflow-wrap: break-word;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .img-upload {
+            width: 600px;
+            height: 640px;
+            margin: 20px;
+        }
+
+        .img-section {
+            max-width: 100%;
+            width: 600px;
+            height: 640px;
+            object-fit: cover;
+            border-radius: 30px;
+        }
+
+        /* 좋아요 버튼 섹션 */
+        .like {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 20px;
+        }
+
+        .like-view {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .like-btn {
+            margin-left: 10px;
+            background-color: white;
+            color: red;
+            border: 0.5px solid pink;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        .like-btn:hover {
+            /* 마우스를 버튼 위에 올렸을 때의 스타일 변경 */
+            background-color: red;
+            color: #fff;
+        }
+
+        .like-btn.liked {
+            background-color: #dc3545;
+        }
+
+        /* 댓글 섹션 */
+        .comment-list {
+            margin-top: 20px;
+        }
+
+        .like-comment-btn {
+            display: flex;
+            flex-direction: row-reverse;
+            margin-bottom: 10px;
+            margin-right: 20px;
+            gap: 10px;
+        }
+
+        #comment {
+            display: flex;
+        }
+
+        .board-up {
+            display: flex;
+        }
+
+        #inputForm {
+            display: none;
+            width: 100%;
+        }
+
+        #myForm {
+            display: flex;
+            margin-right: 20px;
+            margin-bottom: 10px;
+            flex-direction: row-reverse;
+            align-items: center;
+        }
+
+        /* 반응형 스타일 (필요에 따라 조절) */
+        @media (max-width: 600px) {
+            .title-and-buttons {
+                flex-direction: column;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="getBoardDetailPage">
-    <div class="getBoardDetail-header">
-        <img class="main-img" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}"
-             th:onclick="|location.href='@{/api/boards/best}'|" alt="Main Image">
-        <div>
-            <div class="btn-write">
-                <p th:if="${user == null}">
-                    <button class="btn btn-outline-success" type="submit"
-                            th:onclick="|location.href='@{/api/users/login-page}'|">로그인
+<div id="sidebar">
+    <a href="#" onclick="navigateTo('/api/boards/best')">Best Top 3</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION1')">서울특별시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION2')">부산광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION3')">대구광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION4')">인천광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION5')">광주광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION6')">울산광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION7')">세종특별차치시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION8')">경기도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION9')">강원특별자치도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION10')">충청북도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION11')">충청남도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION12')">전북특별차치도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION13')">전라남도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION14')">경상북도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION15')">경상남도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION16')">제주특별자치도</a>
+</div>
+<!--페이지 기본 상단-->
+<div id="main">
+    <button id="openBtn" onclick="openNav()">☰</button>
+    <div class="main-img-container">
+        <img class="main-img" id="mainLogoImage"
+             th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png} "
+             th:onclick="|location.href='@{/api/boards/best}'|"
+             alt="Main Image">
+    </div>
+    <div class="btn-write">
+        <div th:if="${user == null}">
+            <button class="btn btn-outline-success" type="submit"
+                    th:onclick="|location.href='@{/api/users/login-page}'|">로그인
+            </button>
+        </div>
+        <div th:if="${user != null && user.role == T(sparta.com.sappun.domain.user.entity.Role).ADMIN}">
+            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/reports}'|">
+                게시판 관리
+            </button>
+        </div>
+        <div th:if="${user != null}">
+            <button class="btn btn-outline-success" id="logout-button" type="submit" onclick="logout()">
+                로그아웃
+            </button>
+        </div>
+    </div>
+    <div th:if="${user != null}">
+        <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile" id="profileImage">
+    </div>
+</div>
+<!--게시글 제목 및 버튼-->
+<div class="getBoardDetail-body">
+    <div class="outLine">
+        <div class="title-and-buttons">
+            <h1 th:text="${board.title}"></h1>
+            <div class="buttons">
+                <div th:if="${user != null && user.nickname eq board.nickname}">
+                    <button class="btn btn-outline-success" th:onclick="'getUpdateBoard(' + ${boardId} + ')'"
+                            id="board-update-button">
+                        수정
                     </button>
-                </p>
-                <p th:if="${user != null}">
-                    <button id="logout-button" class="btn btn-outline-success" onclick="logout()">로그아웃</button>
-                    <button class="btn btn-outline-success" type="submit"
-                            th:onclick="|location.href='@{/api/users}'|">프로필
+                </div>
+                <div th:if="${user != null}">
+                    <button class="btn btn-outline-success" th:onclick="'deleteBoard(' + ${boardId} + ')'"
+                            id="board-delete-button">
+                        삭제
                     </button>
-                </p>
+                </div>
+                <div th:if="${user == null}">
+                    <button class="btn btn-outline-success" onclick="needToLogin()">
+                        삭제
+                    </button>
+                </div>
+                <div th:if="${user == null}">
+                    <button class="btn btn-outline-success" onclick="needToLogin()">신고</button>
+                </div>
+                <div th:if="${user != null}">
+                    <button class="btn btn-outline-success" th:onclick="showInputForm()">신고</button>
+                </div>
+            </div>
+        </div>
+        <div id="inputForm">
+            <div id="myForm">
+                <label for="reason">
+                    <input type="text" id="reason" name="reason" required placeholder="신고 사유를 적어주세요.">
+                    <button class="btn btn-outline-success" type="button"
+                            th:onclick="'reportBoard(' + ${board.id} + ')'">확인
+                    </button>
+                </label>
             </div>
         </div>
     </div>
-    <div class="getBoardDetail-body">
-        <div class="title-and-buttons">
-            <div class="buttons">
-                <button th:if="${user != null && user.nickname eq board.nickname}" th:onclick="'getUpdateBoard(' + ${boardId} + ')'" id="board-update-button">
-                    수정
-                </button>
 
-                <div th:if="${user != null}">
-                    <button th:onclick="'deleteBoard(' + ${boardId} + ')'" id="board-delete-button">삭제</button>
-                </div>
-                <div th:if="${user == null}">
-                    <button onclick="needToLogin()">삭제</button>
-                </div>
-
-                <div th:if="${user != null}">
-                    <button th:onclick="showInputForm()">신고</button>
-                    <div id="inputForm" style="display: none;">
-                        <form id="myForm">
-                            <label for="reason">신고 사유:</label>
-                            <input type="text" id="reason" name="reason" required>
-                            <button type="button" th:onclick="'reportBoard(' + ${board.id} + ')'">확인
-                            </button>
-                        </form>
+    <!--게시글 작성자, 라이크-->
+    <div class="board-margin">
+        <div class="outLine">
+            <div class="like">
+                <div th:text="'작성자: ' + ${board.nickname}"></div>
+                <div class="like-view">
+                    <div th:text="${board.likeCount}"></div>
+                    <div th:if="${user != null}">
+                        <button class="like-btn" th:onclick="'likeBoard(' + ${board.id} + ')'">❤</button>
+                    </div>
+                    <div th:if="${user == null}">
+                        <button class="like-btn" onclick="needToLogin()">❤</button>
                     </div>
                 </div>
-                <div th:if="${user == null}">
-                    <button onclick="needToLogin()">신고</button>
+            </div>
+        </div>
+        <div class="outLine">
+            <div class="board-content">
+                <div class="img-upload">
+                    <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
+                </div>
+                <div class="board-content2">
+                    <div class="board-root">
+                        <div th:text="'출발지: ' + ${board.departure}"></div>
+                        <div th:text="'경유지: ' + ${board.stopover}"></div>
+                        <div th:text="'도착지: ' + ${board.destination}"></div>
+                    </div>
+                    <div class="board-content3" th:text="'내용: ' + ${board.content}"></div>
                 </div>
             </div>
-            <h1 th:text="'제목: ' + ${board.title}"></h1>
         </div>
+    </div>
 
-        <div class="boardContent">
-            <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
-            <p th:text="'작성자: ' + ${board.nickname}"></p>
-            <p th:text="'내용: ' + ${board.content}"></p>
-            <p th:text="'출발지: ' + ${board.departure}"></p>
-            <p th:text="'경유지: ' + ${board.stopover}"></p>
-            <p th:text="'도착지: ' + ${board.destination}"></p>
-            <p th:text="'좋아요 수: ' + ${board.likeCount}"></p>
-        </div>
+    <!--댓글-->
+    <h2>댓글</h2>
 
-        <div th:if="${user != null}">
-            <button class="like-btn" th:onclick="'likeBoard(' + ${board.id} + ')'">좋아요</button>
-        </div>
-        <div th:if="${user == null}">
-            <button class="like-btn" onclick="needToLogin()">좋아요</button>
-        </div>
-
-        <!--댓글 작성-->
-        <div>
+    <!--댓글 작성-->
+    <div class="outLine">
+        <div class="comment-create">
             <label for="commentContent">내용:</label>
             <input type="text" id="commentContent" name="commentContent" required>
             <label for="commentImageInput">첨부파일:</label>
             <input type="file" id="commentImageInput" name="commentImageInput">
-        </div>
-
-        <div th:if="${user != null}">
-            <button type="button" th:onclick="|saveComment(${board.id})|">확인</button>
-        </div>
-        <div th:if="${user == null}">
-            <button type="button" onclick="needToLogin()">확인</button>
-        </div>
-
-        <div>
-            <h2>댓글</h2>
-            <div class="comment-list" th:each="comment : ${board.comments}"
-                 th:id="${'comment-' + comment.id}">
-                <div class="comment">
-                    <div class="gallery-caption">
-                        <p th:text="'작성자: ' + ${comment.nickname}"></p>
-                        <p th:if="${comment.fileURL != null}">
-                            <img th:src="${comment.fileURL}" id="commentImage" alt="댓글 이미지">
-                        </p>
-                        <p th:text="'내용: ' + ${comment.content}"></p>
-                        <p th:text="'좋아요 수: ' + ${comment.likeCount}"></p>
-                    </div>
-                </div>
-                <div class="like-comment-btn">
-                    <!--댓글 좋아요-->
-                    <div th:if="${user != null}">
-                        <button class="like-btn" th:onclick="'likeComment(' + ${board.id} + ',' + ${comment.id} + ')'">
-                            좋아요
-                        </button>
-                    </div>
-                    <div th:if="${user == null}">
-                        <button class="like-btn" onclick="needToLogin()">좋아요</button>
-                    </div>
-
-                    <!--댓글 수정-->
-                    <div th:if="${user != null}">
-                        <button th:onclick="showCommentUpdateForm()">수정</button>
-                        <div id="commentUpdateForm" style="display: none;">
-                            <form id="UpdateCommentForm">
-                                <label for="inputCommentContent">내용:</label>
-                                <input type="text" id="inputCommentContent" name="commentContent" required th:value="${comment.content}">
-                                <label for="inputCommentImage">첨부파일:</label>
-                                <input type="file" id="inputCommentImage" name="commentImage">
-                                <button type="button" th:onclick="'updateComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                    <div th:if="${user == null}">
-                        <button onclick="needToLogin()">수정</button>
-                    </div>
-
-                    <!--댓글 삭제-->
-                    <div th:if="${user != null}">
-                        <button th:onclick="'deleteComment(' + ${board.id} + ',' + ${comment.id} + ')'" id="comment-delete-button">삭제
-                        </button>
-                    </div>
-                    <div th:if="${user == null}">
-                        <button onclick="needToLogin()">삭제</button>
-                    </div>
-
-                    <!--댓글 신고-->
-                    <div th:if="${user != null}">
-                        <button th:onclick="|showCommentInputForm(${comment.id})|">신고</button>
-                        <form th:id="'myCommentForm-' + ${comment.id}" style="display: none;">
-                            <label th:for="'commentReason-' + ${comment.id}">신고 사유:</label>
-                                <input type="text" th:id="'commentReason-' + ${comment.id}" th:name="'commentReason-' + ${comment.id}" required>
-                            <button type="button"
-                                    th:onclick="'reportComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
-                            </button>
-                        </form>
-                    </div>
-                    <div th:if="${user == null}">
-                        <button onclick="needToLogin()">신고</button>
-                    </div>
-
-                </div>
+            <div th:if="${user != null}">
+                <button class="btn btn-outline-success" type="button" th:onclick="|saveComment(${board.id})|">확인</button>
+            </div>
+            <div th:if="${user == null}">
+                <button class="btn btn-outline-success" type="button" onclick="needToLogin()">확인</button>
             </div>
         </div>
     </div>
+
+
+    <div class="comment-list" th:each="comment : ${board.comments}" th:id="${'comment-' + comment.id}">
+        <div class="outLine">
+            <div class="gallery-caption">
+                <div class="like">
+                    <div th:text="'작성자: ' + ${comment.nickname}"></div>
+                    <!--댓글 좋아요-->
+                    <div class="like-view">
+                        <div th:text="${comment.likeCount}"></div>
+                        <div th:if="${user != null}">
+                            <button class="like-btn"
+                                    th:onclick="'likeComment(' + ${board.id} + ',' + ${comment.id} + ')'">❤
+                            </button>
+                        </div>
+                        <div th:if="${user == null}">
+                            <button class="like-btn" onclick="needToLogin()">❤</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment-content">
+                    <div th:if="${comment.fileURL != null}">
+                        <img th:src="${comment.fileURL}" class="commentImage" alt="댓글 이미지">
+                    </div>
+                    <div th:text="'내용: ' + ${comment.content}"></div>
+                </div>
+            </div>
+            <div class="like-comment-btn">
+                <!--댓글 수정-->
+                <div th:if="${user != null}">
+                    <button class="btn btn-outline-success" th:onclick="showCommentUpdateForm()">수정</button>
+                    <div id="commentUpdateForm" style="display: none;">
+                        <form id="UpdateCommentForm">
+                            <label for="inputCommentContent">내용:</label>
+                            <input type="text" id="inputCommentContent" name="commentContent" required
+                                   th:value="${comment.content}">
+                            <label for="inputCommentImage">첨부파일:</label>
+                            <input type="file" id="inputCommentImage" name="commentImage">
+                            <button class="btn btn-outline-success" type="button"
+                                    th:onclick="'updateComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div th:if="${user == null}">
+                    <button class="btn btn-outline-success" onclick="needToLogin()">수정</button>
+                </div>
+
+                <!--댓글 삭제-->
+                <div th:if="${user != null}">
+                    <button class="btn btn-outline-success"
+                            th:onclick="'deleteComment(' + ${board.id} + ',' + ${comment.id} + ')'"
+                            id="comment-delete-button">삭제
+                    </button>
+                </div>
+                <div th:if="${user == null}">
+                    <button class="btn btn-outline-success" onclick="needToLogin()">삭제</button>
+                </div>
+
+                <!--댓글 신고-->
+                <div th:if="${user != null}">
+                    <button class="btn btn-outline-success" th:onclick="|showCommentInputForm(${comment.id})|">신고</button>
+                    <form th:id="'myCommentForm-' + ${comment.id}" style="display: none;">
+                        <label th:for="'commentReason-' + ${comment.id}">신고 사유:</label>
+                        <input type="text" th:id="'commentReason-' + ${comment.id}"
+                               th:name="'commentReason-' + ${comment.id}" required>
+                        <button class="btn btn-outline-success" type="button"
+                                th:onclick="'reportComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
+                        </button>
+                    </form>
+                </div>
+                <div th:if="${user == null}">
+                    <button class="btn btn-outline-success" onclick="needToLogin()">신고</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
+</div>
+
+
 <script>
 
     const host = 'http://' + window.location.host;
@@ -572,7 +903,7 @@
         formData.append("region", region);
         formData.append("title", title);
         formData.append("departure", departure);
-        stopoverInputs.forEach(function(input) {
+        stopoverInputs.forEach(function (input) {
             formData.append("stopover", input.value);
         });
         formData.append("destination", destination);
@@ -633,7 +964,12 @@
     // 게시글 신고 사유 입력
     function showInputForm() {
         var inputForm = document.getElementById('inputForm');
-        inputForm.style.display = 'block';
+
+        // 현재 상태 확인
+        var isHidden = inputForm.style.display === 'none' || inputForm.style.display === '';
+
+        // 상태에 따라 토글
+        inputForm.style.display = isHidden ? 'block' : 'none';
     }
 
     // 게시글 신고
@@ -709,18 +1045,46 @@
             })
             .then(data => {
                 if (data.code === 200) {
-                  if(data.data.isLiked === true) {
-                    alert("좋아요를 눌렀습니다.")
-                  }
-                  else {
-                    alert("좋아요를 취소했습니다.")
-                  }
+                    if (data.data.isLiked === true) {
+                        alert("좋아요를 눌렀습니다.")
+                    } else {
+                        alert("좋아요를 취소했습니다.")
+                    }
                     window.location.href = boardUrl + '/' + boardId;
                 } else {
                     alert('게시글 좋아요 실패: ' + data.message);
                 }
             })
     }
+
+    // 게시글 좋아요에따라 버튼색 변경
+    // function likeBoard(boardId) {
+    //     fetch(boardUrl + '/' + boardId + '/like', {
+    //         method: 'POST',
+    //     })
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error('Network response was not ok');
+    //             }
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             if (data.code === 200) {
+    //                 // 좋아요 수 갱신
+    //                 const likeCountElement = document.querySelector('.board-up p:nth-child(2)');
+    //                 likeCountElement.innerText = '좋아요 수: ' + data.likeCount;
+    //
+    //                 // 버튼 색상 변경
+    //                 const likeButton = document.querySelector('.like-btn');
+    //                 likeButton.style.backgroundColor = data.isLiked ? '#dc3545' : '#28a745';
+    //
+    //                 // 페이지 리로드
+    //                 window.location.href = boardUrl + '/' + boardId;
+    //             } else {
+    //                 alert('게시글 좋아요 실패: ' + data.message);
+    //             }
+    //         })
+    // }
 
     // 댓글 작성
     function saveComment(boardId) {
@@ -838,13 +1202,13 @@
 
     // 댓글 신고 사유 입력
     function showCommentInputForm(commentId) {
-      var formId = 'myCommentForm-' + commentId;
-      var form = document.getElementById(formId);
-      if (form.style.display === 'none') {
-        form.style.display = 'block';
-      } else {
-        form.style.display = 'none';
-      }
+        var formId = 'myCommentForm-' + commentId;
+        var form = document.getElementById(formId);
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
     }
 
     // 댓글 신고
@@ -888,7 +1252,7 @@
 
         // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
         if (confirmation) {
-            fetch(commentUrl+ '/' + commentId + report, {method: 'DELETE'})
+            fetch(commentUrl + '/' + commentId + report, {method: 'DELETE'})
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -919,12 +1283,11 @@
             })
             .then(data => {
                 if (data.code === 200) {
-                  if(data.data.isLiked === true) {
-                    alert("좋아요를 눌렀습니다.")
-                  }
-                  else {
-                    alert("좋아요를 취소했습니다.")
-                  }
+                    if (data.data.isLiked === true) {
+                        alert("좋아요를 눌렀습니다.")
+                    } else {
+                        alert("좋아요를 취소했습니다.")
+                    }
                     window.location.href = boardUrl + '/' + boardId;
                 } else {
                     alert('댓글 좋아요 실패: ' + data.message);
