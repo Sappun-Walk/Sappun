@@ -83,6 +83,26 @@ public class BoardController {
         return "allBoardPage";
     }
 
+    @GetMapping("/user")
+    public String getUserBoardList(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "8") int size,
+            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
+            @RequestParam(value = "isAsc", defaultValue = "false") boolean isAsc,
+            Model model,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUser().getId();
+        model.addAttribute("user", userDetails.getUser());
+
+        // BoardService의 getBoardUserList 메서드를 호출하여 사용자의 보드 목록을 가져옵니다.
+        Page<BoardToReportGetRes> responseDto =
+                boardService.getBoardUserList(userId, page - 1, size, sortBy, isAsc);
+
+        model.addAttribute("responseDto", responseDto);
+        model.addAttribute("maxPage", 5);
+        return "userBoardPage";
+    }
+
     // Best 게시글 조회
     @GetMapping("/best")
     public String getBestBoards(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
