@@ -73,7 +73,6 @@ public class BoardService {
                 .map(BoardServiceMapper.INSTANCE::toBoardUserListGetRes);
     }
 
-
     @Transactional(readOnly = true)
     public BoardBestListGetRes getBoardBestList() {
         List<BoardToListGetRes> boardGetRes =
