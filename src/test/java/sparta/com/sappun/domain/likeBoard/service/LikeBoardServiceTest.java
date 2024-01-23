@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
+import sparta.com.sappun.domain.likeBoard.dto.response.LikeBoardSaveRes;
 import sparta.com.sappun.domain.likeBoard.repository.LikeBoardRepository;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.test.LikeBoardTest;
@@ -34,10 +35,11 @@ class LikeBoardServiceTest implements LikeBoardTest {
         when(likeBoardRepository.existsLikeBoardByBoardAndUser(any(), any())).thenReturn(false);
 
         // when
-        likeBoardService.clickLikeBoard(TEST_BOARD_ID, TEST_USER_ID);
+        LikeBoardSaveRes res = likeBoardService.clickLikeBoard(TEST_BOARD_ID, TEST_USER_ID);
 
         // then
         assertEquals(score + 10, TEST_USER.getScore());
+        assertEquals(true, res.getIsLiked());
         verify(userRepository, times(1)).findById(TEST_USER_ID);
         verify(boardRepository, times(1)).findById(TEST_BOARD_ID);
         verify(likeBoardRepository, times(1)).save(any());
@@ -54,10 +56,11 @@ class LikeBoardServiceTest implements LikeBoardTest {
         when(likeBoardRepository.existsLikeBoardByBoardAndUser(any(), any())).thenReturn(true);
 
         // when
-        likeBoardService.clickLikeBoard(TEST_BOARD_ID, TEST_USER_ID);
+        LikeBoardSaveRes res = likeBoardService.clickLikeBoard(TEST_BOARD_ID, TEST_USER_ID);
 
         // then
         assertEquals(score - 10, TEST_USER.getScore());
+        assertEquals(false, res.getIsLiked());
         verify(userRepository, times(1)).findById(TEST_USER_ID);
         verify(boardRepository, times(1)).findById(TEST_BOARD_ID);
         verify(likeBoardRepository, times(1)).deleteLikeBoardByBoardAndUser(any(), any());
