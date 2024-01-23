@@ -76,7 +76,7 @@ public class BoardController {
         if (userDetails != null) {
             model.addAttribute("user", userDetails.getUser());
         }
-        Page<BoardToListGetAllRes> responseDto =
+        Page<BoardToListGetRes> responseDto =
                 boardService.getBoardAllList(page - 1, size, sortBy, isAsc);
         model.addAttribute("responseDto", responseDto);
         model.addAttribute("maxPage", 5);

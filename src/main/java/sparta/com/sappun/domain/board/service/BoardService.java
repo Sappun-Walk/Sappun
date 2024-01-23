@@ -52,13 +52,12 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BoardToListGetAllRes> getBoardAllList(
-            int page, int size, String sortBy, boolean isAsc) {
+    public Page<BoardToListGetRes> getBoardAllList(int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Board> boardList = boardRepository.findAll(pageable);
-        return boardList.map(BoardServiceMapper.INSTANCE::toBoardToListGetAllRes);
+        return boardList.map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
     }
 
     @Transactional(readOnly = true)
