@@ -5,6 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import sparta.com.sappun.domain.board.dto.response.BoardGetRes;
+import sparta.com.sappun.domain.board.dto.response.BoardToListGetAllRes;
 import sparta.com.sappun.domain.board.dto.response.BoardToListGetRes;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.comment.dto.response.CommentGetRes;
@@ -24,4 +25,7 @@ public interface BoardServiceMapper {
 
     @Mapping(source = "user.nickname", target = "nickname")
     BoardToListGetRes toBoardToListGetRes(Board board);
+
+    @Mapping(source = "user.nickname", target = "nickname")
+    BoardToListGetAllRes toBoardToListGetAllRes(Board board);
 }

@@ -65,6 +65,24 @@ public class BoardController {
         return "regionPage";
     }
 
+    @GetMapping("/all")
+    public String getAllBoards(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "8") int size,
+            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
+            @RequestParam(value = "isAsc", defaultValue = "false") boolean isAsc,
+            Model model,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails != null) {
+            model.addAttribute("user", userDetails.getUser());
+        }
+        Page<BoardToListGetAllRes> responseDto =
+                boardService.getBoardAllList(page - 1, size, sortBy, isAsc);
+        model.addAttribute("responseDto", responseDto);
+        model.addAttribute("maxPage", 5);
+        return "allBoardPage";
+    }
+
     // Best 게시글 조회
     @GetMapping("/best")
     public String getBestBoards(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {

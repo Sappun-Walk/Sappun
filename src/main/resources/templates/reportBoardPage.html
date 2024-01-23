@@ -186,6 +186,7 @@
 <div>
     <div id="sidebar">
         <a href="#" onclick="navigateTo('/api/boards/best')">Best Top 3</a>
+        <a href="#" onclick="navigateTo('/api/boards/all?page=1')">전체 게시글 조회</a>
         <a href="#" onclick="navigateTo('/api/boards/region?region=REGION1')">서울특별시</a>
         <a href="#" onclick="navigateTo('/api/boards/region?region=REGION2')">부산광역시</a>
         <a href="#" onclick="navigateTo('/api/boards/region?region=REGION3')">대구광역시</a>
@@ -483,6 +484,10 @@
     function changeBoardPage(element) {
         var page = element.getAttribute('data-page');
         window.location.href = boardUrl + '/reports' + '?page=' + page;
+    }
+    function changeAllBoardPage(element) {
+        var page = element.getAttribute('data-page');
+        window.location.href = boardUrl + '/all' + '?page=' + page;
     }
 
     function changeCommentPage(element) {
