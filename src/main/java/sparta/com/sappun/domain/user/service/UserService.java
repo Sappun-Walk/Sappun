@@ -62,6 +62,11 @@ public class UserService {
     public UserSignupRes signup(UserSignupReq req, MultipartFile multipartFile) {
         UserValidator.validate(req);
 
+        UserValidator.checkDuplicatedUsername(
+                userRepository.existsByUsername(req.getUsername())); // username 중복확인
+        UserValidator.checkDuplicatedNickname(
+                userRepository.existsByNickname(req.getNickname())); // nickname 중복확인
+
         UserValidator.checkEmail(userRepository.existsByEmail(req.getEmail()));
 
         if (Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) multipartFile = null;
