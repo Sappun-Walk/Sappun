@@ -479,7 +479,7 @@
             </select>
             <button class="btn btn-outline-success" type="button" onclick="updateSortOrder()">적용</button>
             <label for="commentContent">내용:</label>
-            <input type="text" id="commentContent" name="commentContent" required>
+            <textarea id="commentContent" name="commentContent" required></textarea>
             <label for="commentImageInput">첨부파일:</label>
             <input type="file" id="commentImageInput" name="commentImageInput">
             <div th:if="${user != null}">
