@@ -23,7 +23,6 @@ import sparta.com.sappun.global.validator.ReportBoardValidator;
 import sparta.com.sappun.global.validator.UserValidator;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ReportBoardService {
     private final ReportBoardRepository reportBoardRepository;

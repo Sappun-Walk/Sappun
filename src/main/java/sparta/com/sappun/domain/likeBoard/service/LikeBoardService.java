@@ -14,7 +14,6 @@ import sparta.com.sappun.global.validator.BoardValidator;
 import sparta.com.sappun.global.validator.UserValidator;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class LikeBoardService {
     private final LikeBoardRepository likeBoardRepository;
