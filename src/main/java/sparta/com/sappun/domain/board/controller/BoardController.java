@@ -2,8 +2,11 @@ package sparta.com.sappun.domain.board.controller;
 
 import jakarta.validation.Valid;
 import java.util.Collections;
+import java.util.Comparator;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.board.dto.response.*;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
 import sparta.com.sappun.domain.board.service.BoardService;
+import sparta.com.sappun.domain.comment.dto.response.CommentGetRes;
 import sparta.com.sappun.global.response.CommonResponse;
 import sparta.com.sappun.global.security.UserDetailsImpl;
 
@@ -35,12 +39,19 @@ public class BoardController {
     public String getBoardDetails(
             @PathVariable Long boardId,
             Model model,
+            @RequestParam(value = "sortOrder", defaultValue = "likes") String sortOrder,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails != null) {
             model.addAttribute("user", userDetails.getUser());
         }
         BoardGetRes boardGetRes = boardService.getBoard(boardId);
-        Collections.reverse(boardGetRes.getComments());
+        if ("likes".equals(sortOrder)) {
+            // 좋아요 순으로 정렬
+            boardGetRes.getComments().sort(Comparator.comparing(CommentGetRes::getLikeCount).reversed());
+        } else {
+            // 최신순으로 정렬
+            Collections.reverse(boardGetRes.getComments());
+        }
         model.addAttribute("board", boardGetRes);
         return "getBoardDetail";
     }

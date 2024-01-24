@@ -94,6 +94,8 @@
             </div>
         </div>
     </div>
+    <!--정렬에 필요한 boardId -->
+
     <div class="getBoardDetail-body">
         <div class="title-and-buttons">
             <div class="buttons">
@@ -158,8 +160,13 @@
             <button type="button" onclick="needToLogin()">확인</button>
         </div>
 
-        <div>
             <h2>댓글</h2>
+        <select id="sortOrder">
+            <option value="recent">최신순</option>
+            <option value="likes">좋아요 순</option>
+        </select>
+        <button onclick="updateSortOrder()">적용</button>
+        <div>
             <div class="comment-list" th:each="comment : ${board.comments}"
                  th:id="${'comment-' + comment.id}">
                 <div class="comment">
@@ -246,7 +253,74 @@
     const like = '/like'
     const updatePassword = '/api/users/profile/password';
 
+    //댓글 정렬
+    function updateSortOrder() {
+        // 정렬 방식 및 게시글 ID 가져오기
+        var sortOrder = document.getElementById('sortOrder').value;
+        // 현재 URL 가져오기
+        var currentUrl = window.location.origin + window.location.pathname;
+        // 정렬 기준이 이미 존재하는 경우
+        if (window.location.search.includes('?')) {
+            // 이미 쿼리 매개변수가 있는 경우
+            updatedUrl = `${currentUrl}?sortOrder=${sortOrder}`;
+        } else {
+            // 쿼리 매개변수가 없는 경우
+            updatedUrl = `${currentUrl}?sortOrder=${sortOrder}`;
+        }
+        // AJAX를 사용하여 서버에 정렬 방식을 전달
+        fetch(updatedUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            cache: 'no-cache', // 캐시 방지 옵션 추가
+        })
+            .then(response => response.json())
+            .then(data => {
+                // 서버에서 반환한 데이터를 처리
+                console.log(data);
+                // 여기에서 서버 응답을 토대로 화면을 업데이트하거나 추가 로직 수행 가능
+                // 예: $('#product-container').empty();, pagination 업데이트 등
+            })
+            .catch(error => {
+                console.error('Error updating sort order:', error);
+            });
+        window.location.href = updatedUrl;
+    }
 
+
+    //좋아요, 최신순 정렬기능
+    function changeSortAndPage(sortBy) {
+        var currentUrl = window.location.href;
+        var updatedUrl;
+
+        // 정렬 기준이 이미 존재하는 경우
+        if (currentUrl.includes('&sortBy=')) {
+            updatedUrl = currentUrl.replace(/&sortBy=[^&]*/, '&sortBy=' + sortBy);
+        } else {
+            // 정렬 기준이 존재하지 않는 경우
+            if (currentUrl.includes('?')) {
+                updatedUrl = currentUrl + '&sortBy=' + sortBy;
+            } else {
+                updatedUrl = currentUrl + '?sortBy=' + sortBy;
+            }
+        }
+
+        // size 파라미터가 이미 존재하는 경우
+        if (currentUrl.includes('&size=')) {
+            updatedUrl = updatedUrl.replace(/&size=[^&]*/, '&size=8'); // 1 대신 적절한 값을 사용
+        } else {
+            // size 파라미터가 존재하지 않는 경우
+            if (currentUrl.includes('?')) {
+                updatedUrl = updatedUrl + '&size=8'; // 1 대신 적절한 값을 사용
+            } else {
+                updatedUrl = updatedUrl + '?size=8'; // 1 대신 적절한 값을 사용
+            }
+        }
+
+        // 새로운 URL로 페이지 이동
+        window.location.href = updatedUrl;
+    }
     //좋아요, 최신순 정렬기능
     function changeSortAndPage(sortBy) {
         var currentUrl = window.location.href;
