@@ -243,27 +243,28 @@
                 <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
             </div>
         </div>
-        <div class="view-div">
-            <button type="button" onclick="changeSortAndPage('createdAt')" class="btn btn-outline-dark float-right">
-                생성순
-            </button>
-            <button type="button" onclick="changeSortAndPage('likeCount')" class="btn btn-outline-dark float-right">
-                좋아요순
-            </button>
-        </div>
-        <div class="gallery-container">
-            <div class="gallery-item" th:each="allboard : ${responseDto.content}" th:id="${'allboard-' + allboard.id}"
-                 th:onclick="'getBoardDetails(' + ${allboard.id} + ')'" style="cursor: pointer;">
-                <img th:src="${allboard.fileURL}" alt="게시물 이미지">
-                <div class="gallery-caption">
-                    <h5 th:text="${allboard.title}"></h5>
-                    <p th:text="'작성자: ' + ${allboard.nickname}"></p>
-                    <p th:text="'지역: ' + ${allboard.region.getRegion()}"></p>
-                </div>
-            </div>
+    </div>
+</div>
+<div class="view-div">
+    <button type="button" onclick="changeSortAndPage('createdAt')" class="btn btn-outline-dark float-right">
+        생성순
+    </button>
+    <button type="button" onclick="changeSortAndPage('likeCount')" class="btn btn-outline-dark float-right">
+        좋아요순
+    </button>
+</div>
+<div class="gallery-container">
+    <div class="gallery-item" th:each="allboard : ${responseDto.content}" th:id="${'allboard-' + allboard.id}"
+         th:onclick="'getBoardDetails(' + ${allboard.id} + ')'" style="cursor: pointer;">
+        <img th:src="${allboard.fileURL}" alt="게시물 이미지">
+        <div class="gallery-caption">
+            <h5 th:text="${allboard.title}"></h5>
+            <p th:text="'작성자: ' + ${allboard.nickname}"></p>
+            <p th:text="'지역: ' + ${allboard.region.getRegion()}"></p>
         </div>
     </div>
 </div>
+
 
 <div class="page-num" th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
               end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)})">
