@@ -54,7 +54,7 @@ spring:
 
   data:
     redis:
-      host: 43.203.41.214
+      host: www.sappun.shop
       port: 6379
 
 logging:
