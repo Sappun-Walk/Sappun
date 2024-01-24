@@ -142,7 +142,7 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-y: scroll;
         }
 
         #sidebar {
@@ -251,6 +251,9 @@
                 로그아웃
             </button>
         </div>
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
+            <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
+        </div>
     </div>
     <div th:if="${user != null}">
         <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile" id="profileImage">
@@ -271,11 +274,7 @@
         </div>
     </div>
 </div>
-<div th:if="${#authorization.expression('isAuthenticated()')}">
-    <div class="btn-write">
-        <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
-    </div>
-</div>
+
 <script>
     const host = 'http://' + window.location.host;
     const loginPage = '/api/users/login';

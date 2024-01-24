@@ -302,6 +302,7 @@
 <body>
 <div id="sidebar">
     <a href="#" onclick="navigateTo('/api/boards/best')">Best Top 3</a>
+    <a href="#" onclick="navigateTo('/api/boards/all?page=1')">전체 게시글 조회</a>
     <a href="#" onclick="navigateTo('/api/boards/region?region=REGION1')">서울특별시</a>
     <a href="#" onclick="navigateTo('/api/boards/region?region=REGION2')">부산광역시</a>
     <a href="#" onclick="navigateTo('/api/boards/region?region=REGION3')">대구광역시</a>
@@ -319,10 +320,12 @@
     <a href="#" onclick="navigateTo('/api/boards/region?region=REGION15')">경상남도</a>
     <a href="#" onclick="navigateTo('/api/boards/region?region=REGION16')">제주특별자치도</a>
 </div>
+<!--페이지 기본 상단-->
 <div id="main">
     <button id="openBtn" onclick="openNav()">☰</button>
     <div class="main-img-container">
-        <img class="main-img" id="mainLogoImage" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png} "
+        <img class="main-img" id="mainLogoImage"
+             th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png} "
              th:onclick="|location.href='@{/api/boards/best}'|"
              alt="Main Image">
     </div>
@@ -341,6 +344,9 @@
             <button class="btn btn-outline-success" id="logout-button" type="submit" onclick="logout()">
                 로그아웃
             </button>
+        </div>
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
+            <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
         </div>
     </div>
     <div th:if="${user != null}">
