@@ -205,23 +205,37 @@
         <a href="#" onclick="navigateTo('/api/boards/region?region=REGION15')">경상남도</a>
         <a href="#" onclick="navigateTo('/api/boards/region?region=REGION16')">제주특별자치도</a>
     </div>
+    <!--페이지 기본 상단-->
     <div id="main">
         <button id="openBtn" onclick="openNav()">☰</button>
         <div class="main-img-container">
-            <img class="main-img" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|"
+            <img class="main-img" id="mainLogoImage"
+                 th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png} "
+                 th:onclick="|location.href='@{/api/boards/best}'|"
                  alt="Main Image">
         </div>
-
         <div class="btn-write">
-            <p th:if="${user == null}">
+            <div th:if="${user == null}">
                 <button class="btn btn-outline-success" type="submit"
                         th:onclick="|location.href='@{/api/users/login-page}'|">로그인
                 </button>
-            </p>
-            <p th:if="${user != null}">
-                <button class="btn btn-outline-success" type="submit" id="logout-button" onclick="logout()">로그아웃</button>
-                <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|"  alt="profile" id="profileImage">
-            </p>
+            </div>
+            <div th:if="${user != null && user.role == T(sparta.com.sappun.domain.user.entity.Role).ADMIN}">
+                <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/reports}'|">
+                    게시판 관리
+                </button>
+            </div>
+            <div th:if="${user != null}">
+                <button class="btn btn-outline-success" id="logout-button" type="submit" onclick="logout()">
+                    로그아웃
+                </button>
+            </div>
+            <div th:if="${#authorization.expression('isAuthenticated()')}">
+                <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
+            </div>
+        </div>
+        <div th:if="${user != null}">
+            <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile" id="profileImage">
         </div>
     </div>
 

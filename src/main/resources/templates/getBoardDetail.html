@@ -339,6 +339,7 @@
 <body>
 <div id="sidebar">
     <a href="#" onclick="navigateTo('/api/boards/best')">Best Top 3</a>
+    <a href="#" onclick="navigateTo('/api/boards/all?page=1')">전체 게시글 조회</a>
     <a href="#" onclick="navigateTo('/api/boards/region?region=REGION1')">서울특별시</a>
     <a href="#" onclick="navigateTo('/api/boards/region?region=REGION2')">부산광역시</a>
     <a href="#" onclick="navigateTo('/api/boards/region?region=REGION3')">대구광역시</a>
@@ -381,11 +382,15 @@
                 로그아웃
             </button>
         </div>
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
+            <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
+        </div>
     </div>
     <div th:if="${user != null}">
         <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile" id="profileImage">
     </div>
 </div>
+
 <!--게시글 제목 및 버튼-->
 <div class="getBoardDetail-body">
     <div class="outLine">
