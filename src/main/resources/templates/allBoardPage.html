@@ -193,72 +193,73 @@
     </style>
 </head>
 <body>
-
-<div id="sidebar">
-    <a href="#" onclick="navigateTo('/api/boards/best')">Best Top 3</a>
-    <a href="#" onclick="navigateTo('/api/boards/all?page=1')">전체 게시글 조회</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION1')">서울특별시</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION2')">부산광역시</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION3')">대구광역시</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION4')">인천광역시</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION5')">광주광역시</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION6')">울산광역시</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION7')">세종특별차치시</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION8')">경기도</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION9')">강원특별자치도</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION10')">충청북도</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION11')">충청남도</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION12')">전북특별차치도</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION13')">전라남도</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION14')">경상북도</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION15')">경상남도</a>
-    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION16')">제주특별자치도</a>
-</div>
-<div id="main">
-    <button id="openBtn" onclick="openNav()">☰</button>
-    <div class="main-img-container">
-        <img class="main-img" id="mainLogoImage"
-             th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png} "
-             th:onclick="|location.href='@{/api/boards/best}'|"
-             alt="Main Image">
+<div>
+    <div id="sidebar">
+        <a href="#" onclick="navigateTo('/api/boards/best')">Best Top 3</a>
+        <a href="#" onclick="navigateTo('/api/boards/all?page=1')">전체 게시글 조회</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION1')">서울특별시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION2')">부산광역시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION3')">대구광역시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION4')">인천광역시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION5')">광주광역시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION6')">울산광역시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION7')">세종특별차치시</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION8')">경기도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION9')">강원특별자치도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION10')">충청북도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION11')">충청남도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION12')">전북특별차치도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION13')">전라남도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION14')">경상북도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION15')">경상남도</a>
+        <a href="#" onclick="navigateTo('/api/boards/region?region=REGION16')">제주특별자치도</a>
     </div>
-    <div class="btn-write">
-        <div th:if="${user == null}">
-            <button class="btn btn-outline-success" type="submit"
-                    th:onclick="|location.href='@{/api/users/login-page}'|">로그인
+    <div id="main">
+        <button id="openBtn" onclick="openNav()">☰</button>
+        <div class="main-img-container">
+            <img class="main-img" id="mainLogoImage"
+                 th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png} "
+                 th:onclick="|location.href='@{/api/boards/best}'|"
+                 alt="Main Image">
+        </div>
+        <div class="btn-write">
+            <div th:if="${user == null}">
+                <button class="btn btn-outline-success" type="submit"
+                        th:onclick="|location.href='@{/api/users/login-page}'|">로그인
+                </button>
+            </div>
+            <div th:if="${user != null && user.role == T(sparta.com.sappun.domain.user.entity.Role).ADMIN}">
+                <button class="btn btn-outline-success" type="submit"
+                        th:onclick="|location.href='@{/api/boards/reports}'|">
+                    게시판 관리
+                </button>
+            </div>
+            <div th:if="${user != null}">
+                <button class="btn btn-outline-success" id="logout-button" type="submit" onclick="logout()">
+                    로그아웃
+                </button>
+            </div>
+            <div th:if="${#authorization.expression('isAuthenticated()')}">
+                <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
+            </div>
+        </div>
+        <div class="view-div">
+            <button type="button" onclick="changeSortAndPage('createdAt')" class="btn btn-outline-dark float-right">
+                생성순
+            </button>
+            <button type="button" onclick="changeSortAndPage('likeCount')" class="btn btn-outline-dark float-right">
+                좋아요순
             </button>
         </div>
-        <div th:if="${user != null && user.role == T(sparta.com.sappun.domain.user.entity.Role).ADMIN}">
-            <button class="btn btn-outline-success" type="submit"
-                    th:onclick="|location.href='@{/api/boards/reports}'|">
-                게시판 관리
-            </button>
-        </div>
-        <div th:if="${user != null}">
-            <button class="btn btn-outline-success" id="logout-button" type="submit" onclick="logout()">
-                로그아웃
-            </button>
-        </div>
-        <div th:if="${#authorization.expression('isAuthenticated()')}">
-            <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
-        </div>
-    </div>
-    <div class="view-div">
-        <button type="button" onclick="changeSortAndPage('createdAt')" class="btn btn-outline-dark float-right">
-            생성순
-        </button>
-        <button type="button" onclick="changeSortAndPage('likeCount')" class="btn btn-outline-dark float-right">
-            좋아요순
-        </button>
-    </div>
-    <div class="gallery-container">
-        <div class="gallery-item" th:each="allboard : ${responseDto.content}" th:id="${'allboard-' + allboard.id}"
-             th:onclick="'getBoardDetails(' + ${allboard.id} + ')'" style="cursor: pointer;">
-            <img th:src="${allboard.fileURL}" alt="게시물 이미지">
-            <div class="gallery-caption">
-                <h5 th:text="${allboard.title}"></h5>
-                <p th:text="'작성자: ' + ${allboard.nickname}"></p>
-                <p th:text="'지역: ' + ${allboard.region.getRegion()}"></p>
+        <div class="gallery-container">
+            <div class="gallery-item" th:each="allboard : ${responseDto.content}" th:id="${'allboard-' + allboard.id}"
+                 th:onclick="'getBoardDetails(' + ${allboard.id} + ')'" style="cursor: pointer;">
+                <img th:src="${allboard.fileURL}" alt="게시물 이미지">
+                <div class="gallery-caption">
+                    <h5 th:text="${allboard.title}"></h5>
+                    <p th:text="'작성자: ' + ${allboard.nickname}"></p>
+                    <p th:text="'지역: ' + ${allboard.region.getRegion()}"></p>
+                </div>
             </div>
         </div>
     </div>
