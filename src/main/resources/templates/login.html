@@ -41,6 +41,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             background: rgba(0, 0, 0, 0.1);
         }
 
@@ -373,11 +374,11 @@
         <h5>다른 방법으로 로그인하기</h5>
         <div class="login_sns">
             <button class="sbutton" id="login-kakao-btn">
-                <a href="https://kauth.kakao.com/oauth/authorize?client_id=eb63c9db76c1cd5b08e311f603565bfc&amp;redirect_uri=http://43.203.41.214:8080/api/users/kakao/callback&amp;response_type=code"
+                    <a href="https://kauth.kakao.com/oauth/authorize?client_id=eb63c9db76c1cd5b08e311f603565bfc&amp;redirect_uri=https://www.sappun.shop/api/users/kakao/callback&amp;response_type=code"
                    target=""><i class="custom-kakao"></i></a>
             </button>
             <button class="sbutton" id="login-naver-btn">
-                <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&amp;client_id=DkMAKxIfQr40yq4hYpwZ&amp;redirect_uri=https://43.203.41.214:8080/api/users/naver/callback&amp;state=test"
+                <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&amp;client_id=DkMAKxIfQr40yq4hYpwZ&amp;redirect_uri=https://www.sappun.shop/api/users/naver/callback&amp;state=test"
                    target=""><i class="custom-naver"></i></a>
             </button>
         </div>
@@ -724,7 +725,7 @@
         formData.append("region", region);
         formData.append("title", title);
         formData.append("departure", departure);
-        stopoverInputs.forEach(function (input) {
+        stopoverInputs.forEach(function(input) {
             formData.append("stopover", input.value);
         });
         formData.append("destination", destination);
