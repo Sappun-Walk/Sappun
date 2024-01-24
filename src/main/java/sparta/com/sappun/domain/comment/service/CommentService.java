@@ -31,6 +31,11 @@ public class CommentService {
     private final BoardRepository boardRepository;
     private final S3Util s3Util;
 
+    private static final String EMPTY_FILE_TITLE = "empty.txt";
+    private static final Integer REPORT_POINT = 50;
+    private static final Integer DEFAULT_LIKE_COUNT = 0;
+    private static final Integer DEFAULT_REPORT_COUNT = 0;
+
     @Transactional
     public CommentSaveRes saveComment(CommentSaveReq req, MultipartFile multipartFile) {
         // 보드 아이디 조회 로직
@@ -47,7 +52,7 @@ public class CommentService {
             fileImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.COMMENT);
         }
 
-        user.updateScore(50); // 댓글 작성하면 점수 +50
+        user.updateScore(REPORT_POINT); // 댓글 작성하면 점수 +50
 
         return CommentServiceMapper.INSTANCE.toCommentSaveRes(
                 commentRepository.save(
@@ -56,8 +61,8 @@ public class CommentService {
                                 .fileURL(fileImage)
                                 .user(user)
                                 .board(board)
-                                .likeCount(0)
-                                .reportCount(0)
+                                .likeCount(DEFAULT_LIKE_COUNT)
+                                .reportCount(DEFAULT_REPORT_COUNT)
                                 .build()));
     }
 
@@ -78,7 +83,7 @@ public class CommentService {
         }
 
         // 입력 파일이 없는 경우
-        if (Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) {
+        if (Objects.equals(multipartFile.getOriginalFilename(), EMPTY_FILE_TITLE)) {
             imageURL = null;
         } else {
             // 이미지 파일인지 확인
@@ -109,7 +114,7 @@ public class CommentService {
         if (imageURL != null && !imageURL.isEmpty()) {
             s3Util.deleteFile(imageURL, S3Util.FilePath.COMMENT);
         }
-        user.updateScore(-50); // 댓글 삭제하면 점수 -50
+        user.updateScore(-REPORT_POINT); // 댓글 삭제하면 점수 -50
 
         // 댓글 삭제 로직
         commentRepository.delete(comment);

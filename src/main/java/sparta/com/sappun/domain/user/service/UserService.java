@@ -58,6 +58,11 @@ public class UserService {
     @Value("${default.image.url}")
     private String defaultProfileImage;
 
+    private static final String EMPTY_FILE_TITLE = "empty.txt";
+    private static final Integer DEFAULT_SCORE = 0;
+    private static final Integer LIKE_POINT = 10;
+    private static final Integer REPORT_POINT = 50;
+
     @Transactional
     public UserSignupRes signup(UserSignupReq req, MultipartFile multipartFile) {
         UserValidator.validate(req);
@@ -69,7 +74,7 @@ public class UserService {
 
         UserValidator.checkEmail(userRepository.existsByEmail(req.getEmail()));
 
-        if (Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) multipartFile = null;
+        if (Objects.equals(multipartFile.getOriginalFilename(), EMPTY_FILE_TITLE)) multipartFile = null;
 
         String profileImage = defaultProfileImage; // 기본 프로필 이미지 설정
         if (multipartFile != null && !multipartFile.isEmpty()) { // 이미지 입력이 있는 경우
@@ -85,7 +90,7 @@ public class UserService {
                         .password(passwordEncoder.encode(req.getPassword()))
                         .profileUrl(profileImage)
                         .role(Role.USER)
-                        .score(0)
+                        .score(DEFAULT_SCORE)
                         .social(UserSocialEnum.LOCAL)
                         .build());
 
@@ -112,14 +117,14 @@ public class UserService {
         List<ReportBoard> reportBoards = reportBoardRepository.selectReportBoardByUser(user);
         for (ReportBoard reportBoard : reportBoards) {
             User reportedUser = reportBoard.getBoard().getUser();
-            reportedUser.updateScore(+50);
+            reportedUser.updateScore(REPORT_POINT);
         }
         reportBoardRepository.deleteAll(reportBoards);
 
         List<ReportComment> reportComments = reportCommentRepository.selectReportCommentByUser(user);
         for (ReportComment reportComment : reportComments) {
             User reportedUser = reportComment.getComment().getUser();
-            reportedUser.updateScore(+50);
+            reportedUser.updateScore(REPORT_POINT);
         }
         reportCommentRepository.deleteAll(reportComments);
 
@@ -127,14 +132,14 @@ public class UserService {
         List<LikeBoard> likeBoards = likeBoardRepository.selectLikeBoardByUser(user);
         for (LikeBoard likeBoard : likeBoards) {
             User reportedUser = likeBoard.getBoard().getUser();
-            reportedUser.updateScore(-10);
+            reportedUser.updateScore(-LIKE_POINT);
         }
         likeBoardRepository.deleteAll(likeBoards);
 
         List<LikeComment> likeComments = likeCommentRepository.selectLikeCommentByUser(user);
         for (LikeComment likeComment : likeComments) {
             User reportedUser = likeComment.getComment().getUser();
-            reportedUser.updateScore(-10);
+            reportedUser.updateScore(-LIKE_POINT);
         }
         likeCommentRepository.deleteAll(likeComments);
 
@@ -165,7 +170,7 @@ public class UserService {
     public UserProfileUpdateRes updateProfile(UserProfileUpdateReq req, MultipartFile multipartFile) {
         User user = getUserById(req.getId()); // 사용자가 존재하는지 확인
         UserValidator.validate(req);
-        if (Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) multipartFile = null;
+        if (Objects.equals(multipartFile.getOriginalFilename(), EMPTY_FILE_TITLE)) multipartFile = null;
 
         // 프로필 사진 관련 로직
         String imageUrl = user.getProfileUrl(); // 기존 프로필 이미지

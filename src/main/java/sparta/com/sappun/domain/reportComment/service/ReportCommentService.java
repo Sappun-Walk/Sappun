@@ -29,6 +29,8 @@ public class ReportCommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
+    private static final Integer REPORT_POINT = 50;
+
     @Transactional
     public ReportCommentRes clickReportComment(Long commentId, ReportCommentReq req) {
         Comment comment = findCommentById(commentId);
@@ -47,7 +49,7 @@ public class ReportCommentService {
                                 .comment(comment)
                                 .user(user)
                                 .build()); // 신고하지 않은 상태라면
-        comment.getUser().updateScore(-50); // 신고를 받은 게시글의 작성자 점수 -50
+        comment.getUser().updateScore(-REPORT_POINT); // 신고를 받은 게시글의 작성자 점수 -50
 
         return ReportCommentServiceMapper.INSTANCE.toReportCommentRes(reportComment);
     }
@@ -60,12 +62,12 @@ public class ReportCommentService {
         int count = 0; // 신고 횟수
         List<User> reporters = reportCommentRepository.selectUserByComment(comment);
         for (User user : reporters) {
-            user.updateScore(-50);
+            user.updateScore(-REPORT_POINT);
             count++;
         }
 
         // 신고 취소된 게시글의 작성자의 점수 +50 * 신고 횟수
-        comment.getUser().updateScore(50 * count);
+        comment.getUser().updateScore(REPORT_POINT * count);
 
         // 신고 내역 삭제
         reportCommentRepository.clearReportCommentByComment(comment);

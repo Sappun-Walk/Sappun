@@ -28,6 +28,7 @@ public class ReportBoardService {
     private final ReportBoardRepository reportBoardRepository;
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private static final Integer REPORT_POINT = 50;
 
     @Transactional
     public ReportBoardRes clickReportBoard(Long boardId, ReportBoardReq req) {
@@ -47,7 +48,7 @@ public class ReportBoardService {
                                 .board(board)
                                 .user(user)
                                 .build()); // 신고하지 않은 상태라면
-        board.getUser().updateScore(-50); // 신고를 받은 게시글의 작성자 점수 -50
+        board.getUser().updateScore(-REPORT_POINT); // 신고를 받은 게시글의 작성자 점수 -50
 
         return ReportBoardServiceMapper.INSTANCE.toReportBoardRes(reportBoard);
     }
@@ -60,12 +61,12 @@ public class ReportBoardService {
         int count = 0; // 신고 횟수
         List<User> reporters = reportBoardRepository.selectUserByBoard(board);
         for (User user : reporters) {
-            user.updateScore(-50);
+            user.updateScore(-REPORT_POINT);
             count++;
         }
 
         // 신고 취소된 게시글의 작성자의 점수 +50 * 신고 횟수
-        board.getUser().updateScore(50 * count);
+        board.getUser().updateScore(REPORT_POINT * count);
 
         // 신고 내역 삭제
         reportBoardRepository.clearReportBoardByBoard(board);

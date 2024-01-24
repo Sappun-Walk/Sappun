@@ -70,6 +70,10 @@ public class NaverService {
     @Value("${default.image.url}")
     private String defaultProfileImage;
 
+    private static final String KEY_ACCESS_TOKEN = "accessToken";
+    private static final String KEY_REFRESH_TOKEN = "refreshToken";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+
     public String getNaverLoginPage() {
         String state = new BigInteger(130, new SecureRandom()).toString();
         return naverAuthorizationUri
@@ -187,8 +191,8 @@ public class NaverService {
         }
 
         HashMap<String, String> tokens = new HashMap<>();
-        tokens.put("accessToken", accessToken);
-        tokens.put("refreshToken", refreshToken);
+        tokens.put(KEY_ACCESS_TOKEN, accessToken);
+        tokens.put(KEY_REFRESH_TOKEN, refreshToken);
 
         return tokens;
     }
@@ -208,7 +212,7 @@ public class NaverService {
 
             conn.setRequestMethod(authenticationMethod);
             conn.setDoOutput(true);
-            conn.setRequestProperty("Authorization", tokenType + " " + tokens.get("accessToken"));
+            conn.setRequestProperty(AUTHORIZATION_HEADER, tokenType + " " + tokens.get(KEY_ACCESS_TOKEN));
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
