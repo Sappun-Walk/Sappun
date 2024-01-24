@@ -3,10 +3,8 @@ package sparta.com.sappun.domain.board.controller;
 import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.Comparator;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
