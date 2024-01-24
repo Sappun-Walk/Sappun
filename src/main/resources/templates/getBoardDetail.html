@@ -541,7 +541,7 @@
 
                 <!--댓글 수정-->
                 <div th:if="${user != null}">
-                    <button class="btn btn-outline-success" th:onclick="showCommentUpdateForm()">수정</button>
+                    <button class="btn btn-outline-success" th:onclick="|showCommentUpdateForm()|">수정</button>
                     <div id="commentUpdateForm" style="display: none;">
                         <form id="UpdateCommentForm">
                             <label for="inputCommentContent">내용:</label>
