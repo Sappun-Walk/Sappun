@@ -380,9 +380,10 @@
                 <div class="stopover-section">
                     <label>경유지:</label>
                     <input type="text" id="stopover" name="stopover">
+                    <!-- 삭제 버튼 추가 -->
+                    <button type="button" th:onclick="removeStopover(this)">-</button>
                 </div>
             </div>
-
             <button type="button" onclick="addStopover()">+</button>
             <br>
             <label for="destination">목적지:</label>
@@ -657,14 +658,40 @@
             input.setAttribute('type', 'text');
             input.setAttribute('name', 'stopover');
 
+            // 새로운 경유지 입력란에 삭제 버튼 추가
+            var removeStopoverButton = document.createElement('button');
+            removeStopoverButton.setAttribute('type', 'button');
+            removeStopoverButton.textContent = '-';
+            removeStopoverButton.addEventListener('click', function () {
+                addRemoveStopover(newStopoverSection);
+            });
+
             newStopoverSection.appendChild(label);
             newStopoverSection.appendChild(input);
+            newStopoverSection.appendChild(removeStopoverButton);
 
             // 생성된 입력란을 컨테이너에 추가
             stopoverContainer.appendChild(newStopoverSection);
         } else {
             alert('경유지는 최대 5개까지만 입력 가능합니다.');
         }
+    }
+
+    // 공통 함수: 삭제 버튼이 속한 div 요소를 찾아서 삭제
+    function removeFromContainer(element) {
+        var container = document.getElementById('stopovers-container');
+        container.removeChild(element);
+    }
+
+    // 이전 입력된 경유지 입력란 삭제 함수
+    function removeStopover(button) {
+        var stopoverSection = button.parentNode;
+        removeFromContainer(stopoverSection);
+    }
+
+    // 추가 입력할 경유지 입력란 삭제 함수
+    function addRemoveStopover(stopoverSection) {
+        removeFromContainer(stopoverSection);
     }
 
     //게시글 작성
