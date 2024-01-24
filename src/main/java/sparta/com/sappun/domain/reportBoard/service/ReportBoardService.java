@@ -1,6 +1,5 @@
 package sparta.com.sappun.domain.reportBoard.service;
 
-import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -8,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.reportBoard.dto.request.ReportBoardReq;
@@ -23,7 +23,6 @@ import sparta.com.sappun.global.validator.ReportBoardValidator;
 import sparta.com.sappun.global.validator.UserValidator;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ReportBoardService {
     private final ReportBoardRepository reportBoardRepository;
@@ -80,7 +79,7 @@ public class ReportBoardService {
         return board;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<ReportBoardGetRes> getReportBoardList(
             int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;

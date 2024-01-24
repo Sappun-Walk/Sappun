@@ -1,6 +1,5 @@
 package sparta.com.sappun.domain.reportComment.service;
 
-import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -8,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sparta.com.sappun.domain.comment.entity.Comment;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.reportComment.dto.request.ReportCommentReq;
@@ -23,7 +23,6 @@ import sparta.com.sappun.global.validator.ReportCommentValidator;
 import sparta.com.sappun.global.validator.UserValidator;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ReportCommentService {
     private final ReportCommentRepository reportCommentRepository;
@@ -74,7 +73,7 @@ public class ReportCommentService {
         return new DeleteReportCommentRes();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<ReportCommentGetRes> getReportCommentList(
             int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;

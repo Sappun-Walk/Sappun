@@ -14,7 +14,6 @@ import sparta.com.sappun.global.validator.CommentValidator;
 import sparta.com.sappun.global.validator.UserValidator;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class LikeCommentService {
 
