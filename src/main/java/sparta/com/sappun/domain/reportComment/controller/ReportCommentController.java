@@ -22,6 +22,12 @@ import sparta.com.sappun.global.security.UserDetailsImpl;
 public class ReportCommentController {
     @Autowired private ReportCommentService reportCommentService;
 
+    private static final String DEFAULT_PAGE = "1";
+    private static final Integer MAX_PAGE = 5;
+    private static final String DEFAULT_SIZE = "8";
+    private static final String DEFAULT_SORT_BY = "createdAt";
+    private static final String DEFAULT_IS_ASC = "false";
+
     @ResponseBody
     @PostMapping("/{commentId}/report")
     public CommonResponse<ReportCommentRes> reportComment(
@@ -41,17 +47,17 @@ public class ReportCommentController {
 
     @GetMapping("/reports") // 필터에서 관리자만 접근하도록 막기
     public String getReportCommentList(
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "8") int size,
-            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
-            @RequestParam(value = "isAsc", defaultValue = "false") boolean isAsc,
+            @RequestParam(value = "page", defaultValue = DEFAULT_PAGE) int page,
+            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) int size,
+            @RequestParam(value = "sortBy", defaultValue = DEFAULT_SORT_BY) String sortBy,
+            @RequestParam(value = "isAsc", defaultValue = DEFAULT_IS_ASC) boolean isAsc,
             Model model,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         model.addAttribute("user", userDetails.getUser());
         Page<ReportCommentGetRes> responseDto =
                 reportCommentService.getReportCommentList(page - 1, size, sortBy, isAsc);
         model.addAttribute("responseDto", responseDto);
-        model.addAttribute("maxPage", 5);
+        model.addAttribute("maxPage", MAX_PAGE);
         return "reportCommentPage";
     }
 }

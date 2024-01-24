@@ -21,6 +21,8 @@ public class LikeCommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
+    private static final Integer LIKE_POINT = 10;
+
     @Transactional
     public LikeCommentSaveRes clickLikeComment(Long commentId, Long userId) {
         User user = userRepository.findById(userId);
@@ -30,12 +32,12 @@ public class LikeCommentService {
         LikeCommentSaveRes res;
 
         if (likeCommentRepository.existsLikeCommentByCommentAndUser(comment, user)) { // 이미 좋아요를 누른 상태라면
-            comment.getUser().updateScore(-10); // 좋아요를 받은 댓글의 작성자 점수 -10
+            comment.getUser().updateScore(-LIKE_POINT); // 좋아요를 받은 댓글의 작성자 점수 -10
             likeCommentRepository.deleteLikeCommentByCommentAndUser(comment, user); // 좋아요 삭제
             comment.clickLikeComment(-1);
             res = LikeCommentSaveRes.builder().isLiked(false).build();
         } else { // 좋아요를 안 누른 상태라면
-            comment.getUser().updateScore(10); // 좋아요를 받은 댓글의 작성자 점수 +10
+            comment.getUser().updateScore(LIKE_POINT); // 좋아요를 받은 댓글의 작성자 점수 +10
             likeCommentRepository.save(
                     LikeComment.builder().comment(comment).user(user).build()); // 좋아요 저장
             comment.clickLikeComment(1);

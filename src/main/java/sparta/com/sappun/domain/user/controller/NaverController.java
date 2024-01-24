@@ -45,7 +45,7 @@ public class NaverController {
     private static void addCookie(String cookieValue, String header, HttpServletResponse res) {
         Cookie cookie = new Cookie(header, cookieValue); // Name-Value
         cookie.setPath("/");
-        cookie.setMaxAge(30 * 60);
+        cookie.setMaxAge(-1);
 
         // Response 객체에 Cookie 추가
         res.addCookie(cookie);

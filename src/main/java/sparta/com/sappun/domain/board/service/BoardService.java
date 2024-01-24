@@ -30,6 +30,11 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final S3Util s3Util;
+    private static final Integer REPORT_HIDDEN_COUNT = 5;
+    private static final Integer BOARD_POINT = 100;
+    private static final Integer DEFAULT_LIKE_COUNT = 0;
+    private static final Integer DEFAULT_REPORT_COUNT = 0;
+    private static final String EMPTY_FILE_TITLE = "empty.txt";
 
     @Transactional(readOnly = true)
     public BoardGetRes getBoard(Long boardId) {
@@ -47,7 +52,7 @@ public class BoardService {
 
         Page<Board> boardList =
                 boardRepository.findAllByReportCountLessThanAndRegion(
-                        5, region, pageable); // 신고된 횟수가 5회 미만인 게시글 찾기
+                        REPORT_HIDDEN_COUNT, region, pageable); // 신고된 횟수가 5회 미만인 게시글 찾기
         return boardList.map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
     }
 
@@ -77,14 +82,14 @@ public class BoardService {
         List<BoardToListGetRes> boardGetRes =
                 BoardServiceMapper.INSTANCE.toBoardBestListGetRes(
                         boardRepository.findTop3ByReportCountLessThanOrderByLikeCountDesc(
-                                5)); // 신고된 횟수가 5회 미만인 게시글 찾기
+                                REPORT_HIDDEN_COUNT)); // 신고된 횟수가 5회 미만인 게시글 찾기
         return BoardBestListGetRes.builder().boards(boardGetRes).build();
     }
 
     @Transactional
     public BoardSaveRes saveBoard(BoardSaveReq boardSaveReq, MultipartFile multipartFile) {
         User user = getUserById(boardSaveReq.getUserId());
-        user.updateScore(100); // 게시글 작성하면 점수 +100
+        user.updateScore(BOARD_POINT); // 게시글 작성하면 점수 +100
 
         S3Validator.isProfileImageFile(multipartFile);
         String boardImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
@@ -98,8 +103,8 @@ public class BoardService {
                         .destination(boardSaveReq.getDestination())
                         .stopover(boardSaveReq.getStopover())
                         .region(boardSaveReq.getRegion())
-                        .likeCount(0)
-                        .reportCount(0)
+                        .likeCount(DEFAULT_LIKE_COUNT)
+                        .reportCount(DEFAULT_REPORT_COUNT)
                         .user(user)
                         .build());
 
@@ -116,7 +121,7 @@ public class BoardService {
         String imageURL = board.getFileURL();
 
         // 입력 파일이 있는 경우
-        if (!Objects.equals(multipartFile.getOriginalFilename(), "empty.txt")) {
+        if (!Objects.equals(multipartFile.getOriginalFilename(), EMPTY_FILE_TITLE)) {
             if (imageURL != null && !imageURL.isEmpty()) { // 기존 이미지 파일 삭제
                 s3Util.deleteFile(imageURL, S3Util.FilePath.BOARD);
             }
@@ -137,7 +142,7 @@ public class BoardService {
         User user = getUserById(userId);
         BoardValidator.checkBoardUser(user, board.getUser()); // 삭제 가능한 사용자인지 확인
 
-        user.updateScore(-100); // 게시글 삭제하면 점수 -100
+        user.updateScore(-BOARD_POINT); // 게시글 삭제하면 점수 -100
 
         String boardImage = board.getFileURL();
         if (boardImage != null && !boardImage.isEmpty()) {

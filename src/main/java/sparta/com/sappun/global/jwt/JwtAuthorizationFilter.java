@@ -99,7 +99,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         accessToken = renewAccessToken(refreshToken);
         Cookie cookie = new Cookie(ACCESS_TOKEN_HEADER, accessToken); // Name-Value
         cookie.setPath("/");
-        cookie.setMaxAge(30 * 60);
+        cookie.setMaxAge(-1);
 
         // Response 객체에 Cookie 추가
         response.addCookie(cookie);

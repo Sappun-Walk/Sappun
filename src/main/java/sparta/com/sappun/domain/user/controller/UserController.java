@@ -37,6 +37,8 @@ public class UserController {
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
 
+    private static final String LOGOUT_VALUE = "logout";
+
     @GetMapping("/login-page")
     public String loginPage() {
         return "login";
@@ -91,7 +93,7 @@ public class UserController {
         }
 
         // access token을 블랙리스트에 추가
-        redisUtil.set(accessToken, "logout", jwtUtil.getExpiration(accessToken));
+        redisUtil.set(accessToken, LOGOUT_VALUE, jwtUtil.getExpiration(accessToken));
 
         return CommonResponse.success(new UserLogoutRes());
     }
@@ -169,7 +171,7 @@ public class UserController {
     private static void addCookie(String cookieValue, String header, HttpServletResponse res) {
         Cookie cookie = new Cookie(header, cookieValue); // Name-Value
         cookie.setPath("/");
-        cookie.setMaxAge(30 * 60);
+        cookie.setMaxAge(-1); // 브라우저가 닫힐 때까지 쿠기를 보관
 
         // Response 객체에 Cookie 추가
         res.addCookie(cookie);

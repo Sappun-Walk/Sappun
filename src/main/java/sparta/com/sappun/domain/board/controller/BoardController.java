@@ -26,6 +26,12 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    private static final String DEFAULT_PAGE = "1";
+    private static final Integer MAX_PAGE = 5;
+    private static final String DEFAULT_SIZE = "8";
+    private static final String DEFAULT_SORT_BY = "createdAt";
+    private static final String DEFAULT_IS_ASC = "false";
+
     @GetMapping("/create-page")
     @PreAuthorize("isAuthenticated()")
     public String createPage(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -57,10 +63,10 @@ public class BoardController {
     @GetMapping("/region")
     public String getBoardsByRegion(
             @RequestParam RegionEnum region,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "8") int size,
-            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
-            @RequestParam(value = "isAsc", defaultValue = "false") boolean isAsc,
+            @RequestParam(value = "page", defaultValue = DEFAULT_PAGE) int page,
+            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) int size,
+            @RequestParam(value = "sortBy", defaultValue = DEFAULT_SORT_BY) String sortBy,
+            @RequestParam(value = "isAsc", defaultValue = DEFAULT_IS_ASC) boolean isAsc,
             Model model,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails != null) {
@@ -70,16 +76,16 @@ public class BoardController {
                 boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
         model.addAttribute("region", region);
         model.addAttribute("responseDto", responseDto);
-        model.addAttribute("maxPage", 5);
+        model.addAttribute("maxPage", MAX_PAGE);
         return "regionPage";
     }
 
     @GetMapping("/all")
     public String getAllBoards(
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "8") int size,
-            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
-            @RequestParam(value = "isAsc", defaultValue = "false") boolean isAsc,
+            @RequestParam(value = "page", defaultValue = DEFAULT_PAGE) int page,
+            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) int size,
+            @RequestParam(value = "sortBy", defaultValue = DEFAULT_SORT_BY) String sortBy,
+            @RequestParam(value = "isAsc", defaultValue = DEFAULT_IS_ASC) boolean isAsc,
             Model model,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails != null) {
@@ -88,16 +94,16 @@ public class BoardController {
         Page<BoardToListGetRes> responseDto =
                 boardService.getBoardAllList(page - 1, size, sortBy, isAsc);
         model.addAttribute("responseDto", responseDto);
-        model.addAttribute("maxPage", 5);
+        model.addAttribute("maxPage", MAX_PAGE);
         return "allBoardPage";
     }
 
     @GetMapping("/user")
     public String getUserBoardList(
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "8") int size,
-            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
-            @RequestParam(value = "isAsc", defaultValue = "false") boolean isAsc,
+            @RequestParam(value = "page", defaultValue = DEFAULT_PAGE) int page,
+            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) int size,
+            @RequestParam(value = "sortBy", defaultValue = DEFAULT_SORT_BY) String sortBy,
+            @RequestParam(value = "isAsc", defaultValue = DEFAULT_IS_ASC) boolean isAsc,
             Model model,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long userId = userDetails.getUser().getId();
@@ -108,7 +114,7 @@ public class BoardController {
                 boardService.getBoardUserList(userId, page - 1, size, sortBy, isAsc);
 
         model.addAttribute("responseDto", responseDto);
-        model.addAttribute("maxPage", 5);
+        model.addAttribute("maxPage", MAX_PAGE);
         return "userBoardPage";
     }
 
