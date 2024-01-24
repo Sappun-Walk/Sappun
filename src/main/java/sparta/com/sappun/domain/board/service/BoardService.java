@@ -51,6 +51,7 @@ public class BoardService {
         return boardList.map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
     }
 
+    @Transactional(readOnly = true)
     public Page<BoardToListGetRes> getBoardAllList(int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
@@ -59,6 +60,7 @@ public class BoardService {
         return boardRepository.findAll(pageable).map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
     }
 
+    @Transactional(readOnly = true)
     public Page<BoardToReportGetRes> getBoardUserList(
             Long userId, int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -84,9 +86,8 @@ public class BoardService {
         User user = getUserById(boardSaveReq.getUserId());
         user.updateScore(100); // 게시글 작성하면 점수 +100
 
-        String boardImage = null;
         S3Validator.isProfileImageFile(multipartFile);
-        boardImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
+        String boardImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
 
         boardRepository.save(
                 Board.builder()
