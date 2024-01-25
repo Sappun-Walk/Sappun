@@ -16,18 +16,18 @@ public class UserPasswordUpdateReq {
 
     private Long id;
 
-    @Size(min = 6, max = 15)
-    @Pattern(regexp = PASSWORD_PATTERN)
+    @Size(min = 6, max = 15, message = "최소 6글자, 최대 15글자로 입력해주세요")
+    @Pattern(regexp = PASSWORD_PATTERN, message = "영어 대소문자 및 숫자와 특수문자를 각 하나 씩은 포함해 입력해주세요")
     // 영어 소문자, 숫자, 특수문자를 각 하나씩 필수로 포함
     // 이전 비밀번호를 입력해야함
     private String prePassword;
 
-    @Size(min = 6, max = 15)
-    @Pattern(regexp = PASSWORD_PATTERN)
+    @Size(min = 6, max = 15, message = "최소 6글자, 최대 15글자로 입력해주세요")
+    @Pattern(regexp = PASSWORD_PATTERN, message = "영어 대소문자 및 숫자와 특수문자를 각 하나 씩은 포함해 입력해주세요")
     private String newPassword;
 
-    @Size(min = 6, max = 15)
-    @Pattern(regexp = PASSWORD_PATTERN)
+    @Size(min = 6, max = 15, message = "최소 6글자, 최대 15글자로 입력해주세요")
+    @Pattern(regexp = PASSWORD_PATTERN, message = "영어 대소문자 및 숫자와 특수문자를 각 하나 씩은 포함해 입력해주세요")
     private String confirmPassword;
 
     @Builder
