@@ -188,9 +188,14 @@
         .view-div {
             margin-top: 30px;
             margin-left: auto;
-            margin-right: 18%;
+            margin-right: 15%;
             display: flex;
             flex-direction: row-reverse;
+        }
+
+        .view-div button {
+          width: auto;
+          margin-right: 10px;
         }
 
         #mainLogoImage {
@@ -223,7 +228,7 @@
     <div id="main">
         <button id="openBtn" onclick="openNav()">☰</button>
         <div class="main-img-container">
-            <img class="main-img" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|"
+            <img class="mainLogoImage" id="mainLogoImage" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|"
                  alt="Main Image">
         </div>
 
