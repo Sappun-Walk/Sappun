@@ -49,7 +49,7 @@ public class KakaoController {
     private static void addCookie(String cookieValue, String header, HttpServletResponse res) {
         Cookie cookie = new Cookie(header, cookieValue); // Name-Value
         cookie.setPath("/");
-        cookie.setMaxAge(-1); // 브라우저가 닫힐 때까지 쿠기를 보관
+        cookie.setMaxAge(2 * 60 * 60);
 
         // Response 객체에 Cookie 추가
         res.addCookie(cookie);
