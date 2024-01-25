@@ -36,15 +36,6 @@
             padding-bottom: 10px;
         }
 
-        section {
-            width: 80%;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 50px;
-            background-color: #f9f9f9;
-        }
-
         img {
             max-width: 100%;
             height: auto;
@@ -164,33 +155,56 @@
         .title1 {
             width: 80%;
             margin: 20px auto;
-            padding: 20px;
             flex-direction: row;
             justify-content: center;
             align-items: center;
             display: flex;
         }
 
-        .section1 {
-            width: 10%;
+        .outLine {
+            width: 80%;
+            margin: 10px auto;
             padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 50px;
-            background-color: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            outline-color: pink;
         }
 
-        .section2 {
-            width: 90%;
-            margin-left: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
+        .outLine1 {
+            width: 15%;
+            height: 50px;
+            border: 2px solid #ddd;
             border-radius: 50px;
-            background-color: #f9f9f9;
+            outline-color: pink;
+            margin: 10px auto;
+        }
+
+        .outLine1 select {
+            border-radius: 30px;
+            border: 1px solid lightgray;
+        }
+
+        #region {
+            width: 130px;
+            margin: 10px auto;
+            display: flex;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .outLine2 {
+            width: 85%;
+            height: 50px;
+            padding: 0 20px;
+            margin-left: 20px;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            outline-color: pink;
             display: flex;
             align-items: center;
         }
 
-        .section2 input {
+        .outLine2 input {
             width: 90%;
             margin-left: 20px;
             height: 25px;
@@ -199,13 +213,65 @@
             outline: none;
         }
 
-        #region {
-            width: 100px;
+        .map-create {
+            display: flex;
+            flex-direction: row;
         }
 
-        #mapImage {
+        #map {
+            border-radius: 15px;
             width: 500px;
-            height: 300px;
+            height: 500px;
+        }
+
+        .map-buttons {
+            margin-left: 20px;
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-map {
+            width: 70%;
+            background-color: white;
+            color: black;
+            border: 1px solid pink;
+            border-radius: 30px;
+            outline-color: pink;
+            cursor: pointer;
+        }
+
+        .btn-map:hover {
+            /* 마우스를 버튼 위에 올렸을 때의 스타일 변경 */
+            background-color: pink;
+        }
+
+        .like-btn {
+            margin-left: 10px;
+            background-color: white;
+            color: red;
+            border: 0.5px solid pink;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        .btn-stopover {
+            width: 25px;
+            height: 25px;
+            background-color: white;
+            color: black;
+            border: 1px solid pink;
+            border-radius: 20px;
+            outline-color: pink;
+            justify-items: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-stopover:hover {
+            /* 마우스를 버튼 위에 올렸을 때의 스타일 변경 */
+            background-color: pink;
         }
 
         .buttons {
@@ -216,11 +282,6 @@
 
         .buttons button {
             margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
-        }
-
-        #map {
-            width: 640px;
-            height: 600px;
         }
 
         #capturedImage {
@@ -242,36 +303,6 @@
             border-radius: 50%;
         }
 
-        .outLine {
-            width: 100%;
-            border: 2px solid #ddd;
-            border-radius: 30px;
-            outline-color: pink;
-            margin: 10px 0;
-        }
-
-        .gallery-caption {
-            padding: 10px;
-            text-align: center;
-        }
-
-        .gallery-container {
-            margin-top: 50px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        .gallery-item {
-            width: calc(25% - 10px);
-            border: 1px solid deeppink;
-            border-radius: 30px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
-        }
-
         .gallery-item img {
             background-size: cover;
             width: 450px;
@@ -280,16 +311,6 @@
             text-align: center;
         }
 
-        .inner-div {
-            border-radius: 50px;
-            height: 50px;
-            width: 1000px;
-            border: solid #dddddd;
-            margin-top: 20px;
-            margin-right: auto;
-            margin-left: auto;
-            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
-        }
 
         .stopover-section {
             display: flex;
@@ -383,13 +404,13 @@
 <div class="getBoardDetail-body">
     <div class="title-and-buttons">
         <div class="title1">
-            <div class="section1">
+            <div class="outLine1">
                 <select id="region" name="region">
                     <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}"
                             th:value="${enumItem}" th:text="${enumItem.region}"></option>
                 </select>
             </div>
-            <div class="section2">
+            <div class="outLine2">
                 <label for="title">제목: </label>
                 <input type="text" id="title" name="title" required>
             </div>
@@ -398,44 +419,66 @@
 </div>
 <div class="getBoardDetail-body">
     <div class="title-and-buttons">
-        <section>
+        <div class="outLine">
             <h3>추천하고 싶은 산책로를 그려주세요!</h3>
-            <!--지도 div-->
-            <div id="map"></div>
-            <button id="locateCurrentPosition">현재 위치 찾기</button>
-            <button id="drawLine">산책로 그리기</button>
-            <button id="captureImage">지도 캡쳐</button>
-
-            <br>
-            <label for="departure">출발지:</label>
-            <input type="text" id="departure" name="departure" required>
-            <div id="stopovers-container">
-                <div class="stopover-section">
-                    <label>경유지:</label>
-                    <input type="text" id="stopover" name="stopover">
-                    <!-- 삭제 버튼 추가 -->
-                    <button type="button" th:onclick="removeStopover(this)">-</button>
+            <div class="map-create">
+                <!--지도 div-->
+                <div id="map"></div>
+                <div class="map-buttons">
+                    <button class="btn-map" id="locateCurrentPosition">현재 위치 찾기</button>
+                    <button class="btn-map" id="drawLine">산책로 그리기</button>
+                    <button class="btn-map" id="captureImage">지도 캡쳐</button>
+                    <br>
+                    <div>
+                        <label for="departure">출발지:</label>
+                        <input type="text" id="departure" name="departure" required>
+                    </div>
+                    <div>
+                        <div>
+                            <div type="label">경유지:
+                                <!-- 추가 버튼 추가 -->
+                                <button class="btn-stopover" onclick="addStopover()">➕</button>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column;" id="stopovers-container">
+                            <div class="stopover-section">
+                                <input type="text" id="stopover" name="stopover">
+                                <!-- 삭제 버튼 추가 -->
+                                <button class="btn-stopover" th:onclick="removeStopover(this)">➖</button>
+                            </div>
+                        </div>
+                    </div>
+                    <label for="destination">목적지:</label>
+                    <input type="text" id="destination" name="destination" required>
+                    <br>
                 </div>
             </div>
-            <button type="button" onclick="addStopover()">+</button>
-            <br>
-            <label for="destination">목적지:</label>
-            <input type="text" id="destination" name="destination" required>
-        </section>
+            <div style="flex-direction: column">
+                <div><b>1. 내 근처 산책로를 찾고 싶다면 현재위치찾기 클릭! </b></div>
+                <div><b>2. 위치를 찾았다면 산책로를 그려보아요!</b></div>
+                <div><b>2-1. 산책로를 그릴땐 한붓 그리기 처럼 연결 되어야지만 해요!</b></div>
+                <div><b>2-2. 다 그렸다면 마지막 선의 끝부분을 한번 더 클릭해 줘요!</b></div>
+                <div><b>3. 이제 그린 산책로를 캡쳐해보아요!</b></div>
+                <div><b>3-1. 캡쳐는 지도 화면에 보이는 부분만 되니 지도의 크기를 ctrl+마우스휠로 조절해서 산책로가 보이게 조절해요!</b></div>
+                <div><b>3-2. 캡쳐한 산책로 이미지는 컴퓨터에 저장됩니다!</b></div>
+            </div>
+        </div>
     </div>
-    <section>
+    <div class="outLine">
         <h3>산책로를 캡처 후 첨부해주세요!</h3>
         <!--지도 캡쳐한 이미지 div-->
         <div id="capturedImage"></div>
-    </section>
-    <section class="preview-label">
-        이미지 업로드 :
-        <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
-    </section>
-    <section>
+    </div>
+    <div class="outLine">
+        <div class="preview-label">
+            이미지 업로드 :
+            <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
+        </div>
+    </div>
+    <div class="outLine">
         <label for="content">내용:</label>
         <textarea id="content" name="content" required></textarea>
-    </section>
+    </div>
     <div class="buttons">
         <button onclick="saveBoard()">완료</button>
         <button th:onclick="|location.href='@{/api/boards/best}'|">취소</button>
@@ -683,9 +726,6 @@
             var newStopoverSection = document.createElement('div');
             newStopoverSection.classList.add('stopover-section');
 
-            var label = document.createElement('label');
-            label.setAttribute('for', 'stopover');
-            label.textContent = '경유지:';
 
             var input = document.createElement('input');
             input.setAttribute('type', 'text');
@@ -694,12 +734,12 @@
             // 새로운 경유지 입력란에 삭제 버튼 추가
             var removeStopoverButton = document.createElement('button');
             removeStopoverButton.setAttribute('type', 'button');
-            removeStopoverButton.textContent = '-';
+            removeStopoverButton.textContent = '➖';
+            removeStopoverButton.classList.add('btn-stopover'); // Adding the class
             removeStopoverButton.addEventListener('click', function () {
                 addRemoveStopover(newStopoverSection);
             });
 
-            newStopoverSection.appendChild(label);
             newStopoverSection.appendChild(input);
             newStopoverSection.appendChild(removeStopoverButton);
 
@@ -813,7 +853,7 @@
         formData.append("region", region);
         formData.append("title", title);
         formData.append("departure", departure);
-        stopoverInputs.forEach(function(input) {
+        stopoverInputs.forEach(function (input) {
             formData.append("stopover", input.value);
         });
         formData.append("destination", destination);
@@ -1117,7 +1157,7 @@
 
         // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
         if (confirmation) {
-            fetch(commentUrl+ '/' + commentId + report, {method: 'DELETE'})
+            fetch(commentUrl + '/' + commentId + report, {method: 'DELETE'})
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -1253,7 +1293,7 @@
         const staticMapOptions = {
             center: polyline.getPath().getArray()[0].toJSON(),
             zoom: map.getZoom(),
-            size: '640x600',
+            size: '500x500',
             maptype: 'roadmap',
         };
 
