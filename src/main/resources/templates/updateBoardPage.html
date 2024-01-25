@@ -12,7 +12,30 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>사뿐</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Gamja+Flower&display=swap');
+
+        #profileImage,
+        .gallery-item img,
+        h1,
+        #sidebar a,
+        #openBtn,
+        .img-section {
+            font-family: 'Gaegu', sans-serif;
+        }
+
+        #profileImage,
+        .gallery-item img,
+        h1,
+        #sidebar a,
+        #openBtn,
+        .img-section {
+            font-family: 'Gamja Flower', sans-serif;
+        }
+
         .stopover-section {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 300;
+            font-style: normal;
             display: flex;
             align-items: center;
             margin-bottom: 10px;
@@ -99,6 +122,15 @@
             margin-right: 100px;
         }
 
+        .buttons1 {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 100px;
+        }
+
         .buttons button {
             margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
         }
@@ -106,6 +138,26 @@
         #map {
             width: 640px;
             height: 600px;
+        }
+
+        .map-buttons {
+            margin-left: 20px;
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-map {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            width: 70%;
+            background-color: white;
+            color: black;
+            border: 1px solid pink;
+            border-radius: 30px;
+            outline-color: pink;
+            cursor: pointer;
         }
 
         #capturedImage {
@@ -246,6 +298,25 @@
         #mainLogoImage {
             cursor: pointer;
         }
+
+        .gaegu-light {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        .gaegu-bold {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        h3 {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
     </style>
 </head>
 <body>
@@ -336,7 +407,7 @@
                     <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}"
                             th:value="${enumItem}" th:text="${enumItem.region}"></option>
                 </select>
-                <label for="title">제목:</label>
+                <label class="gaegu-bold" for="title">제목:</label>
                 <input type="text" id="title" name="title" th:value="${board.title}" required>
 
             </section>
@@ -348,16 +419,19 @@
                         <!--지도 div-->
                         <div>
                             <div id="map"></div>
+<!--                            <div class="map-buttons">-->
+<!--                                폰트 적용할 경우 class="btn-map"를 현위찾/산그/지캡에 넣기-->
                             <button id="locateCurrentPosition">현재 위치 찾기</button>
                             <button id="drawLine">산책로 그리기</button>
                             <button id="captureImage">지도 캡쳐</button>
                         </div>
                         <!--기존 파일-->
                         <div>
-                            <h4>기존 산책로</h4>
+                            <h3>기존 산책로</h3>
                             <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
                         </div>
                     </div>
+<!--                       폰트 추가할 경우 class="gaegu-light"를 출발지/목적지에 추가-->
                     <label for="departure">출발지:</label>
                     <input type="text" id="departure" name="departure" th:value="${board.departure}" required>
                     <div id="stopovers-container">
@@ -379,14 +453,17 @@
                 <!--지도 캡쳐한 이미지 div-->
                 <div id="capturedImage"></div>
             </section>
+<!--            <section class="gaegu-bold">-->
             <section class="preview-label">
                 이미지 업로드 :
                 <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
             </section>
             <section>
+<!--               폰트 적용 시 class="gaegu-bold"내용 에 추가-->
                 <label for="content">내용:</label>
                 <textarea id="content" name="content" th:value="${board.content}" required></textarea>
             </section>
+<!--            <div class="buttons1">-->
             <div class="buttons">
                 <button th:onclick="'updateBoard(' + ${boardId} + ')'">완료</button>
                 <button th:onclick="'getBoardDetails(' + ${boardId} + ')'">취소</button>
