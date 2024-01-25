@@ -14,19 +14,21 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserSignupReq {
 
-    @Size(min = 4, max = 15)
-    @Pattern(regexp = "^[a-zA-Z0-9]*$")
+    @Size(min = 4, max = 15, message = "최소 4글자, 최대 15글자로 입력해주세요")
+    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "영어 대소문자 및 숫자로 입력해주세요.")
     private String username;
 
-    @Size(min = 2, max = 10)
+    @Size(min = 2, max = 10, message = "최소 2글자, 최대 10글자로 입력해주세요")
     @Pattern(regexp = "^[가-힣a-zA-Z0-9]*$")
     private String nickname;
 
-    @Pattern(regexp = "\\w+@\\w+\\.\\w+(\\.\\w+)?")
+    @Pattern(regexp = "\\w+@\\w+\\.\\w+(\\.\\w+)?", message = "이메일 형식에 맞게 입력해주세요")
     private String email;
 
-    @Size(min = 6, max = 15)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*\\d)(?=.*[@$!%#?&])[A-Za-z\\d@$!%*#?&]*$")
+    @Size(min = 6, max = 15, message = "최소 6글자, 최대 15글자로 입력해주세요")
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*\\d)(?=.*[@$!%#?&])[A-Za-z\\d@$!%*#?&]*$",
+            message = "영어 대소문자 및 숫자와 특수문자를 각 하나 씩은 포함해 입력해주세요.")
     // 영어 소문자, 숫자, 특수문자를 각 하나씩 필수로 포함
     private String password;
 

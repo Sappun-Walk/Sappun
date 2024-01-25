@@ -354,7 +354,7 @@
             </section>
             <section>
                 <label for="content">내용:</label>
-                <input id="content" name="content" th:value="${board.content}" required>
+                <textarea id="content" name="content" th:value="${board.content}" required></textarea>
             </section>
             <div class="buttons">
                 <button th:onclick="'updateBoard(' + ${boardId} + ')'">완료</button>
@@ -723,6 +723,11 @@
 
         if (!title && !departure && !destination && !content) {
             alert('입력을 다시 확인해주세요.');
+            return;
+        }
+
+        if (content.length > 255) {
+            alert('내용은 최대 255자까지만 입력 가능합니다.');
             return;
         }
 

@@ -13,7 +13,7 @@ public class CommentSaveReq {
 
     private MultipartFile image;
 
-    @Size(max = 500, message = "500자 이내로 입력해주세요.") // TODO: 255글자 이상으로 작성안됨 확인필요 403Error 발생
+    @Size(max = 255, message = "255자 이내로 입력해주세요.") // TODO: 255글자 이상으로 작성안됨
     private String content;
 
     @Builder
