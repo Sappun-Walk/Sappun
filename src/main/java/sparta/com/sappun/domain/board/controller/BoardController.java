@@ -136,7 +136,7 @@ public class BoardController {
     public CommonResponse<BoardSaveRes> saveBoard(
             @Valid BoardSaveReq boardSaveReq, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         boardSaveReq.setUserId(userDetails.getUser().getId());
-        return CommonResponse.success(boardService.saveBoard(boardSaveReq, boardSaveReq.getImage()));
+        return CommonResponse.success(boardService.saveBoard(boardSaveReq, boardSaveReq.getImage(),boardSaveReq.getPhotoImages()));
     }
 
     // 게시글 수정
@@ -149,7 +149,7 @@ public class BoardController {
         boardUpdateReq.setBoardId(boardId);
         boardUpdateReq.setUserId(userDetails.getUser().getId());
         return CommonResponse.success(
-                boardService.updateBoard(boardUpdateReq, boardUpdateReq.getImage()));
+                boardService.updateBoard(boardUpdateReq, boardUpdateReq.getImage(),boardUpdateReq.getPhotoImages()));
     }
 
     @GetMapping("/update/{boardId}")

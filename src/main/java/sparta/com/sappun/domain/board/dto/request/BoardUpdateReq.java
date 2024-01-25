@@ -3,6 +3,7 @@ package sparta.com.sappun.domain.board.dto.request;
 import java.util.List;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
+import sparta.com.sappun.domain.board.entity.Image;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
 
 @Getter
@@ -19,6 +20,7 @@ public class BoardUpdateReq {
     private List<String> stopover;
     private RegionEnum region;
     private MultipartFile image;
+    private List<MultipartFile> photoImages;
 
     @Builder
     private BoardUpdateReq(

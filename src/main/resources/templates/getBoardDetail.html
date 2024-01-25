@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="UTF-8">
@@ -158,6 +158,19 @@
             max-width: 100%;
             width: 400px;
             height: 320px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-right: 20px;
+        }
+        .plusImagediv{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .plusImage {
+            max-width: 100%;
+            width: 200px;
+            height: 150px;
             object-fit: cover;
             border-radius: 15px;
             margin-right: 20px;
@@ -472,6 +485,13 @@
                         <div th:text="'도착지: ' + ${board.destination}"></div>
                     </div>
                     <div class="board-content3" th:text="'내용: ' + ${board.content}"></div>
+
+
+                    <div class="plusImagediv" th:each="image : ${board.images}" alt="게시물 url">
+                        <div th:if="${image.imageUrl != null}">
+                            <img class="plusImage" th:src="${image.imageUrl}" alt="게시물 이미지">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -504,7 +524,7 @@
         </select>
     </div>
 
-
+<div id="comment-id">
     <div class="comment-list" th:each="comment : ${board.comments}" th:id="${'comment-' + comment.id}">
         <div class="outLine">
             <div class="gallery-caption">
@@ -586,6 +606,7 @@
 </div>
 
 
+
 <script>
 
     const host = 'http://' + window.location.host;
@@ -601,14 +622,37 @@
     const report = '/report'
     const like = '/like'
     const updatePassword = '/api/users/profile/password';
+    // 댓글 목록을 업데이트하는 함수
 
-    //댓글 정렬
-    function updateSortOrder() {
+
+    function updateComments(boardId) {
+    // AJAX를 사용하여 서버에서 새로운 댓글 목록을 가져옴
+    fetch(`/api/boards/${boardId}/comments`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        cache: 'no-cache',
+    })
+        .then(response => response.json())
+        .then(data => {
+            // 서버에서 반환한 데이터를 토대로 댓글 목록을 업데이트
+            var commentIdContainer = document.getElementById('comment-id');
+            commentIdContainer.innerHTML = data; // data에는 서버에서 전달한 댓글 목록 HTML이 포함되어야 함
+        })
+        .catch(error => {
+            console.error('Error updating comments:', error);
+        });
+    }
+
+    // 댓글 정렬
+    function updateSortOrder(boardId) {
         // 정렬 방식 및 게시글 ID 가져오기
         var sortOrder = document.getElementById('sortOrder').value;
         // 현재 URL 가져오기
         var currentUrl = window.location.origin + window.location.pathname;
         // 정렬 기준이 이미 존재하는 경우
+        var updatedUrl;
         if (window.location.search.includes('?')) {
             // 이미 쿼리 매개변수가 있는 경우
             updatedUrl = `${currentUrl}?sortOrder=${sortOrder}`;
@@ -627,16 +671,12 @@
             .then(response => response.json())
             .then(data => {
                 // 서버에서 반환한 데이터를 처리
-                console.log(data);
-                // 여기에서 서버 응답을 토대로 화면을 업데이트하거나 추가 로직 수행 가능
-                // 예: $('#product-container').empty();, pagination 업데이트 등
+                updateComments(boardId); // 댓글 목록 업데이트 함수 호출
             })
             .catch(error => {
                 console.error('Error updating sort order:', error);
             });
-        window.location.href = updatedUrl;
     }
-
 
     //좋아요, 최신순 정렬기능
     function changeSortAndPage(sortBy) {
