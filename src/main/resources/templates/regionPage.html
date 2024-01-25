@@ -11,6 +11,38 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>Page Title</title>
     <style>
+        html {
+            overflow-y: scroll;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        h5 {
+            margin-top: 5px;
+            margin-bottom: 0.1rem;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 0.1rem;
+        }
+
+        #profileImage {
+            cursor: pointer;
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            top: 20px;
+            right: 30px;
+            padding: 10px;
+            border-radius: 50%;
+        }
+
         .page-nation li {
             list-style: none;
         }
@@ -43,70 +75,46 @@
             color: white;
         }
 
-        h5 {
-            font-size: h5;
-            margin-top: auto;
-            margin-bottom: auto;
-            text-align: center;
-            justify-content: center;
-        }
-        p {
-            font-size: 10px;
-            display: flex;
-            flex-direction: column; /*수직 정렬*/
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        #profileImage {
-            cursor: pointer;
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            top: 20px;
-            right: 30px;
-            padding: 10px;
-            border-radius: 50%;
-        }
-
         .gallery-container {
             width: 80%;
             margin-left: auto;
             margin-right: auto;
-            margin-top: 50px;
+            margin-top: 20px;
             display: flex;
             flex-wrap: wrap;
             text-align: center;
-            justify-content: center; /* Distribute items with equal space between them */
-            gap: 80px;
+            justify-content: center;
+            gap: 20px 50px;
         }
 
         .gallery-item {
             width: calc((70% - 0px) / 4); /* Calculate width with 4 items and 3 gaps between them */
-            height: 400px;
+            height: 380px;
             border: 1px solid deeppink;
-            border-radius: 30px;
+            border-radius: 25px;
             overflow: hidden;
-            margin-bottom: 20px;
             box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
         }
 
         .gallery-item img {
+            padding: 5px;
+            margin: 5px;
             background-size: cover;
-            width: auto;
-            height: 200px;
-            justify-content: center;
+            width: 250px;
+            height: 250px;
+            border-radius: 25px;
             text-align: center;
         }
 
         .gallery-caption {
-            padding: 10px 50px;
+            padding: 10px 20px;
             text-align: left;
+        }
+
+        .gallery-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .main-img-container {
@@ -127,30 +135,6 @@
         .btn-write button {
             width: auto;
             margin-right: 10px;
-        }
-
-        .inner-div {
-            border-radius: 40px;
-            width: 75%;
-            border: solid #dddddd;
-            margin: 20px auto;
-            text-align: center;
-            justify-content: center;
-            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            margin-top: auto;
-            margin-bottom: auto;
-            text-align: center;
-            justify-content: center;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-y: scroll;
         }
 
         #sidebar {
@@ -201,24 +185,16 @@
             visibility: hidden;
         }
 
-        #mainLogoImage {
-            cursor: pointer;
-        }
-
-        .img-section {
-            max-width: 100%;
-            width: 600px;
-            height: 640px;
-            object-fit: cover;
-            border-radius: 30px;
-        }
-
         .view-div {
-            margin-top: 30px;
             margin-left: auto;
             margin-right: 18%;
             display: flex;
             flex-direction: row-reverse;
+            gap: 10px;
+        }
+
+        #mainLogoImage {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -260,7 +236,8 @@
                 </button>
             </div>
             <div th:if="${user != null && user.role == T(sparta.com.sappun.domain.user.entity.Role).ADMIN}">
-                <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/reports}'|">
+                <button class="btn btn-outline-success" type="submit"
+                        th:onclick="|location.href='@{/api/boards/reports}'|">
                     게시판 관리
                 </button>
             </div>
@@ -274,13 +251,18 @@
             </div>
         </div>
         <div th:if="${user != null}">
-            <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile" id="profileImage">
+            <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile"
+                 id="profileImage">
         </div>
     </div>
 
     <div class="view-div">
-        <button type="button" onclick="changeSortAndPage('createdAt')" class="btn btn-outline-dark float-right">생성순</button>
-        <button type="button" onclick="changeSortAndPage('likeCount')" class="btn btn-outline-dark float-right">좋아요순</button>
+        <button type="button" onclick="changeSortAndPage('createdAt')" class="btn btn-outline-dark float-right">
+            생성순
+        </button>
+        <button type="button" onclick="changeSortAndPage('likeCount')" class="btn btn-outline-dark float-right">
+            좋아요순
+        </button>
     </div>
 
     <div class="gallery-container">
@@ -288,7 +270,9 @@
              th:onclick="'getBoardDetails(' + ${board.id} + ')'" style="cursor: pointer;">
             <img th:src="${board.fileURL}" alt="게시물 이미지">
             <div class="gallery-caption">
-                <h5 th:text="${board.title}"></h5>
+                <div class="gallery-title">
+                    <h5 th:text="${board.title}"></h5>
+                </div>
                 <p th:text="'작성자: ' + ${board.nickname}"></p>
                 <p th:text="'지역: ' + ${board.region.getRegion()}"></p>
             </div>
@@ -650,7 +634,7 @@
         formData.append("region", region);
         formData.append("title", title);
         formData.append("departure", departure);
-        stopoverInputs.forEach(function(input) {
+        stopoverInputs.forEach(function (input) {
             formData.append("stopover", input.value);
         });
         formData.append("destination", destination);
@@ -954,7 +938,7 @@
 
         // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
         if (confirmation) {
-            fetch(commentUrl+ '/' + commentId + report, {method: 'DELETE'})
+            fetch(commentUrl + '/' + commentId + report, {method: 'DELETE'})
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
