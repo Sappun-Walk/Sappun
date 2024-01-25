@@ -12,48 +12,31 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>사뿐</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Gamja+Flower&display=swap');
-
-
-        #profileImage,
-        .gallery-item img,
-        h1,
-        #sidebar a,
-        #openBtn,
-        .img-section {
-            font-family: 'Gaegu', sans-serif;
+        @font-face {
+            font-family: 'yg-jalnan';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
         }
 
-        #profileImage,
-        .gallery-item img,
-        h1,
-        #sidebar a,
-        #openBtn,
-        .img-section {
-            font-family: 'Gamja Flower', sans-serif;
-        }
-
-        .gamja-flower-regular {
-            font-family: "Gamja Flower", sans-serif;
+        @font-face {
+            font-family: 'Pretendard-400';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
             font-weight: 400;
             font-style: normal;
         }
 
-        .gaegu-regular {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 400;
+        @font-face {
+            font-family: 'Pretendard-600';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 600;
             font-style: normal;
         }
 
-        .gaegu-bold {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 700;
-            font-style: normal;
-        }
-
-        .gaegu-light {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 300;
+        @font-face {
+            font-family: 'Pretendard-900';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 900;
             font-style: normal;
         }
 
@@ -62,10 +45,14 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Pretendard-600';
             margin: 0;
             padding: 0;
             overflow: hidden;
+        }
+
+        view-div {
+            font-family: 'Pretendard-600';
         }
 
         h5 {
@@ -157,19 +144,19 @@
             text-align: left;
         }
 
-        .gallery-title {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 700;
-            font-style: normal;
+        .btn btn-outline-success {
+            font-family: 'Pretendard-600';
+        }
+
+        .Board-Title {
+            font-family: 'Pretendard-900';
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .gallery-title2 {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 400;
-            font-style: normal;
+        .Board-content {
+            font-family: 'Pretendard-400';
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -356,11 +343,11 @@
              th:onclick="'getBoardDetails(' + ${board.id} + ')'" style="cursor: pointer;">
             <img th:src="${board.fileURL}" alt="게시물 이미지">
             <div class="gallery-caption">
-                <div class="gallery-title">
+                <div class="Board-Title">
                     <h4 th:text="${board.title}"></h4>
                 </div>
-                <div class="gallery-title2" th:text="'작성자: ' + ${board.nickname}"></div>
-                <div class="gallery-title2" th:text="'지역: ' + ${board.region.getRegion()}"></div>
+                <div class="Board-content" th:text="'작성자: ' + ${board.nickname}"></div>
+                <div class="Board-content" th:text="'지역: ' + ${board.region.getRegion()}"></div>
             </div>
         </div>
     </div>
