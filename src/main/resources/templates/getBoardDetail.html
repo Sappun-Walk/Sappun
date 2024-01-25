@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/%EC%82%AC%EB%BF%902.png">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <title>게시글 상세 조회 페이지</title>
+    <title>사뿐</title>
     <style>
 
         /* 일부 기본 스타일을 초기화하고 기본 스타일을 적용합니다. */
@@ -163,11 +163,6 @@
             margin-right: 20px;
         }
 
-        /* 전역 폰트 스타일 적용 */
-        body {
-            font-family: 'Arial', sans-serif;
-        }
-
         /* 컨테이너 스타일 */
         .getBoardDetail-body {
             max-width: 70%;
@@ -303,14 +298,6 @@
             gap: 10px;
         }
 
-        #comment {
-            display: flex;
-        }
-
-        .board-up {
-            display: flex;
-        }
-
         #inputForm {
             display: none;
             width: 100%;
@@ -412,22 +399,13 @@
                             id="board-update-button">
                         수정
                     </button>
-                </div>
-                <div th:if="${user != null}">
                     <button class="btn btn-outline-success" th:onclick="'deleteBoard(' + ${boardId} + ')'"
                             id="board-delete-button">
                         삭제
                     </button>
                 </div>
-                <div th:if="${user == null}">
-                    <button class="btn btn-outline-success" onclick="needToLogin()">
-                        삭제
-                    </button>
-                </div>
-                <div th:if="${user == null}">
-                    <button class="btn btn-outline-success" onclick="needToLogin()">신고</button>
-                </div>
                 <div th:if="${user != null}">
+
                     <button class="btn btn-outline-success" th:onclick="showInputForm()">신고</button>
                 </div>
             </div>
@@ -540,44 +518,35 @@
                     <button class="btn btn-outline-success" onclick="needToLogin()">신고</button>
                 </div>
 
-                <!--댓글 삭제-->
-                <div th:if="${user != null}">
+                <div th:if="${user != null && user.nickname eq comment.nickname}">
+                    <!--댓글 삭제-->
                     <button class="btn btn-outline-success"
                             th:onclick="'deleteComment(' + ${board.id} + ',' + ${comment.id} + ')'"
                             id="comment-delete-button">삭제
                     </button>
-                </div>
-                <div th:if="${user == null}">
-                    <button class="btn btn-outline-success" onclick="needToLogin()">삭제</button>
-                </div>
+                    <!--댓글 수정-->
+                    <button class="btn btn-outline-success" th:onclick="|showCommentUpdateForm(${comment.id})|">수정</button>
 
-                <!--댓글 수정-->
-                <div th:if="${user != null}">
-                    <button class="btn btn-outline-success" th:onclick="|showCommentUpdateForm()|">수정</button>
-                    <div id="commentUpdateForm" style="display: none;">
-                        <form id="UpdateCommentForm">
-                            <label for="inputCommentContent">내용:</label>
-                            <input type="text" id="inputCommentContent" name="commentContent" required
-                                   th:value="${comment.content}">
-                            <label for="inputCommentImage">첨부파일:</label>
-                            <input type="file" id="inputCommentImage" name="commentImage">
-                            <button class="btn btn-outline-success" type="button"
-                                    th:onclick="'updateComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                <div th:if="${user == null}">
-                    <button class="btn btn-outline-success" onclick="needToLogin()">수정</button>
                 </div>
             </div>
             <form th:id="'myCommentForm-' + ${comment.id}" style="display: none;width: 100%">
                 <div style="display: flex;margin-right: 20px;margin-bottom: 20px;flex-direction: row;align-items: center;justify-content: flex-end;">
                     <label th:for="'commentReason-' + ${comment.id}">신고 사유:</label>
-                    <input type="text" th:id="'commentReason-' + ${comment.id}"
-                           th:name="'commentReason-' + ${comment.id}" required>
+                    <input type="text" th:id="'commentReason-' + ${comment.id}" th:name="'commentReason-' + ${comment.id}" required>
                     <button class="btn btn-outline-success" type="button"
                             th:onclick="'reportComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
+                    </button>
+                </div>
+            </form>
+
+            <form th:id="'commentUpdateForm-' + ${comment.id}" style="display: none;width: 100%">
+                <div style="display: flex;margin-right: 20px;margin-bottom: 20px;flex-direction: row;align-items: center;justify-content: flex-end;">
+                    <label th:for="inputCommentContent">내용:</label>
+                    <input type="text" th:id="inputCommentContent" th:name="inputCommentContent" required th:value="${comment.content}">
+                    <label th:for="inputCommentImage">첨부파일:</label>
+                    <input type="file" th:id="inputCommentImage" th:name="inputCommentImage">
+                    <button class="btn btn-outline-success" type="button"
+                            th:onclick="'updateComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
                     </button>
                 </div>
             </form>
@@ -1222,10 +1191,21 @@
             })
     }
 
+    // // 댓글 수정 입력창
+    // function showCommentUpdateForm() {
+    //     var inputForm = document.getElementById('commentUpdateForm');
+    //     inputForm.style.display = 'block';
+    // }
+
     // 댓글 수정 입력창
-    function showCommentUpdateForm() {
-        var inputForm = document.getElementById('commentUpdateForm');
-        inputForm.style.display = 'block';
+    function showCommentUpdateForm(commentId) {
+        var formId = 'commentUpdateForm-' + commentId;
+        var form = document.getElementById(formId);
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
     }
 
     // 댓글 수정

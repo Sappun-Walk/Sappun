@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/%EC%82%AC%EB%BF%902.png">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -9,17 +10,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <title>게시글 작성 페이지</title>
+    <title>사뿐</title>
     <style>
-        .stopover-section {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .stopover-section input {
-            margin-right: 5px;
-        }
 
         body {
             margin: 0;
@@ -36,8 +28,74 @@
             width: 100%;
         }
 
-        #mainLogoImage {
+        h1 {
+            margin: 0;
+            padding: 0;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        section {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            background-color: #f9f9f9;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px;
             cursor: pointer;
+        }
+
+        #sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgba(17, 17, 17, 0.8);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        #sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        #sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        #main {
+            transition: margin-left 0.5s;
+            padding: 16px;
+            display: flex;
         }
 
         #profileImage {
@@ -51,36 +109,50 @@
             border-radius: 50%;
         }
 
-        h1 {
-            margin: 0;
-            padding: 0;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
+        .main-img-container {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            justify-content: center;
         }
 
-        .logout-btn {
-            position: absolute;
-            top: 20px;
-            right: 120px;
-            padding: 10px;
+        .btn-write {
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: 100px;
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        .btn-write button {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        #openBtn {
+            font-size: 30px;
+            width: 250px;
+            margin-right: auto;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0);
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            display: flex;
+        }
+
+        #openBtn.hide {
+            visibility: hidden;
+        }
+
+        #mainLogoImage {
             cursor: pointer;
         }
 
-        .user-name {
-            position: absolute;
-            top: 5px;
-            right: 200px;
-            padding: 10px;
-        }
-
-        section {
-            width: 80%;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 50px;
-            background-color: #f9f9f9;
+        /* 컨테이너 스타일 */
+        .getBoardDetail-body {
+            max-width: 70%;
+            margin: 0 auto;
         }
 
         .title1 {
@@ -119,27 +191,6 @@
             border-radius: 30px;
             border: 1px solid lightgray;
             outline: none;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
-        }
-
-        button {
-            padding: 10px;
-            cursor: pointer;
         }
 
         #region {
@@ -185,6 +236,19 @@
             border-radius: 50%;
         }
 
+        .outLine {
+            width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            outline-color: pink;
+            margin: 10px 0;
+        }
+
+        .gallery-caption {
+            padding: 10px;
+            text-align: center;
+        }
+
         .gallery-container {
             margin-top: 50px;
             display: flex;
@@ -210,31 +274,6 @@
             text-align: center;
         }
 
-        .gallery-caption {
-            padding: 10px;
-            text-align: center;
-        }
-
-        .main-img-container {
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-            justify-content: center;
-        }
-
-        .btn-write {
-            margin-top: 30px;
-            margin-left: auto;
-            margin-right: 100px;
-            display: flex;
-            flex-direction: row-reverse;
-        }
-
-        .btn-write button {
-            width: auto;
-            margin-right: 10px;
-        }
-
         .inner-div {
             border-radius: 50px;
             height: 50px;
@@ -246,57 +285,16 @@
             box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
         }
 
-        #sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: rgba(17, 17, 17, 0.8);
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-
-        #sidebar a {
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 20px;
-            color: #818181;
-            display: block;
-            transition: 0.3s;
-        }
-
-        #sidebar a:hover {
-            color: #f1f1f1;
-        }
-
-        #main {
-            transition: margin-left 0.5s;
-            padding: 16px;
+        .stopover-section {
             display: flex;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
-        #openBtn {
-            font-size: 30px;
-            width: 250px;
-            margin-right: auto;
-            cursor: pointer;
-            background-color: rgba(0, 0, 0, 0);
-            color: black;
-            padding: 10px 15px;
-            border: none;
-            display: flex;
+        .stopover-section input {
+            margin-right: 5px;
         }
 
-        #openBtn.hide {
-            visibility: hidden;
-        }
-
-        #mainLogoImage {
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -353,6 +351,7 @@
         <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile" id="profileImage">
     </div>
 </div>
+<!--게시글 제목 작성란-->
 <div class="getBoardDetail-body">
     <div class="title-and-buttons">
         <div class="title1">
