@@ -107,10 +107,11 @@
         }
 
         .btn-write {
-            margin-top: 30px;
+            /*margin-top: 30px;*/
             margin-left: auto;
             margin-right: 100px;
             display: flex;
+            align-items: center;
             flex-direction: row-reverse;
         }
 
@@ -118,6 +119,12 @@
             width: auto;
             margin-right: 10px;
         }
+
+        .rank-image {
+          width: 50px;
+          height: 50px;
+        }
+
         h5 {
             font-size: h5;
             margin-top: auto;
@@ -221,6 +228,31 @@
         </div>
 
         <div class="btn-write">
+            <div th:if="${user != null}" class="rank">
+            <span th:if="${user.score < 0}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}" alt="rank-image"
+                                 class="rank-image">
+                        </span>
+                <span
+                    th:if="${user.score >= 0 and user.score <= 300}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}" alt="rank-image"
+                                 class="rank-image">
+                        </span>
+                <span
+                    th:if="${user.score > 300 and user.score <= 700}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}" alt="rank-image"
+                                 class="rank-image">
+                        </span>
+                <span
+                    th:if="${user.score > 700 and user.score <= 1200}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}" alt="rank-image"
+                                 class="rank-image">
+                        </span>
+                <span th:if="${user.score > 1200}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}" alt="rank-image"
+                                 class="rank-image">
+                        </span>
+            </div>
             <p th:if="${user == null}">
                 <button class="btn btn-outline-success" type="submit"
                         th:onclick="|location.href='@{/api/users/login-page}'|">로그인

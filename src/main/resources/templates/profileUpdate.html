@@ -85,6 +85,16 @@
             justify-content: space-between;
         }
 
+        .rank {
+          display: flex;
+          align-items: center;
+        }
+
+        .rank-image {
+          width: 50px;
+          height: 50px;
+        }
+
         /* 프로필 이미지를 동그랗게 보여주기 위한 CSS 스타일*/
         img.profile-image {
             border-radius: 50%;
@@ -216,15 +226,31 @@
                     <img id="preview" th:src="${userProfile.profileUrl}" alt="Profile Picture" class="profile-image">
                     <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
 
-                    <p><b>Rank</b>
-                        <span th:if="${userProfile.score < 0}">Warned</span>
+                    <p class="rank">
+                        <b>Rank</b>
+                        <span th:if="${userProfile.score < 0}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}" alt="rank-image"
+                                 class="rank-image">
+                        </span>
                         <span
-                            th:if="${userProfile.score >= 0 and userProfile.score <= 300}">Bronze</span>
+                            th:if="${userProfile.score >= 0 and userProfile.score <= 300}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}" alt="rank-image"
+                                 class="rank-image">
+                        </span>
                         <span
-                            th:if="${userProfile.score > 300 and userProfile.score <= 700}">Silver</span>
+                            th:if="${userProfile.score > 300 and userProfile.score <= 700}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}" alt="rank-image"
+                                 class="rank-image">
+                        </span>
                         <span
-                            th:if="${userProfile.score > 700 and userProfile.score <= 1200}">Gold</span>
-                        <span th:if="${userProfile.score > 1200}">Platinum</span>
+                            th:if="${userProfile.score > 700 and userProfile.score <= 1200}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}" alt="rank-image"
+                                 class="rank-image">
+                        </span>
+                        <span th:if="${userProfile.score > 1200}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}" alt="rank-image"
+                                 class="rank-image">
+                        </span>
                     </p>
                 </div>
 
