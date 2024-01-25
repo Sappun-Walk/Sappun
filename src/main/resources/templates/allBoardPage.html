@@ -12,6 +12,32 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>사뿐</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Gamja+Flower&display=swap');
+
+        .gaegu-bold {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        #profileImage,
+        .gallery-item img,
+        h1,
+        #sidebar a,
+        #openBtn,
+        .img-section {
+            font-family: 'Gaegu', sans-serif;
+        }
+
+        #profileImage,
+        .gallery-item img,
+        h1,
+        #sidebar a,
+        #openBtn,
+        .img-section {
+            font-family: 'Gamja Flower', sans-serif;
+        }
+
         html {
             overflow-y: scroll;
         }
@@ -114,8 +140,20 @@
         }
 
         .gallery-title {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 700;
+            font-style: normal;
             white-space: nowrap;
-            overflow:hidden;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .gallery-title2 {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            white-space: nowrap;
+            overflow: hidden;
             text-overflow: ellipsis;
         }
 
@@ -299,10 +337,10 @@
         <img th:src="${allboard.fileURL}" alt="게시물 이미지">
         <div class="gallery-caption">
             <div class="gallery-title">
-                <h5 th:text="${allboard.title}"></h5>
+                <h4 th:text="${allboard.title}"></h4>
             </div>
-            <p th:text="'작성자: ' + ${allboard.nickname}"></p>
-            <p th:text="'지역: ' + ${allboard.region.getRegion()}"></p>
+            <div class="gallery-title2" th:text="'작성자: ' + ${allboard.nickname}"></div>
+            <div class="gallery-title2" th:text="'지역: ' + ${allboard.region.getRegion()}"></div>
         </div>
     </div>
 </div>
