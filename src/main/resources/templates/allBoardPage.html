@@ -2,13 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>전체 게시글 페이지</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>전체 게시글 페이지</title>
     <style>
         html {
             overflow-y: scroll;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        h5 {
+            margin-top: 5px;
+            margin-bottom: 0.1rem;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 0.1rem;
         }
 
         #profileImage {
@@ -59,35 +80,42 @@
             width: 80%;
             margin-left: auto;
             margin-right: auto;
-            margin-top: 50px;
+            margin-top: 20px;
             display: flex;
             flex-wrap: wrap;
             text-align: center;
-            justify-content: center; /* Distribute items with equal space between them */
-            gap: 80px;
+            justify-content: center;
+            gap: 20px 50px;
         }
 
         .gallery-item {
             width: calc((70% - 0px) / 4); /* Calculate width with 4 items and 3 gaps between them */
-            height: 400px;
+            height: 380px;
             border: 1px solid deeppink;
-            border-radius: 30px;
+            border-radius: 25px;
             overflow: hidden;
-            margin-bottom: 20px;
             box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
         }
 
         .gallery-item img {
+            padding: 5px;
+            margin: 5px;
             background-size: cover;
-            width: auto;
-            height: 200px;
-            justify-content: center;
+            width: 250px;
+            height: 250px;
+            border-radius: 25px;
             text-align: center;
         }
 
         .gallery-caption {
-            padding: 10px;
-            text-align: center;
+            padding: 10px 20px;
+            text-align: left;
+        }
+
+        .gallery-title {
+            white-space: nowrap;
+            overflow:hidden;
+            text-overflow: ellipsis;
         }
 
         .main-img-container {
@@ -108,27 +136,6 @@
         .btn-write button {
             width: auto;
             margin-right: 10px;
-        }
-
-        h5 {
-            font-size: h5;
-            margin-top: auto;
-            margin-bottom: auto;
-            text-align: center;
-            justify-content: center;
-        }
-
-        p {
-            font-size: 10px;
-            display: flex;
-            flex-direction: column; /*수직 정렬*/
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
         }
 
         #sidebar {
@@ -180,11 +187,11 @@
         }
 
         .view-div {
-            margin-top: 30px;
             margin-left: auto;
             margin-right: 18%;
             display: flex;
             flex-direction: row-reverse;
+            gap: 10px;
         }
 
         #mainLogoImage {
@@ -243,6 +250,10 @@
                 <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
             </div>
         </div>
+        <div th:if="${user != null}">
+            <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile"
+                 id="profileImage">
+        </div>
     </div>
 </div>
 <div class="view-div">
@@ -258,7 +269,9 @@
          th:onclick="'getBoardDetails(' + ${allboard.id} + ')'" style="cursor: pointer;">
         <img th:src="${allboard.fileURL}" alt="게시물 이미지">
         <div class="gallery-caption">
-            <h5 th:text="${allboard.title}"></h5>
+            <div class="gallery-title">
+                <h5 th:text="${allboard.title}"></h5>
+            </div>
             <p th:text="'작성자: ' + ${allboard.nickname}"></p>
             <p th:text="'지역: ' + ${allboard.region.getRegion()}"></p>
         </div>
