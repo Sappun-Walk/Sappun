@@ -334,6 +334,16 @@
                 flex-direction: column;
             }
         }
+
+        .get-button {
+            display: flex;
+            flex-direction: row-reverse;
+            margin-right: 20px;
+        }
+
+        #sortOrder {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -473,11 +483,6 @@
     <!--댓글 작성-->
     <div class="outLine">
         <div class="comment-create">
-            <select id="sortOrder">
-                <option value="recent">최신순</option>
-                <option value="likes">좋아요 순</option>
-            </select>
-            <button class="btn btn-outline-success" type="button" onclick="updateSortOrder()">적용</button>
             <label for="commentContent">내용:</label>
             <textarea id="commentContent" name="commentContent" required></textarea>
             <label for="commentImageInput">첨부파일:</label>
@@ -490,6 +495,13 @@
                 <button class="btn btn-outline-success" type="button" onclick="needToLogin()">확인</button>
             </div>
         </div>
+    </div>
+    <div class="get-button">
+        <button class="btn btn-outline-success" type="button" onclick="updateSortOrder()">적용</button>
+        <select id="sortOrder">
+            <option value="recent">최신순</option>
+            <option value="likes">좋아요 순</option>
+        </select>
     </div>
 
 
