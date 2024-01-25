@@ -40,7 +40,6 @@
             font-style: normal;
         }
 
-
         .gaegu-regular {
             font-family: "Gaegu", sans-serif;
             font-weight: 400;
@@ -72,8 +71,8 @@
         }
 
         .rank-image {
-          width: 50px;
-          height: 50px;
+            width: 50px;
+            height: 50px;
         }
 
         .gallery-container {
@@ -213,6 +212,12 @@
             object-fit: cover;
             border-radius: 30px;
         }
+
+        .gallery-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 <body>
@@ -247,26 +252,31 @@
     <div class="btn-write">
         <div th:if="${user != null}" class="rank">
             <span th:if="${user.score < 0}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}" alt="rank-image"
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             <span
-                th:if="${user.score >= 0 and user.score <= 300}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}" alt="rank-image"
+                    th:if="${user.score >= 0 and user.score <= 300}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             <span
-                th:if="${user.score > 300 and user.score <= 700}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}" alt="rank-image"
+                    th:if="${user.score > 300 and user.score <= 700}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             <span
-                th:if="${user.score > 700 and user.score <= 1200}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}" alt="rank-image"
+                    th:if="${user.score > 700 and user.score <= 1200}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             <span th:if="${user.score > 1200}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}" alt="rank-image"
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
         </div>
@@ -295,16 +305,19 @@
 </div>
 
 <div class="inner-div">
-    <div class="gaegu-bold" style="font-size: 50px; text-align: center; justify-content: center;" >Best 산책로 TOP3</div>
+    <div class="gaegu-bold" style="font-size: 50px; text-align: center; justify-content: center;">Best 산책로 TOP3</div>
 </div>
 <div class="gallery-container">
     <div class="gallery-item" th:each="board : ${bestBoards.boards}" th:id="${'board-' + board.id}"
          th:onclick="'getBoardDetails(' + ${board.id} + ')'" style="cursor: pointer;">
         <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
         <div class="gallery-caption">
-            <div class="gaegu-bold" style="font-size: 34px;" th:text="${board.title}"></div>
+            <div class="gallery-title">
+                <div class="gaegu-bold" style="font-size: 34px;" th:text="${board.title}"></div>
+            </div>
             <div class="gamja-flower-regular" style="font-size: 24px;" th:text="'작성자: ' + ${board.nickname}"></div>
-            <div class="gamja-flower-regular" style="font-size: 24px;" th:text="'지역: ' + ${board.region.getRegion()}"></div>
+            <div class="gamja-flower-regular" style="font-size: 24px;"
+                 th:text="'지역: ' + ${board.region.getRegion()}"></div>
         </div>
     </div>
 </div>

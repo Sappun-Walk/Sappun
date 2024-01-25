@@ -436,8 +436,10 @@
                     </button>
                 </div>
                 <div th:if="${user != null}">
-
                     <button class="btn btn-outline-success" th:onclick="showInputForm()">신고</button>
+                </div>
+                <div th:if="${user == null}">
+                    <button class="btn btn-outline-success" onclick="needToLogin()">신고</button>
                 </div>
             </div>
         </div>
