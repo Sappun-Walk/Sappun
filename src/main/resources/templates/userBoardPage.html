@@ -249,6 +249,32 @@
         #mainLogoImage {
             cursor: pointer;
         }
+
+        .btn-style {
+            font-family: 'Pretendard-400';
+            width: 65%;
+            margin: 0 auto 30px auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+        }
+
+        .btn-style button {
+            font-family: 'Pretendard-400';
+            margin-left: 10px;
+            width: 8%;
+            background-color: white;
+            color: black;
+            border: 1px solid pink;
+            border-radius: 30px;
+            outline-color: pink;
+            cursor: pointer;
+        }
+
+        .btn-style button:hover {
+            /* 마우스를 버튼 위에 올렸을 때의 스타일 변경 */
+            background-color: pink;
+        }
     </style>
 </head>
 <body>
@@ -317,9 +343,9 @@
             </div>
         </div>
     </div>
-    <div class="view-div">
-        <button class="view-div1" type="button" onclick="changeSortAndPage('createdAt')">생성순</button>
-        <button class="view-div1" type="button" onclick="changeSortAndPage('likeCount')">좋아요순</button>
+    <div class="btn-style">
+        <button class="bttons1" type="button" onclick="changeSortAndPage('createdAt')">최신순</button>
+        <button class="bttons1" type="button" onclick="changeSortAndPage('likeCount')">좋아요순</button>
     </div>
     <div class="gallery-container">
         <div class="gallery-item" th:each="userboard : ${responseDto.content}" th:id="${'allboard-' + userboard.id}"

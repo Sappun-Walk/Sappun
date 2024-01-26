@@ -628,13 +628,13 @@
                 </div>
 
                 <div th:if="${user != null && user.nickname eq comment.nickname}">
+                    <!--댓글 수정-->
+                    <button class="btn btn-outline-success" th:onclick="|showCommentUpdateForm(${comment.id})|">수정</button>
                     <!--댓글 삭제-->
                     <button class="btn btn-outline-success"
                             th:onclick="'deleteComment(' + ${board.id} + ',' + ${comment.id} + ')'"
                             id="comment-delete-button">삭제
                     </button>
-                    <!--댓글 수정-->
-                    <button class="btn btn-outline-success" th:onclick="|showCommentUpdateForm(${comment.id})|">수정</button>
 
                 </div>
             </div>
