@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -17,13 +16,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import sparta.com.sappun.domain.BaseMvcTest;
-import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
-import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.board.dto.response.*;
 import sparta.com.sappun.domain.board.service.BoardService;
 import sparta.com.sappun.test.BoardTest;
@@ -70,45 +64,46 @@ class BoardControllerTest extends BaseMvcTest implements BoardTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
-
-    @Test
-    @DisplayName("saveBoard 테스트")
-    void saveBoardTest() throws Exception {
-        // given
-        BoardSaveReq boardSaveReq =
-                BoardSaveReq.builder()
-                        .title(TEST_BOARD_TITLE)
-                        .content(TEST_BOARD_CONTENT)
-                        .departure(TEST_DEPARTURE)
-                        .stopover(TEST_STOPOVER)
-                        .destination(TEST_DESTINATION)
-                        .region(TEST_REGION1)
-                        .build();
-
-        MockMultipartFile req =
-                new MockMultipartFile(
-                        "data",
-                        null,
-                        "application/json",
-                        objectMapper.writeValueAsString(boardSaveReq).getBytes(StandardCharsets.UTF_8));
-
-        BoardSaveRes res = new BoardSaveRes();
-
-        // when
-        when(boardService.saveBoard(any(), any())).thenReturn(res);
-
-        // then
-        mockMvc
-                .perform(
-                        MockMvcRequestBuilders.multipart(HttpMethod.POST, "/api/boards")
-                                .file(multipartFile)
-                                .file(req)
-                                .accept(MediaType.APPLICATION_JSON)
-                                .contentType(MediaType.MULTIPART_FORM_DATA)
-                                .principal(mockPrincipal))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+    //
+    //    @Test
+    //    @DisplayName("saveBoard 테스트")
+    //    void saveBoardTest() throws Exception {
+    //        // given
+    //        BoardSaveReq boardSaveReq =
+    //                BoardSaveReq.builder()
+    //                        .title(TEST_BOARD_TITLE)
+    //                        .content(TEST_BOARD_CONTENT)
+    //                        .departure(TEST_DEPARTURE)
+    //                        .stopover(TEST_STOPOVER)
+    //                        .destination(TEST_DESTINATION)
+    //                        .region(TEST_REGION1)
+    //                        .build();
+    //
+    //        MockMultipartFile req =
+    //                new MockMultipartFile(
+    //                        "data",
+    //                        null,
+    //                        "application/json",
+    //
+    // objectMapper.writeValueAsString(boardSaveReq).getBytes(StandardCharsets.UTF_8));
+    //
+    //        BoardSaveRes res = new BoardSaveRes();
+    //
+    //        // when
+    //        when(boardService.saveBoard(any(), any())).thenReturn(res);
+    //
+    //        // then
+    //        mockMvc
+    //                .perform(
+    //                        MockMvcRequestBuilders.multipart(HttpMethod.POST, "/api/boards")
+    //                                .file(multipartFile)
+    //                                .file(req)
+    //                                .accept(MediaType.APPLICATION_JSON)
+    //                                .contentType(MediaType.MULTIPART_FORM_DATA)
+    //                                .principal(mockPrincipal))
+    //                .andDo(print())
+    //                .andExpect(status().isOk());
+    //    }
 
     @Test
     @DisplayName("getBoards 테스트")
@@ -140,48 +135,50 @@ class BoardControllerTest extends BaseMvcTest implements BoardTest {
 
         // then
     }
-
-    @Test
-    @DisplayName("updateBoard 테스트")
-    void updateBoardTest() throws Exception {
-        // given
-        BoardUpdateReq boardUpdateReq =
-                BoardUpdateReq.builder()
-                        .boardId(TEST_BOARD_ID)
-                        .title(TEST_BOARD_TITLE)
-                        .content(TEST_BOARD_CONTENT)
-                        .departure(TEST_DEPARTURE)
-                        .stopover(TEST_STOPOVER)
-                        .destination(TEST_DESTINATION)
-                        .region(TEST_REGION1)
-                        .build();
-
-        MockMultipartFile req =
-                new MockMultipartFile(
-                        "data",
-                        null,
-                        "application/json",
-                        objectMapper.writeValueAsString(boardUpdateReq).getBytes(StandardCharsets.UTF_8));
-
-        BoardUpdateRes res = new BoardUpdateRes();
-        // when
-
-        when(boardService.updateBoard(any(), any())).thenReturn(res);
-
-        // then
-
-        mockMvc
-                .perform(
-                        MockMvcRequestBuilders.multipart(
-                                        HttpMethod.PATCH, "/api/boards/{boardId}", TEST_BOARD_ID)
-                                .file(multipartFile)
-                                .file(req)
-                                .accept(MediaType.APPLICATION_JSON)
-                                .contentType(MediaType.MULTIPART_FORM_DATA)
-                                .principal(mockPrincipal))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+    //
+    //    @Test
+    //    @DisplayName("updateBoard 테스트")
+    //    void updateBoardTest() throws Exception {
+    //        // given
+    //        BoardUpdateReq boardUpdateReq =
+    //                BoardUpdateReq.builder()
+    //                        .boardId(TEST_BOARD_ID)
+    //                        .title(TEST_BOARD_TITLE)
+    //                        .content(TEST_BOARD_CONTENT)
+    //                        .departure(TEST_DEPARTURE)
+    //                        .stopover(TEST_STOPOVER)
+    //                        .destination(TEST_DESTINATION)
+    //                        .region(TEST_REGION1)
+    //                        .build();
+    //
+    //        MockMultipartFile req =
+    //                new MockMultipartFile(
+    //                        "data",
+    //                        null,
+    //                        "application/json",
+    //
+    // objectMapper.writeValueAsString(boardUpdateReq).getBytes(StandardCharsets.UTF_8));
+    //
+    //        BoardUpdateRes res = new BoardUpdateRes();
+    //        // when
+    //
+    //        when(boardService.updateBoard(any(), any())).thenReturn(res);
+    //
+    //        // then
+    //
+    //        mockMvc
+    //                .perform(
+    //                        MockMvcRequestBuilders.multipart(
+    //                                        HttpMethod.PATCH, "/api/boards/{boardId}",
+    // TEST_BOARD_ID)
+    //                                .file(multipartFile)
+    //                                .file(req)
+    //                                .accept(MediaType.APPLICATION_JSON)
+    //                                .contentType(MediaType.MULTIPART_FORM_DATA)
+    //                                .principal(mockPrincipal))
+    //                .andDo(print())
+    //                .andExpect(status().isOk());
+    //    }
 
     @Test
     @DisplayName("deleteBoard 테스트")

@@ -20,9 +20,8 @@ public class BoardGetRes {
     private String destination;
     private List<String> stopover;
     private RegionEnum region;
-
+    private List<ImageGetRes> images;
     private int likeCount;
-
     private List<CommentGetRes> comments;
 
     @Builder
@@ -32,6 +31,7 @@ public class BoardGetRes {
             String title,
             String content,
             String fileURL,
+            List<ImageGetRes> images,
             String departure,
             String destination,
             List<String> stopover,
@@ -43,6 +43,7 @@ public class BoardGetRes {
         this.title = title;
         this.content = content;
         this.fileURL = fileURL;
+        this.images = images;
         this.departure = departure;
         this.destination = destination;
         this.stopover = stopover;
