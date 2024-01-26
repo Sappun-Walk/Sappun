@@ -12,6 +12,34 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>사뿐</title>
     <style>
+        @font-face {
+            font-family: 'yg-jalnan';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-400';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-600';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-900';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 900;
+            font-style: normal;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -30,6 +58,14 @@
 
         b {
             font-size: 14px;
+        }
+
+        d {
+            font-family: 'Pretendard-900';
+        }
+
+        .profile-img-text {
+            font-family: 'Pretendard-600';
         }
 
         logo {
@@ -71,21 +107,17 @@
         }
 
         h2 {
+            font-family: 'yg-jalnan';
             color: black;
             font-size: 2em;
             text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
         }
 
         h3 {
+            font-family: 'yg-jalnan';
             color: pink;
             margin-left: 20px;
             text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        h5 {
-            color: gray;
-            margin-top: 30px;
-            margin-bottom: 5px;
         }
 
         .signup_1 {
@@ -131,6 +163,7 @@
         }
 
         .check-button {
+            font-family: 'Pretendard-900';
             width: 20%;
             height: 30px;
             border-radius: 30px;
@@ -146,6 +179,7 @@
         }
 
         .submit {
+            font-family: 'Pretendard-900';
             margin-top: 40px;
             width: 50%;
             display: flex;
@@ -343,7 +377,7 @@
         <div class="preview-wrap">
             <img class="preview" id="preview"/>
             <div class="preview-label">
-                프로필 사진
+                <div class="profile-img-text">프로필 사진</div>
                 <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
             </div>
         </div>

@@ -12,6 +12,63 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>사뿐</title>
     <style>
+        @font-face {
+            font-family: 'yg-jalnan';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-300';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-400';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-600';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-900';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 900;
+            font-style: normal;
+        }
+
+        .header-btn {
+            font-family: 'Pretendard-600';
+        }
+
+        .bottom-btn {
+            font-family: 'Pretendard-600';
+        }
+
+        .name-tag {
+            font-family: 'Pretendard-900';
+            font-size: 20px;
+        }
+
+        .name-element {
+            font-family: 'Pretendard-400';
+            font-size: 14px;
+        }
+
+        .Rank-text {
+            font-family: 'Pretendard-400';
+        }
+
         div.profile-page {
             display: flex; /* Flexbox 사용 */
             flex-direction: column; /* 세로로 정렬 */
@@ -198,12 +255,12 @@
 
             <!-- 로그아웃 버튼 -->
             <div class="logout">
-                <button id="logout-button" onclick="logout()">로그아웃</button>
+                <button class="header-btn" id="logout-button" onclick="logout()">로그아웃</button>
             </div>
 
             <!-- 회원 탈퇴 버튼 -->
             <div class="withdraw">
-                <button id="withdraw-button" th:onclick="deleteUser()">회원 탈퇴</button>
+                <button class="header-btn" id="withdraw-button" th:onclick="deleteUser()">회원 탈퇴</button>
             </div>
 
         </div>
@@ -216,7 +273,7 @@
                     <img th:src="${userProfile.profileUrl}" alt="Profile Picture"
                          class="profile-image">
                     <p class="rank">
-                        <b>Rank</b>
+                        <b class="Rank-text">Rank</b>
                         <span th:if="${userProfile.score < 0}">
                             <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}" alt="rank-image"
                                  class="rank-image">
@@ -245,16 +302,16 @@
 
                 <div class="profile-text-group">
                     <div class="username">
-                        <p><b>아이디</b></p>
-                        <p><span th:text="${userProfile.username}"></span></p>
+                        <p><b class="name-tag">아이디</b></p>
+                        <p><span class="name-element" th:text="${userProfile.username}"></span></p>
                     </div>
                     <div class="nickname">
-                        <p><b>닉네임</b></p>
-                        <p><span th:text="${userProfile.nickname}"></span></p>
+                        <p><b class="name-tag">닉네임</b></p>
+                        <p><span class="name-element" th:text="${userProfile.nickname}"></span></p>
                     </div>
                     <div class="email">
-                        <p><b>이메일</b></p>
-                        <p><span th:text="${userProfile.email}"></span></p>
+                        <p><b class="name-tag">이메일</b></p>
+                        <p><span class="name-element" th:text="${userProfile.email}"></span></p>
                     </div>
 
                 </div>
@@ -264,22 +321,22 @@
 
             <!-- 본인글 가기 버튼 : 본인 페이지로 -->
             <div class="back-to-main">
-                <button th:onclick="|location.href='/api/boards/user?page=1'|" id="back-user-button">게시글 관리</button>
+                <button class="bottom-btn" th:onclick="|location.href='/api/boards/user?page=1'|" id="back-user-button">게시글 관리</button>
             </div>
 
             <!-- 비밀번호 수정 버튼 -->
             <div class="password-update">
-                <button th:onclick="|location.href='/api/users/profile/password'|" id="password-update-button">비밀번호 수정</button>
+                <button class="bottom-btn" th:onclick="|location.href='/api/users/profile/password'|" id="password-update-button">비밀번호 수정</button>
             </div>
 
             <!-- 프로필 수정 버튼 -->
             <div class="profile-update">
-                <button th:onclick="|location.href='/api/users/profile'|" id="profile-update-button">수정</button>
+                <button class="bottom-btn" th:onclick="|location.href='/api/users/profile'|" id="profile-update-button">수정</button>
             </div>
 
             <!-- 뒤로가기 버튼 : 메인 페이지로 -->
             <div class="back-to-main">
-                <button th:onclick="|location.href='/api/boards/best'|" id="back-main-button">뒤로</button>
+                <button class="bottom-btn" th:onclick="|location.href='/api/boards/best'|" id="back-main-button">뒤로</button>
             </div>
 
         </div>

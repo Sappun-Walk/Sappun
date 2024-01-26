@@ -12,52 +12,33 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>사뿐</title>
     <style>
-
-        @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Gamja+Flower&display=swap');
-
-
-        #profileImage,
-        .gallery-item img,
-        h1,
-        #sidebar a,
-        #openBtn,
-        .img-section {
-            font-family: 'Gaegu', sans-serif;
+        @font-face {
+            font-family: 'yg-jalnan';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
         }
 
-        #profileImage,
-        .gallery-item img,
-        h1,
-        #sidebar a,
-        #openBtn,
-        .img-section {
-            font-family: 'Gamja Flower', sans-serif;
-        }
-
-        .gamja-flower-regular {
-            font-family: "Gamja Flower", sans-serif;
+        @font-face {
+            font-family: 'Pretendard-400';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
             font-weight: 400;
             font-style: normal;
         }
 
-        .gaegu-regular {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 400;
+        @font-face {
+            font-family: 'Pretendard-600';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 600;
             font-style: normal;
         }
 
-        .gaegu-bold {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 700;
+        @font-face {
+            font-family: 'Pretendard-900';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 900;
             font-style: normal;
         }
-
-        .gaegu-light {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 300;
-            font-style: normal;
-        }
-
 
         #profileImage {
             cursor: pointer;
@@ -124,6 +105,22 @@
             flex-direction: row-reverse;
         }
 
+        .btn btn-outline-success {
+            font-family: 'Pretendard-600';
+        }
+
+        .Title {
+            font-family: 'yg-jalnan';
+        }
+
+        .Board-Title {
+            font-family: 'Pretendard-900';
+        }
+
+        .Board-content{
+            font-family: 'Pretendard-400';
+        }
+
         .btn-write button {
             width: auto;
             margin-right: 10px;
@@ -147,7 +144,7 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Pretendard-600';
             margin: 0;
             padding: 0;
             overflow-y: scroll;
@@ -305,7 +302,7 @@
 </div>
 
 <div class="inner-div">
-    <div class="gaegu-bold" style="font-size: 50px; text-align: center; justify-content: center;">Best 산책로 TOP3</div>
+    <div class="Title" style="font-size: 50px; text-align: center; justify-content: center;">Best 산책로 TOP3</div>
 </div>
 <div class="gallery-container">
     <div class="gallery-item" th:each="board : ${bestBoards.boards}" th:id="${'board-' + board.id}"
@@ -313,10 +310,10 @@
         <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
         <div class="gallery-caption">
             <div class="gallery-title">
-                <div class="gaegu-bold" style="font-size: 34px;" th:text="${board.title}"></div>
+                <div class="Board-Title" style="font-size: 20px;" th:text="${board.title}"></div>
             </div>
-            <div class="gamja-flower-regular" style="font-size: 24px;" th:text="'작성자: ' + ${board.nickname}"></div>
-            <div class="gamja-flower-regular" style="font-size: 24px;"
+            <div class="Board-content" style="font-size: 16px;" th:text="'작성자: ' + ${board.nickname}"></div>
+            <div class="Board-content" style="font-size: 16px;"
                  th:text="'지역: ' + ${board.region.getRegion()}"></div>
         </div>
     </div>

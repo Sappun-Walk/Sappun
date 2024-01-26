@@ -12,29 +12,37 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>사뿐</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Gamja+Flower&display=swap');
-
-        #profileImage,
-        .gallery-item img,
-        h1,
-        #sidebar a,
-        #openBtn,
-        .img-section {
-            font-family: 'Gaegu', sans-serif;
+        @font-face {
+            font-family: 'yg-jalnan';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
         }
 
-        #profileImage,
-        .gallery-item img,
-        h1,
-        #sidebar a,
-        #openBtn,
-        .img-section {
-            font-family: 'Gamja Flower', sans-serif;
+        @font-face {
+            font-family: 'Pretendard-400';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-600';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-900';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 900;
+            font-style: normal;
         }
 
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family:'Pretendard-600';
         }
 
         div.getBoardDetailPage {
@@ -182,6 +190,7 @@
         }
 
         .outLine {
+            font-family: 'Pretendard-600';
             width: 80%;
             margin: 10px auto;
             padding: 20px;
@@ -224,6 +233,10 @@
             align-items: center;
         }
 
+        .main-title {
+            font-family: 'Pretendard-900';
+        }
+
         .outLine2 input {
             width: 90%;
             margin-left: 20px;
@@ -245,6 +258,7 @@
         }
 
         .map-buttons {
+            font-family: 'Pretendard-600';
             margin-left: 20px;
             width: 20%;
             display: flex;
@@ -252,9 +266,7 @@
         }
 
         .btn-map {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 400;
-            font-style: normal;
+            font-family: 'Pretendard-600';
             width: 70%;
             background-color: white;
             color: black;
@@ -298,82 +310,75 @@
         }
 
         .buttons {
+            font-family: 'Pretendard-400';
             display: flex;
             justify-content: flex-end;
             margin-right: 100px;
         }
 
         .buttons1 {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 700;
-            font-style: normal;
-            display: flex;
-            justify-content: flex-end;
-            margin-right: 100px;
-        }
-
-        .buttons button {
-            margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
-        }
-
-        #capturedImage {
-            margin-top: 20px;
-        }
-
-        #drawLine, #captureImage, #locateCurrentPosition {
-            margin: 5px;
-        }
-
-        #profileImage {
+            background-color: white;
+            color: black;
+            border: 1px solid pink;
+            border-radius: 30px;
+            outline-color: pink;
             cursor: pointer;
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            top: 20px;
-            right: 30px;
-            padding: 10px;
-            border-radius: 50%;
         }
 
-        .gallery-item img {
-            background-size: cover;
-            width: 450px;
-            height: 450px;
-            justify-content: center;
-            text-align: center;
-        }
+            .buttons button {
+                margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
+            }
+
+            #capturedImage {
+                margin-top: 20px;
+            }
+
+            #drawLine, #captureImage, #locateCurrentPosition {
+                margin: 5px;
+            }
+
+            #profileImage {
+                cursor: pointer;
+                position: absolute;
+                width: 80px;
+                height: 80px;
+                top: 20px;
+                right: 30px;
+                padding: 10px;
+                border-radius: 50%;
+            }
+
+            .gallery-item img {
+                background-size: cover;
+                width: 450px;
+                height: 450px;
+                justify-content: center;
+                text-align: center;
+            }
 
 
-        .stopover-section {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 300;
-            font-style: normal;
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
+            .stopover-section {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+            }
 
-        .stopover-section input {
-            margin-right: 5px;
-        }
+            .stopover-section input {
+                margin-right: 5px;
+            }
 
-        .gaegu-light {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 300;
-            font-style: normal;
-        }
 
-        .gaegu-bold {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 700;
-            font-style: normal;
-        }
+            h3 {
+                font-family: 'Pretendard-600';
+            }
 
-        h3 {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 700;
-            font-style: normal;
-        }
+            .btn btn-outline-success{
+                font-family: 'Pretendard-600';
+            }
+
+            .stopover {
+                font-family: 'Pretendard-600';
+            }
 
     </style>
 </head>
@@ -464,7 +469,7 @@
                 </select>
             </div>
             <div class="outLine2">
-                <label class="gaegu-bold" for="title">제목: </label>
+                <div class="main-title" for="title">제목: </div>
                 <input type="text" id="title" name="title" required>
             </div>
         </div>
@@ -483,12 +488,12 @@
                     <button class="btn-map" id="captureImage">지도 캡쳐</button>
                     <br>
                     <div>
-                        <label class="gaegu-light" for="departure">출발지:</label>
+                        <label class="stopover" for="departure">출발지:</label>
                         <input type="text" id="departure" name="departure" required>
                     </div>
                     <div>
                         <div>
-                            <div class="gaegu-light" type="label">경유지:
+                            <div class="stopover" type="label">경유지:
                                 <!-- 추가 버튼 추가 -->
                                 <button class="btn-stopover" onclick="addStopover()">➕</button>
                             </div>
@@ -501,7 +506,7 @@
                             </div>
                         </div>
                     </div>
-                    <label class="gaegu-light" for="destination">목적지:</label>
+                    <label class="stopover" for="destination">목적지:</label>
                     <input type="text" id="destination" name="destination" required>
                     <br>
                 </div>
@@ -523,8 +528,12 @@
         <div id="capturedImage"></div>
     </div>
     <div class="outLine">
+        <div>
+            이미지 업로드 :
+            <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
+        </div>
         지도 캡쳐 업로드 :
-        <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
+        <input class="file" type="file" name="image" accept="image/*" id="image/*" onchange="readURL(this);">
         <br>
         추가 이미지 업로드 (4장으로 제한) :
         <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple onchange="readMultipleURL(this);">
@@ -533,9 +542,9 @@
         <label for="content">내용:</label>
         <textarea id="content" name="content" required></textarea>
     </div>
-    <div class="buttons1">
-        <button onclick="saveBoard()">완료</button>
-        <button th:onclick="|location.href='@{/api/boards/best}'|">취소</button>
+    <div class="buttons">
+        <button class="buttons1" onclick="saveBoard()">완료</button>
+        <button class="buttons1" th:onclick="|location.href='@{/api/boards/best}'|">취소</button>
     </div>
 </div>
 <script>

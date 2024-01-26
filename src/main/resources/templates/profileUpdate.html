@@ -12,6 +12,63 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>사뿐</title>
     <style>
+        @font-face {
+            font-family: 'yg-jalnan';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-300';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-400';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-600';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-900';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 900;
+            font-style: normal;
+        }
+
+        .header-btn {
+            font-family: 'Pretendard-600';
+        }
+
+        .bottom-btn {
+            font-family: 'Pretendard-600';
+        }
+
+        .name-tag {
+            font-family: 'Pretendard-900';
+            font-size: 20px;
+        }
+
+        .name-element {
+            font-family: 'Pretendard-400';
+            font-size: 14px;
+        }
+
+        .Rank-text {
+            font-family: 'Pretendard-400';
+        }
+
         div.profile-page {
             display: flex; /* Flexbox 사용 */
             flex-direction: column; /* 세로로 정렬 */
@@ -129,9 +186,10 @@
         }
 
         #username-check-button {
+            font-family: 'Pretendard-400';
             cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
             width: 90px;
-            font-size: 13px; /* 글자 크기를 조절하여 크기를 키움 */
+            font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
             padding: 5px; /* 버튼 내부의 여백 */
             text-decoration: none; /* 밑줄 제거 */
             color: black; /* 글자 색상 */
@@ -151,9 +209,10 @@
         }
 
         #nickname-check-button {
+            font-family: 'Pretendard-400';
             cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
             width: 90px;
-            font-size: 13px; /* 글자 크기를 조절하여 크기를 키움 */
+            font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
             padding: 5px; /* 버튼 내부의 여백 */
             text-decoration: none; /* 밑줄 제거 */
             color: black; /* 글자 색상 */
@@ -207,12 +266,12 @@
 
             <!-- 로그아웃 버튼 -->
             <div class="logout">
-                <button id="logout-button" onclick="logout()">로그아웃</button>
+                <button class="header-btn" id="logout-button" onclick="logout()">로그아웃</button>
             </div>
 
             <!-- 회원 탈퇴 버튼 -->
             <div class="withdraw">
-                <button id="withdraw-button" th:onclick="deleteUser()">회원 탈퇴</button>
+                <button class="header-btn" id="withdraw-button" th:onclick="deleteUser()">회원 탈퇴</button>
             </div>
 
 
@@ -227,7 +286,7 @@
                     <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
 
                     <p class="rank">
-                        <b>Rank</b>
+                        <b class="Rank-text">Rank</b>
                         <span th:if="${userProfile.score < 0}">
                             <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}" alt="rank-image"
                                  class="rank-image">
@@ -256,7 +315,7 @@
 
                 <div class="profile-text-group">
                     <div class="username">
-                        <label for="username"><b>아이디</b></label>
+                        <label class="name-tag" for="username"><b>아이디</b></label>
                         <div class="username-input">
                             <input type="text" id="username" name="username" required
                                    th:placeholder="|${userProfile.username}|">
@@ -267,7 +326,7 @@
                         </div>
                     </div>
                     <div class="nickname">
-                        <label for="nickname"><b>닉네임</b></label>
+                        <label class="name-tag" for="nickname"><b>닉네임</b></label>
                         <div class="nickname-input">
                             <input type="text" id="nickname" name="nickname" required
                                    th:placeholder="${userProfile.nickname}">
@@ -277,8 +336,8 @@
                         </div>
                     </div>
                     <div class="email">
-                        <p><b>이메일</b></p>
-                        <p><span th:text="${userProfile.email}"></span></p>
+                        <p><b class="name-tag">이메일</b></p>
+                        <p><span class="name-element" th:text="${userProfile.email}"></span></p>
                     </div>
                 </div>
             </div>
@@ -288,12 +347,12 @@
         <div class="profile-page-buttons">
             <!-- 수정 완료 버튼 -->
             <div class="update-complete">
-                <button id="update-complete-button" onclick="updateProfile()">완료</button>
+                <button class="bottom-btn" id="update-complete-button" onclick="updateProfile()">완료</button>
             </div>
 
             <!-- 뒤로 버튼 -->
             <div class="back-to-profile">
-                <button th:onclick="|location.href='/api/users'|" id="back-profile-button">뒤로
+                <button class="bottom-btn" th:onclick="|location.href='/api/users'|" id="back-profile-button">뒤로
                 </button>
             </div>
         </div>
