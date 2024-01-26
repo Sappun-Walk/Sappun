@@ -19,6 +19,7 @@ public class BoardUpdateReq {
     private List<String> stopover;
     private RegionEnum region;
     private MultipartFile image;
+    private List<MultipartFile> photoImages;
 
     @Builder
     private BoardUpdateReq(

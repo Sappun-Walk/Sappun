@@ -625,11 +625,14 @@
     <div class="outLine">
         이미지 업로드 :
         <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
+        <br>
+        추가 이미지 업로드 (4장으로 제한) :
+        <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple onchange="readMultipleURL(this);">
     </div>
     <div class="outLine">
         <!--               폰트 적용 시 class="gaegu-bold"내용 에 추가-->
         <label for="content">내용:</label>
-        <textarea id="content" name="content" th:value="${board.content}" required></textarea>
+        <textarea id="content" name="content" th:text="${board.content}" required></textarea>
     </div>
 </div>
 <div class="getBoardDetail-body">
@@ -991,15 +994,22 @@
         var destination = document.getElementById('destination').value;
         var content = document.getElementById('content').value;
         var image = document.getElementById('image');
+        var imageInputs = document.getElementById('image-multiple');
 
-        if (!title && !departure && !destination && !content) {
+        if (!title || !departure || !destination || !content) { // 수정: 논리 연산자 변경
             alert('입력을 다시 확인해주세요.');
             return;
         }
 
-        if (content.length > 255) {
-            alert('내용은 최대 255자까지만 입력 가능합니다.');
-            return;
+      if (content.length > 255) {
+        alert('내용은 최대 255자까지만 입력 가능합니다.');
+        return;
+      }
+
+        // 추가 이미지가 4장 이하인지 확인
+        if (imageInputs.files.length > 4){
+          alert("추가 이미지는 4개 이하 첨부해주세요!");
+          return
         }
 
         let formData = new FormData();
@@ -1020,9 +1030,16 @@
             formData.append('image', image.files[0]);
         } else {
             // 빈 파일 생성 및 전송
-            const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
+            const emptyFile = new File([''], 'empty.txt', { type: 'text/plain' });
             formData.append('image', emptyFile);
         }
+
+      // 여러 이미지 업로드
+      if (imageInputs.files.length > 0) {
+        for (let i = 0; i < imageInputs.files.length; i++) {
+          formData.append('photoImages', imageInputs.files[i]);
+        }
+      }
 
         // 요청 보내기
         fetch(boardUrl + '/' + boardId, {

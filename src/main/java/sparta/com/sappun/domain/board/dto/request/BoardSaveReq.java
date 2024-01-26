@@ -1,5 +1,6 @@
 package sparta.com.sappun.domain.board.dto.request;
 
+import jakarta.annotation.Nullable;
 import java.util.List;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +19,8 @@ public class BoardSaveReq {
     private List<String> stopover;
     private RegionEnum region;
     private MultipartFile image;
+
+    @Nullable private List<MultipartFile> photoImages;
 
     @Builder
     private BoardSaveReq(

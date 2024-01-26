@@ -1,5 +1,6 @@
 package sparta.com.sappun.domain.board.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,10 @@ import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.board.dto.response.*;
 import sparta.com.sappun.domain.board.entity.Board;
+import sparta.com.sappun.domain.board.entity.Image;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
+import sparta.com.sappun.domain.board.repository.ImageRepository;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.domain.user.repository.UserRepository;
 import sparta.com.sappun.global.validator.BoardValidator;
@@ -29,6 +32,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
     private final S3Util s3Util;
     private static final Integer REPORT_HIDDEN_COUNT = 5;
     private static final Integer BOARD_POINT = 100;
@@ -89,14 +93,24 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardSaveRes saveBoard(BoardSaveReq boardSaveReq, MultipartFile multipartFile) {
+    public BoardSaveRes saveBoard(
+            BoardSaveReq boardSaveReq, MultipartFile multipartFile, List<MultipartFile> photoImages) {
         User user = getUserById(boardSaveReq.getUserId());
         user.updateScore(BOARD_POINT); // 게시글 작성하면 점수 +100
 
         S3Validator.isProfileImageFile(multipartFile);
         String boardImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
 
-        boardRepository.save(
+        List<Image> images = new ArrayList<>();
+        if (photoImages != null) {
+            for (MultipartFile image : photoImages) {
+                S3Validator.isProfileImageFile(image);
+                String imageUrl = s3Util.uploadFile(image, S3Util.FilePath.BOARD);
+                images.add(new Image(imageUrl, null));
+            }
+        }
+
+        Board board =
                 Board.builder()
                         .title(boardSaveReq.getTitle())
                         .content(boardSaveReq.getContent())
@@ -108,13 +122,22 @@ public class BoardService {
                         .likeCount(DEFAULT_LIKE_COUNT)
                         .reportCount(DEFAULT_REPORT_COUNT)
                         .user(user)
-                        .build());
+                        .images(images)
+                        .build();
+
+        // Board 인스턴스가 생성된 이후에 Image에 Board 인스턴스를 설정
+        for (Image image : images) {
+            image.setBoard(board);
+        }
+
+        boardRepository.save(board);
 
         return new BoardSaveRes();
     }
 
     @Transactional
-    public BoardUpdateRes updateBoard(BoardUpdateReq boardUpdateReq, MultipartFile multipartFile) {
+    public BoardUpdateRes updateBoard(
+            BoardUpdateReq boardUpdateReq, MultipartFile multipartFile, List<MultipartFile> photoImages) {
         Board board = getBoardById(boardUpdateReq.getBoardId());
         User user = getUserById(boardUpdateReq.getUserId());
         BoardValidator.checkBoardUser(board.getUser().getId(), user.getId()); // 수정 가능한 사용자인지 확인
@@ -133,7 +156,23 @@ public class BoardService {
             imageURL = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
         }
 
-        board.update(boardUpdateReq, imageURL);
+        imageRepository.deleteAllByBoard(board);
+
+        List<Image> images = new ArrayList<>();
+        if (photoImages != null) {
+            for (MultipartFile image : photoImages) {
+                S3Validator.isProfileImageFile(image);
+                String imageUrl = s3Util.uploadFile(image, S3Util.FilePath.BOARD);
+                images.add(new Image(imageUrl, board));
+            }
+        }
+
+        // Board 인스턴스가 생성된 이후에 Image에 Board 인스턴스를 설정
+        for (Image image : images) {
+            image.setBoard(board);
+        }
+
+        board.update(boardUpdateReq, imageURL, images);
 
         return new BoardUpdateRes();
     }
