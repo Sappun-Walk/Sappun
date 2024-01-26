@@ -50,20 +50,6 @@
             font-family: Arial, sans-serif;
         }
 
-        div.getBoardDetailPage {
-            display: flex;
-            flex-direction: column;
-        }
-
-        section {
-            width: 80%;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-        }
-
         ul {
             list-style: none;
             padding: 0;
@@ -76,175 +62,6 @@
         button {
             padding: 10px;
             cursor: pointer;
-        }
-
-        #profileImage {
-            cursor: pointer;
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            top: 10px;
-            right: 30px;
-            padding: 10px;
-            border-radius: 50%;
-        }
-
-        .user-nickname {
-            position: absolute;
-            top: 5px;
-            right: 200px;
-            padding: 10px;
-        }
-
-        .board-maps {
-            display: flex;
-            justify-content: space-between; /* 요소들을 가로로 균등하게 배치 */
-            align-items: center; /* 요소들을 세로로 가운데 정렬 */
-        }
-
-        #region {
-            width: 100px;
-        }
-
-        #mapImage {
-            width: 500px;
-            height: 300px;
-        }
-
-        .mapImage {
-            width: 500px;
-            height: 300px;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: flex-end;
-            margin-right: 100px;
-        }
-
-        .buttons1 {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 700;
-            font-style: normal;
-            display: flex;
-            justify-content: flex-end;
-            margin-right: 100px;
-        }
-
-        .buttons button {
-            margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
-        }
-
-        #map {
-            width: 640px;
-            height: 600px;
-        }
-
-        .map-buttons {
-            margin-left: 20px;
-            width: 20%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .btn-map {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-            width: 70%;
-            background-color: white;
-            color: black;
-            border: 1px solid pink;
-            border-radius: 30px;
-            outline-color: pink;
-            cursor: pointer;
-        }
-
-        #capturedImage {
-            margin-top: 20px;
-        }
-
-        #drawLine, #captureImage, #locateCurrentPosition {
-            margin: 5px;
-        }
-
-
-        #profileImage {
-            cursor: pointer;
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            top: 20px;
-            right: 30px;
-            padding: 10px;
-            border-radius: 50%;
-        }
-
-        .gallery-container {
-            margin-top: 50px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        .gallery-item {
-            width: calc(25% - 10px);
-            border: 1px solid deeppink;
-            border-radius: 30px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .gallery-item img {
-            background-size: cover;
-            width: 450px;
-            height: 450px;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .gallery-caption {
-            padding: 10px;
-            text-align: center;
-        }
-
-        .main-img-container {
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-            justify-content: center;
-        }
-
-        .btn-write {
-            /*margin-top: 30px;*/
-            margin-left: auto;
-            margin-right: 100px;
-            display: flex;
-            align-items: center;
-            flex-direction: row-reverse;
-        }
-
-        .btn-write button {
-            width: auto;
-            margin-right: 10px;
-        }
-
-        .rank-image {
-          width: 50px;
-          height: 50px;
-        }
-
-        .inner-div {
-            border-radius: 50px;
-            height: 50px;
-            width: 1000px;
-            border: solid #dddddd;
-            margin-top: 20px;
-            margin-right: auto;
-            margin-left: auto;
-            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
         }
 
         #sidebar {
@@ -279,6 +96,43 @@
             display: flex;
         }
 
+        #profileImage {
+            cursor: pointer;
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 10px;
+            right: 30px;
+            padding: 10px;
+            border-radius: 50%;
+        }
+
+        .main-img-container {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .btn-write {
+            /*margin-top: 30px;*/
+            margin-left: auto;
+            margin-right: 100px;
+            display: flex;
+            align-items: center;
+            flex-direction: row-reverse;
+        }
+
+        .btn-write button {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .rank-image {
+            width: 50px;
+            height: 50px;
+        }
+
         #openBtn {
             font-size: 30px;
             width: 250px;
@@ -299,6 +153,258 @@
             cursor: pointer;
         }
 
+        /* 컨테이너 스타일 */
+        .getBoardDetail-body {
+            max-width: 70%;
+            margin: 0 auto;
+        }
+
+        .title1 {
+            width: 80%;
+            margin: 20px auto;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        .outLine {
+            width: 80%;
+            margin: 10px auto;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            outline-color: pink;
+        }
+
+        .outLine1 {
+            width: 15%;
+            height: 50px;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            outline-color: pink;
+            margin: 10px auto;
+        }
+
+        .outLine1 select {
+            border-radius: 30px;
+            border: 1px solid lightgray;
+        }
+
+        #region {
+            width: 130px;
+            margin: 10px auto;
+            display: flex;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .outLine2 {
+            width: 85%;
+            height: 50px;
+            padding: 0 20px;
+            margin-left: 20px;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            outline-color: pink;
+            display: flex;
+            align-items: center;
+        }
+
+        .outLine2 input {
+            width: 90%;
+            margin-left: 20px;
+            height: 25px;
+            border-radius: 30px;
+            border: 1px solid lightgray;
+            outline: none;
+        }
+
+        .input-section input {
+            width: 85%;
+            height: 30px;
+            border-radius: 30px;
+            border: 1px solid lightgray;
+            outline: none;
+        }
+
+        .stopover-section input {
+            width: 85%;
+            height: 30px;
+            border-radius: 30px;
+            border: 1px solid lightgray;
+            outline: none;
+        }
+
+        .map-create {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .img-section {
+            border-radius: 15px;
+            width: 500px;
+            height: 500px;
+            margin-bottom: 20px;
+        }
+
+        #map {
+            border-radius: 15px;
+            width: 500px;
+            height: 500px;
+        }
+
+        .map-buttons {
+            margin-left: 20px;
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-map {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            width: 70%;
+            background-color: white;
+            color: black;
+            border: 1px solid pink;
+            border-radius: 30px;
+            outline-color: pink;
+            cursor: pointer;
+        }
+
+        .btn-map:hover {
+            /* 마우스를 버튼 위에 올렸을 때의 스타일 변경 */
+            background-color: pink;
+        }
+
+        .btn-stopover {
+            width: 25px;
+            height: 25px;
+            background-color: white;
+            color: black;
+            border: 1px solid pink;
+            border-radius: 20px;
+            outline-color: pink;
+            justify-items: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-stopover:hover {
+            /* 마우스를 버튼 위에 올렸을 때의 스타일 변경 */
+            background-color: pink;
+        }
+
+        .buttons button {
+            margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
+        }
+
+        #capturedImage {
+            margin-top: 20px;
+        }
+
+        #drawLine, #captureImage, #locateCurrentPosition {
+            margin: 5px;
+        }
+
+        #profileImage {
+            cursor: pointer;
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            top: 20px;
+            right: 30px;
+            padding: 10px;
+            border-radius: 50%;
+        }
+
+        .gallery-item img {
+            background-size: cover;
+            width: 450px;
+            height: 450px;
+            justify-content: center;
+            text-align: center;
+        }
+
+
+        .stopover-section {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .stopover-section input {
+            margin-right: 5px;
+        }
+
+        .map-buttons {
+            margin-left: 20px;
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-map {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            width: 70%;
+            background-color: white;
+            color: black;
+            border: 1px solid pink;
+            border-radius: 30px;
+            outline-color: pink;
+            cursor: pointer;
+        }
+
+        #capturedImage {
+            margin-top: 20px;
+        }
+
+        #drawLine, #captureImage, #locateCurrentPosition {
+            margin: 5px;
+        }
+
+        .gallery-item img {
+            background-size: cover;
+            width: 450px;
+            height: 450px;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .main-img-container {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .btn-write {
+            /*margin-top: 30px;*/
+            margin-left: auto;
+            margin-right: 100px;
+            display: flex;
+            align-items: center;
+            flex-direction: row-reverse;
+        }
+
+        .btn-write button {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .rank-image {
+            width: 50px;
+            height: 50px;
+        }
+
         .gaegu-light {
             font-family: "Gaegu", sans-serif;
             font-weight: 300;
@@ -315,6 +421,40 @@
             font-family: "Gaegu", sans-serif;
             font-weight: 700;
             font-style: normal;
+        }
+
+        textarea {
+            width: 100%;
+            height: 6.25em;
+            border: none;
+            resize: none;
+        }
+
+        .btn-style {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+        }
+
+        .btn-style button {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            margin-left: 10px;
+            width: 10%;
+            background-color: white;
+            color: black;
+            border: 1px solid pink;
+            border-radius: 30px;
+            outline-color: pink;
+            cursor: pointer;
+        }
+
+        .btn-style button:hover {
+            /* 마우스를 버튼 위에 올렸을 때의 스타일 변경 */
+            background-color: pink;
         }
 
     </style>
@@ -352,26 +492,31 @@
     <div class="btn-write">
         <div th:if="${user != null}" class="rank">
             <span th:if="${user.score < 0}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}" alt="rank-image"
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             <span
-                th:if="${user.score >= 0 and user.score <= 300}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}" alt="rank-image"
+                    th:if="${user.score >= 0 and user.score <= 300}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             <span
-                th:if="${user.score > 300 and user.score <= 700}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}" alt="rank-image"
+                    th:if="${user.score > 300 and user.score <= 700}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             <span
-                th:if="${user.score > 700 and user.score <= 1200}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}" alt="rank-image"
+                    th:if="${user.score > 700 and user.score <= 1200}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             <span th:if="${user.score > 1200}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}" alt="rank-image"
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
         </div>
@@ -398,77 +543,99 @@
         <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile" id="profileImage">
     </div>
 </div>
-
-<div class="getBoardDetailPage">
-    <div class="getBoardDetail-body">
-        <div class="title-and-buttons">
-            <section>
+<!--게시글 제목 작성란-->
+<div class="getBoardDetail-body">
+    <div class="title-and-buttons">
+        <div class="title1">
+            <div class="outLine1">
                 <select id="region" name="region" th:value="${board.region}">
                     <option th:each="enumItem : ${T(sparta.com.sappun.domain.board.entity.RegionEnum).values()}"
                             th:value="${enumItem}" th:text="${enumItem.region}"></option>
                 </select>
+            </div>
+            <div class="outLine2">
                 <label class="gaegu-bold" for="title">제목:</label>
                 <input type="text" id="title" name="title" th:value="${board.title}" required>
-
-            </section>
+            </div>
         </div>
-        <div class="getBoardDetail-body">
-            <div class="title-and-buttons">
-                <section>
-                    <div class="board-maps">
-                        <!--지도 div-->
-                        <div>
-                            <div id="map"></div>
-<!--                            <div class="map-buttons">-->
-<!--                                폰트 적용할 경우 class="btn-map"를 현위찾/산그/지캡에 넣기-->
-                            <button id="locateCurrentPosition">현재 위치 찾기</button>
-                            <button id="drawLine">산책로 그리기</button>
-                            <button id="captureImage">지도 캡쳐</button>
-                        </div>
-                        <!--기존 파일-->
-                        <div>
-                            <h3>기존 산책로</h3>
-                            <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
-                        </div>
-                    </div>
-<!--                       폰트 추가할 경우 class="gaegu-light"를 출발지/목적지에 추가-->
-                    <label for="departure">출발지:</label>
-                    <input type="text" id="departure" name="departure" th:value="${board.departure}" required>
-                    <div id="stopovers-container">
-                        <!-- 경유지 리스트를 반복하며 각 항목을 표시 -->
-                        <div th:each="stopover, iterStat : ${board.stopover}" class="stopover-section">
-                            <label th:for="${'stopover-' + iterStat.index}">경유지:</label>
-                            <input type="text" th:id="${'stopover-' + iterStat.index}" name="stopover" th:value="${stopover}">
-                            <!-- 삭제 버튼 추가 -->
-                            <button type="button" th:onclick="removeStopover(this)">-</button>
-                        </div>
-                    </div>
-                    <button type="button" th:onclick="addStopover()">+</button>
+    </div>
+</div>
+<div class="getBoardDetail-body">
+    <div class="title-and-buttons">
+        <div class="outLine">
+            <!--기존 파일-->
+            <div>
+                <h3>기존 산책로</h3>
+                <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
+            </div>
+            <h3>수정하고 싶은 산책로를 그려주세요!</h3>
+            <div class="map-create">
+                <!--지도 div-->
+                <div id="map"></div>
+                <div class="map-buttons">
+                    <!--폰트 적용할 경우 class="btn-map"를 현위찾/산그/지캡에 넣기-->
+                    <button class="btn-map" id="locateCurrentPosition">현재 위치 찾기</button>
+                    <button class="btn-map" id="drawLine">산책로 그리기</button>
+                    <button class="btn-map" id="captureImage">지도 캡쳐</button>
                     <br>
-                    <label for="destination">목적지:</label>
-                    <input type="text" id="destination" name="destination" th:value="${board.destination}" required>
-                </section>
+                    <!--폰트 추가할 경우 class="gaegu-light"를 출발지/목적지에 추가-->
+                    <div class="input-section">
+                        <label for="departure">출발지:</label>
+                        <input type="text" id="departure" name="departure" th:value="${board.departure}" required>
+                        <div class="gaegu-light" type="label" style="display: flex; justify-content: space-between">경유지:
+                            <button class="btn-stopover" onclick="addStopover()">➕</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div id="stopovers-container">
+                            <!-- 경유지 리스트를 반복하며 각 항목을 표시 -->
+                            <div th:each="stopover, iterStat : ${board.stopover}" class="stopover-section">
+                                <input type="text" th:id="${'stopover-' + iterStat.index}" name="stopover"
+                                       th:value="${stopover}">
+                                <!-- 삭제 버튼 추가 -->
+                                <button class="btn-stopover" th:onclick="removeStopover(this)">➖</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-section">
+                        <label for="destination">목적지:</label>
+                        <input type="text" id="destination" name="destination" th:value="${board.destination}" required>
+                        <br>
+                    </div>
+                </div>
             </div>
-            <section>
-                <!--지도 캡쳐한 이미지 div-->
-                <div id="capturedImage"></div>
-            </section>
-<!--            <section class="gaegu-bold">-->
-            <section class="preview-label">
-                이미지 업로드 :
-                <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
-            </section>
-            <section>
-<!--               폰트 적용 시 class="gaegu-bold"내용 에 추가-->
-                <label for="content">내용:</label>
-                <textarea id="content" name="content" th:value="${board.content}" required></textarea>
-            </section>
-<!--            <div class="buttons1">-->
-            <div class="buttons">
-                <button th:onclick="'updateBoard(' + ${boardId} + ')'">완료</button>
-                <button th:onclick="'getBoardDetails(' + ${boardId} + ')'">취소</button>
+            <div style="flex-direction: column">
+                <div><b>1. 내 근처 산책로를 찾고 싶다면 현재위치찾기 클릭! </b></div>
+                <div><b>2. 위치를 찾았다면 산책로를 그려보아요!</b></div>
+                <div><b>2-1. 산책로를 그릴땐 한붓 그리기 처럼 연결 되어야지만 해요!</b></div>
+                <div><b>2-2. 다 그렸다면 마지막 선의 끝부분을 한번 더 클릭해 줘요!</b></div>
+                <div><b>3. 이제 그린 산책로를 캡쳐해보아요!</b></div>
+                <div><b>3-1. 캡쳐는 지도 화면에 보이는 부분만 되니 지도의 크기를 ctrl+마우스휠로 조절해서 산책로가 보이게 조절해요!</b></div>
+                <div><b>3-2. 캡쳐한 산책로 이미지는 컴퓨터에 저장됩니다!</b></div>
             </div>
         </div>
+    </div>
+
+    <div class="outLine">
+        <h3>수정한 산책로를 캡처 후 첨부해주세요!</h3>
+        <!--지도 캡쳐한 이미지 div-->
+        <div id="capturedImage"></div>
+    </div>
+    <!--            <section class="gaegu-bold">-->
+    <div class="outLine">
+        이미지 업로드 :
+        <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
+    </div>
+    <div class="outLine">
+        <!--               폰트 적용 시 class="gaegu-bold"내용 에 추가-->
+        <label for="content">내용:</label>
+        <textarea id="content" name="content" th:value="${board.content}" required></textarea>
+    </div>
+</div>
+<div class="getBoardDetail-body">
+    <div class="btn-style">
+        <button th:onclick="'updateBoard(' + ${boardId} + ')'">완료</button>
+        <button th:onclick="'getBoardDetails(' + ${boardId} + ')'">취소</button>
     </div>
 </div>
 <script>
@@ -713,10 +880,6 @@
             var newStopoverSection = document.createElement('div');
             newStopoverSection.classList.add('stopover-section');
 
-            var label = document.createElement('label');
-            label.setAttribute('for', 'stopover');
-            label.textContent = '경유지:';
-
             var input = document.createElement('input');
             input.setAttribute('type', 'text');
             input.setAttribute('name', 'stopover');
@@ -724,12 +887,12 @@
             // 새로운 경유지 입력란에 삭제 버튼 추가
             var removeStopoverButton = document.createElement('button');
             removeStopoverButton.setAttribute('type', 'button');
-            removeStopoverButton.textContent = '-';
+            removeStopoverButton.textContent = '➖';
+            removeStopoverButton.classList.add('btn-stopover'); // Adding the class
             removeStopoverButton.addEventListener('click', function () {
                 addRemoveStopover(newStopoverSection);
             });
 
-            newStopoverSection.appendChild(label);
             newStopoverSection.appendChild(input);
             newStopoverSection.appendChild(removeStopoverButton);
 
@@ -845,7 +1008,7 @@
         formData.append("departure", departure);
 
         // 여러 경유지 값을 배열로 추가
-        stopoverInputs.forEach(function(input) {
+        stopoverInputs.forEach(function (input) {
             formData.append("stopover[]", input.value);
         });
 
@@ -883,309 +1046,6 @@
             .catch(error => {
                 console.error('Error updating profile:', error);
             });
-    }
-
-    // 게시글 삭제
-    function deleteBoard(boardId) {
-        fetch(boardUrl + '/' + boardId, {method: 'DELETE'})
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('게시글 삭제가 성공적으로 이루어졌습니다.');
-                    window.location.href = mainPage;
-                } else {
-                    alert('게시글 삭제 실패: ' + data.message);
-                }
-            });
-    }
-
-    // 게시글 신고 사유 입력
-    function showInputForm() {
-        var inputForm = document.getElementById('inputForm');
-        inputForm.style.display = 'block';
-    }
-
-    // 게시글 신고
-    function reportBoard(boardId) {
-        const reason = document.getElementById('reason').value;
-
-        // Request DTO 구성
-        const request = {
-            reason: reason,
-        };
-
-        fetch(boardUrl + '/' + boardId + report, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(request),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('게시글 신고가 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('게시글 신고 실패: ' + data.message);
-                }
-            })
-
-        var inputForm = document.getElementById('inputForm');
-        inputForm.style.display = 'none';
-    }
-
-    // 게시글 신고 취소
-    function cancelReportBoard(boardId) {
-        // 사용자에게 재확인 알림창 표시
-        var confirmation = confirm('신고 취소 하시겠습니까?');
-
-        // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
-        if (confirmation) {
-            fetch(boardUrl + '/' + boardId + report, {method: 'DELETE'})
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.code === 200) {
-                        alert('신고 취소가 성공적으로 이루어졌습니다.');
-                        window.location.href = boardUrl + report;
-                    } else {
-                        alert('신고 취소 실패: ' + data.message);
-                    }
-                })
-        }
-    }
-
-    // 게시글 좋아요
-    function likeBoard(boardId) {
-        fetch(boardUrl + '/' + boardId + like, {
-            method: 'POST',
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('게시글 좋아요 실패: ' + data.message);
-                }
-            })
-    }
-
-    // 댓글 작성
-    function saveComment(boardId) {
-        const content = document.getElementById('commentContent').value;
-        const image = document.getElementById('commentImageInput');
-
-        if (!content) {
-            alert('내용을 입력해주세요.');
-            return;
-        }
-
-        let formData = new FormData();
-        formData.append("boardId", boardId);
-        formData.append("content", content);
-
-        // 파일이 선택되지 않은 경우 빈 파일 전송
-        if (image.files.length > 0) {
-            formData.append('image', image.files[0]);
-        } else {
-            // 빈 파일 생성 및 전송
-            const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
-            formData.append('image', emptyFile);
-        }
-
-        fetch(commentUrl, {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('댓글 작성이 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('댓글 작성 실패: ' + data.message);
-                }
-            })
-    }
-
-    // 댓글 수정 입력창
-    function showCommentUpdateForm() {
-        var inputForm = document.getElementById('commentUpdateForm');
-        inputForm.style.display = 'block';
-    }
-
-    // 댓글 수정
-    function updateComment(boardId, commentId) {
-        const commentContent = document.getElementById('inputCommentContent').value;
-        const commentImage = document.getElementById('inputCommentImage');
-
-        if (!commentContent) {
-            alert('내용을 입력해주세요.');
-            return;
-        }
-
-        let formData = new FormData();
-        formData.append("content", commentContent);
-
-        // 파일이 선택되지 않은 경우 빈 파일 전송
-        if (commentImage.files.length > 0) {
-            formData.append('image', commentImage.files[0]);
-        } else {
-            // 빈 파일 생성 및 전송
-            const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
-            formData.append('image', emptyFile);
-        }
-
-        fetch(commentUrl + '/' + commentId, {
-            method: 'PATCH',
-            body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('댓글 수정이 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('댓글 수정 실패: ' + data.message);
-                }
-            })
-
-        // 입력창을 숨기기
-        var inputForm = document.getElementById('commentUpdateForm');
-        inputForm.style.display = 'none';
-    }
-
-    // 댓글 삭제
-    function deleteComment(boardId, commentId) {
-        fetch(commentUrl + '/' + commentId, {method: 'DELETE'})
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('댓글 삭제가 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('댓글 삭제 실패: ' + data.message);
-                }
-            });
-    }
-
-    // 댓글 신고 사유 입력
-    function showCommentInputForm() {
-        var inputForm = document.getElementById('commentInputForm');
-        inputForm.style.display = 'block';
-    }
-
-    // 댓글 신고
-    function reportComment(boardId, commentId) {
-        const reason = document.getElementById('commentReason').value;
-
-        const request = {
-            reason: reason,
-        };
-
-        fetch(commentUrl + '/' + commentId + report, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(request),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('댓글 신고 실패: ' + data.message);
-                }
-            })
-
-        var inputForm = document.getElementById('commentInputForm');
-        inputForm.style.display = 'none';
-    }
-
-    // 댓글 신고 취소
-    function cancelReportComment(commentId) {
-        // 사용자에게 재확인 알림창 표시
-        var confirmation = confirm('신고 취소 하시겠습니까?');
-
-        // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
-        if (confirmation) {
-            fetch(commentUrl+ '/' + commentId + report, {method: 'DELETE'})
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.code === 200) {
-                        alert('신고 취소가 성공적으로 이루어졌습니다.');
-                        window.location.href = commentUrl + report;
-                    } else {
-                        alert('신고 취소 실패: ' + data.message);
-                    }
-                })
-        }
-    }
-
-    // 댓글 좋아요
-    function likeComment(boardId, commentId) {
-        fetch(commentUrl + '/' + commentId + like, {
-            method: 'POST',
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('댓글 좋아요 실패: ' + data.message);
-                }
-            })
     }
 
     // 이미지 미리보기
@@ -1229,114 +1089,115 @@
         window.location.href = url; // 지정된 URL로 이동합니다.
     }
 
-  //지도 관련 Script
-  let map, drawingManager, polyline;
+    //지도 관련 Script
+    let map, drawingManager, polyline;
 
-  function initMap() {
-      map = new google.maps.Map(document.getElementById("map"), {
-          center: {lat: 37.5665, lng: 126.9780},
-          zoom: 12,
-      });
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: {lat: 37.5665, lng: 126.9780},
+            zoom: 12,
+        });
 
-      // Drawing Manager 초기화
-      drawingManager = new google.maps.drawing.DrawingManager({
-          drawingControl: false,
-          drawingMode: google.maps.drawing.OverlayType.POLYLINE,
-      });
-      drawingManager.setMap(map);
+        // Drawing Manager 초기화
+        drawingManager = new google.maps.drawing.DrawingManager({
+            drawingControl: false,
+            drawingMode: google.maps.drawing.OverlayType.POLYLINE,
+        });
+        drawingManager.setMap(map);
 
-      // 선이 그려질 때 이벤트 리스너 등록
-      google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
-          if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
-              // 새로운 선이 그려질 때마다 기존의 선을 모두 제거
-              clearPolylines();
-              polyline = event.overlay;
-          }
-      });
+        // 선이 그려질 때 이벤트 리스너 등록
+        google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+            if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
+                // 새로운 선이 그려질 때마다 기존의 선을 모두 제거
+                clearPolylines();
+                polyline = event.overlay;
+            }
+        });
 
-      // 선 그리기 버튼 클릭 시 이벤트 핸들러
-      document.getElementById('drawLine').addEventListener('click', function () {
-          drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE);
-      });
+        // 선 그리기 버튼 클릭 시 이벤트 핸들러
+        document.getElementById('drawLine').addEventListener('click', function () {
+            drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE);
+        });
 
-      // 이미지 캡처 버튼 클릭 시 이벤트 핸들러
-      document.getElementById('captureImage').addEventListener('click', function () {
-          captureMapImage();
-      });
+        // 이미지 캡처 버튼 클릭 시 이벤트 핸들러
+        document.getElementById('captureImage').addEventListener('click', function () {
+            captureMapImage();
+        });
 
-      // 현재 위치 찾기 버튼 클릭 시 이벤트 핸들러
-      document.getElementById('locateCurrentPosition').addEventListener('click', function () {
-          locateCurrentPosition();
-      });
-  }
+        // 현재 위치 찾기 버튼 클릭 시 이벤트 핸들러
+        document.getElementById('locateCurrentPosition').addEventListener('click', function () {
+            locateCurrentPosition();
+        });
+    }
 
-  function clearPolylines() {
-      if (polyline) {
-          polyline.setMap(null);
-          polyline = null;
-      }
-  }
+    function clearPolylines() {
+        if (polyline) {
+            polyline.setMap(null);
+            polyline = null;
+        }
+    }
 
-  function captureMapImage() {
-      if (!polyline) {
-          alert('산책로를 먼저 그려주세요.');
-          return;
-      }
+    function captureMapImage() {
+        if (!polyline) {
+            alert('산책로를 먼저 그려주세요.');
+            return;
+        }
 
-      const staticMapOptions = {
-          center: polyline.getPath().getArray()[0].toJSON(),
-          zoom: map.getZoom(),
-          size: '640x600',
-          maptype: 'roadmap',
-      };
+        const staticMapOptions = {
+            center: polyline.getPath().getArray()[0].toJSON(),
+            zoom: map.getZoom(),
+            size: '500x500',
+            maptype: 'roadmap',
+        };
 
-      // 현재까지 그려진 선을 추가
-      const path = google.maps.geometry.encoding.encodePath(polyline.getPath());
-      staticMapOptions.path = `color:0x0000ff|weight:5|enc:${path}`;
+        // 현재까지 그려진 선을 추가
+        const path = google.maps.geometry.encoding.encodePath(polyline.getPath());
+        staticMapOptions.path = `color:0x0000ff|weight:5|enc:${path}`;
 
-      const imageUrl = `https://maps.googleapis.com/maps/api/staticmap?${serializeObject(staticMapOptions)}&key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg`;
+        const imageUrl = `https://maps.googleapis.com/maps/api/staticmap?${serializeObject(staticMapOptions)}&key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg`;
 
-      // 이미지를 Blob으로 변환
-      fetch(imageUrl)
-          .then(response => response.blob())
-          .then(blob => {
-              // Blob을 사용하여 이미지 다운로드
-              const link = document.createElement('a');
-              link.href = URL.createObjectURL(blob);
-              link.download = 'captured_map.png';
-              link.click();
-          });
+        // 이미지를 Blob으로 변환
+        fetch(imageUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                // Blob을 사용하여 이미지 다운로드
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'captured_map.png';
+                link.click();
+            });
 
-      // 캡처 결과를 화면에 표시
-      const capturedImageDiv = document.getElementById('capturedImage');
-      capturedImageDiv.innerHTML = `<img src="${imageUrl}" alt="Captured Map">`;
-  }
+        // 캡처 결과를 화면에 표시
+        const capturedImageDiv = document.getElementById('capturedImage');
+        capturedImageDiv.innerHTML = `<img src="${imageUrl}" alt="Captured Map">`;
+    }
 
-  function locateCurrentPosition() {
-      if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function (position) {
-              const currentPos = {
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude
-              };
+    function locateCurrentPosition() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                const currentPos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
 
-              map.setCenter(currentPos);
-          }, function () {
-              alert('현재 위치를 가져올 수 없습니다.');
-          });
-      } else {
-          alert('브라우저가 Geolocation API를 지원하지 않습니다.');
-      }
-  }
+                map.setCenter(currentPos);
+            }, function () {
+                alert('현재 위치를 가져올 수 없습니다.');
+            });
+        } else {
+            alert('브라우저가 Geolocation API를 지원하지 않습니다.');
+        }
+    }
 
-  // 객체를 쿼리 문자열로 직렬화하는 함수
-  function serializeObject(obj) {
-      return Object.keys(obj)
-          .map(key => `${key}=${encodeURIComponent(obj[key])}`)
-          .join('&');
-  }
+    // 객체를 쿼리 문자열로 직렬화하는 함수
+    function serializeObject(obj) {
+        return Object.keys(obj)
+            .map(key => `${key}=${encodeURIComponent(obj[key])}`)
+            .join('&');
+    }
 </script>
 <!-- Google Maps API 및 Drawing 라이브러리 로드 -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg&callback=initMap&libraries=drawing" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg&callback=initMap&libraries=drawing"
+        async defer></script>
 </body>
 </html>
