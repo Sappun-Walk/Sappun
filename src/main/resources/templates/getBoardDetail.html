@@ -224,37 +224,52 @@
             margin: 0 auto;
         }
 
+        .comment-title {
+            width: 80%;
+            margin: 10px auto;
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
         .outLine {
             font-family: 'Pretendard-600';
-            width: 100%;
+            width: 80%;
+            margin: 10px auto;
+            padding: 10px;
             border: 2px solid #ddd;
             border-radius: 30px;
             outline-color: pink;
-            margin: 10px 0;
+        }
+
+        .title-main {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 0 20px;
         }
 
         .comment-create {
             display: flex;
             padding: 1%;
-            justify-content: space-between;
-        }
-
-        /* 제목 및 버튼 섹션 */
-        .title-and-buttons {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 700;
-            font-style: normal;
-            display: flex;
-            padding: 1%;
-            justify-content: space-between;
+            justify-content: flex-start;
+            flex-direction: row;
             align-items: center;
-            margin: 0 10px;
+            flex-wrap: wrap;
+            gap: 0.85%;
         }
 
+        textarea {
+            width: 50%;
+            height: 3.125em;
+            border: 1px solid pink;
+            border-radius: 10px;
+            resize: none;
+        }
 
         .buttons {
             display: flex;
-            justify-content: space-between;
             align-items: center;
             gap: 10px;
         }
@@ -291,6 +306,7 @@
 
         .board-root {
             font-family: 'Pretendard-600';
+            font-size: 18px;
         }
 
         .board-content3 {
@@ -298,18 +314,19 @@
             overflow-wrap: break-word;
             display: flex;
             justify-content: flex-start;
+            font-size: 18px;
         }
 
         .img-upload {
-            width: 600px;
-            height: 640px;
+            width: 500px;
+            height: 500px;
             margin: 20px;
         }
 
         .img-section {
             max-width: 100%;
-            width: 600px;
-            height: 640px;
+            width: 500px;
+            height: 500px;
             justify-content: center;
             object-fit: cover;
             border-radius: 30px;
@@ -393,15 +410,15 @@
 
         .get-button {
             display: flex;
-            flex-direction: row-reverse;
             margin-right: 20px;
+            justify-content: flex-start;
         }
 
         #sortOrder {
             margin-right: 10px;
         }
 
-        .btn btn-outline-success{
+        .btn btn-outline-success {
             font-family: 'Pretendard-600';
         }
 
@@ -440,26 +457,31 @@
     <div class="btn-write">
         <div th:if="${user != null}" class="rank">
             <span th:if="${user.score < 0}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}" alt="rank-image"
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             <span
-                th:if="${user.score >= 0 and user.score <= 300}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}" alt="rank-image"
+                    th:if="${user.score >= 0 and user.score <= 300}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             <span
-                th:if="${user.score > 300 and user.score <= 700}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}" alt="rank-image"
+                    th:if="${user.score > 300 and user.score <= 700}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             <span
-                th:if="${user.score > 700 and user.score <= 1200}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}" alt="rank-image"
+                    th:if="${user.score > 700 and user.score <= 1200}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             <span th:if="${user.score > 1200}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}" alt="rank-image"
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
         </div>
@@ -489,40 +511,43 @@
 
 <!--게시글 제목 및 버튼-->
 <div class="getBoardDetail-body">
-    <div class="outLine">
-        <div class="title-and-buttons">
-            <h1 th:text="${board.title}"></h1>
-            <div class="buttons">
-                <div th:if="${user != null && user.nickname eq board.nickname}">
-                    <button class="btn btn-outline-success" th:onclick="'getUpdateBoard(' + ${boardId} + ')'"
-                            id="board-update-button">
-                        수정
-                    </button>
-                    <button class="btn btn-outline-success" th:onclick="'deleteBoard(' + ${boardId} + ')'"
-                            id="board-delete-button">
-                        삭제
-                    </button>
-                </div>
-                <div th:if="${user != null}">
-                    <button class="btn btn-outline-success" th:onclick="showInputForm()">신고</button>
-                </div>
-                <div th:if="${user == null}">
-                    <button class="btn btn-outline-success" onclick="needToLogin()">신고</button>
+    <div class="title-and-buttons">
+        <div class="outLine">
+            <div class="title-main">
+                <h1 th:text="${board.title}"></h1>
+                <div class="buttons">
+                    <div th:if="${user != null && user.nickname eq board.nickname}">
+                        <button class="btn btn-outline-success" th:onclick="'getUpdateBoard(' + ${boardId} + ')'"
+                                id="board-update-button">
+                            수정
+                        </button>
+                        <button class="btn btn-outline-success" th:onclick="'deleteBoard(' + ${boardId} + ')'"
+                                id="board-delete-button">
+                            삭제
+                        </button>
+                    </div>
+                    <div th:if="${user != null}">
+                        <button class="btn btn-outline-success" th:onclick="showInputForm()">신고</button>
+                    </div>
+                    <div th:if="${user == null}">
+                        <button class="btn btn-outline-success" onclick="needToLogin()">신고</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div id="inputForm">
-            <div id="myForm">
-                <label for="reason">
-                    <input type="text" id="reason" name="reason" required placeholder="신고 사유를 적어주세요.">
-                    <button class="btn btn-outline-success" type="button"
-                            th:onclick="'reportBoard(' + ${board.id} + ')'">확인
-                    </button>
-                </label>
+            <div id="inputForm">
+                <div id="myForm">
+                    <label for="reason">
+                        <input type="text" id="reason" name="reason" required placeholder="신고 사유를 적어주세요.">
+                        <button class="btn btn-outline-success" type="button"
+                                th:onclick="'reportBoard(' + ${board.id} + ')'">확인
+                        </button>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
-
+</div>
+<div class="getBoardDetail-body">
     <!--게시글 작성자, 라이크-->
     <div class="board-margin">
         <div class="outLine">
@@ -563,10 +588,19 @@
             </div>
         </div>
     </div>
-
-    <!--댓글-->
-    <h2>댓글</h2>
-
+</div>
+<div class="getBoardDetail-body">
+    <div class="comment-title">
+        <!--댓글-->
+        <h2>댓글</h2>
+        <div class="get-button">
+            <select id="sortOrder">
+                <option value="recent">최신순</option>
+                <option value="likes">좋아요 순</option>
+            </select>
+            <button class="btn btn-outline-success" type="button" onclick="updateSortOrder()">적용</button>
+        </div>
+    </div>
     <!--댓글 작성-->
     <div class="outLine">
         <div class="comment-create">
@@ -583,82 +617,83 @@
             </div>
         </div>
     </div>
-    <div class="get-button">
-        <button class="btn btn-outline-success" type="button" onclick="updateSortOrder()">적용</button>
-        <select id="sortOrder">
-            <option value="recent">최신순</option>
-            <option value="likes">좋아요 순</option>
-        </select>
-    </div>
 
-<div id="comment-id">
-    <div class="comment-list" th:each="comment : ${board.comments}" th:id="${'comment-' + comment.id}">
-        <div class="outLine">
-            <div class="gallery-caption">
-                <div class="like">
-                    <b th:text="'작성자: ' + ${comment.nickname}"></b>
-                    <!--댓글 좋아요-->
-                    <div class="like-view">
-                        <div th:text="${comment.likeCount}"></div>
-                        <div th:if="${user != null}">
-                            <button class="like-btn"
-                                    th:onclick="'likeComment(' + ${board.id} + ',' + ${comment.id} + ')'">❤
-                            </button>
-                        </div>
-                        <div th:if="${user == null}">
-                            <button class="like-btn" onclick="needToLogin()">❤</button>
+    <div id="comment-id">
+        <div class="comment-list" th:each="comment : ${board.comments}" th:id="${'comment-' + comment.id}">
+            <div class="outLine">
+                <div class="gallery-caption">
+                    <div class="like">
+                        <b th:text="'작성자: ' + ${comment.nickname}"></b>
+                        <!--댓글 좋아요-->
+                        <div class="like-view">
+                            <div th:text="${comment.likeCount}"></div>
+                            <div th:if="${user != null}">
+                                <button class="like-btn"
+                                        th:onclick="'likeComment(' + ${board.id} + ',' + ${comment.id} + ')'">❤
+                                </button>
+                            </div>
+                            <div th:if="${user == null}">
+                                <button class="like-btn" onclick="needToLogin()">❤</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="comment-content">
-                    <div th:if="${comment.fileURL != null}">
-                        <img th:src="${comment.fileURL}" class="commentImage" alt="댓글 이미지">
+                    <div class="comment-content">
+                        <div th:if="${comment.fileURL != null}">
+                            <img th:src="${comment.fileURL}" class="commentImage" alt="댓글 이미지">
+                        </div>
+                        <div th:text="'내용: ' + ${comment.content}"></div>
                     </div>
-                    <div th:text="'내용: ' + ${comment.content}"></div>
                 </div>
+                <div class="like-comment-btn">
+                    <!--댓글 신고-->
+                    <div th:if="${user != null}">
+                        <button class="btn btn-outline-success" th:onclick="|showCommentInputForm(${comment.id})|">
+                            신고
+                        </button>
+                    </div>
+                    <div th:if="${user == null}">
+                        <button class="btn btn-outline-success" onclick="needToLogin()">신고</button>
+                    </div>
+
+                    <div th:if="${user != null && user.nickname eq comment.nickname}">
+                        <!--댓글 삭제-->
+                        <button class="btn btn-outline-success"
+                                th:onclick="'deleteComment(' + ${board.id} + ',' + ${comment.id} + ')'"
+                                id="comment-delete-button">삭제
+                        </button>
+                        <!--댓글 수정-->
+                        <button class="btn btn-outline-success" th:onclick="|showCommentUpdateForm(${comment.id})|">
+                            수정
+                        </button>
+
+                    </div>
+                </div>
+                <form th:id="'myCommentForm-' + ${comment.id}" style="display: none;width: 100%">
+                    <div style="display: flex;margin-right: 20px;margin-bottom: 20px;flex-direction: row;align-items: center;justify-content: flex-end;">
+                        <label th:for="'commentReason-' + ${comment.id}">신고 사유:</label>
+                        <input type="text" th:id="'commentReason-' + ${comment.id}"
+                               th:name="'commentReason-' + ${comment.id}" required>
+                        <button class="btn btn-outline-success" type="button"
+                                th:onclick="'reportComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
+                        </button>
+                    </div>
+                </form>
+
+                <form th:id="'commentUpdateForm-' + ${comment.id}" style="display: none;width: 100%">
+                    <div style="display: flex;margin-right: 20px;margin-bottom: 20px;flex-direction: row;align-items: center;justify-content: flex-end;">
+                        <label th:for="'inputCommentContent-' + ${comment.id}">내용:</label>
+                        <input type="text" th:id="'inputCommentContent-' + ${comment.id}"
+                               th:name="'inputCommentContent-' + ${comment.id}" required
+                               th:value="${comment.content}">
+                        <label th:for="'inputCommentImage-' + ${comment.id}">첨부파일:</label>
+                        <input type="file" th:id="'inputCommentImage-' + ${comment.id}"
+                               th:name="'inputCommentImage-' + ${comment.id}">
+                        <button class="btn btn-outline-success" type="button"
+                                th:onclick="'updateComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="like-comment-btn">
-                <!--댓글 신고-->
-                <div th:if="${user != null}">
-                    <button class="btn btn-outline-success" th:onclick="|showCommentInputForm(${comment.id})|">신고
-                    </button>
-                </div>
-                <div th:if="${user == null}">
-                    <button class="btn btn-outline-success" onclick="needToLogin()">신고</button>
-                </div>
-
-                <div th:if="${user != null && user.nickname eq comment.nickname}">
-                    <!--댓글 삭제-->
-                    <button class="btn btn-outline-success"
-                            th:onclick="'deleteComment(' + ${board.id} + ',' + ${comment.id} + ')'"
-                            id="comment-delete-button">삭제
-                    </button>
-                    <!--댓글 수정-->
-                    <button class="btn btn-outline-success" th:onclick="|showCommentUpdateForm(${comment.id})|">수정</button>
-
-                </div>
-            </div>
-            <form th:id="'myCommentForm-' + ${comment.id}" style="display: none;width: 100%">
-                <div style="display: flex;margin-right: 20px;margin-bottom: 20px;flex-direction: row;align-items: center;justify-content: flex-end;">
-                    <label th:for="'commentReason-' + ${comment.id}">신고 사유:</label>
-                    <input type="text" th:id="'commentReason-' + ${comment.id}" th:name="'commentReason-' + ${comment.id}" required>
-                    <button class="btn btn-outline-success" type="button"
-                            th:onclick="'reportComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
-                    </button>
-                </div>
-            </form>
-
-            <form th:id="'commentUpdateForm-' + ${comment.id}" style="display: none;width: 100%">
-                <div style="display: flex;margin-right: 20px;margin-bottom: 20px;flex-direction: row;align-items: center;justify-content: flex-end;">
-                    <label th:for="'inputCommentContent-' + ${comment.id}">내용:</label>
-                    <input type="text" th:id="'inputCommentContent-' + ${comment.id}" th:name="'inputCommentContent-' + ${comment.id}" required th:value="${comment.content}">
-                    <label th:for="'inputCommentImage-' + ${comment.id}">첨부파일:</label>
-                    <input type="file" th:id="'inputCommentImage-' + ${comment.id}" th:name="'inputCommentImage-' + ${comment.id}">
-                    <button class="btn btn-outline-success" type="button"
-                            th:onclick="'updateComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
 </div>
@@ -679,37 +714,35 @@
     const report = '/report'
     const like = '/like'
     const updatePassword = '/api/users/profile/password';
+
     // 댓글 목록을 업데이트하는 함수
-
-
     function updateComments(boardId) {
-    // AJAX를 사용하여 서버에서 새로운 댓글 목록을 가져옴
-    fetch(`/api/boards/${boardId}/comments`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        cache: 'no-cache',
-    })
-        .then(response => response.json())
-        .then(data => {
-            // 서버에서 반환한 데이터를 토대로 댓글 목록을 업데이트
-            var commentIdContainer = document.getElementById('comment-id');
-            commentIdContainer.innerHTML = data; // data에는 서버에서 전달한 댓글 목록 HTML이 포함되어야 함
+        // AJAX를 사용하여 서버에서 새로운 댓글 목록을 가져옴
+        fetch(`/api/boards/${boardId}/comments`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            cache: 'no-cache',
         })
-        .catch(error => {
-            console.error('Error updating comments:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                // 서버에서 반환한 데이터를 토대로 댓글 목록을 업데이트
+                var commentIdContainer = document.getElementById('comment-id');
+                commentIdContainer.innerHTML = data; // data에는 서버에서 전달한 댓글 목록 HTML이 포함되어야 함
+            })
+            .catch(error => {
+                console.error('Error updating comments:', error);
+            });
     }
 
-    // 댓글 정렬
-    function updateSortOrder(boardId) {
+    //댓글 정렬
+    function updateSortOrder() {
         // 정렬 방식 및 게시글 ID 가져오기
         var sortOrder = document.getElementById('sortOrder').value;
         // 현재 URL 가져오기
         var currentUrl = window.location.origin + window.location.pathname;
         // 정렬 기준이 이미 존재하는 경우
-        var updatedUrl;
         if (window.location.search.includes('?')) {
             // 이미 쿼리 매개변수가 있는 경우
             updatedUrl = `${currentUrl}?sortOrder=${sortOrder}`;
@@ -728,76 +761,13 @@
             .then(response => response.json())
             .then(data => {
                 // 서버에서 반환한 데이터를 처리
-                updateComments(boardId); // 댓글 목록 업데이트 함수 호출
+                console.log(data);
+                // 여기에서 서버 응답을 토대로 화면을 업데이트하거나 추가 로직 수행 가능
+                // 예: $('#product-container').empty();, pagination 업데이트 등
             })
             .catch(error => {
                 console.error('Error updating sort order:', error);
             });
-    }
-
-    //좋아요, 최신순 정렬기능
-    function changeSortAndPage(sortBy) {
-        var currentUrl = window.location.href;
-        var updatedUrl;
-
-        // 정렬 기준이 이미 존재하는 경우
-        if (currentUrl.includes('&sortBy=')) {
-            updatedUrl = currentUrl.replace(/&sortBy=[^&]*/, '&sortBy=' + sortBy);
-        } else {
-            // 정렬 기준이 존재하지 않는 경우
-            if (currentUrl.includes('?')) {
-                updatedUrl = currentUrl + '&sortBy=' + sortBy;
-            } else {
-                updatedUrl = currentUrl + '?sortBy=' + sortBy;
-            }
-        }
-
-        // size 파라미터가 이미 존재하는 경우
-        if (currentUrl.includes('&size=')) {
-            updatedUrl = updatedUrl.replace(/&size=[^&]*/, '&size=8'); // 1 대신 적절한 값을 사용
-        } else {
-            // size 파라미터가 존재하지 않는 경우
-            if (currentUrl.includes('?')) {
-                updatedUrl = updatedUrl + '&size=8'; // 1 대신 적절한 값을 사용
-            } else {
-                updatedUrl = updatedUrl + '?size=8'; // 1 대신 적절한 값을 사용
-            }
-        }
-
-        // 새로운 URL로 페이지 이동
-        window.location.href = updatedUrl;
-    }
-
-    //좋아요, 최신순 정렬기능
-    function changeSortAndPage(sortBy) {
-        var currentUrl = window.location.href;
-        var updatedUrl;
-
-        // 정렬 기준이 이미 존재하는 경우
-        if (currentUrl.includes('&sortBy=')) {
-            updatedUrl = currentUrl.replace(/&sortBy=[^&]*/, '&sortBy=' + sortBy);
-        } else {
-            // 정렬 기준이 존재하지 않는 경우
-            if (currentUrl.includes('?')) {
-                updatedUrl = currentUrl + '&sortBy=' + sortBy;
-            } else {
-                updatedUrl = currentUrl + '?sortBy=' + sortBy;
-            }
-        }
-
-        // size 파라미터가 이미 존재하는 경우
-        if (currentUrl.includes('&size=')) {
-            updatedUrl = updatedUrl.replace(/&size=[^&]*/, '&size=8'); // 1 대신 적절한 값을 사용
-        } else {
-            // size 파라미터가 존재하지 않는 경우
-            if (currentUrl.includes('?')) {
-                updatedUrl = updatedUrl + '&size=8'; // 1 대신 적절한 값을 사용
-            } else {
-                updatedUrl = updatedUrl + '?size=8'; // 1 대신 적절한 값을 사용
-            }
-        }
-
-        // 새로운 URL로 페이지 이동
         window.location.href = updatedUrl;
     }
 
@@ -878,70 +848,6 @@
         document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     }
 
-    // 비밀번호 수정
-    function onPasswordUpdate() {
-        let prePassword = $('#prePassword').val();
-        let newPassword = $('#newPassword').val();
-        let confirmPassword = $('#confirmPassword').val();
-
-        if (!prePassword || !newPassword || !confirmPassword) {
-            alert('공란을 빠짐없이 입력해주세요.');
-            return;
-        }
-
-        const pwUpdateReq = {
-            prePassword: prePassword,
-            newPassword: newPassword,
-            confirmPassword: confirmPassword
-        };
-
-        fetch(updatePassword, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(pwUpdateReq),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('비밀번호 변경이 이루어졌습니다.');
-                    window.location.href = userUrl;
-                } else {
-                    alert('비밀번호 변경 실패: ' + data.message);
-                }
-            })
-    }
-
-    // 회원 탈퇴
-    function deleteUser() {
-        var confirmation = confirm('정말로 회원 탈퇴하시겠습니까?');
-
-        // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
-        if (confirmation) {
-            fetch(userUrl, {method: 'DELETE'})
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.code === 200) {
-                        alert('회원 탈퇴가 성공적으로 이루어졌습니다.');
-                        window.location.href = mainPage;
-                    } else {
-                        alert('회원 탈퇴 실패: ' + data.message);
-                    }
-                })
-        }
-    }
-
     // 메인 페이지로 이동
     function getMainPage() {
         window.location.href = mainPage;
@@ -981,155 +887,6 @@
     function changeCommentPage(element) {
         var page = element.getAttribute('data-page');
         window.location.href = commentUrl + '/reports' + '?page=' + page;
-    }
-
-    // 게시글 작성 페이지 경유지 추가
-    function addStopover() {
-        // 현재 경유지 입력란 개수 확인
-        var stopoverContainer = document.getElementById('stopovers-container');
-        var stopoverSections = stopoverContainer.getElementsByClassName('stopover-section');
-
-        if (stopoverSections.length < 5) {
-            // 5개 미만일 때만 새로운 경유지 입력란 생성
-            var newStopoverSection = document.createElement('div');
-            newStopoverSection.classList.add('stopover-section');
-
-            var label = document.createElement('label');
-            label.setAttribute('for', 'stopover');
-            label.textContent = '경유지:';
-
-            var input = document.createElement('input');
-            input.setAttribute('type', 'text');
-            input.setAttribute('name', 'stopover');
-
-            newStopoverSection.appendChild(label);
-            newStopoverSection.appendChild(input);
-
-            // 생성된 입력란을 컨테이너에 추가
-            stopoverContainer.appendChild(newStopoverSection);
-        } else {
-            alert('경유지는 최대 5개까지만 입력 가능합니다.');
-        }
-    }
-
-    //게시글 작성
-    function saveBoard() {
-        // 경유지 입력란의 값을 가져오는 함수
-        var stopoverContainer = document.getElementById('stopovers-container');
-        var stopoverInputs = stopoverContainer.querySelectorAll('.stopover-section input[name="stopover"]');
-
-        var region = document.getElementById('region').value;
-        var title = document.getElementById('title').value;
-        var departure = document.getElementById('departure').value;
-        var destination = document.getElementById('destination').value;
-        var content = document.getElementById('content').value;
-        var image = document.getElementById('image');
-
-        if (!title && !departure && !destination && !content) {
-            alert('입력을 다시 확인해주세요.');
-            return;
-        }
-
-        let formData = new FormData();
-        formData.append("region", region);
-        formData.append("title", title);
-        formData.append("departure", departure);
-        stopoverInputs.forEach(function (input) {
-            formData.append("stopover", input.value);
-        });
-        formData.append("destination", destination);
-        formData.append("content", content);
-
-        // 파일이 선택되지 않은 경우 알림창이 뜨도록 함
-        if (image.files.length > 0) {
-            formData.append('image', image.files[0]);
-        } else {
-            alert("파일을 첨부해주세요!");
-        }
-
-        // 요청 보내기
-        fetch(boardUrl, {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('게시글 작성이 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/region?region=' + region;
-                } else {
-                    alert('게시글 작성 실패: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error updating profile:', error);
-            });
-    }
-
-    // 게시글 수정
-    function updateBoard(boardId) {
-        // 경유지 입력란의 값을 가져오는 함수
-        var stopoverContainer = document.getElementById('stopovers-container');
-        var stopoverInputs = stopoverContainer.querySelectorAll('.stopover-section input[name="stopover"]');
-
-        var region = document.getElementById('region').value;
-        var title = document.getElementById('title').value;
-        var departure = document.getElementById('departure').value;
-        var destination = document.getElementById('destination').value;
-        var content = document.getElementById('content').value;
-        var image = document.getElementById('image');
-
-        if (!title && !departure && !destination && !content) {
-            alert('입력을 다시 확인해주세요.');
-            return;
-        }
-
-        let formData = new FormData();
-        formData.append("region", region);
-        formData.append("title", title);
-        formData.append("departure", departure);
-        stopoverInputs.forEach(function (input) {
-            formData.append("stopover", input.value);
-        });
-        formData.append("destination", destination);
-        formData.append("content", content);
-
-        // 파일이 선택되지 않은 경우 빈 파일 전송
-        if (image.files.length > 0) {
-            formData.append('image', image.files[0]);
-        } else {
-            // 빈 파일 생성 및 전송
-            const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
-            formData.append('image', emptyFile);
-        }
-
-        // 요청 보내기
-        fetch(boardUrl + '/' + boardId, {
-            method: 'PATCH',
-            body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('게시글 수정이 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('게시글 수정 실패: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error updating profile:', error);
-            });
     }
 
     // 게시글 삭제
@@ -1321,12 +1078,6 @@
                 }
             })
     }
-
-    // // 댓글 수정 입력창
-    // function showCommentUpdateForm() {
-    //     var inputForm = document.getElementById('commentUpdateForm');
-    //     inputForm.style.display = 'block';
-    // }
 
     // 댓글 수정 입력창
     function showCommentUpdateForm(commentId) {
