@@ -62,14 +62,17 @@ public class UserController {
         UserLoginRes res = userService.login(req);
 
         // Access token 발급 후 쿠키에 저장
-        String accessToken = jwtUtil.createAccessToken(res.getId(), res.getRole().getValue());
+        String accessToken =
+                jwtUtil.createAccessToken(String.valueOf(res.getId()), res.getRole().getValue());
         addCookie(accessToken, ACCESS_TOKEN_HEADER, response);
 
         // Refresh token 발급 후 쿠키, redis 에 저장
         String refreshToken = jwtUtil.createRefreshToken();
         addCookie(refreshToken, REFRESH_TOKEN_HEADER, response);
         redisUtil.set(
-                jwtUtil.getTokenWithoutBearer(refreshToken), res.getId(), REFRESH_TOKEN_EXPIRED_TIME);
+                jwtUtil.getTokenWithoutBearer(refreshToken),
+                String.valueOf(res.getId()),
+                REFRESH_TOKEN_EXPIRED_TIME);
 
         return CommonResponse.success(res);
     }

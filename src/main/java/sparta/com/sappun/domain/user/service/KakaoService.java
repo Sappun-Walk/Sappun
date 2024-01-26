@@ -120,7 +120,8 @@ public class KakaoService {
         }
         // 반환할 토큰 생성
         HashMap<String, String> returnTokens = new HashMap<>();
-        String accessToken = jwtUtil.createAccessToken(user.getId(), String.valueOf(user.getRole()));
+        String accessToken =
+                jwtUtil.createAccessToken(String.valueOf(user.getId()), String.valueOf(user.getRole()));
         String refreshToken = jwtUtil.createRefreshToken();
         returnTokens.put(ACCESS_TOKEN_HEADER, accessToken);
         returnTokens.put(REFRESH_TOKEN_HEADER, refreshToken);
@@ -128,7 +129,7 @@ public class KakaoService {
         // refresh token 저장
         redisUtil.set(
                 jwtUtil.getTokenWithoutBearer(returnTokens.get(REFRESH_TOKEN_HEADER)),
-                user.getId(),
+                String.valueOf(user.getId()),
                 REFRESH_TOKEN_EXPIRED_TIME);
 
         return returnTokens;
