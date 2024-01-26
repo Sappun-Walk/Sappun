@@ -310,6 +310,7 @@
         }
 
         .buttons {
+            font-family: 'Pretendard-400';
             display: flex;
             justify-content: flex-end;
             margin-right: 100px;
@@ -366,11 +367,16 @@
                 margin-right: 5px;
             }
 
+
             h3 {
                 font-family: 'Pretendard-600';
             }
 
             .btn btn-outline-success{
+                font-family: 'Pretendard-600';
+            }
+
+            .stopover {
                 font-family: 'Pretendard-600';
             }
 
@@ -482,12 +488,12 @@
                     <button class="btn-map" id="captureImage">지도 캡쳐</button>
                     <br>
                     <div>
-                        <label for="departure">출발지:</label>
+                        <label class="stopover" for="departure">출발지:</label>
                         <input type="text" id="departure" name="departure" required>
                     </div>
                     <div>
                         <div>
-                            <div type="label">경유지:
+                            <div class="stopover" type="label">경유지:
                                 <!-- 추가 버튼 추가 -->
                                 <button class="btn-stopover" onclick="addStopover()">➕</button>
                             </div>
@@ -500,7 +506,7 @@
                             </div>
                         </div>
                     </div>
-                    <label for="destination">목적지:</label>
+                    <label class="stopover" for="destination">목적지:</label>
                     <input type="text" id="destination" name="destination" required>
                     <br>
                 </div>

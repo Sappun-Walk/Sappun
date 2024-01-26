@@ -12,42 +12,37 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>사뿐</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Gamja+Flower&display=swap');
-
-        #profileImage,
-        .gallery-item img,
-        h1,
-        #sidebar a,
-        #openBtn,
-        .img-section {
-            font-family: 'Gaegu', sans-serif;
-        }
-
-        #profileImage,
-        .gallery-item img,
-        h1,
-        #sidebar a,
-        #openBtn,
-        .img-section {
-            font-family: 'Gamja Flower', sans-serif;
-        }
-
-        .stopover-section {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 300;
+        @font-face {
+            font-family: 'yg-jalnan';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+            font-weight: normal;
             font-style: normal;
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
         }
 
-        .stopover-section input {
-            margin-right: 5px;
+        @font-face {
+            font-family: 'Pretendard-400';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-600';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-900';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 900;
+            font-style: normal;
         }
 
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family:'Pretendard-600';
         }
 
         ul {
@@ -107,32 +102,6 @@
             border-radius: 50%;
         }
 
-        .main-img-container {
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-            justify-content: center;
-        }
-
-        .btn-write {
-            /*margin-top: 30px;*/
-            margin-left: auto;
-            margin-right: 100px;
-            display: flex;
-            align-items: center;
-            flex-direction: row-reverse;
-        }
-
-        .btn-write button {
-            width: auto;
-            margin-right: 10px;
-        }
-
-        .rank-image {
-            width: 50px;
-            height: 50px;
-        }
-
         #openBtn {
             font-size: 30px;
             width: 250px;
@@ -169,6 +138,7 @@
         }
 
         .outLine {
+            font-family: 'Pretendard-600';
             width: 80%;
             margin: 10px auto;
             padding: 20px;
@@ -209,6 +179,10 @@
             outline-color: pink;
             display: flex;
             align-items: center;
+        }
+
+        .main-title {
+            font-family: 'Pretendard-900';
         }
 
         .outLine2 input {
@@ -255,6 +229,7 @@
         }
 
         .map-buttons {
+            font-family: 'Pretendard-600';
             margin-left: 20px;
             width: 20%;
             display: flex;
@@ -262,9 +237,7 @@
         }
 
         .btn-map {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 400;
-            font-style: normal;
+            font-family: 'Pretendard-600';
             width: 70%;
             background-color: white;
             color: black;
@@ -331,36 +304,9 @@
 
 
         .stopover-section {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 300;
-            font-style: normal;
             display: flex;
             align-items: center;
             margin-bottom: 10px;
-        }
-
-        .stopover-section input {
-            margin-right: 5px;
-        }
-
-        .map-buttons {
-            margin-left: 20px;
-            width: 20%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .btn-map {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-            width: 70%;
-            background-color: white;
-            color: black;
-            border: 1px solid pink;
-            border-radius: 30px;
-            outline-color: pink;
-            cursor: pointer;
         }
 
         #capturedImage {
@@ -405,22 +351,8 @@
             height: 50px;
         }
 
-        .gaegu-light {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 300;
-            font-style: normal;
-        }
-
-        .gaegu-bold {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 700;
-            font-style: normal;
-        }
-
         h3 {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 700;
-            font-style: normal;
+            font-family: 'Pretendard-600';
         }
 
         textarea {
@@ -431,6 +363,7 @@
         }
 
         .btn-style {
+            font-family: 'Pretendard-400';
             width: 80%;
             margin: 0 auto;
             display: flex;
@@ -439,9 +372,7 @@
         }
 
         .btn-style button {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 400;
-            font-style: normal;
+            font-family: 'Pretendard-400';
             margin-left: 10px;
             width: 10%;
             background-color: white;
@@ -455,6 +386,14 @@
         .btn-style button:hover {
             /* 마우스를 버튼 위에 올렸을 때의 스타일 변경 */
             background-color: pink;
+        }
+
+        .btn btn-outline-success{
+            font-family: 'Pretendard-600';
+        }
+
+        .stopover {
+            font-family: 'Pretendard-600';
         }
 
     </style>
@@ -554,7 +493,7 @@
                 </select>
             </div>
             <div class="outLine2">
-                <label class="gaegu-bold" for="title">제목:</label>
+                <label class="main-title" for="title">제목:</label>
                 <input type="text" id="title" name="title" th:value="${board.title}" required>
             </div>
         </div>
@@ -573,16 +512,14 @@
                 <!--지도 div-->
                 <div id="map"></div>
                 <div class="map-buttons">
-                    <!--폰트 적용할 경우 class="btn-map"를 현위찾/산그/지캡에 넣기-->
                     <button class="btn-map" id="locateCurrentPosition">현재 위치 찾기</button>
                     <button class="btn-map" id="drawLine">산책로 그리기</button>
                     <button class="btn-map" id="captureImage">지도 캡쳐</button>
                     <br>
-                    <!--폰트 추가할 경우 class="gaegu-light"를 출발지/목적지에 추가-->
                     <div class="input-section">
-                        <label for="departure">출발지:</label>
+                        <label class="stopover" for="departure">출발지:</label>
                         <input type="text" id="departure" name="departure" th:value="${board.departure}" required>
-                        <div class="gaegu-light" type="label" style="display: flex; justify-content: space-between">경유지:
+                        <div class="stopover" type="label" style="display: flex; justify-content: space-between">경유지:
                             <button class="btn-stopover" onclick="addStopover()">➕</button>
                         </div>
                     </div>
@@ -598,7 +535,7 @@
                         </div>
                     </div>
                     <div class="input-section">
-                        <label for="destination">목적지:</label>
+                        <label class="stopover" for="destination">목적지:</label>
                         <input type="text" id="destination" name="destination" th:value="${board.destination}" required>
                         <br>
                     </div>
@@ -637,8 +574,8 @@
 </div>
 <div class="getBoardDetail-body">
     <div class="btn-style">
-        <button th:onclick="'updateBoard(' + ${boardId} + ')'">완료</button>
-        <button th:onclick="'getBoardDetails(' + ${boardId} + ')'">취소</button>
+        <button class="buttons1" th:onclick="'updateBoard(' + ${boardId} + ')'">완료</button>
+        <button class="buttons1" th:onclick="'getBoardDetails(' + ${boardId} + ')'">취소</button>
     </div>
 </div>
 <script>
