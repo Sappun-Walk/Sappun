@@ -650,10 +650,10 @@
 
             <form th:id="'commentUpdateForm-' + ${comment.id}" style="display: none;width: 100%">
                 <div style="display: flex;margin-right: 20px;margin-bottom: 20px;flex-direction: row;align-items: center;justify-content: flex-end;">
-                    <label th:for="inputCommentContent">내용:</label>
-                    <input type="text" th:id="inputCommentContent" th:name="inputCommentContent" required th:value="${comment.content}">
-                    <label th:for="inputCommentImage">첨부파일:</label>
-                    <input type="file" th:id="inputCommentImage" th:name="inputCommentImage">
+                    <label th:for="'inputCommentContent-' + ${comment.id}">내용:</label>
+                    <input type="text" th:id="'inputCommentContent-' + ${comment.id}" th:name="'inputCommentContent-' + ${comment.id}" required th:value="${comment.content}">
+                    <label th:for="'inputCommentImage-' + ${comment.id}">첨부파일:</label>
+                    <input type="file" th:id="'inputCommentImage-' + ${comment.id}" th:name="'inputCommentImage-' + ${comment.id}">
                     <button class="btn btn-outline-success" type="button"
                             th:onclick="'updateComment(' + ${board.id} + ',' + ${comment.id} + ')'">확인
                     </button>
@@ -1284,6 +1284,9 @@
         if (!content) {
             alert('내용을 입력해주세요.');
             return;
+        } else if (content.length > 255) {
+            alert('내용은 최대 255자까지만 입력 가능합니다.');
+            return;
         }
 
         let formData = new FormData();
@@ -1338,8 +1341,8 @@
 
     // 댓글 수정
     function updateComment(boardId, commentId) {
-        const commentContent = document.getElementById('inputCommentContent').value;
-        const commentImage = document.getElementById('inputCommentImage');
+        const commentContent = document.getElementById('inputCommentContent-' + commentId).value;
+        const commentImage = document.getElementById('inputCommentImage-' + commentId);
 
         if (!commentContent) {
             alert('내용을 입력해주세요.');
