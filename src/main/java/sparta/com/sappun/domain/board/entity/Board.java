@@ -55,11 +55,15 @@ public class Board extends TimeStamp {
 
     @Column private Integer reportCount;
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<Image> images = new ArrayList<>();  // 여러 이미지를 저장하기 위한 리스트
+
     @Builder
     private Board(
             String title,
             String content,
             String fileURL,
+            List<Image> images,
             String departure,
             String destination,
             List<String> stopover,
@@ -70,6 +74,7 @@ public class Board extends TimeStamp {
         this.title = title;
         this.content = content;
         this.fileURL = fileURL;
+        this.images = images;
         this.departure = departure;
         this.destination = destination;
         this.stopover = stopover;
@@ -79,7 +84,7 @@ public class Board extends TimeStamp {
         this.reportCount = reportCount;
     }
 
-    public void update(BoardUpdateReq boardUpdateReq, String fileURL) {
+    public void update(BoardUpdateReq boardUpdateReq, String fileURL, List<Image> images) {
         this.title = boardUpdateReq.getTitle();
         this.content = boardUpdateReq.getContent();
         this.fileURL = fileURL;

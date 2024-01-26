@@ -457,6 +457,8 @@
             <section class="preview-label">
                 이미지 업로드 :
                 <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
+                추가 이미지 업로드(3개제한) :
+                <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple onchange="readMultipleURL(this);">
             </section>
             <section>
 <!--               폰트 적용 시 class="gaegu-bold"내용 에 추가-->
@@ -828,14 +830,10 @@
         var destination = document.getElementById('destination').value;
         var content = document.getElementById('content').value;
         var image = document.getElementById('image');
+        var imageInputs = document.getElementById('image-multiple');
 
-        if (!title && !departure && !destination && !content) {
+        if (!title || !departure || !destination || !content) { // 수정: 논리 연산자 변경
             alert('입력을 다시 확인해주세요.');
-            return;
-        }
-
-        if (content.length > 255) {
-            alert('내용은 최대 255자까지만 입력 가능합니다.');
             return;
         }
 
@@ -844,8 +842,8 @@
         formData.append("title", title);
         formData.append("departure", departure);
 
-        // 여러 경유지 값을 배열로 추가
-        stopoverInputs.forEach(function(input) {
+        // 수정: 여러 경유지 값을 배열로 전송
+        stopoverInputs.forEach(function (input) {
             formData.append("stopover[]", input.value);
         });
 
@@ -857,8 +855,21 @@
             formData.append('image', image.files[0]);
         } else {
             // 빈 파일 생성 및 전송
-            const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
+            const emptyFile = new File([''], 'empty.txt', { type: 'text/plain' });
             formData.append('image', emptyFile);
+        }
+
+        // 여러 이미지 업로드
+        if (imageInputs.files.length >  0) {
+            formData.append('image', image.files[0]);
+            if (imageInputs.files.length <= 3) { // 수정: 4개 이상이 아니라 3개 이하로 변경
+                for (let i = 0; i < imageInputs.files.length; i++) {
+                    formData.append('photoImages', imageInputs.files[i]);
+                }
+            } else {
+                alert("3개 이하 첨부해주세요!");
+                return; // 수정: 이미지 개수가 4개 이상일 때는 함수 종료
+            }
         }
 
         // 요청 보내기
