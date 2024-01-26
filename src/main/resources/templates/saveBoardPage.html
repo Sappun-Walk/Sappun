@@ -12,6 +12,25 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>사뿐</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Gamja+Flower&display=swap');
+
+        #profileImage,
+        .gallery-item img,
+        h1,
+        #sidebar a,
+        #openBtn,
+        .img-section {
+            font-family: 'Gaegu', sans-serif;
+        }
+
+        #profileImage,
+        .gallery-item img,
+        h1,
+        #sidebar a,
+        #openBtn,
+        .img-section {
+            font-family: 'Gamja Flower', sans-serif;
+        }
 
         body {
             margin: 0;
@@ -232,6 +251,9 @@
         }
 
         .btn-map {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 400;
+            font-style: normal;
             width: 70%;
             background-color: white;
             color: black;
@@ -280,6 +302,15 @@
             margin-right: 100px;
         }
 
+        .buttons1 {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 100px;
+        }
+
         .buttons button {
             margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
         }
@@ -313,6 +344,9 @@
 
 
         .stopover-section {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 300;
+            font-style: normal;
             display: flex;
             align-items: center;
             margin-bottom: 10px;
@@ -320,6 +354,24 @@
 
         .stopover-section input {
             margin-right: 5px;
+        }
+
+        .gaegu-light {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        .gaegu-bold {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        h3 {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 700;
+            font-style: normal;
         }
 
     </style>
@@ -411,7 +463,7 @@
                 </select>
             </div>
             <div class="outLine2">
-                <label for="title">제목: </label>
+                <label class="gaegu-bold" for="title">제목: </label>
                 <input type="text" id="title" name="title" required>
             </div>
         </div>
@@ -430,12 +482,12 @@
                     <button class="btn-map" id="captureImage">지도 캡쳐</button>
                     <br>
                     <div>
-                        <label for="departure">출발지:</label>
+                        <label class="gaegu-light" for="departure">출발지:</label>
                         <input type="text" id="departure" name="departure" required>
                     </div>
                     <div>
                         <div>
-                            <div type="label">경유지:
+                            <div class="gaegu-light" type="label">경유지:
                                 <!-- 추가 버튼 추가 -->
                                 <button class="btn-stopover" onclick="addStopover()">➕</button>
                             </div>
@@ -448,7 +500,7 @@
                             </div>
                         </div>
                     </div>
-                    <label for="destination">목적지:</label>
+                    <label class="gaegu-light" for="destination">목적지:</label>
                     <input type="text" id="destination" name="destination" required>
                     <br>
                 </div>
@@ -470,16 +522,16 @@
         <div id="capturedImage"></div>
     </div>
     <div class="outLine">
-        <div class="preview-label">
+        <div class="gaegu-bold">
             이미지 업로드 :
             <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
         </div>
     </div>
     <div class="outLine">
-        <label for="content">내용:</label>
+        <label class="gaegu-bold" for="content">내용:</label>
         <textarea id="content" name="content" required></textarea>
     </div>
-    <div class="buttons">
+    <div class="buttons1">
         <button onclick="saveBoard()">완료</button>
         <button th:onclick="|location.href='@{/api/boards/best}'|">취소</button>
     </div>

@@ -12,9 +12,32 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>사뿐</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Gamja+Flower&display=swap');
+
+
+        #profileImage,
+        .gallery-item img,
+        h1,
+        #sidebar a,
+        #openBtn,
+        .img-section {
+            font-family: 'Gaegu', sans-serif;
+        }
+
+        #profileImage,
+        .gallery-item img,
+        h1,
+        #sidebar a,
+        #openBtn,
+        .img-section {
+            font-family: 'Gamja Flower', sans-serif;
+        }
 
         /* 일부 기본 스타일을 초기화하고 기본 스타일을 적용합니다. */
         body, h1, h2, p {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 700;
+            font-style: normal;
             margin: 0;
             padding: 0;
         }
@@ -191,6 +214,9 @@
 
         /* 제목 및 버튼 섹션 */
         .title-and-buttons {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 700;
+            font-style: normal;
             display: flex;
             padding: 1%;
             justify-content: space-between;
@@ -225,6 +251,8 @@
         }
 
         .board-content2 {
+            font-family: 'Pretendard-Regular';
+            font-weight: 600;
             width: 40%;
             word-wrap: break-word;
             display: flex;
@@ -259,6 +287,9 @@
 
         /* 좋아요 버튼 섹션 */
         .like {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 400;
+            font-style: normal;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -337,6 +368,29 @@
         #sortOrder {
             margin-right: 10px;
         }
+
+        .btn btn-outline-success{
+            font-family: "Gaegu", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-style: normal;
+        }
+
+        .content1 {
+            font-family: 'Pretendard-Regular';
+            font-weight: 500;
+        }
+
+        .content2 {
+            font-family: 'Pretendard-Regular';
+            font-weight: 600;
+        }
+
     </style>
 </head>
 <body>
@@ -459,7 +513,7 @@
     <div class="board-margin">
         <div class="outLine">
             <div class="like">
-                <div th:text="'작성자: ' + ${board.nickname}"></div>
+                <div class="like1" th:text="'작성자: ' + ${board.nickname}"></div>
                 <div class="like-view">
                     <div th:text="${board.likeCount}"></div>
                     <div th:if="${user != null}">
