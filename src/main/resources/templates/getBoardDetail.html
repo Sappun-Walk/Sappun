@@ -13,39 +13,45 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>사뿐</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Gamja+Flower&display=swap');
-
-
-        #profileImage,
-        .gallery-item img,
-        h1,
-        #sidebar a,
-        #openBtn,
-        .img-section {
-            font-family: 'Gaegu', sans-serif;
+        @font-face {
+            font-family: 'yg-jalnan';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
         }
 
-        #profileImage,
-        .gallery-item img,
-        h1,
-        #sidebar a,
-        #openBtn,
-        .img-section {
-            font-family: 'Gamja Flower', sans-serif;
+        @font-face {
+            font-family: 'Pretendard-400';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-600';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-900';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 900;
+            font-style: normal;
         }
 
         /* 일부 기본 스타일을 초기화하고 기본 스타일을 적용합니다. */
-        body, h1, h2, p {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 700;
-            font-style: normal;
+        h1, h2 {
+            font-family: 'yg-jalnan';
             margin: 0;
             padding: 0;
         }
 
         body {
-            font-family: "Helvetica", sans-serif;
-            font-style: normal;
+            font-family:'Pretendard-600';
+            margin: 0;
+            padding: 0;
         }
 
         header, main, footer {
@@ -219,6 +225,7 @@
         }
 
         .outLine {
+            font-family: 'Pretendard-600';
             width: 100%;
             border: 2px solid #ddd;
             border-radius: 30px;
@@ -271,8 +278,6 @@
         }
 
         .board-content2 {
-            font-family: 'Pretendard-Regular';
-            font-weight: 600;
             width: 40%;
             word-wrap: break-word;
             display: flex;
@@ -284,7 +289,12 @@
             align-content: flex-start;
         }
 
+        .board-root {
+            font-family: 'Pretendard-600';
+        }
+
         .board-content3 {
+            font-family: 'Pretendard-400';
             overflow-wrap: break-word;
             display: flex;
             justify-content: flex-start;
@@ -307,14 +317,16 @@
 
         /* 좋아요 버튼 섹션 */
         .like {
-            font-family: "Gaegu", sans-serif;
-            font-weight: 400;
-            font-style: normal;
+            font-family: 'Pretendard-600';
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
             margin: 10px 20px;
+        }
+
+        .like1 {
+            font-family: 'Pretendard-900';
         }
 
         .like-view {
@@ -390,25 +402,7 @@
         }
 
         .btn btn-outline-success{
-            font-family: "Gaegu", sans-serif;
-            font-weight: 700;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'Pretendard-Regular';
-            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-            font-style: normal;
-        }
-
-        .content1 {
-            font-family: 'Pretendard-Regular';
-            font-weight: 500;
-        }
-
-        .content2 {
-            font-family: 'Pretendard-Regular';
-            font-weight: 600;
+            font-family: 'Pretendard-600';
         }
 
     </style>
