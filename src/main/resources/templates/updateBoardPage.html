@@ -457,7 +457,7 @@
             <section class="preview-label">
                 이미지 업로드 :
                 <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
-                추가 이미지 업로드(3개제한) :
+                추가 이미지 업로드 (4장으로 제한) :
                 <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple onchange="readMultipleURL(this);">
             </section>
             <section>
@@ -837,6 +837,17 @@
             return;
         }
 
+      if (content.length > 255) {
+        alert('내용은 최대 255자까지만 입력 가능합니다.');
+        return;
+      }
+
+        // 추가 이미지가 4장 이하인지 확인
+        if (imageInputs.files.length > 4){
+          alert("추가 이미지는 4개 이하 첨부해주세요!");
+          return
+        }
+
         let formData = new FormData();
         formData.append("region", region);
         formData.append("title", title);
@@ -859,18 +870,12 @@
             formData.append('image', emptyFile);
         }
 
-        // 여러 이미지 업로드
-        if (imageInputs.files.length >  0) {
-            formData.append('image', image.files[0]);
-            if (imageInputs.files.length <= 3) { // 수정: 4개 이상이 아니라 3개 이하로 변경
-                for (let i = 0; i < imageInputs.files.length; i++) {
-                    formData.append('photoImages', imageInputs.files[i]);
-                }
-            } else {
-                alert("3개 이하 첨부해주세요!");
-                return; // 수정: 이미지 개수가 4개 이상일 때는 함수 종료
-            }
+      // 여러 이미지 업로드
+      if (imageInputs.files.length > 0) {
+        for (let i = 0; i < imageInputs.files.length; i++) {
+          formData.append('photoImages', imageInputs.files[i]);
         }
+      }
 
         // 요청 보내기
         fetch(boardUrl + '/' + boardId, {

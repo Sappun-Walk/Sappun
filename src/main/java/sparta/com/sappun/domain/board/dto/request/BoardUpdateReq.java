@@ -3,7 +3,6 @@ package sparta.com.sappun.domain.board.dto.request;
 import java.util.List;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
-import sparta.com.sappun.domain.board.entity.Image;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
 
 @Getter

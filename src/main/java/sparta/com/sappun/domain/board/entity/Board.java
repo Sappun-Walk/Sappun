@@ -56,7 +56,7 @@ public class Board extends TimeStamp {
     @Column private Integer reportCount;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private List<Image> images = new ArrayList<>();  // 여러 이미지를 저장하기 위한 리스트
+    private List<Image> images = new ArrayList<>(); // 여러 이미지를 저장하기 위한 리스트
 
     @Builder
     private Board(
@@ -92,6 +92,7 @@ public class Board extends TimeStamp {
         this.destination = boardUpdateReq.getDestination();
         this.stopover = boardUpdateReq.getStopover();
         this.region = boardUpdateReq.getRegion();
+        this.images = images;
     }
 
     public void clickLikeBoard(Integer count) {

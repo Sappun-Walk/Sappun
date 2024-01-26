@@ -523,9 +523,10 @@
         <div id="capturedImage"></div>
     </div>
     <div class="outLine">
-        이미지 업로드 :
+        지도 캡쳐 업로드 :
         <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
-        추가 이미지 업로드(3개제한) :
+        <br>
+        추가 이미지 업로드 (4장으로 제한) :
         <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple onchange="readMultipleURL(this);">
     </div>
     <div class="outLine">
@@ -832,7 +833,6 @@
         var destination = document.getElementById('destination').value;
         var content = document.getElementById('content').value;
         var image = document.getElementById('image');
-
         var imageInputs = document.getElementById('image-multiple');
 
         if (!title && !departure && !destination && !content) {
@@ -845,9 +845,16 @@
             return;
         }
 
-        if (!title && !departure && !destination && !content) {
-            alert('입력을 다시 확인해주세요.');
-            return;
+        // 파일이 선택되지 않은 경우 알림창이 뜨도록 함
+        if (image.files.length < 1) {
+          alert("파일을 첨부해주세요!");
+          return
+        }
+
+        // 추가 이미지가 4장 이하인지 확인
+        if (imageInputs.files.length > 4){
+          alert("추가 이미지는 4개 이하 첨부해주세요!");
+          return
         }
 
         let formData = new FormData();
@@ -859,23 +866,13 @@
         });
         formData.append("destination", destination);
         formData.append("content", content);
-
-        // 파일이 선택되지 않은 경우 알림창이 뜨도록 함
-        if (image.files.length > 0) {
-            formData.append('image', image.files[0]);
-        } else {
-            alert("파일을 첨부해주세요!");
-        }
+        formData.append('image', image.files[0]);
 
         // 여러 이미지 업로드
         if (imageInputs.files.length > 0) {
-            if (imageInputs.files.length < 4) {
-                for (let i = 0; i < imageInputs.files.length; i++) {
-                    formData.append('photoImages', imageInputs.files[i]);
-                }
-            } else {
-                alert("3개 이하 첨부해주세요!");
-            }
+          for (let i = 0; i < imageInputs.files.length; i++) {
+            formData.append('photoImages', imageInputs.files[i]);
+          }
         }
 
         // 요청 보내기

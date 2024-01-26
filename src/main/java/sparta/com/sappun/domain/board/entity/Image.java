@@ -31,6 +31,7 @@ public class Image {
             board.getImages().add(this); // Board에도 Image 추가
         }
     }
+
     public void setBoard(Board board) {
         this.board = board;
     }

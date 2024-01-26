@@ -192,6 +192,13 @@
             border-radius: 15px;
             margin-right: 20px;
         }
+
+        .plusImageContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 10px;
+        }
+
         .plusImagediv{
             display: flex;
             flex-direction: row;
@@ -203,7 +210,6 @@
             height: 150px;
             object-fit: cover;
             border-radius: 15px;
-            margin-right: 20px;
         }
 
         /* 컨테이너 스타일 */
@@ -552,10 +558,11 @@
                     </div>
                     <div class="board-content3" th:text="'내용: ' + ${board.content}"></div>
 
-
-                    <div class="plusImagediv" th:each="image : ${board.images}" alt="게시물 url">
-                        <div th:if="${image.imageUrl != null}">
-                            <img class="plusImage" th:src="${image.imageUrl}" alt="게시물 이미지">
+                    <div class="plusImageContainer">
+                        <div class="plusImagediv" th:each="image : ${board.images}" alt="게시물 url">
+                            <div th:if="${image.imageUrl != null}">
+                                <img class="plusImage" th:src="${image.imageUrl}" alt="게시물 이미지">
+                            </div>
                         </div>
                     </div>
                 </div>

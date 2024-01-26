@@ -1,8 +1,7 @@
 package sparta.com.sappun.domain.board.dto.request;
 
-import java.util.List;
-
 import jakarta.annotation.Nullable;
+import java.util.List;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.board.entity.RegionEnum;
@@ -21,8 +20,7 @@ public class BoardSaveReq {
     private RegionEnum region;
     private MultipartFile image;
 
-    @Nullable
-    private List<MultipartFile> photoImages;
+    @Nullable private List<MultipartFile> photoImages;
 
     @Builder
     private BoardSaveReq(
