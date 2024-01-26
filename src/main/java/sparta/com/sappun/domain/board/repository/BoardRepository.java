@@ -23,7 +23,7 @@ public interface BoardRepository {
     @Query("SELECT b FROM Board b WHERE b.user.id = :userId")
     Page<Board> findAllUserBoardByUserId(@Param("userId") Long userId, Pageable pageable);
 
-    Page<Board> findAll(Pageable pageable);
+    Page<Board> findAllByReportCountLessThan(int reportCount, Pageable pageable);
 
     List<Board> findTop3ByReportCountLessThanOrderByLikeCountDesc(int reportCount);
 
