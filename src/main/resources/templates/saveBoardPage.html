@@ -42,32 +42,7 @@
 
         body {
             margin: 0;
-            font-family:'Pretendard-600';
-        }
-
-        div.getBoardDetailPage {
-            display: flex;
-            flex-direction: column;
-        }
-
-        div.getBoardDetail-header {
-            padding: 10px;
-            width: 100%;
-        }
-
-        h1 {
-            margin: 0;
-            padding: 0;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            font-family: 'Pretendard-600';
         }
 
         ul {
@@ -127,32 +102,6 @@
             border-radius: 50%;
         }
 
-        .main-img-container {
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-            justify-content: center;
-        }
-
-        .btn-write {
-            /*margin-top: 30px;*/
-            margin-left: auto;
-            margin-right: 100px;
-            display: flex;
-            align-items: center;
-            flex-direction: row-reverse;
-        }
-
-        .btn-write button {
-            width: auto;
-            margin-right: 10px;
-        }
-
-        .rank-image {
-          width: 50px;
-          height: 50px;
-        }
-
         #openBtn {
             font-size: 30px;
             width: 250px;
@@ -182,7 +131,6 @@
         .title1 {
             width: 80%;
             margin: 20px auto;
-            padding: 20px;
             flex-direction: row;
             justify-content: center;
             align-items: center;
@@ -246,9 +194,45 @@
             outline: none;
         }
 
+        .input-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-section input {
+            width: 85%;
+            height: 30px;
+            margin-bottom: 10px;
+            border-radius: 30px;
+            border: 1px solid lightgray;
+            outline: none;
+        }
+
+        .stopover-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .stopover-section input {
+            width: 85%;
+            height: 30px;
+            margin-right: auto;
+            border-radius: 30px;
+            border: 1px solid lightgray;
+            outline: none;
+        }
+
         .map-create {
             display: flex;
             flex-direction: row;
+        }
+
+        .img-section {
+            border-radius: 15px;
+            width: 500px;
+            height: 500px;
+            margin-bottom: 20px;
         }
 
         #map {
@@ -281,15 +265,6 @@
             background-color: pink;
         }
 
-        .like-btn {
-            margin-left: 10px;
-            background-color: white;
-            color: red;
-            border: 0.5px solid pink;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-
         .btn-stopover {
             width: 25px;
             height: 25px;
@@ -309,14 +284,104 @@
             background-color: pink;
         }
 
-        .buttons {
-            font-family: 'Pretendard-400';
-            display: flex;
-            justify-content: flex-end;
-            margin-right: 100px;
+        .buttons button {
+            margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
         }
 
-        .buttons1 {
+        #capturedImage {
+            margin-top: 20px;
+        }
+
+        #drawLine, #captureImage, #locateCurrentPosition {
+            margin: 5px;
+        }
+
+        #profileImage {
+            cursor: pointer;
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            top: 20px;
+            right: 30px;
+            padding: 10px;
+            border-radius: 50%;
+        }
+
+        .gallery-item img {
+            background-size: cover;
+            width: 450px;
+            height: 450px;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #capturedImage {
+            margin-top: 20px;
+        }
+
+        #drawLine, #captureImage, #locateCurrentPosition {
+            margin: 5px;
+        }
+
+        .gallery-item img {
+            background-size: cover;
+            width: 450px;
+            height: 450px;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .main-img-container {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .btn-write {
+            /*margin-top: 30px;*/
+            margin-left: auto;
+            margin-right: 100px;
+            display: flex;
+            align-items: center;
+            flex-direction: row-reverse;
+        }
+
+        .btn-write button {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .rank-image {
+            width: 50px;
+            height: 50px;
+        }
+
+        h3 {
+            font-family: 'Pretendard-600';
+        }
+
+        textarea {
+            width: 100%;
+            height: 6.25em;
+            border: 1px solid pink;
+            border-radius: 10px;
+            resize: none;
+        }
+
+        .btn-style {
+            font-family: 'Pretendard-400';
+            width: 80%;
+            margin: 0 auto 30px auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+        }
+
+        .btn-style button {
+            font-family: 'Pretendard-400';
+            margin-left: 10px;
+            width: 10%;
             background-color: white;
             color: black;
             border: 1px solid pink;
@@ -325,60 +390,19 @@
             cursor: pointer;
         }
 
-            .buttons button {
-                margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
-            }
+        .btn-style button:hover {
+            /* 마우스를 버튼 위에 올렸을 때의 스타일 변경 */
+            background-color: pink;
+        }
 
-            #capturedImage {
-                margin-top: 20px;
-            }
+        .btn btn-outline-success {
+            font-family: 'Pretendard-600';
+        }
 
-            #drawLine, #captureImage, #locateCurrentPosition {
-                margin: 5px;
-            }
+        .stopover {
+            font-family: 'Pretendard-600';
+        }
 
-            #profileImage {
-                cursor: pointer;
-                position: absolute;
-                width: 80px;
-                height: 80px;
-                top: 20px;
-                right: 30px;
-                padding: 10px;
-                border-radius: 50%;
-            }
-
-            .gallery-item img {
-                background-size: cover;
-                width: 450px;
-                height: 450px;
-                justify-content: center;
-                text-align: center;
-            }
-
-
-            .stopover-section {
-                display: flex;
-                align-items: center;
-                margin-bottom: 10px;
-            }
-
-            .stopover-section input {
-                margin-right: 5px;
-            }
-
-
-            h3 {
-                font-family: 'Pretendard-600';
-            }
-
-            .btn btn-outline-success{
-                font-family: 'Pretendard-600';
-            }
-
-            .stopover {
-                font-family: 'Pretendard-600';
-            }
 
     </style>
 </head>
@@ -415,15 +439,18 @@
     <div class="btn-write">
         <div th:if="${user != null}" class="rank">
                 <span th:if="${user.score < 0}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}" alt="rank-image"
+                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}"
+                         alt="rank-image"
                          class="rank-image">
                 </span>
             <span th:if="${user.score >= 0 and user.score <= 300}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}" alt="rank-image"
+                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}"
+                         alt="rank-image"
                          class="rank-image">
                 </span>
             <span th:if="${user.score > 300 and user.score <= 700}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}" alt="rank-image"
+                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}"
+                         alt="rank-image"
                          class="rank-image">
                 </span>
             <span th:if="${user.score > 700 and user.score <= 1200}">
@@ -431,7 +458,8 @@
                          class="rank-image">
                 </span>
             <span th:if="${user.score > 1200}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}" alt="rank-image"
+                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}"
+                         alt="rank-image"
                          class="rank-image">
                 </span>
         </div>
@@ -469,7 +497,7 @@
                 </select>
             </div>
             <div class="outLine2">
-                <div class="main-title" for="title">제목: </div>
+                <div class="main-title" for="title">제목:</div>
                 <input type="text" id="title" name="title" required>
             </div>
         </div>
@@ -487,18 +515,16 @@
                     <button class="btn-map" id="drawLine">산책로 그리기</button>
                     <button class="btn-map" id="captureImage">지도 캡쳐</button>
                     <br>
-                    <div>
+                    <div class="input-section">
                         <label class="stopover" for="departure">출발지:</label>
                         <input type="text" id="departure" name="departure" required>
+                        <div class="stopover" type="label" style="display: flex; justify-content: space-between">경유지:
+                            <!-- 추가 버튼 추가 -->
+                            <button class="btn-stopover" onclick="addStopover()">➕</button>
+                        </div>
                     </div>
                     <div>
-                        <div>
-                            <div class="stopover" type="label">경유지:
-                                <!-- 추가 버튼 추가 -->
-                                <button class="btn-stopover" onclick="addStopover()">➕</button>
-                            </div>
-                        </div>
-                        <div style="display: flex; flex-direction: column;" id="stopovers-container">
+                        <div id="stopovers-container">
                             <div class="stopover-section">
                                 <input type="text" id="stopover" name="stopover">
                                 <!-- 삭제 버튼 추가 -->
@@ -506,9 +532,11 @@
                             </div>
                         </div>
                     </div>
-                    <label class="stopover" for="destination">목적지:</label>
-                    <input type="text" id="destination" name="destination" required>
-                    <br>
+                    <div class="input-section">
+                        <label class="stopover" for="destination">목적지:</label>
+                        <input type="text" id="destination" name="destination" required>
+                        <br>
+                    </div>
                 </div>
             </div>
             <div style="flex-direction: column">
@@ -532,13 +560,16 @@
         <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
         <br>
         추가 이미지 업로드 (4장으로 제한) :
-        <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple onchange="readMultipleURL(this);">
+        <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple
+               onchange="readMultipleURL(this);">
     </div>
     <div class="outLine">
         <label for="content">내용:</label>
         <textarea id="content" name="content" required></textarea>
     </div>
-    <div class="buttons">
+</div>
+<div class="getBoardDetail-body">
+    <div class="btn-style">
         <button class="buttons1" onclick="saveBoard()">완료</button>
         <button class="buttons1" th:onclick="|location.href='@{/api/boards/best}'|">취소</button>
     </div>
@@ -557,87 +588,6 @@
     const report = '/report'
     const like = '/like'
     const updatePassword = '/api/users/profile/password';
-
-
-    //좋아요, 최신순 정렬기능
-    function changeSortAndPage(sortBy) {
-        var currentUrl = window.location.href;
-        var updatedUrl;
-
-        // 정렬 기준이 이미 존재하는 경우
-        if (currentUrl.includes('&sortBy=')) {
-            updatedUrl = currentUrl.replace(/&sortBy=[^&]*/, '&sortBy=' + sortBy);
-        } else {
-            // 정렬 기준이 존재하지 않는 경우
-            if (currentUrl.includes('?')) {
-                updatedUrl = currentUrl + '&sortBy=' + sortBy;
-            } else {
-                updatedUrl = currentUrl + '?sortBy=' + sortBy;
-            }
-        }
-
-        // size 파라미터가 이미 존재하는 경우
-        if (currentUrl.includes('&size=')) {
-            updatedUrl = updatedUrl.replace(/&size=[^&]*/, '&size=8'); // 1 대신 적절한 값을 사용
-        } else {
-            // size 파라미터가 존재하지 않는 경우
-            if (currentUrl.includes('?')) {
-                updatedUrl = updatedUrl + '&size=8'; // 1 대신 적절한 값을 사용
-            } else {
-                updatedUrl = updatedUrl + '?size=8'; // 1 대신 적절한 값을 사용
-            }
-        }
-
-        // 새로운 URL로 페이지 이동
-        window.location.href = updatedUrl;
-    }
-
-    // 로그인
-    function onLogin() {
-        let username = $('#username').val();
-        let password = $('#password').val();
-
-        // 사용자 이름 또는 패스워드가 비어있을 경우 오류 처리
-        if (!username || !password) {
-            alert('사용자 이름과 패스워드를 입력하세요.');
-            return;
-        }
-
-        // Request DTO 구성
-        const UserLoginReq = {
-            username: username,
-            password: password
-        };
-
-        fetch(loginPage, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(UserLoginReq),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    // 서버 응답이 200이면 로그인 성공
-                    alert('로그인이 성공적으로 이루어졌습니다.');
-                    window.location.href = mainPage;
-                } else {
-                    // 서버 응답이 200이 아니면 로그인 실패
-                    alert('로그인 실패: ' + data.message);
-                }
-            })
-    }
-
-    // 로그인 요청
-    function needToLogin() {
-        alert("로그인한 사용자만 가능합니다.");
-    }
 
     // 로그아웃
     function logout() {
@@ -667,70 +617,6 @@
     function deleteCookie() {
         document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    }
-
-    // 비밀번호 수정
-    function onPasswordUpdate() {
-        let prePassword = $('#prePassword').val();
-        let newPassword = $('#newPassword').val();
-        let confirmPassword = $('#confirmPassword').val();
-
-        if (!prePassword || !newPassword || !confirmPassword) {
-            alert('공란을 빠짐없이 입력해주세요.');
-            return;
-        }
-
-        const pwUpdateReq = {
-            prePassword: prePassword,
-            newPassword: newPassword,
-            confirmPassword: confirmPassword
-        };
-
-        fetch(updatePassword, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(pwUpdateReq),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('비밀번호 변경이 이루어졌습니다.');
-                    window.location.href = userUrl;
-                } else {
-                    alert('비밀번호 변경 실패: ' + data.message);
-                }
-            })
-    }
-
-    // 회원 탈퇴
-    function deleteUser() {
-        var confirmation = confirm('정말로 회원 탈퇴하시겠습니까?');
-
-        // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
-        if (confirmation) {
-            fetch(userUrl, {method: 'DELETE'})
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.code === 200) {
-                        alert('회원 탈퇴가 성공적으로 이루어졌습니다.');
-                        window.location.href = mainPage;
-                    } else {
-                        alert('회원 탈퇴 실패: ' + data.message);
-                    }
-                })
-        }
     }
 
     // 메인 페이지로 이동
@@ -852,14 +738,14 @@
 
         // 파일이 선택되지 않은 경우 알림창이 뜨도록 함
         if (image.files.length < 1) {
-          alert("파일을 첨부해주세요!");
-          return
+            alert("파일을 첨부해주세요!");
+            return
         }
 
         // 추가 이미지가 4장 이하인지 확인
-        if (imageInputs.files.length > 4){
-          alert("추가 이미지는 4개 이하 첨부해주세요!");
-          return
+        if (imageInputs.files.length > 4) {
+            alert("추가 이미지는 4개 이하 첨부해주세요!");
+            return
         }
 
         let formData = new FormData();
@@ -875,9 +761,9 @@
 
         // 여러 이미지 업로드
         if (imageInputs.files.length > 0) {
-          for (let i = 0; i < imageInputs.files.length; i++) {
-            formData.append('photoImages', imageInputs.files[i]);
-          }
+            for (let i = 0; i < imageInputs.files.length; i++) {
+                formData.append('photoImages', imageInputs.files[i]);
+            }
         }
 
         // 요청 보내기
@@ -904,383 +790,6 @@
             });
     }
 
-    // 게시글 수정
-    function updateBoard(boardId) {
-        // 경유지 입력란의 값을 가져오는 함수
-        var stopoverContainer = document.getElementById('stopovers-container');
-        var stopoverInputs = stopoverContainer.querySelectorAll('.stopover-section input[name="stopover"]');
-
-        var region = document.getElementById('region').value;
-        var title = document.getElementById('title').value;
-        var departure = document.getElementById('departure').value;
-        var destination = document.getElementById('destination').value;
-        var content = document.getElementById('content').value;
-        var image = document.getElementById('image');
-        var imageInputs = document.getElementById('image-multiple');
-
-
-        if (!title && !departure && !destination && !content) {
-            alert('입력을 다시 확인해주세요.');
-            return;
-        }
-
-        let formData = new FormData();
-        formData.append("region", region);
-        formData.append("title", title);
-        formData.append("departure", departure);
-        stopoverInputs.forEach(function (input) {
-            formData.append("stopover", input.value);
-        });
-        formData.append("destination", destination);
-        formData.append("content", content);
-
-        // 파일이 선택되지 않은 경우 빈 파일 전송
-        if (image.files.length > 0) {
-            formData.append('image', image.files[0]);
-        } else {
-            // 빈 파일 생성 및 전송
-            const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
-            formData.append('image', emptyFile);
-        }
-
-        // 여러 이미지 업로드
-        if (imageInputs.files.length > 0) {
-            if(imageInputs.files.length < 4)
-                for (let i = 0; i < imageInputs.files.length; i++) {
-                    formData.append('photoImages', imageInputs.files[i]);
-                }
-            else {
-                alert("3개 이하 첨부해주세요!");
-            }
-        }
-
-        // 요청 보내기
-        fetch(boardUrl + '/' + boardId, {
-            method: 'PATCH',
-            body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('게시글 수정이 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('게시글 수정 실패: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error updating profile:', error);
-            });
-    }
-
-    // 게시글 삭제
-    function deleteBoard(boardId) {
-        fetch(boardUrl + '/' + boardId, {method: 'DELETE'})
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('게시글 삭제가 성공적으로 이루어졌습니다.');
-                    window.location.href = mainPage;
-                } else {
-                    alert('게시글 삭제 실패: ' + data.message);
-                }
-            });
-    }
-
-    // 게시글 신고 사유 입력
-    function showInputForm() {
-        var inputForm = document.getElementById('inputForm');
-        inputForm.style.display = 'block';
-    }
-
-    // 게시글 신고
-    function reportBoard(boardId) {
-        const reason = document.getElementById('reason').value;
-
-        // Request DTO 구성
-        const request = {
-            reason: reason,
-        };
-
-        fetch(boardUrl + '/' + boardId + report, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(request),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('게시글 신고가 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('게시글 신고 실패: ' + data.message);
-                }
-            })
-
-        var inputForm = document.getElementById('inputForm');
-        inputForm.style.display = 'none';
-    }
-
-    // 게시글 신고 취소
-    function cancelReportBoard(boardId) {
-        // 사용자에게 재확인 알림창 표시
-        var confirmation = confirm('신고 취소 하시겠습니까?');
-
-        // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
-        if (confirmation) {
-            fetch(boardUrl + '/' + boardId + report, {method: 'DELETE'})
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.code === 200) {
-                        alert('신고 취소가 성공적으로 이루어졌습니다.');
-                        window.location.href = boardUrl + report;
-                    } else {
-                        alert('신고 취소 실패: ' + data.message);
-                    }
-                })
-        }
-    }
-
-    // 게시글 좋아요
-    function likeBoard(boardId) {
-        fetch(boardUrl + '/' + boardId + like, {
-            method: 'POST',
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('게시글 좋아요 실패: ' + data.message);
-                }
-            })
-    }
-
-    // 댓글 작성
-    function saveComment(boardId) {
-        const content = document.getElementById('commentContent').value;
-        const image = document.getElementById('commentImageInput');
-
-        if (!content) {
-            alert('내용을 입력해주세요.');
-            return;
-        }
-
-        let formData = new FormData();
-        formData.append("boardId", boardId);
-        formData.append("content", content);
-
-        // 파일이 선택되지 않은 경우 빈 파일 전송
-        if (image.files.length > 0) {
-            formData.append('image', image.files[0]);
-        } else {
-            // 빈 파일 생성 및 전송
-            const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
-            formData.append('image', emptyFile);
-        }
-
-        fetch(commentUrl, {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('댓글 작성이 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('댓글 작성 실패: ' + data.message);
-                }
-            })
-    }
-
-    // 댓글 수정 입력창
-    function showCommentUpdateForm() {
-        var inputForm = document.getElementById('commentUpdateForm');
-        inputForm.style.display = 'block';
-    }
-
-    // 댓글 수정
-    function updateComment(boardId, commentId) {
-        const commentContent = document.getElementById('inputCommentContent').value;
-        const commentImage = document.getElementById('inputCommentImage');
-
-        if (!commentContent) {
-            alert('내용을 입력해주세요.');
-            return;
-        }
-
-        let formData = new FormData();
-        formData.append("content", commentContent);
-
-        // 파일이 선택되지 않은 경우 빈 파일 전송
-        if (commentImage.files.length > 0) {
-            formData.append('image', commentImage.files[0]);
-        } else {
-            // 빈 파일 생성 및 전송
-            const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
-            formData.append('image', emptyFile);
-        }
-
-        fetch(commentUrl + '/' + commentId, {
-            method: 'PATCH',
-            body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('댓글 수정이 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('댓글 수정 실패: ' + data.message);
-                }
-            })
-
-        // 입력창을 숨기기
-        var inputForm = document.getElementById('commentUpdateForm');
-        inputForm.style.display = 'none';
-    }
-
-    // 댓글 삭제
-    function deleteComment(boardId, commentId) {
-        fetch(commentUrl + '/' + commentId, {method: 'DELETE'})
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('댓글 삭제가 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('댓글 삭제 실패: ' + data.message);
-                }
-            });
-    }
-
-    // 댓글 신고 사유 입력
-    function showCommentInputForm() {
-        var inputForm = document.getElementById('commentInputForm');
-        inputForm.style.display = 'block';
-    }
-
-    // 댓글 신고
-    function reportComment(boardId, commentId) {
-        const reason = document.getElementById('commentReason').value;
-
-        const request = {
-            reason: reason,
-        };
-
-        fetch(commentUrl + '/' + commentId + report, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(request),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('댓글 신고 실패: ' + data.message);
-                }
-            })
-
-        var inputForm = document.getElementById('commentInputForm');
-        inputForm.style.display = 'none';
-    }
-
-    // 댓글 신고 취소
-    function cancelReportComment(commentId) {
-        // 사용자에게 재확인 알림창 표시
-        var confirmation = confirm('신고 취소 하시겠습니까?');
-
-        // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
-        if (confirmation) {
-            fetch(commentUrl + '/' + commentId + report, {method: 'DELETE'})
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.code === 200) {
-                        alert('신고 취소가 성공적으로 이루어졌습니다.');
-                        window.location.href = commentUrl + report;
-                    } else {
-                        alert('신고 취소 실패: ' + data.message);
-                    }
-                })
-        }
-    }
-
-    // 댓글 좋아요
-    function likeComment(boardId, commentId) {
-        fetch(commentUrl + '/' + commentId + like, {
-            method: 'POST',
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('댓글 좋아요 실패: ' + data.message);
-                }
-            })
-    }
-
     // 이미지 미리보기
     function readURL(input) {
         if (input.files && input.files[0]) {
@@ -1293,6 +802,7 @@
             document.getElementById('preview').src = "";
         }
     }
+
     function readMultipleURL(input) {
         var previewContainer = document.getElementById('preview');
         previewContainer.innerHTML = ''; // 기존 이미지 제거

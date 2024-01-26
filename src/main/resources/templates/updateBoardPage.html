@@ -194,17 +194,30 @@
             outline: none;
         }
 
+        .input-section {
+            display: flex;
+            flex-direction: column;
+        }
+
         .input-section input {
             width: 85%;
             height: 30px;
+            margin-bottom: 10px;
             border-radius: 30px;
             border: 1px solid lightgray;
             outline: none;
         }
 
+        .stopover-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
         .stopover-section input {
             width: 85%;
             height: 30px;
+            margin-right: auto;
             border-radius: 30px;
             border: 1px solid lightgray;
             outline: none;
@@ -302,13 +315,6 @@
             text-align: center;
         }
 
-
-        .stopover-section {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
         #capturedImage {
             margin-top: 20px;
         }
@@ -358,14 +364,15 @@
         textarea {
             width: 100%;
             height: 6.25em;
-            border: none;
+            border: 1px solid pink;
+            border-radius: 10px;
             resize: none;
         }
 
         .btn-style {
             font-family: 'Pretendard-400';
             width: 80%;
-            margin: 0 auto;
+            margin: 0 auto 30px auto;
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
@@ -560,7 +567,7 @@
     </div>
     <!--            <section class="gaegu-bold">-->
     <div class="outLine">
-        이미지 업로드 :
+        지도 캡쳐 업로드 :
         <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
         <br>
         추가 이미지 업로드 (4장으로 제한) :
@@ -593,87 +600,6 @@
     const like = '/like'
     const updatePassword = '/api/users/profile/password';
 
-
-    //좋아요, 최신순 정렬기능
-    function changeSortAndPage(sortBy) {
-        var currentUrl = window.location.href;
-        var updatedUrl;
-
-        // 정렬 기준이 이미 존재하는 경우
-        if (currentUrl.includes('&sortBy=')) {
-            updatedUrl = currentUrl.replace(/&sortBy=[^&]*/, '&sortBy=' + sortBy);
-        } else {
-            // 정렬 기준이 존재하지 않는 경우
-            if (currentUrl.includes('?')) {
-                updatedUrl = currentUrl + '&sortBy=' + sortBy;
-            } else {
-                updatedUrl = currentUrl + '?sortBy=' + sortBy;
-            }
-        }
-
-        // size 파라미터가 이미 존재하는 경우
-        if (currentUrl.includes('&size=')) {
-            updatedUrl = updatedUrl.replace(/&size=[^&]*/, '&size=8'); // 1 대신 적절한 값을 사용
-        } else {
-            // size 파라미터가 존재하지 않는 경우
-            if (currentUrl.includes('?')) {
-                updatedUrl = updatedUrl + '&size=8'; // 1 대신 적절한 값을 사용
-            } else {
-                updatedUrl = updatedUrl + '?size=8'; // 1 대신 적절한 값을 사용
-            }
-        }
-
-        // 새로운 URL로 페이지 이동
-        window.location.href = updatedUrl;
-    }
-
-    // 로그인
-    function onLogin() {
-        let username = $('#username').val();
-        let password = $('#password').val();
-
-        // 사용자 이름 또는 패스워드가 비어있을 경우 오류 처리
-        if (!username || !password) {
-            alert('사용자 이름과 패스워드를 입력하세요.');
-            return;
-        }
-
-        // Request DTO 구성
-        const UserLoginReq = {
-            username: username,
-            password: password
-        };
-
-        fetch(loginPage, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(UserLoginReq),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    // 서버 응답이 200이면 로그인 성공
-                    alert('로그인이 성공적으로 이루어졌습니다.');
-                    window.location.href = mainPage;
-                } else {
-                    // 서버 응답이 200이 아니면 로그인 실패
-                    alert('로그인 실패: ' + data.message);
-                }
-            })
-    }
-
-    // 로그인 요청
-    function needToLogin() {
-        alert("로그인한 사용자만 가능합니다.");
-    }
-
     // 로그아웃
     function logout() {
         var confirmation = confirm('로그아웃 하시겠습니까?');
@@ -704,70 +630,6 @@
         document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     }
 
-    // 비밀번호 수정
-    function onPasswordUpdate() {
-        let prePassword = $('#prePassword').val();
-        let newPassword = $('#newPassword').val();
-        let confirmPassword = $('#confirmPassword').val();
-
-        if (!prePassword || !newPassword || !confirmPassword) {
-            alert('공란을 빠짐없이 입력해주세요.');
-            return;
-        }
-
-        const pwUpdateReq = {
-            prePassword: prePassword,
-            newPassword: newPassword,
-            confirmPassword: confirmPassword
-        };
-
-        fetch(updatePassword, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(pwUpdateReq),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('비밀번호 변경이 이루어졌습니다.');
-                    window.location.href = userUrl;
-                } else {
-                    alert('비밀번호 변경 실패: ' + data.message);
-                }
-            })
-    }
-
-    // 회원 탈퇴
-    function deleteUser() {
-        var confirmation = confirm('정말로 회원 탈퇴하시겠습니까?');
-
-        // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
-        if (confirmation) {
-            fetch(userUrl, {method: 'DELETE'})
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.code === 200) {
-                        alert('회원 탈퇴가 성공적으로 이루어졌습니다.');
-                        window.location.href = mainPage;
-                    } else {
-                        alert('회원 탈퇴 실패: ' + data.message);
-                    }
-                })
-        }
-    }
-
     // 메인 페이지로 이동
     function getMainPage() {
         window.location.href = mainPage;
@@ -781,11 +643,6 @@
     // 게시글 작성 페이지로 이동
     function redirectToCreatePage() {
         window.location.href = createPage;
-    }
-
-    // 게시글 수정 페이지 이동
-    function getUpdateBoard(boardId) {
-        window.location.href = updatePage + boardId;
     }
 
     // 지역 페이지
@@ -858,65 +715,6 @@
     // 추가 입력할 경유지 입력란 삭제 함수
     function addRemoveStopover(stopoverSection) {
         removeFromContainer(stopoverSection);
-    }
-
-    //게시글 작성
-    function saveBoard() {
-        // 경유지 입력란의 값을 가져오는 함수
-        var stopoverContainer = document.getElementById('stopovers-container');
-        var stopoverInputs = stopoverContainer.querySelectorAll('.stopover-section input[name="stopover"]');
-
-        var region = document.getElementById('region').value;
-        var title = document.getElementById('title').value;
-        var departure = document.getElementById('departure').value;
-        var destination = document.getElementById('destination').value;
-        var content = document.getElementById('content').value;
-        var image = document.getElementById('image');
-
-        if (!title && !departure && !destination && !content) {
-            alert('입력을 다시 확인해주세요.');
-            return;
-        }
-
-        let formData = new FormData();
-        formData.append("region", region);
-        formData.append("title", title);
-        formData.append("departure", departure);
-        stopoverInputs.forEach(function (input) {
-            formData.append("stopover", input.value);
-        });
-        formData.append("destination", destination);
-        formData.append("content", content);
-
-        // 파일이 선택되지 않은 경우 알림창이 뜨도록 함
-        if (image.files.length > 0) {
-            formData.append('image', image.files[0]);
-        } else {
-            alert("파일을 첨부해주세요!");
-        }
-
-        // 요청 보내기
-        fetch(boardUrl, {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('게시글 작성이 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/region?region=' + region;
-                } else {
-                    alert('게시글 작성 실패: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error updating profile:', error);
-            });
     }
 
     // 게시글 수정
