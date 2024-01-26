@@ -174,10 +174,10 @@ public class UserService {
 
         // 프로필 사진 관련 로직
         String imageUrl = user.getProfileUrl(); // 기존 프로필 이미지
+        if (!imageUrl.equals(defaultProfileImage)) { // 기존 이미지가 기본 프로필이 아닌 경우
+            s3Util.deleteFile(imageUrl, FilePath.PROFILE); // 기존 이미지 삭제
+        }
         if (multipartFile != null && !multipartFile.isEmpty()) { // 새로 입력한 이미지 파일이 있는 경우
-            if (!imageUrl.equals(defaultProfileImage)) { // 기존 이미지가 기본 프로필이 아닌 경우
-                s3Util.deleteFile(imageUrl, FilePath.PROFILE); // 기존 이미지 삭제
-            }
             S3Validator.isProfileImageFile(multipartFile); // 이미지 파일인지 확인
             imageUrl = s3Util.uploadFile(multipartFile, FilePath.PROFILE); // 업로드 후 프로필로 설정
         }
