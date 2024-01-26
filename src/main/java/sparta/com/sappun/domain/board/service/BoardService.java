@@ -62,7 +62,7 @@ public class BoardService {
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        return boardRepository.findAll(pageable).map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
+        return boardRepository.findAllByReportCountLessThan(REPORT_HIDDEN_COUNT,pageable).map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
     }
 
     @Transactional(readOnly = true)
