@@ -47,12 +47,12 @@ public class JwtUtil {
     }
 
     /** AccessToken 토큰 만들기 */
-    public String createAccessToken(Long userId, String role) {
+    public String createAccessToken(String userId, String role) {
         Date now = new Date();
 
         return BEARER_PREFIX
                 + Jwts.builder()
-                        .setSubject(String.valueOf(userId)) // 사용자 식별자값(ID)
+                        .setSubject(userId) // 사용자 식별자값(ID)
                         .claim(AUTHORIZATION_KEY, role) // 사용자 권한
                         .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_TIME)) // 만료 기간
                         .setIssuedAt(now)

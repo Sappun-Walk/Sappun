@@ -17,6 +17,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (username.contains("\"")) {
+            username = username.replace("\"", "");
+        }
         User user = userRepository.findById(Long.parseLong(username));
         UserValidator.validate(user);
         return new UserDetailsImpl(user);

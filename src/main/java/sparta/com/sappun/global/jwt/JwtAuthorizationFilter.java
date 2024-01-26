@@ -1,6 +1,7 @@
 package sparta.com.sappun.global.jwt;
 
 import static sparta.com.sappun.global.jwt.JwtUtil.ACCESS_TOKEN_HEADER;
+import static sparta.com.sappun.global.jwt.JwtUtil.BEARER_PREFIX;
 import static sparta.com.sappun.global.jwt.JwtUtil.REFRESH_TOKEN_HEADER;
 
 import com.amazonaws.HttpMethod;
@@ -82,11 +83,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         log.info("accessToken 만료");
-        if (tokens != null) {
-            // access token 이 만료되면 refresh token 가져옴
-            refreshToken =
-                    jwtUtil.getTokensFromCookie(request).get(REFRESH_TOKEN_HEADER); // refresh token 찾음
-        }
+
+        // access token 이 만료되면 refresh token 가져옴
+        refreshToken =
+                jwtUtil.getTokensFromCookie(request).get(REFRESH_TOKEN_HEADER); // refresh token 찾음
+
         log.info("refreshToken : {}", refreshToken);
 
         // refresh token 검증
@@ -95,26 +96,23 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // refresh token 이 만료되면 로그인 필요 예외 발생
         TokenValidator.checkLoginRequired(jwtUtil.isTokenExpired(refreshToken));
 
-        // 응답 헤더에 재발급한 access token 반환
+        // 응답 쿠키에 재발급한 access token 반환
         accessToken = renewAccessToken(refreshToken);
-        Cookie cookie = new Cookie(ACCESS_TOKEN_HEADER, accessToken); // Name-Value
-        cookie.setPath("/");
-        cookie.setMaxAge(2 * 60 * 60);
+        addCookie(accessToken, ACCESS_TOKEN_HEADER, response);
+        addCookie(BEARER_PREFIX + refreshToken, REFRESH_TOKEN_HEADER, response);
 
-        // Response 객체에 Cookie 추가
-        response.addCookie(cookie);
         log.info("accessToken 재발급 종료");
         log.info("accessToken : {}", accessToken);
+        log.info("refreshToken : {}", refreshToken);
 
         filterChain.doFilter(request, response);
     }
 
     private String renewAccessToken(String refreshToken) {
         log.info("access token 재발급");
-        Long userId = Long.parseLong(String.valueOf(redisUtil.get(refreshToken)));
+        String userId = redisUtil.get(refreshToken);
         log.info("userId : {}", userId);
-        UserDetailsImpl userDetails =
-                (UserDetailsImpl) userDetailsService.loadUserByUsername(String.valueOf(userId));
+        UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(userId);
         String role = userDetails.getUser().getRole().getAuthority();
         String newAccessToken = jwtUtil.createAccessToken(userId, role); // 새로운 access token 발급
 
@@ -165,5 +163,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         // 현재 URL 이 화이트 리스트에 존재하는지 체크
         return whiteList.stream().anyMatch(whitePath -> whitePath.matches(request));
+    }
+
+    private static void addCookie(String cookieValue, String header, HttpServletResponse res) {
+        Cookie cookie = new Cookie(header, cookieValue); // Name-Value
+        cookie.setPath("/");
+        cookie.setMaxAge(2 * 60 * 60);
+
+        // Response 객체에 Cookie 추가
+        res.addCookie(cookie);
     }
 }
