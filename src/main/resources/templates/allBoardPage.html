@@ -110,7 +110,7 @@
         }
 
         .gallery-container {
-            width: 80%;
+            width: 63%;
             margin-left: auto;
             margin-right: auto;
             margin-top: 20px;
@@ -118,11 +118,13 @@
             flex-wrap: wrap;
             text-align: center;
             justify-content: center;
-            gap: 20px 50px;
+            gap: 20px 30px;
+            flex-direction: row;
+            align-items: center;
         }
 
         .gallery-item {
-            width: calc((70% - 0px) / 4); /* Calculate width with 4 items and 3 gaps between them */
+            width: 275px;
             height: 380px;
             border: 1px solid deeppink;
             border-radius: 25px;
@@ -185,8 +187,8 @@
         }
 
         .rank-image {
-          width: 50px;
-          height: 50px;
+            width: 50px;
+            height: 50px;
         }
 
         #sidebar {
@@ -252,19 +254,21 @@
         #mainLogoImage {
             cursor: pointer;
         }
+
         .btn-style {
             font-family: 'Pretendard-400';
-            width: 65%;
-            margin: 0 auto 30px auto;
+            width: 50%;
+            margin: auto;
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
+            align-items: center;
         }
 
         .btn-style button {
             font-family: 'Pretendard-400';
             margin-left: 10px;
-            width: 8%;
+            width: 15%;
             background-color: white;
             color: black;
             border: 1px solid pink;
@@ -277,6 +281,26 @@
             /* 마우스를 버튼 위에 올렸을 때의 스타일 변경 */
             background-color: pink;
         }
+
+        .page-title {
+            width: 63%;
+            height: 50px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .page-title1 {
+            font-family: 'yg-jalnan';
+            font-size: 30px;
+            width: 50%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            text-align: center;
+            align-items: center;
+        }
+
     </style>
 </head>
 <body>
@@ -312,23 +336,27 @@
         <div class="btn-write">
             <div th:if="${user != null}" class="rank">
                 <span th:if="${user.score < 0}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}" alt="rank-image"
+                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}"
+                         alt="rank-image"
                          class="rank-image">
                 </span>
                 <span th:if="${user.score >= 0 and user.score <= 300}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}" alt="rank-image"
+                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}"
+                         alt="rank-image"
                          class="rank-image">
                 </span>
                 <span th:if="${user.score > 300 and user.score <= 700}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}" alt="rank-image"
-                        class="rank-image">
+                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}"
+                         alt="rank-image"
+                         class="rank-image">
                 </span>
                 <span th:if="${user.score > 700 and user.score <= 1200}">
                     <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}" alt="rank-image"
-                        class="rank-image">
+                         class="rank-image">
                 </span>
                 <span th:if="${user.score > 1200}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}" alt="rank-image"
+                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}"
+                         alt="rank-image"
                          class="rank-image">
                 </span>
             </div>
@@ -358,13 +386,16 @@
         </div>
     </div>
 </div>
-<div class="btn-style">
-    <button class="buttons1" type="button" onclick="changeSortAndPage('createdAt')">
-        최신순
-    </button>
-    <button class="buttons1" type="button" onclick="changeSortAndPage('likeCount')">
-        좋아요순
-    </button>
+<div class="page-title">
+    <h3 class="page-title1">전체 게시글</h3>
+    <div class="btn-style">
+        <button type="button" onclick="changeSortAndPage('createdAt')">
+            최신순
+        </button>
+        <button type="button" onclick="changeSortAndPage('likeCount')">
+            좋아요순
+        </button>
+    </div>
 </div>
 <div class="gallery-container">
     <div class="gallery-item" th:each="allboard : ${responseDto.content}" th:id="${'allboard-' + allboard.id}"
