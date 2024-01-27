@@ -89,7 +89,7 @@
         }
 
         .gallery-caption {
-            padding: 10px 50px;
+            padding: 10px 20px;
             text-align: left;
         }
 
@@ -117,12 +117,36 @@
             font-family: 'Pretendard-600';
         }
 
-        .Title {
+        .title {
             font-family: 'yg-jalnan';
+            font-size: 50px;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .title-notice {
+            font-family: 'yg-jalnan';
+            font-size: 26px;
+            text-align: left;
+            justify-content: center;
+        }
+
+        .notice {
+            font-family: 'Pretendard-400';
+            width: 80%;
+            margin: 0 auto 100px auto;
+            padding: 0 20px;
+            font-size: 20px;
+            text-align: left;
+            justify-content: center;
         }
 
         .Board-Title {
             font-family: 'Pretendard-900';
+            width: 80%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .Board-content {
@@ -213,9 +237,55 @@
         }
 
         .gallery-title {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+
+        .like1 {
+            font-family: 'Pretendard-900';
+        }
+
+        .like-view {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .like-btn {
+            margin-left: 10px;
+            background-color: white;
+            color: red;
+            border: 0.5px solid pink;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        .like-btn:hover {
+            /* 마우스를 버튼 위에 올렸을 때의 스타일 변경 */
+            background-color: red;
+            color: #fff;
+        }
+
+        .like-btn.liked {
+            background-color: #dc3545;
+        }
+
+        footer {
+            background-color: rgba(255, 182, 193, 0.5); /* lightpink 색상을 반투명하게 지정 */
+            text-align: center;
+            padding: 20px;
+
+        }
+
+        footer p {
+            color: #000000;
+        }
+
+        footer a {
+            text-decoration: none; /* 하이퍼링크의 밑줄을 없앰 */
         }
     </style>
 </head>
@@ -305,18 +375,27 @@
 
 <div class="getBoardDetail-body">
     <div class="inner-div">
-        <div class="Title" style="font-size: 50px; text-align: center; justify-content: center;">Best 산책로 TOP3</div>
+        <div class="title">Best 산책로 TOP3</div>
     </div>
 </div>
 
 <div class="getBoardDetail-body">
     <div class="gallery-container">
-        <div class="gallery-item" th:each="board : ${bestBoards.boards}" th:id="${'board-' + board.id}"
-             th:onclick="'getBoardDetails(' + ${board.id} + ')'">
-            <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
+        <div class="gallery-item" th:each="board : ${bestBoards.boards}" th:id="${'board-' + board.id}">
+            <img class="img-section" th:src="${board.fileURL}" th:onclick="'getBoardDetails(' + ${board.id} + ')'"
+                 alt="게시물 이미지">
             <div class="gallery-caption">
                 <div class="gallery-title">
                     <div class="Board-Title" style="font-size: 20px;" th:text="${board.title}"></div>
+                    <div class="like-view">
+                        <div th:text="${board.likeCount}"></div>
+                        <div th:if="${user != null}">
+                            <button class="like-btn" th:onclick="'likeBoard(' + ${board.id} + ')'">❤</button>
+                        </div>
+                        <div th:if="${user == null}">
+                            <button class="like-btn" onclick="needToLogin()">❤</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="Board-content" style="font-size: 16px;" th:text="'작성자: ' + ${board.nickname}"></div>
                 <div class="Board-content" style="font-size: 16px;"
@@ -326,6 +405,26 @@
     </div>
 </div>
 
+<div class="getBoardDetail-body">
+    <div class="inner-div">
+        <div class="title-notice">공지사항</div>
+    </div>
+    <div class="notice">
+        <div>※ 산책로를 내 PC에 저장하지 않아도 자동으로 등록되게 업데이트되었어요!</div>
+        <div>※ 산책로 외에 추가 이미지를 최대 4장까지 게시할 수 있게 업데이트되었어요!</div>
+        <div>※ 게시글 및 댓글 작성자 프로필을 클릭하면 조회 될 수 있게 업데이트되었어요!</div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 SAPPUN.
+        Team members <a href="https://github.com/hayul93" target="_blank">박상율</a>,
+        <a href="https://github.com/rlawogks22" target="_blank">김재한</a>,
+        <a href="https://github.com/peter202597" target="_blank">홍정욱</a>,
+        <a href="https://github.com/jump6923" target="_blank">김진환</a>,
+        <a href="https://github.com/dlwls423" target="_blank">이예진</a>
+    </p>
+</footer>
 <script>
 
     const host = 'http://' + window.location.host;
@@ -473,12 +572,41 @@
             })
             .then(data => {
                 if (data.code === 200) {
-                    window.location.href = boardUrl + '/' + boardId;
+                    window.location.href = mainPage;
                 } else {
                     alert('게시글 좋아요 실패: ' + data.message);
                 }
             })
     }
+
+    // 게시글 좋아요에따라 버튼색 변경
+    // function likeBoard(boardId) {
+    //     fetch(boardUrl + '/' + boardId + '/like', {
+    //         method: 'POST',
+    //     })
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error('Network response was not ok');
+    //             }
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             if (data.code === 200) {
+    //                 // 좋아요 수 갱신
+    //                 const likeCountElement = document.querySelector('.board-up p:nth-child(2)');
+    //                 likeCountElement.innerText = '좋아요 수: ' + data.likeCount;
+    //
+    //                 // 버튼 색상 변경
+    //                 const likeButton = document.querySelector('.like-btn');
+    //                 likeButton.style.backgroundColor = data.isLiked ? '#dc3545' : '#28a745';
+    //
+    //                 // 페이지 리로드
+    //                 window.location.href = boardUrl + '/' + boardId;
+    //             } else {
+    //                 alert('게시글 좋아요 실패: ' + data.message);
+    //             }
+    //         })
+    // }
 
     // 이미지 미리보기
     function readURL(input) {
@@ -540,7 +668,7 @@
     });
 
     //사진 순위에 따라 색상이 변함
-    document.querySelectorAll('.gallery-item').forEach(function(item, index) {
+    document.querySelectorAll('.gallery-item').forEach(function (item, index) {
         var overlay = item.querySelector('.img-section');
 
         overlay.addEventListener('mousemove', function (e) {
@@ -550,7 +678,7 @@
             var rotateX = 4 / 30 * y - 20;
             var opacity = x / 50; // 빛나는 정도를 조절하기 위한 opacity 값 변경
 
-            switch(index) {
+            switch (index) {
                 case 0:
                     overlay.style = `background-position: ${x / 5 + y / 5}%; filter: opacity(${opacity}); brightness(1.1); box-shadow: 0 0 20px gold; background-color: gold;`;
                     break;
@@ -565,7 +693,7 @@
             }
         });
 
-        overlay.addEventListener('mouseout', function() {
+        overlay.addEventListener('mouseout', function () {
             overlay.style = 'filter: opacity(1); box-shadow: none; background-color: initial;';
         });
     });
