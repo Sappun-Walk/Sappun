@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/%EC%82%AC%EB%BF%902.png">
+    <link rel="icon" href="https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/11zon_cropped+(1).png">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -402,18 +402,29 @@
 </div>
 
 <div class="page-num" th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
-              end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)})">
+              end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)}),
+              currentPage=${responseDto.number + 1}">
+    <!-- 현재 페이지를 중심으로 앞뒤로 2개의 페이지만 표시 -->
     <ul class="page-nation">
-        <li class="li1" th:each="pageNum: ${#numbers.sequence(start, end)}">
+        <li class="li1" th:if="${currentPage > 1}">
+            <!-- 처음 페이지로 이동 -->
+            <a href="#" th:data-region="${region}" th:data-page="1" onclick="changeRegionAndPage(this)">
+                <span th:text="'<<'"></span>
+            </a>
+        </li>
+        <li class="li1" th:each="pageNum: ${#numbers.sequence(currentPage - 2, currentPage + 2 < end ? currentPage + 2 : end)}" th:if="${pageNum >= start}">
             <a href="#" th:data-region="${region}" th:data-page="${pageNum}" onclick="changeRegionAndPage(this)">
                 <span th:text="${pageNum}"></span>
             </a>
         </li>
+        <li class="li1" th:if="${currentPage < end}">
+            <a href="#" th:data-region="${region}" th:data-page="${end}" onclick="changeRegionAndPage(this)">
+                <span th:text="'>>'"></span>
+            </a>
+        </li>
     </ul>
-    <a href="#" th:data-region="${region}" th:data-page="${pageNum}" onclick="changeRegionAndPage(this)">
-        <span th:text="${pageNum}"></span>
-    </a>
 </div>
+
 <script>
     const host = 'http://' + window.location.host;
     const loginPage = '/api/users/login';
