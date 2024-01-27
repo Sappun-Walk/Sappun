@@ -713,10 +713,25 @@
             return;
         }
 
-      if (content.length > 255) {
-        alert('내용은 최대 255자까지만 입력 가능합니다.');
-        return;
-      }
+        if (!title) {
+            alert("제목을 입력해주세요.");
+            return;
+        } else if(title.length > 20) {
+            alert("제목은 최대 20자까지만 입력 가능합니다.");
+            return;
+        } else if(!departure) {
+            alert("출발지를 입력해주세요.");
+            return;
+        } else if (!destination) {
+            alert("목적지를 입력해주세요.");
+            return;
+        } else if (!content) {
+            alert("내용을 입력해주세요.");
+            return;
+        } else if (content.length > 255) {
+            alert('내용은 최대 255자까지만 입력 가능합니다.');
+            return;
+        }
 
         // 추가 이미지가 4장 이하인지 확인
         if (imageInputs.files.length > 4){
