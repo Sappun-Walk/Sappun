@@ -119,19 +119,21 @@
         }
 
         .gallery-container {
-            width: 80%;
+            width: 78%;
             margin-left: auto;
             margin-right: auto;
             margin-top: 20px;
             display: flex;
             flex-wrap: wrap;
             text-align: center;
-            justify-content: center; /* Distribute items with equal space between them */
-            gap: 20px 50px;
+            justify-content: center;
+            gap: 20px 30px;
+            flex-direction: row;
+            align-items: center;
         }
 
         .gallery-item {
-            width: calc((70% - 0px) / 4); /* Calculate width with 4 items and 3 gaps between them */
+            width: 275px;
             height: 380px;
             border: 1px solid deeppink;
             border-radius: 25px;
@@ -229,18 +231,6 @@
 
         #openBtn.hide {
             visibility: hidden;
-        }
-
-        .view-div {
-            margin-left: auto;
-            margin-right: 18%;
-            display: flex;
-            flex-direction: row-reverse;
-            gap: 10px;
-        }
-
-        .view-div1 {
-            font-family: 'Pretendard-400';
         }
 
         .view-div button {
