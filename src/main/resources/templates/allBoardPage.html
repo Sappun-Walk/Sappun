@@ -416,17 +416,29 @@
 
 
 <div class="page-num" th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
-              end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)})">
+end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)}),
+currentPage=${responseDto.number + 1}">
+
+    <!-- 현재 페이지를 중심으로 앞뒤로 2개의 페이지만 표시 -->
+    <!-- 첫 페이지로 이동 -->
     <ul class="page-nation">
-        <li class="li1" th:each="pageNum: ${#numbers.sequence(start, end)}">
+        <li class="li1" th:if="${currentPage > 1}">
+            <a href="#" th:data-page="1" onclick="changeAllBoardPage(this)">
+                <span th:text="'<<'"></span>
+            </a>
+        </li>
+        <li class="li1" th:each="pageNum: ${#numbers.sequence(currentPage - 2, currentPage + 2 < end ? currentPage + 2 : end)}" th:if="${pageNum >= start}">
             <a href="#" th:data-page="${pageNum}" onclick="changeAllBoardPage(this)">
                 <span th:text="${pageNum}"></span>
             </a>
         </li>
+        <!-- 다음 페이지로 이동 -->
+        <li class="li1" th:if="${currentPage < end}">
+            <a href="#" th:data-page="${end}" onclick="changeAllBoardPage(this)">
+                <span th:text="'>>'"></span>
+            </a>
+        </li>
     </ul>
-    <a href="#" th:data-page="${pageNum}" onclick="changeAllBoardPage(this)">
-        <span th:text="${pageNum}"></span>
-    </a>
 </div>
 <script>
     const host = 'http://' + window.location.host;
