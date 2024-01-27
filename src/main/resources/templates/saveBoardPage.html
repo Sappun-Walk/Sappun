@@ -93,13 +93,14 @@
 
         #profileImage {
             cursor: pointer;
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            top: 10px;
-            right: 30px;
+            width: 80px;
+            height: 80px;
             padding: 10px;
             border-radius: 50%;
+        }
+
+        .btn-sideOpen {
+            width: 500px;
         }
 
         #openBtn {
@@ -339,12 +340,11 @@
         }
 
         .btn-write {
-            /*margin-top: 30px;*/
-            margin-left: auto;
-            margin-right: 100px;
+            width: 500px;
             display: flex;
             align-items: center;
-            flex-direction: row-reverse;
+            flex-direction: row;
+            justify-content: flex-end;
         }
 
         .btn-write button {
@@ -429,7 +429,9 @@
 </div>
 <!--페이지 기본 상단-->
 <div id="main">
-    <button id="openBtn" onclick="openNav()">☰</button>
+    <div class="btn-sideOpen">
+        <button id="openBtn" onclick="openNav()">☰</button>
+    </div>
     <div class="main-img-container">
         <img class="main-img" id="mainLogoImage"
              th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png} "
@@ -437,40 +439,12 @@
              alt="Main Image">
     </div>
     <div class="btn-write">
-        <div th:if="${user != null}" class="rank">
-                <span th:if="${user.score < 0}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}"
-                         alt="rank-image"
-                         class="rank-image">
-                </span>
-            <span th:if="${user.score >= 0 and user.score <= 300}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}"
-                         alt="rank-image"
-                         class="rank-image">
-                </span>
-            <span th:if="${user.score > 300 and user.score <= 700}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}"
-                         alt="rank-image"
-                         class="rank-image">
-                </span>
-            <span th:if="${user.score > 700 and user.score <= 1200}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}" alt="rank-image"
-                         class="rank-image">
-                </span>
-            <span th:if="${user.score > 1200}">
-                    <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}"
-                         alt="rank-image"
-                         class="rank-image">
-                </span>
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
+            <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
         </div>
         <div th:if="${user == null}">
             <button class="btn btn-outline-success" type="submit"
                     th:onclick="|location.href='@{/api/users/login-page}'|">로그인
-            </button>
-        </div>
-        <div th:if="${user != null && user.role == T(sparta.com.sappun.domain.user.entity.Role).ADMIN}">
-            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/reports}'|">
-                게시판 관리
             </button>
         </div>
         <div th:if="${user != null}">
@@ -478,12 +452,42 @@
                 로그아웃
             </button>
         </div>
-        <div th:if="${#authorization.expression('isAuthenticated()')}">
-            <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
+        <div th:if="${user != null && user.role == T(sparta.com.sappun.domain.user.entity.Role).ADMIN}">
+            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/reports}'|">
+                게시판 관리
+            </button>
         </div>
-    </div>
-    <div th:if="${user != null}">
-        <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile" id="profileImage">
+        <div th:if="${user != null}" class="rank">
+            <span th:if="${user.score < 0}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}"
+                                 alt="rank-image"
+                                 class="rank-image">
+                        </span>
+            <span th:if="${user.score >= 0 and user.score <= 300}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}"
+                                 alt="rank-image"
+                                 class="rank-image">
+                        </span>
+            <span th:if="${user.score > 300 and user.score <= 700}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}"
+                                 alt="rank-image"
+                                 class="rank-image">
+                        </span>
+            <span th:if="${user.score > 700 and user.score <= 1200}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}"
+                                 alt="rank-image"
+                                 class="rank-image">
+                        </span>
+            <span th:if="${user.score > 1200}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}"
+                                 alt="rank-image"
+                                 class="rank-image">
+                        </span>
+        </div>
+        <div th:if="${user != null}">
+            <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile"
+                 id="profileImage">
+        </div>
     </div>
 </div>
 <!--게시글 제목 작성란-->
