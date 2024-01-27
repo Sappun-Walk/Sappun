@@ -14,6 +14,7 @@ public class BoardGetRes {
     private Long id;
     private String nickname;
     private String profileUrl;
+    private Long userId;
     private String title;
     private String content;
     private String fileURL;
@@ -30,6 +31,7 @@ public class BoardGetRes {
             Long id,
             String nickname,
             String profileUrl,
+            Long userId,
             String title,
             String content,
             String fileURL,
@@ -43,6 +45,7 @@ public class BoardGetRes {
         this.id = id;
         this.nickname = nickname;
         this.profileUrl = profileUrl;
+        this.userId = userId;
         this.title = title;
         this.content = content;
         this.fileURL = fileURL;

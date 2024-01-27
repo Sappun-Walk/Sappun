@@ -165,6 +165,11 @@ public class UserService {
         return UserServiceMapper.INSTANCE.toUserProfileRes(getUserById(userId));
     }
 
+    @Transactional(readOnly = true)
+    public UserProfileRes getProfileInfo(Long userId) {
+        return UserServiceMapper.INSTANCE.toUserProfileRes(getUserById(userId));
+    }
+
     // 프로필 수정
     @Transactional
     public UserProfileUpdateRes updateProfile(UserProfileUpdateReq req, MultipartFile multipartFile) {
