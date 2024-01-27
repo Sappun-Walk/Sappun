@@ -69,24 +69,22 @@
             font-family: 'Pretendard-400';
         }
 
-        div.profile-page {
+        .profile-page {
             display: flex; /* Flexbox 사용 */
             flex-direction: column; /* 세로로 정렬 */
             align-items: center; /* 가운데 정렬 */
         }
 
-        div.profile-header {
+        .profile-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
             padding: 10px; /* 여백 설정 */
             width: 100%; /* 전체 너비로 확장 */
         }
 
         #mainLogoImage {
             cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
-            width: 200px; /* 로고 버튼의 너비 */
-            height: 100px; /* 로고 버튼의 높이 */
-            float: left; /* 왼쪽 맨 위로 */
-            margin-top: 10px; /* 맨 위에서 10px 만큼 떨어지도록 조절 */
-            margin-left: 20px;
         }
 
         div.profile-header-buttons {
