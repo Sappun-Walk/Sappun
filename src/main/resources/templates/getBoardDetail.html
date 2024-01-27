@@ -339,7 +339,20 @@
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            margin: 10px 20px;
+            margin: 0px 20px;
+        }
+
+        .author {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+        }
+
+        img.authorProfile {
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          margin-right: 15px;
         }
 
         .like1 {
@@ -552,7 +565,10 @@
     <div class="board-margin">
         <div class="outLine">
             <div class="like">
-                <div class="like1" th:text="'작성자: ' + ${board.nickname}"></div>
+                <div class = "author">
+                    <img class="authorProfile" th:src="${board.profileUrl}" alt="사용자 프로필">
+                    <div class="like1" th:text="${board.nickname}"></div>
+                </div>
                 <div class="like-view">
                     <div th:text="${board.likeCount}"></div>
                     <div th:if="${user != null}">
@@ -623,7 +639,10 @@
             <div class="outLine">
                 <div class="gallery-caption">
                     <div class="like">
-                        <b th:text="'작성자: ' + ${comment.nickname}"></b>
+                        <div class = "author">
+                            <img class="authorProfile" th:src="${comment.profileUrl}" alt="사용자 프로필">
+                            <b th:text="${comment.nickname}"></b>
+                        </div>
                         <!--댓글 좋아요-->
                         <div class="like-view">
                             <div th:text="${comment.likeCount}"></div>
