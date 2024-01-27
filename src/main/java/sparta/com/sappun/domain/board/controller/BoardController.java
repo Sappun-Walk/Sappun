@@ -147,6 +147,13 @@ public class BoardController {
         return boardService.saveMapImage(mapImage); // s3에 저장한 이미지의 url을 반환
     }
 
+    // 지도 파일 삭제
+    @ResponseBody
+    @DeleteMapping("/map")
+    public void deleteMapImage(@RequestParam("mapImage") String mapImage) {
+        boardService.deleteMapImage(mapImage);
+    }
+
     // 게시글 수정
     @ResponseBody
     @PatchMapping("/{boardId}")

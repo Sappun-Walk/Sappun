@@ -929,6 +929,25 @@
     }
 
     function captureMapImage() {
+
+        // 만약 캡처를 다시 하는 경우 이전 데이터를 삭제함
+        if(mapImage !== '') {
+          // 서버로 API 요청 보내기
+          fetch(`/api/boards/map?mapImage=${encodeURIComponent(mapImage)}`, {
+            method: 'DELETE',
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // API 응답을 문자열로 변환
+            return response.text();
+          })
+          .catch(error => {
+            console.error('Error saving map image:', error);
+          });
+        }
+
         if (!polyline) {
             alert('산책로를 먼저 그려주세요.');
             return;

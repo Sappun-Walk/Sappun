@@ -24,6 +24,7 @@ import sparta.com.sappun.global.validator.BoardValidator;
 import sparta.com.sappun.global.validator.S3Validator;
 import sparta.com.sappun.global.validator.UserValidator;
 import sparta.com.sappun.infra.s3.S3Util;
+import sparta.com.sappun.infra.s3.S3Util.FilePath;
 
 @Service
 @RequiredArgsConstructor
@@ -94,6 +95,10 @@ public class BoardService {
     public String saveMapImage(MultipartFile mapImage) {
         S3Validator.isProfileImageFile(mapImage);
         return s3Util.uploadFile(mapImage, S3Util.FilePath.BOARD);
+    }
+
+    public void deleteMapImage(String mapImage) {
+        s3Util.deleteFile(mapImage, FilePath.BOARD); // 기존 이미지 삭제
     }
 
     @Transactional
