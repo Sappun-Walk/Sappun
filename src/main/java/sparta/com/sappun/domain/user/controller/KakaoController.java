@@ -50,10 +50,9 @@ public class KakaoController {
         Cookie cookie = new Cookie(header, cookieValue); // Name-Value
         cookie.setPath("/");
         cookie.setMaxAge(2 * 60 * 60);
-        cookie.setDomain(".sappun.shop");
-        //        cookie.setDomain("sappun.shop");
-        cookie.setSecure(true); // 쿠키를 안전한 연결에서만 전송
-        cookie.setHttpOnly(true); // JavaScript를 통한 액세스 제한
+        //        cookie.setDomain(".sappun.shop");
+        //        cookie.setSecure(true); // 쿠키를 안전한 연결에서만 전송
+        //        cookie.setHttpOnly(true); // JavaScript를 통한 액세스 제한
 
         // Response 객체에 Cookie 추가
         res.addCookie(cookie);
