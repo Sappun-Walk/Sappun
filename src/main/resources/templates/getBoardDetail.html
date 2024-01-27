@@ -1403,11 +1403,11 @@
       profileImage.src = profileInfo.profileUrl;
       if (profileInfo.score < 0) {
         score.src = "https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png"
-      } else if (score <= 300) {
+      } else if (profileInfo.score <= 300) {
         score.src = "https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png"
-      } else if (score <= 700){
+      } else if (profileInfo.score <= 700){
         score.src = "https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png"
-      } else if (score <= 1200){
+      } else if (profileInfo.score <= 1200){
         score.src = "https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png"
       } else {
         score.src = "https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png"

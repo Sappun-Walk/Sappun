@@ -73,7 +73,8 @@ public class WebSecurityConfig {
                                         "/api/users/login-page",
                                         "/api/users/signup-page",
                                         "/api/users/username",
-                                        "/api/users/nickname")
+                                        "/api/users/nickname",
+                                        "/api/users/profile/{uaerId}")
                                 .permitAll() // 회원가입, 로그인 API만 접근 허용
                                 .requestMatchers("/")
                                 .permitAll()
