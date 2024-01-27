@@ -27,7 +27,6 @@ public class BoardController {
     private final BoardService boardService;
 
     private static final String DEFAULT_PAGE = "1";
-    private static final Integer MAX_PAGE = 5;
     private static final String DEFAULT_SIZE = "8";
     private static final String DEFAULT_SORT_BY = "createdAt";
     private static final String DEFAULT_IS_ASC = "false";
@@ -76,7 +75,7 @@ public class BoardController {
                 boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
         model.addAttribute("region", region);
         model.addAttribute("responseDto", responseDto);
-        model.addAttribute("maxPage", MAX_PAGE);
+        model.addAttribute("maxPage", responseDto.getTotalPages());
         return "regionPage";
     }
 
@@ -94,7 +93,7 @@ public class BoardController {
         Page<BoardToListGetRes> responseDto =
                 boardService.getBoardAllList(page - 1, size, sortBy, isAsc);
         model.addAttribute("responseDto", responseDto);
-        model.addAttribute("maxPage", MAX_PAGE);
+        model.addAttribute("maxPage", responseDto.getTotalPages());
         return "allBoardPage";
     }
 
@@ -114,7 +113,7 @@ public class BoardController {
                 boardService.getBoardUserList(userId, page - 1, size, sortBy, isAsc);
 
         model.addAttribute("responseDto", responseDto);
-        model.addAttribute("maxPage", MAX_PAGE);
+        model.addAttribute("maxPage", responseDto.getTotalPages());
         return "userBoardPage";
     }
 
