@@ -118,8 +118,15 @@ public class UserController {
         return "profile";
     }
 
+    // 프로필 조회
+    @ResponseBody
+    @GetMapping("/profile/{userId}")
+    public CommonResponse<UserProfileRes> getProfileInfo(@PathVariable Long userId) {
+        return CommonResponse.success(userService.getProfileInfo(userId));
+    }
+
     // 프로필 수정 입력 화면 출력
-    @GetMapping("/profile")
+    @GetMapping("/profile-update")
     public String getProfileForInput(
             Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         UserProfileRes res = userService.getProfile(userDetails.getUser().getId());

@@ -17,10 +17,12 @@ public interface BoardServiceMapper {
 
     @Mapping(source = "user.nickname", target = "nickname")
     @Mapping(source = "user.profileUrl", target = "profileUrl")
+    @Mapping(source = "user.id", target = "userId")
     BoardGetRes toBoardGetRes(Board board);
 
     @Mapping(source = "user.nickname", target = "nickname")
     @Mapping(source = "user.profileUrl", target = "profileUrl")
+    @Mapping(source = "user.id", target = "userId")
     CommentGetRes toCommentGetRes(Comment comment);
 
     List<BoardToListGetRes> toBoardBestListGetRes(List<Board> boardList);
