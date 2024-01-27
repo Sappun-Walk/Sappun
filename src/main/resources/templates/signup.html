@@ -504,7 +504,6 @@
                     // 중복되지 않은 경우 메시지 초기화
                     alert('사용 가능한 닉네임입니다.');
                     isDuplicatedNickname = false;
-                    updateUpdateButtonState();
                 }
             })
             .catch(error => {
@@ -535,6 +534,16 @@
             return;
         } else if (!confirmPassword) {
             alert('confirmPassword을 입력하세요.');
+            return;
+        }
+
+        if (document.getElementById('username').value.trim() !== '' && isDuplicatedUsername) {
+            // 입력값이 있고, 중복된 경우
+            alert("아이디 중복 확인을 해주세요.");
+            return;
+        } else if (document.getElementById('nickname').value.trim() !== '' && isDuplicatedNickname) {
+            // 입력값이 있고, 중복된 경우
+            alert("닉네임 중복 확인을 해주세요.");
             return;
         }
 
