@@ -13,6 +13,7 @@ import sparta.com.sappun.domain.comment.dto.response.CommentGetRes;
 public class BoardGetRes {
     private Long id;
     private String nickname;
+    private String profileUrl;
     private String title;
     private String content;
     private String fileURL;
@@ -28,6 +29,7 @@ public class BoardGetRes {
     private BoardGetRes(
             Long id,
             String nickname,
+            String profileUrl,
             String title,
             String content,
             String fileURL,
@@ -40,6 +42,7 @@ public class BoardGetRes {
             Integer likeCount) {
         this.id = id;
         this.nickname = nickname;
+        this.profileUrl = profileUrl;
         this.title = title;
         this.content = content;
         this.fileURL = fileURL;
