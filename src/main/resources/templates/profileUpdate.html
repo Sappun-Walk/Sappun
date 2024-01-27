@@ -383,7 +383,6 @@
     const updatePassword = '/api/users/profile/password';
 
 
-
     // 로그인 요청
     function needToLogin() {
         alert("로그인한 사용자만 가능합니다.");
@@ -625,29 +624,11 @@
                     // 중복되지 않은 경우 메시지 초기화
                     alert('사용 가능한 닉네임입니다.');
                     isDuplicatedNickname = false;
-                    updateUpdateButtonState();
                 }
             })
             .catch(error => {
                 console.error('Error checking nickname:', error);
             });
-    }
-
-    function updateUpdateButtonState() {
-        // 입력이 있는 경우, 두 버튼의 결과가 모두 false일 때만 수정 버튼을 활성화
-        var updateButton = document.getElementById("update-complete-button");
-
-        if ((document.getElementById('username').value.trim() !== '' && isDuplicatedUsername) ||
-            (document.getElementById('nickname').value.trim() !== '' && isDuplicatedNickname)) {
-            // 입력값이 있고, 중복된 경우
-            alert("중복 확인을 해주세요.");
-            // 버튼 비활성화
-            updateButton.disabled = true;
-        } else {
-            // 입력값이 없거나 중복이 아닌 경우
-            // 버튼 활성화
-            updateButton.disabled = false;
-        }
     }
 
     function updateProfile() {
@@ -660,42 +641,49 @@
             return;
         }
 
-        let formData = new FormData();
-        formData.append("username", username);
-        formData.append("nickname", nickname);
-
-        // 파일이 선택되지 않은 경우 빈 파일 전송
-        if (image.files.length > 0) {
-            formData.append('image', image.files[0]);
-        } else {
-            // 빈 파일 생성 및 전송
-            const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
-            formData.append('image', emptyFile);
+        if ((document.getElementById('username').value.trim() !== '' && isDuplicatedUsername) ||
+            (document.getElementById('nickname').value.trim() !== '' && isDuplicatedNickname)) {
+            // 입력값이 있고, 중복된 경우
+            alert("중복 확인을 해주세요.");
+            return;
         }
 
-        // 요청 보내기
-        fetch('/api/users/profile', {
-            method: 'PATCH',
-            body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
+            let formData = new FormData();
+            formData.append("username", username);
+            formData.append("nickname", nickname);
+
+            // 파일이 선택되지 않은 경우 빈 파일 전송
+            if (image.files.length > 0) {
+                formData.append('image', image.files[0]);
+            } else {
+                // 빈 파일 생성 및 전송
+                const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
+                formData.append('image', emptyFile);
+            }
+
+            // 요청 보내기
+            fetch('/api/users/profile', {
+                method: 'PATCH',
+                body: formData
             })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('프로필 수정이 성공적으로 이루어졌습니다.');
-                    window.location.href = '/api/users';
-                } else {
-                    alert('프로필 수정 실패: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error updating profile:', error);
-            });
-    }
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.code === 200) {
+                        alert('프로필 수정이 성공적으로 이루어졌습니다.');
+                        window.location.href = '/api/users';
+                    } else {
+                        alert('프로필 수정 실패: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating profile:', error);
+                });
+        }
 
 </script>
 </body>
