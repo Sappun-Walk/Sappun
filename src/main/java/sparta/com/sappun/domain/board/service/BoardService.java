@@ -2,7 +2,6 @@ package sparta.com.sappun.domain.board.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +24,7 @@ import sparta.com.sappun.global.validator.BoardValidator;
 import sparta.com.sappun.global.validator.S3Validator;
 import sparta.com.sappun.global.validator.UserValidator;
 import sparta.com.sappun.infra.s3.S3Util;
+import sparta.com.sappun.infra.s3.S3Util.FilePath;
 
 @Service
 @RequiredArgsConstructor
@@ -92,14 +92,19 @@ public class BoardService {
         return BoardBestListGetRes.builder().boards(boardGetRes).build();
     }
 
+    public String saveMapImage(MultipartFile mapImage) {
+        S3Validator.isProfileImageFile(mapImage);
+        return s3Util.uploadFile(mapImage, S3Util.FilePath.BOARD);
+    }
+
+    public void deleteMapImage(String mapImage) {
+        s3Util.deleteFile(mapImage, FilePath.BOARD); // 기존 이미지 삭제
+    }
+
     @Transactional
-    public BoardSaveRes saveBoard(
-            BoardSaveReq boardSaveReq, MultipartFile multipartFile, List<MultipartFile> photoImages) {
+    public BoardSaveRes saveBoard(BoardSaveReq boardSaveReq, List<MultipartFile> photoImages) {
         User user = getUserById(boardSaveReq.getUserId());
         user.updateScore(BOARD_POINT); // 게시글 작성하면 점수 +100
-
-        S3Validator.isProfileImageFile(multipartFile);
-        String boardImage = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
 
         List<Image> images = new ArrayList<>();
         if (photoImages != null) {
@@ -114,7 +119,7 @@ public class BoardService {
                 Board.builder()
                         .title(boardSaveReq.getTitle())
                         .content(boardSaveReq.getContent())
-                        .fileURL(boardImage)
+                        .fileURL(boardSaveReq.getImage())
                         .departure(boardSaveReq.getDeparture())
                         .destination(boardSaveReq.getDestination())
                         .stopover(boardSaveReq.getStopover())
@@ -137,23 +142,15 @@ public class BoardService {
 
     @Transactional
     public BoardUpdateRes updateBoard(
-            BoardUpdateReq boardUpdateReq, MultipartFile multipartFile, List<MultipartFile> photoImages) {
+            BoardUpdateReq boardUpdateReq, List<MultipartFile> photoImages) {
         Board board = getBoardById(boardUpdateReq.getBoardId());
         User user = getUserById(boardUpdateReq.getUserId());
         BoardValidator.checkBoardUser(board.getUser().getId(), user.getId()); // 수정 가능한 사용자인지 확인
 
         // 입력 파일이 없는 경우 기존 이미지 파일로
         String imageURL = board.getFileURL();
-
-        // 입력 파일이 있는 경우
-        if (!Objects.equals(multipartFile.getOriginalFilename(), EMPTY_FILE_TITLE)) {
-            if (imageURL != null && !imageURL.isEmpty()) { // 기존 이미지 파일 삭제
-                s3Util.deleteFile(imageURL, S3Util.FilePath.BOARD);
-            }
-            // 이미지 파일인지 확인
-            S3Validator.isProfileImageFile(multipartFile);
-            // 이미지 업로드
-            imageURL = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
+        if (!boardUpdateReq.getImage().isBlank()) {
+            imageURL = boardUpdateReq.getImage();
         }
 
         imageRepository.deleteAllByBoard(board);

@@ -18,7 +18,7 @@ public class BoardSaveReq {
     private String destination;
     private List<String> stopover;
     private RegionEnum region;
-    private MultipartFile image;
+    private String image;
 
     @Nullable private List<MultipartFile> photoImages;
 
