@@ -546,19 +546,15 @@
                 <div><b>2-2. 다 그렸다면 마지막 선의 끝부분을 한번 더 클릭해 줘요!</b></div>
                 <div><b>3. 이제 그린 산책로를 캡쳐해보아요!</b></div>
                 <div><b>3-1. 캡쳐는 지도 화면에 보이는 부분만 되니 지도의 크기를 ctrl+마우스휠로 조절해서 산책로가 보이게 조절해요!</b></div>
-                <div><b>3-2. 캡쳐한 산책로 이미지는 컴퓨터에 저장됩니다!</b></div>
             </div>
         </div>
     </div>
     <div class="outLine">
-        <h3>산책로를 캡처 후 첨부해주세요!</h3>
+        <h3>지도를 캡처해주세요!</h3>
         <!--지도 캡쳐한 이미지 div-->
         <div id="capturedImage"></div>
     </div>
     <div class="outLine">
-        지도 캡쳐 업로드 :
-        <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
-        <br>
         추가 이미지 업로드 (4장으로 제한) :
         <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple
                onchange="readMultipleURL(this);">
@@ -588,6 +584,7 @@
     const report = '/report'
     const like = '/like'
     const updatePassword = '/api/users/profile/password';
+    var mapImage = '';
 
     // 로그아웃
     function logout() {
@@ -723,7 +720,6 @@
         var departure = document.getElementById('departure').value;
         var destination = document.getElementById('destination').value;
         var content = document.getElementById('content').value;
-        var image = document.getElementById('image');
         var imageInputs = document.getElementById('image-multiple');
 
         if (!title) {
@@ -746,18 +742,17 @@
             return;
         }
 
-
-        // 파일이 선택되지 않은 경우 알림창이 뜨도록 함
-        if (image.files.length < 1) {
-            alert("파일을 첨부해주세요!");
-            return
-        }
-
         // 추가 이미지가 4장 이하인지 확인
         if (imageInputs.files.length > 4) {
             alert("추가 이미지는 4개 이하 첨부해주세요!");
             return
         }
+
+      // 지도 캡쳐했는지 확인
+      if (mapImage === '') {
+        alert("지도를 캡쳐해주세요!");
+        return
+      }
 
         let formData = new FormData();
         formData.append("region", region);
@@ -768,7 +763,7 @@
         });
         formData.append("destination", destination);
         formData.append("content", content);
-        formData.append('image', image.files[0]);
+        formData.append('image', mapImage);
 
         // 여러 이미지 업로드
         if (imageInputs.files.length > 0) {
@@ -797,7 +792,7 @@
                 }
             })
             .catch(error => {
-                console.error('Error updating profile:', error);
+                console.error('Error saving profile:', error);
             });
     }
 
@@ -952,16 +947,32 @@
 
         const imageUrl = `https://maps.googleapis.com/maps/api/staticmap?${serializeObject(staticMapOptions)}&key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg`;
 
-        // 이미지를 Blob으로 변환
         fetch(imageUrl)
-            .then(response => response.blob())
-            .then(blob => {
-                // Blob을 사용하여 이미지 다운로드
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'captured_map.png';
-                link.click();
+          .then(response => response.blob())
+          .then(blob => {
+            // Blob을 FormData에 추가
+            const formData = new FormData();
+            formData.append('mapImage', blob);
+
+            // 서버로 API 요청 보내기
+            fetch('/api/boards/map', {
+              method: 'POST',
+              body: formData,
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              // API 응답을 문자열로 변환
+              return response.text();
+            })
+            .then(data => {
+                mapImage = data;
+            })
+            .catch(error => {
+              console.error('Error saving map image:', error);
             });
+          });
 
         // 캡처 결과를 화면에 표시
         const capturedImageDiv = document.getElementById('capturedImage');
