@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
 import sparta.com.sappun.domain.board.dto.response.*;
@@ -136,8 +137,21 @@ public class BoardController {
             @Valid BoardSaveReq boardSaveReq, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         boardSaveReq.setUserId(userDetails.getUser().getId());
         return CommonResponse.success(
-                boardService.saveBoard(
-                        boardSaveReq, boardSaveReq.getImage(), boardSaveReq.getPhotoImages()));
+                boardService.saveBoard(boardSaveReq, boardSaveReq.getPhotoImages()));
+    }
+
+    // 지도 파일 저장
+    @ResponseBody
+    @PostMapping("/map")
+    public String saveMapImage(MultipartFile mapImage) {
+        return boardService.saveMapImage(mapImage); // s3에 저장한 이미지의 url을 반환
+    }
+
+    // 지도 파일 삭제
+    @ResponseBody
+    @DeleteMapping("/map")
+    public void deleteMapImage(@RequestParam("mapImage") String mapImage) {
+        boardService.deleteMapImage(mapImage);
     }
 
     // 게시글 수정
@@ -150,8 +164,7 @@ public class BoardController {
         boardUpdateReq.setBoardId(boardId);
         boardUpdateReq.setUserId(userDetails.getUser().getId());
         return CommonResponse.success(
-                boardService.updateBoard(
-                        boardUpdateReq, boardUpdateReq.getImage(), boardUpdateReq.getPhotoImages()));
+                boardService.updateBoard(boardUpdateReq, boardUpdateReq.getPhotoImages()));
     }
 
     @GetMapping("/update/{boardId}")
