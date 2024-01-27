@@ -641,10 +641,13 @@
             return;
         }
 
-        if ((document.getElementById('username').value.trim() !== '' && isDuplicatedUsername) ||
-            (document.getElementById('nickname').value.trim() !== '' && isDuplicatedNickname)) {
+        if (document.getElementById('username').value.trim() !== '' && isDuplicatedUsername) {
             // 입력값이 있고, 중복된 경우
-            alert("중복 확인을 해주세요.");
+            alert("아이디 중복 확인을 해주세요.");
+            return;
+        } else if (document.getElementById('nickname').value.trim() !== '' && isDuplicatedNickname) {
+            // 입력값이 있고, 중복된 경우
+            alert("닉네임 중복 확인을 해주세요.");
             return;
         }
 
