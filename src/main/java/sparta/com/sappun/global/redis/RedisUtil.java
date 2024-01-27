@@ -3,7 +3,7 @@ package sparta.com.sappun.global.redis;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
 public class RedisUtil {
 
     public static final int REFRESH_TOKEN_EXPIRED_TIME = 60 * 24 * 14; // 2주
-    private final RedisTemplate<String, String> redisTemplate;
+
+    private final StringRedisTemplate redisTemplate;
 
     /** 토큰의 경우 key가 refresh token, value가 user의 id */
     public void set(String key, String value, int minutes) {
