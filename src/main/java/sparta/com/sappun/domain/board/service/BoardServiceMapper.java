@@ -16,9 +16,11 @@ public interface BoardServiceMapper {
     BoardServiceMapper INSTANCE = Mappers.getMapper(BoardServiceMapper.class);
 
     @Mapping(source = "user.nickname", target = "nickname")
+    @Mapping(source = "user.profileUrl", target = "profileUrl")
     BoardGetRes toBoardGetRes(Board board);
 
     @Mapping(source = "user.nickname", target = "nickname")
+    @Mapping(source = "user.profileUrl", target = "profileUrl")
     CommentGetRes toCommentGetRes(Comment comment);
 
     List<BoardToListGetRes> toBoardBestListGetRes(List<Board> boardList);
