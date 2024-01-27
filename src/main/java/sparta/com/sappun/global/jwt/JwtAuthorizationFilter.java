@@ -165,10 +165,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         return whiteList.stream().anyMatch(whitePath -> whitePath.matches(request));
     }
 
-    private static void addCookie(String cookieValue, String header, HttpServletResponse res) {
+    private void addCookie(String cookieValue, String header, HttpServletResponse res) {
         Cookie cookie = new Cookie(header, cookieValue); // Name-Value
         cookie.setPath("/");
         cookie.setMaxAge(2 * 60 * 60);
+        cookie.setDomain(".sappun.shop");
 
         // Response 객체에 Cookie 추가
         res.addCookie(cookie);

@@ -46,10 +46,11 @@ public class KakaoController {
         return "redirect:/api/boards/best"; // 로그인 완료시 이동할 페이지
     }
 
-    private static void addCookie(String cookieValue, String header, HttpServletResponse res) {
+    private void addCookie(String cookieValue, String header, HttpServletResponse res) {
         Cookie cookie = new Cookie(header, cookieValue); // Name-Value
         cookie.setPath("/");
         cookie.setMaxAge(2 * 60 * 60);
+        cookie.setDomain(".sappun.shop");
 
         // Response 객체에 Cookie 추가
         res.addCookie(cookie);
