@@ -196,6 +196,22 @@
         #mainLogoImage {
             cursor: pointer;
         }
+
+        footer {
+            background-color: rgba(255, 182, 193, 0.5); /* lightpink 색상을 반투명하게 지정 */
+            text-align: center;
+            padding: 20px;
+
+        }
+
+        footer p {
+            color: #000000;
+        }
+
+        footer a {
+            text-decoration: none; /* 하이퍼링크의 밑줄을 없앰 */
+        }
+
     </style>
 </head>
 <body>
@@ -221,7 +237,7 @@
         <a href="#" onclick="navigateTo('/api/boards/region?region=REGION16')">제주특별자치도</a>
     </div>
     <div id="main">
-        <button id="openBtn" onclick="openNav()">☰</button>
+        <button id="openBtn" onclick="openNav()">☰ 메뉴</button>
         <div class="main-img-container">
             <img class="main-img" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|"
                  alt="Main Image">
@@ -301,6 +317,16 @@
         </a>
     </div>
 </div>
+
+<footer>
+    <p>&copy; 2024 SAPPUN.
+        Team members <a href="https://github.com/hayul93" target="_blank">박상율</a>,
+        <a href="https://github.com/rlawogks22" target="_blank">김재한</a>,
+        <a href="https://github.com/peter202597" target="_blank">홍정욱</a>,
+        <a href="https://github.com/jump6923" target="_blank">김진환</a>,
+        <a href="https://github.com/dlwls423" target="_blank">이예진</a>
+    </p>
+</footer>
 <script>
     const host = 'http://' + window.location.host;
     const loginPage = '/api/users/login';
