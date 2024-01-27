@@ -144,17 +144,9 @@ public class BoardService {
 
         // 입력 파일이 없는 경우 기존 이미지 파일로
         String imageURL = board.getFileURL();
-
-        //        // 입력 파일이 있는 경우
-        //        if (!Objects.equals(multipartFile.getOriginalFilename(), EMPTY_FILE_TITLE)) {
-        //            if (imageURL != null && !imageURL.isEmpty()) { // 기존 이미지 파일 삭제
-        //                s3Util.deleteFile(imageURL, S3Util.FilePath.BOARD);
-        //            }
-        //            // 이미지 파일인지 확인
-        //            S3Validator.isProfileImageFile(multipartFile);
-        //            // 이미지 업로드
-        //            imageURL = s3Util.uploadFile(multipartFile, S3Util.FilePath.BOARD);
-        //        }
+        if (!boardUpdateReq.getImage().isBlank()) {
+            imageURL = boardUpdateReq.getImage();
+        }
 
         imageRepository.deleteAllByBoard(board);
 
