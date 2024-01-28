@@ -54,7 +54,7 @@ spring:
 
   data:
     redis:
-      host: 15.164.147.93
+      host: 3.36.206.196
       port: 6379
 
 logging:
