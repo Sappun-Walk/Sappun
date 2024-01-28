@@ -207,35 +207,6 @@
             background: linear-gradient(to left, rgb(255, 111, 166), rgb(255, 192, 203)); /* 분홍 계열로 변경 */
         }
 
-
-        #profileImage {
-            cursor: pointer;
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            top: 20px;
-            right: 30px;
-            padding: 10px;
-            border-radius: 50%;
-        }
-
-        .gallery-container {
-            margin-top: 50px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        .gallery-item {
-            width: calc(25% - 10px);
-            border: 1px solid deeppink;
-            border-radius: 30px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
-        }
-
         .gallery-item img {
             background-size: cover;
             width: 450px;
@@ -244,44 +215,27 @@
             text-align: center;
         }
 
-        .gallery-caption {
-            padding: 10px;
-            text-align: center;
-        }
-
         .main-img-container {
-            margin-left: 40%;
-            margin-right: 60%;
+            margin: 0 auto;
             text-align: center;
             justify-content: center;
         }
 
+        .btn-sideOpen {
+            width: 500px;
+        }
 
         .btn-write {
-            margin-top: 30px;
-            margin-left: auto;
-            margin-right: 100px;
+            width: 500px;
             display: flex;
-            flex-direction: row-reverse;
-        }
-        .tr {
-            margin-left: auto;
+            align-items: center;
+            flex-direction: row;
+            justify-content: flex-end;
         }
 
         .btn-write button {
             width: auto;
             margin-right: 10px;
-        }
-
-        .inner-div {
-            border-radius: 50px;
-            height: 50px;
-            width: 1000px;
-            border: solid #dddddd;
-            margin-top: 20px;
-            margin-right: auto;
-            margin-left: auto;
-            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
         }
 
         #sidebar {
@@ -336,6 +290,21 @@
         #mainLogoImage {
             cursor: pointer;
         }
+
+        footer {
+            background-color: rgba(255, 182, 193, 0.5); /* lightpink 색상을 반투명하게 지정 */
+            text-align: center;
+            padding: 20px;
+
+        }
+
+        footer p {
+            color: #000000;
+        }
+
+        footer a {
+            text-decoration: none; /* 하이퍼링크의 밑줄을 없앰 */
+        }
     </style>
 </head>
 <body>
@@ -361,13 +330,16 @@
 </div>
 <!--페이지 기본 상단-->
 <div id="main">
-    <button id="openBtn" onclick="openNav()">☰</button>
+    <div class="btn-sideOpen">
+        <button id="openBtn" onclick="openNav()">☰ 메뉴</button>
+    </div>
     <div class="main-img-container">
         <img class="main-img" id="mainLogoImage"
              th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png} "
              th:onclick="|location.href='@{/api/boards/best}'|"
              alt="Main Image">
     </div>
+    <div class="btn-write"></div>
 </div>
 <div class="wrap">
     <div class="login">
@@ -426,6 +398,16 @@
         </div>
     </div>
 </div>
+
+<footer>
+    <p>&copy; 2024 SAPPUN.
+        Team members <a href="https://github.com/hayul93" target="_blank">박상율</a>,
+        <a href="https://github.com/rlawogks22" target="_blank">김재한</a>,
+        <a href="https://github.com/peter202597" target="_blank">홍정욱</a>,
+        <a href="https://github.com/jump6923" target="_blank">김진환</a>,
+        <a href="https://github.com/dlwls423" target="_blank">이예진</a>
+    </p>
+</footer>
 <script>
     var isDuplicatedUsername = true;
     var isDuplicatedNickname = true;

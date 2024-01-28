@@ -41,11 +41,13 @@
         }
 
         html {
-            overflow-y: scroll;
+            overflow-y: auto;
+            min-height: 100vh; /* 브라우저 높이에 따라 최소 높이 설정 */
         }
 
         body {
             font-family: 'Pretendard-600';
+            min-height: 100vh; /* 브라우저 높이에 따라 최소 높이 설정 */
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -118,6 +120,7 @@
             gap: 20px 30px;
             flex-direction: row;
             align-items: center;
+            align-content: flex-start;
         }
 
         .gallery-item {
@@ -144,8 +147,35 @@
             text-align: left;
         }
 
-        .btn btn-outline-success {
+        .btn-up {
             font-family: 'Pretendard-600';
+            font-size: 20px;
+            position: relative;
+            width: auto;
+            margin: 0 10px;
+            display: inline-block;
+            padding: 3px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-up:hover {
+            transform: scale(1.3);
+        }
+
+        .btn-up::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: rgb(255, 182, 193);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-up:hover::after {
+            width: 100%;
         }
 
         .Board-Title {
@@ -301,6 +331,21 @@
             align-items: center;
         }
 
+        footer {
+            box-shadow: 0 -5px 0 rgba(255, 182, 193, 0.1), 0 -2px 0 rgba(255, 182, 193, 0.2);
+            margin-top: 100px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        footer p {
+            color: #000000;
+        }
+
+        footer a {
+            text-decoration: none; /* 하이퍼링크의 밑줄을 없앰 */
+        }
+
     </style>
 </head>
 <body>
@@ -328,7 +373,7 @@
 
 <div id="main">
     <div class="btn-sideOpen">
-        <button id="openBtn" onclick="openNav()">☰</button>
+        <button id="openBtn" onclick="openNav()">☰ 메뉴</button>
     </div>
     <div class="main-img-container">
         <img class="main-img" id="mainLogoImage"
@@ -338,22 +383,22 @@
     </div>
     <div class="btn-write">
         <div th:if="${#authorization.expression('isAuthenticated()')}">
-            <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
+            <div class="btn-up" onclick="redirectToCreatePage()">글쓰기</div>
         </div>
         <div th:if="${user == null}">
-            <button class="btn btn-outline-success" type="submit"
-                    th:onclick="|location.href='@{/api/users/login-page}'|">로그인
-            </button>
+            <div class="btn-up" style="margin-right: 200px;"
+                 th:onclick="|location.href='@{/api/users/login-page}'|">로그인
+            </div>
         </div>
         <div th:if="${user != null}">
-            <button class="btn btn-outline-success" id="logout-button" type="submit" onclick="logout()">
+            <div class="btn-up" id="logout-button"  onclick="logout()">
                 로그아웃
-            </button>
+            </div>
         </div>
         <div th:if="${user != null && user.role == T(sparta.com.sappun.domain.user.entity.Role).ADMIN}">
-            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/reports}'|">
+            <div class="btn-up" th:onclick="|location.href='@{/api/boards/reports}'|">
                 게시판 관리
-            </button>
+            </div>
         </div>
         <div th:if="${user != null}" class="rank">
             <span th:if="${user.score < 0}">
@@ -415,7 +460,7 @@
 </div>
 
 
-<div class="page-num" th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
+<div class="page-num" th:if="${maxPage != 0}" th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
 end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)}),
 currentPage=${responseDto.number + 1}">
     <!-- 현재 페이지를 중심으로 앞뒤로 2개의 페이지만 표시 -->
@@ -439,6 +484,16 @@ currentPage=${responseDto.number + 1}">
         </li>
     </ul>
 </div>
+
+<footer>
+    <p>&copy; 2024 SAPPUN.
+        Team members <a href="https://github.com/hayul93" target="_blank">박상율</a>,
+        <a href="https://github.com/rlawogks22" target="_blank">김재한</a>,
+        <a href="https://github.com/peter202597" target="_blank">홍정욱</a>,
+        <a href="https://github.com/jump6923" target="_blank">김진환</a>,
+        <a href="https://github.com/dlwls423" target="_blank">이예진</a>
+    </p>
+</footer>
 <script>
     const host = 'http://' + window.location.host;
     const loginPage = '/api/users/login';

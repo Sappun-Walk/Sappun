@@ -26,7 +26,6 @@ public class ReportBoardController {
     @Autowired private ReportBoardService reportBoardService;
 
     private static final String DEFAULT_PAGE = "1";
-    private static final Integer MAX_PAGE = 5;
     private static final String DEFAULT_SIZE = "8";
     private static final String DEFAULT_SORT_BY = "createdAt";
     private static final String DEFAULT_IS_ASC = "false";
@@ -60,7 +59,7 @@ public class ReportBoardController {
         Page<ReportBoardGetRes> responseDto =
                 reportBoardService.getReportBoardList(page - 1, size, sortBy, isAsc);
         model.addAttribute("responseDto", responseDto);
-        model.addAttribute("maxPage", MAX_PAGE);
+        model.addAttribute("maxPage", responseDto.getTotalPages());
         return "reportBoardPage";
     }
 }
