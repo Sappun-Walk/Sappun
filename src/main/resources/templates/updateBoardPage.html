@@ -261,6 +261,7 @@
         .btn-map {
             font-family: 'Pretendard-600';
             width: 70%;
+            margin: 5px;
             background-color: white;
             color: black;
             border: 1px solid pink;
@@ -295,22 +296,6 @@
 
         .buttons button {
             margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
-        }
-
-        #capturedImage {
-            margin-top: 20px;
-        }
-
-        #drawLine, #captureImage, #locateCurrentPosition {
-            margin: 5px;
-        }
-
-        #capturedImage {
-            margin-top: 20px;
-        }
-
-        #drawLine, #captureImage, #locateCurrentPosition {
-            margin: 5px;
         }
 
         .gallery-item img {
@@ -478,7 +463,7 @@
             </div>
         </div>
         <div th:if="${user != null}">
-            <div class="btn-up" id="logout-button"  onclick="logout()">
+            <div class="btn-up" id="logout-button" onclick="logout()">
                 로그아웃
             </div>
         </div>
@@ -540,11 +525,6 @@
 <div class="getBoardDetail-body">
     <div class="title-and-buttons">
         <div class="outLine">
-            <!--기존 파일-->
-            <div>
-                <h3>기존 산책로</h3>
-                <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
-            </div>
             <h3>수정하고 싶은 산책로를 그려주세요!</h3>
             <div class="map-create">
                 <!--지도 div-->
@@ -592,13 +572,26 @@
 
     <div class="outLine">
         <h3>수정한 산책로를 캡처 후 첨부해주세요!</h3>
-        <!--지도 캡쳐한 이미지 div-->
-        <div id="capturedImage"></div>
+        <!--기존 파일-->
+        <div style="display: flex; flex-direction: row;">
+            <div>
+                <h3>기존 산책로</h3>
+                <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
+            </div>
+            <div style="margin-left: 20px;">
+                <h3>수정한 산책로</h3>
+                <!--지도 캡쳐한 이미지 div-->
+                <div class="img-section" id="capturedImage"></div>
+            </div>
+        </div>
     </div>
-    <!--            <section class="gaegu-bold">-->
     <div class="outLine">
-        추가 이미지 업로드 (4장으로 제한) :
-        <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple onchange="readMultipleURL(this);">
+        <div style="display: flex;justify-content: center; align-items: center;" id="previewContainer">
+        </div>
+        추가 이미지 업로드 (최대 4장) :
+        <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple
+               onchange="readMultipleURL(this);">
+        <p id="errorMessage" style="color: red; display: none;">최대 4장의 이미지만 선택할 수 있습니다.</p>
     </div>
     <div class="outLine">
         <!--               폰트 적용 시 class="gaegu-bold"내용 에 추가-->
@@ -776,10 +769,10 @@
         if (!title) {
             alert("제목을 입력해주세요.");
             return;
-        } else if(title.length > 20) {
+        } else if (title.length > 20) {
             alert("제목은 최대 20자까지만 입력 가능합니다.");
             return;
-        } else if(!departure) {
+        } else if (!departure) {
             alert("출발지를 입력해주세요.");
             return;
         } else if (!destination) {
@@ -794,9 +787,9 @@
         }
 
         // 추가 이미지가 4장 이하인지 확인
-        if (imageInputs.files.length > 4){
-          alert("추가 이미지는 4개 이하 첨부해주세요!");
-          return
+        if (imageInputs.files.length > 4) {
+            alert("추가 이미지는 4개 이하 첨부해주세요!");
+            return
         }
 
         let formData = new FormData();
@@ -813,12 +806,12 @@
         formData.append("content", content);
         formData.append("image", mapImage);
 
-      // 여러 이미지 업로드
-      if (imageInputs.files.length > 0) {
-        for (let i = 0; i < imageInputs.files.length; i++) {
-          formData.append('photoImages', imageInputs.files[i]);
+        // 여러 이미지 업로드
+        if (imageInputs.files.length > 0) {
+            for (let i = 0; i < imageInputs.files.length; i++) {
+                formData.append('photoImages', imageInputs.files[i]);
+            }
         }
-      }
 
         // 요청 보내기
         fetch(boardUrl + '/' + boardId, {
@@ -952,36 +945,36 @@
 
         const imageUrl = `https://maps.googleapis.com/maps/api/staticmap?${serializeObject(staticMapOptions)}&key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg`;
 
-      fetch(imageUrl)
-      .then(response => response.blob())
-      .then(blob => {
-        // Blob을 FormData에 추가
-        const formData = new FormData();
-        formData.append('mapImage', blob);
+        fetch(imageUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                // Blob을 FormData에 추가
+                const formData = new FormData();
+                formData.append('mapImage', blob);
 
-        // 서버로 API 요청 보내기
-        fetch('/api/boards/map', {
-          method: 'POST',
-          body: formData,
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          // API 응답을 문자열로 변환
-          return response.text();
-        })
-        .then(data => {
-          mapImage = data;
-        })
-        .catch(error => {
-          console.error('Error saving map image:', error);
-        });
-      });
+                // 서버로 API 요청 보내기
+                fetch('/api/boards/map', {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        // API 응답을 문자열로 변환
+                        return response.text();
+                    })
+                    .then(data => {
+                        mapImage = data;
+                    })
+                    .catch(error => {
+                        console.error('Error saving map image:', error);
+                    });
+            });
 
         // 캡처 결과를 화면에 표시
         const capturedImageDiv = document.getElementById('capturedImage');
-        capturedImageDiv.innerHTML = `<img src="${imageUrl}" alt="Captured Map">`;
+        capturedImageDiv.innerHTML = `<img src="${imageUrl}" style="border-radius: 15px;" alt="Captured Map">`;
     }
 
     function locateCurrentPosition() {
@@ -1007,72 +1000,59 @@
             .map(key => `${key}=${encodeURIComponent(obj[key])}`)
             .join('&');
     }
+
     function handleRegionChange() {
         // 선택된 값 가져오기
         var selectedValue = document.getElementById("region").value;
         var newLatLng = {lat: 37.5665, lng: 126.9780}; // 서울특별시 위경도
         var newZoomLevel = 12;
 
-        if(selectedValue === "REGION1"){
+        if (selectedValue === "REGION1") {
             newLatLng = {lat: 37.5665, lng: 126.9780}; // 서울특별시 위경도
-        }
-        else if(selectedValue === "REGION2"){
+        } else if (selectedValue === "REGION2") {
             newLatLng = {lat: 35.1379, lng: 129.0556}; // 부산특별시 위경도
             newZoomLevel = 11;
-        }
-        else if(selectedValue === "REGION3"){
+        } else if (selectedValue === "REGION3") {
             newLatLng = {lat: 35.8704, lng: 128.5910}; // 대구광역시 위경도
-        }
-        else if(selectedValue === "REGION4"){
+        } else if (selectedValue === "REGION4") {
             newLatLng = {lat: 37.4489, lng: 126.7031}; // 인천광역시 위경도
-        }
-        else if(selectedValue === "REGION5"){
-            newLatLng = {lat: 35.1595 , lng: 126.8526}; // 광주광역시 위경도
-        }
-        else if(selectedValue === "REGION6"){
+        } else if (selectedValue === "REGION5") {
+            newLatLng = {lat: 35.1595, lng: 126.8526}; // 광주광역시 위경도
+        } else if (selectedValue === "REGION6") {
             newLatLng = {lat: 35.5383, lng: 129.3113}; // 울산광역시 위경도
-        }
-        else if(selectedValue === "REGION7"){
+        } else if (selectedValue === "REGION7") {
             newLatLng = {lat: 36.5040, lng: 127.2494}; // 세종특별자치시 위경도
-        }
-        else if(selectedValue === "REGION8"){
+        } else if (selectedValue === "REGION8") {
             newLatLng = {lat: 37.2636, lng: 127.0286}; // 경기도 수원시 위경도
             newZoomLevel = 10;
-        }
-        else if(selectedValue === "REGION9"){
+        } else if (selectedValue === "REGION9") {
             newLatLng = {lat: 37.8222, lng: 128.1550}; // 강원특별자치도 춘천시 위경도
             newZoomLevel = 9;
-        }
-        else if(selectedValue === "REGION10"){
+        } else if (selectedValue === "REGION10") {
             newLatLng = {lat: 36.8001, lng: 127.7270}; // 충청북도 위경도
             newZoomLevel = 10;
-        }
-        else if(selectedValue === "REGION11"){
+        } else if (selectedValue === "REGION11") {
             newLatLng = {lat: 36.5184, lng: 126.8000}; // 충청남도 위경도
             newZoomLevel = 9;
-        }
-        else if(selectedValue === "REGION12"){
+        } else if (selectedValue === "REGION12") {
             newLatLng = {lat: 35.7175, lng: 127.1530}; // 전북특별자치도 위경도
             newZoomLevel = 9;
-        }
-        else if(selectedValue === "REGION13"){
+        } else if (selectedValue === "REGION13") {
             newLatLng = {lat: 34.8169, lng: 126.9794}; // 전라남도 위경도
             newZoomLevel = 9;
-        }
-        else if(selectedValue === "REGION14"){
+        } else if (selectedValue === "REGION14") {
             newLatLng = {lat: 36.5759, lng: 128.5059}; // 경상북도 위경도
             newZoomLevel = 9;
-        }
-        else if(selectedValue === "REGION15"){
+        } else if (selectedValue === "REGION15") {
             newLatLng = {lat: 35.2279, lng: 128.6811}; // 경상남도 위경도
             newZoomLevel = 10;
-        }
-        else if(selectedValue === "REGION16"){
+        } else if (selectedValue === "REGION16") {
             newLatLng = {lat: 33.4312, lng: 126.5437}; // 제주특별자치도 위경도
             newZoomLevel = 10;
         }
         moveMapToLocation(newLatLng, newZoomLevel)
     }
+
     function moveMapToLocation(newLatLng, newZoomLevel) {
         if (map) {
             // Map 객체가 존재하면 중심과 줌 레벨을 업데이트하여 지도 이동
@@ -1081,6 +1061,56 @@
         } else {
             console.error("지도가 활성화 되어 있지 않습니다!");
         }
+    }
+
+    function readMultipleURL(input) {
+        var previewContainer = document.getElementById('previewContainer');
+        previewContainer.innerHTML = ''; // 기존 이미지 제거
+
+        var errorMessage = document.getElementById('errorMessage');
+        if (input.files.length > 4) {
+            errorMessage.style.display = 'block'; // 에러 메시지 표시
+            return; // 에러 발생 시 함수 종료
+        } else {
+            errorMessage.style.display = 'none'; // 에러 메시지 숨기기
+        }
+
+        if (input.files && input.files.length > 0) {
+            var promises = []; // FileReader Promise 배열
+
+            for (var i = 0; i < input.files.length; i++) {
+                promises.push(readFile(input.files[i])); // 각 파일에 대한 Promise 생성
+            }
+
+            Promise.all(promises)
+                .then(function (results) {
+                    results.forEach(function (result) {
+                        var img = document.createElement('img');
+                        img.src = result;
+                        img.style.margin = '10px';
+                        img.style.borderRadius = '10px';
+                        img.style.width = '22%';
+                        img.style.height = '200px';
+                        previewContainer.appendChild(img);
+                    });
+                })
+                .catch(function (error) {
+                    console.error('Error reading files:', error);
+                });
+        }
+    }
+
+    function readFile(file) {
+        return new Promise(function (resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                resolve(event.target.result);
+            };
+            reader.onerror = function (event) {
+                reject(event.target.error);
+            };
+            reader.readAsDataURL(file);
+        });
     }
 </script>
 <!-- Google Maps API 및 Drawing 라이브러리 로드 -->
