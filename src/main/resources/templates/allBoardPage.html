@@ -149,6 +149,7 @@
 
         .btn-up {
             font-family: 'Pretendard-600';
+            font-size: 20px;
             position: relative;
             width: auto;
             margin: 0 10px;
@@ -385,7 +386,7 @@
             <div class="btn-up" onclick="redirectToCreatePage()">글쓰기</div>
         </div>
         <div th:if="${user == null}">
-            <div class="btn-up"
+            <div class="btn-up" style="margin-right: 200px;"
                  th:onclick="|location.href='@{/api/users/login-page}'|">로그인
             </div>
         </div>
