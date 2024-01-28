@@ -19,7 +19,6 @@ public class BoardSaveReq {
     private List<String> stopover;
     private RegionEnum region;
     private String image;
-
     @Nullable private List<MultipartFile> photoImages;
 
     @Builder
@@ -29,12 +28,14 @@ public class BoardSaveReq {
             String departure,
             String destination,
             List<String> stopover,
-            RegionEnum region) {
+            RegionEnum region,
+            String image) {
         this.title = title;
         this.content = content;
         this.departure = departure;
         this.destination = destination;
         this.stopover = stopover;
         this.region = region;
+        this.image = image;
     }
 }

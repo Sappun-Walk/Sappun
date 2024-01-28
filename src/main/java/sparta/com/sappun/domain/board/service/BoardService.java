@@ -38,7 +38,6 @@ public class BoardService {
     private static final Integer BOARD_POINT = 100;
     private static final Integer DEFAULT_LIKE_COUNT = 0;
     private static final Integer DEFAULT_REPORT_COUNT = 0;
-    private static final String EMPTY_FILE_TITLE = "empty.txt";
 
     @Transactional(readOnly = true)
     public BoardGetRes getBoard(Long boardId) {
@@ -79,7 +78,7 @@ public class BoardService {
         Pageable pageable = PageRequest.of(page, size, sort);
 
         return boardRepository
-                .findAllUserBoardByUserId(userId, pageable)
+                .findAllByUserId(userId, pageable)
                 .map(BoardServiceMapper.INSTANCE::toBoardUserListGetRes);
     }
 
@@ -111,7 +110,7 @@ public class BoardService {
             for (MultipartFile image : photoImages) {
                 S3Validator.isProfileImageFile(image);
                 String imageUrl = s3Util.uploadFile(image, S3Util.FilePath.BOARD);
-                images.add(new Image(imageUrl, null));
+                images.add(Image.builder().imageUrl(imageUrl).build());
             }
         }
 
@@ -160,7 +159,7 @@ public class BoardService {
             for (MultipartFile image : photoImages) {
                 S3Validator.isProfileImageFile(image);
                 String imageUrl = s3Util.uploadFile(image, S3Util.FilePath.BOARD);
-                images.add(new Image(imageUrl, board));
+                images.add(Image.builder().imageUrl(imageUrl).board(board).build());
             }
         }
 
