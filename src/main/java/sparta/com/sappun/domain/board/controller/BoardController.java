@@ -32,6 +32,7 @@ public class BoardController {
     private static final String DEFAULT_SORT_BY = "createdAt";
     private static final String DEFAULT_IS_ASC = "false";
 
+    // 게시글 작성 페이지
     @GetMapping("/create-page")
     @PreAuthorize("isAuthenticated()")
     public String createPage(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -39,6 +40,7 @@ public class BoardController {
         return "saveBoardPage";
     }
 
+    // 게시글 상세 조회 페이지
     @GetMapping("/{boardId}")
     public String getBoardDetails(
             @PathVariable Long boardId,
@@ -60,6 +62,7 @@ public class BoardController {
         return "getBoardDetail";
     }
 
+    // 지역 게시글 조회 페이지
     @GetMapping("/region")
     public String getBoardsByRegion(
             @RequestParam RegionEnum region,
@@ -80,6 +83,7 @@ public class BoardController {
         return "regionPage";
     }
 
+    // 전체 게시글 조회 페이지
     @GetMapping("/all")
     public String getAllBoards(
             @RequestParam(value = "page", defaultValue = DEFAULT_PAGE) int page,
@@ -98,6 +102,7 @@ public class BoardController {
         return "allBoardPage";
     }
 
+    // 사용자 게시글 조회 페이지
     @GetMapping("/user")
     public String getUserBoardList(
             @RequestParam(value = "page", defaultValue = DEFAULT_PAGE) int page,
@@ -118,7 +123,7 @@ public class BoardController {
         return "userBoardPage";
     }
 
-    // Best 게시글 조회
+    // Best 게시글 조회 페이지
     @GetMapping("/best")
     public String getBestBoards(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         BoardBestListGetRes bestBoards = boardService.getBoardBestList();
@@ -167,6 +172,7 @@ public class BoardController {
                 boardService.updateBoard(boardUpdateReq, boardUpdateReq.getPhotoImages()));
     }
 
+    // 게시글 수정 페이지
     @GetMapping("/update/{boardId}")
     public String updateBoardDetails(
             @PathVariable Long boardId,

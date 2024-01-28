@@ -15,7 +15,7 @@ public interface BoardTest extends UserTest {
     String TEST_DESTINATION = "TEST_DESTINATION";
     List<String> TEST_STOPOVER = List.of("TEST1", "TEST2", "TEST3", "TEST4", "TEST5");
     RegionEnum TEST_REGION1 = RegionEnum.REGION1;
-
+    String TEST_MAP_IMAGE = "https://board/mapImage.jpg";
     Integer TEST_LIKE_COUNT = 0;
     Integer TEST_REPORT_COUNT = 0;
 
