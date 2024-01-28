@@ -14,7 +14,7 @@ public interface LikeBoardServiceMapper {
     LikeBoardServiceMapper INSTANCE = Mappers.getMapper(LikeBoardServiceMapper.class);
 
     @Mapping(source = "user.nickname", target = "nickname")
-    LikeBoardGetRes toLikeBoardGetRes(LikeBoard likeBoard, @Context boolean isLikedByUser);
+    LikeBoardGetRes toLikeBoardGetRes(LikeBoard likeBoard);
 
     @Mapping(source = "user.nickname", target = "nickname")
     BoardToLikeGetRes toBoardtoLikeGetRes(Board board);

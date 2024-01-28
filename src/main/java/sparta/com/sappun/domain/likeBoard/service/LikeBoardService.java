@@ -62,7 +62,7 @@ public class LikeBoardService {
         Page<LikeBoard> likeBoards = likeBoardRepository.findAllByUser(user, pageable);
 
         return likeBoards.map(
-                likeBoard -> LikeBoardServiceMapper.INSTANCE.toLikeBoardGetRes(likeBoard, true));
+                likeBoard -> LikeBoardServiceMapper.INSTANCE.toLikeBoardGetRes(likeBoard));
     }
 
     private boolean isLikedByUser(Long userId, LikeBoard likeBoard) {
