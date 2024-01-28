@@ -41,11 +41,13 @@
         }
 
         html {
-            overflow-y: scroll;
+            overflow-y: auto;
+            min-height: 100vh; /* 브라우저 높이에 따라 최소 높이 설정 */
         }
 
         body {
             font-family: 'Pretendard-600';
+            min-height: 100vh; /* 브라우저 높이에 따라 최소 높이 설정 */
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -117,6 +119,7 @@
             gap: 20px 30px;
             flex-direction: row;
             align-items: center;
+            align-content: flex-start;
         }
 
         .gallery-item {
@@ -289,10 +292,11 @@
         }
 
         footer {
-            background-color: rgba(255, 182, 193, 0.5); /* lightpink 색상을 반투명하게 지정 */
+            box-shadow: 0 -3px 0 rgba(255, 182, 193, 0.4);
+            /*background-color: rgba(255, 182, 193, 0.5); !* lightpink 색상을 반투명하게 지정 *!*/
+            margin-top: 100px;
             text-align: center;
             padding: 20px;
-
         }
 
         footer p {
@@ -416,7 +420,7 @@
     </div>
 </div>
 
-<div class="page-num" th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
+<div class="page-num" th:if="${maxPage != 0}" th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
               end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)}),
               currentPage=${responseDto.number + 1}">
     <!-- 현재 페이지를 중심으로 앞뒤로 2개의 페이지만 표시 -->
@@ -439,6 +443,7 @@
         </li>
     </ul>
 </div>
+
 <footer>
     <p>&copy; 2024 SAPPUN.
         Team members <a href="https://github.com/hayul93" target="_blank">박상율</a>,
