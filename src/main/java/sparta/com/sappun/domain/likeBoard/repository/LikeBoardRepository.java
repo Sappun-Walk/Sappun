@@ -1,6 +1,8 @@
 package sparta.com.sappun.domain.likeBoard.repository;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.RepositoryDefinition;
@@ -12,6 +14,8 @@ import sparta.com.sappun.domain.user.entity.User;
 public interface LikeBoardRepository {
     LikeBoard save(LikeBoard boardLike);
 
+    List<LikeBoard> findByUser(User user);
+
     boolean existsLikeBoardByBoardAndUser(Board board, User user);
 
     void deleteLikeBoardByBoardAndUser(Board board, User user);
@@ -22,4 +26,7 @@ public interface LikeBoardRepository {
     @Modifying
     @Query(value = "delete from LikeBoard lb where lb in :likeBoards")
     void deleteAll(List<LikeBoard> likeBoards);
+
+    @Query("SELECT rb FROM LikeBoard  rb JOIN FETCH rb.board")
+    Page<LikeBoard> findAllFetchBoard(Pageable pageable);
 }
