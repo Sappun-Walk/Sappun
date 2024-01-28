@@ -129,7 +129,7 @@ class UserServiceTest implements UserTest {
     }
 
     @Test
-    @DisplayName("signup 테스트 - 이메일 중복 실패")
+    @DisplayName("signup 테스트 - 이메일 중복으로 실패")
     void signupEmailFailureTest() {
         // given
         UserSignupReq req =
@@ -229,6 +229,23 @@ class UserServiceTest implements UserTest {
 
         // then
         assertEquals(NOT_FOUND_USER.getMessage(), exception.getResultCode().getMessage());
+    }
+
+    @Test
+    @DisplayName("프로필 조회 테스트")
+    void getProfileInfoTest() {
+        // given - 필요한 변수 생성
+        when(userRepository.findById(TEST_USER_ID)).thenReturn(TEST_USER);
+        ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
+
+        // when - 테스트할 메서드를 실제 동작
+        UserProfileRes res = userService.getProfileInfo(TEST_USER_ID);
+
+        // then - 결과 제대로 나왔는지 확인
+        assertEquals(TEST_USER_ID, res.getId());
+        assertEquals(TEST_USER_USERNAME, res.getUsername());
+        assertEquals(TEST_USER_NICKNAME, res.getNickname());
+        assertEquals(Role.USER, res.getRole());
     }
 
     @Test
