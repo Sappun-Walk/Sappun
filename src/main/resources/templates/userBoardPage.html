@@ -290,6 +290,37 @@
             align-items: center;
         }
 
+        .btn-up {
+            font-family: 'Pretendard-600';
+            position: relative;
+            width: auto;
+            margin: 0 10px;
+            display: inline-block;
+            padding: 3px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-up:hover {
+            transform: scale(1.3);
+        }
+
+        .btn-up::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: rgb(255, 182, 193);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-up:hover::after {
+            width: 100%;
+        }
+
+
         footer {
             box-shadow: 0 -5px 0 rgba(255, 182, 193, 0.1), 0 -2px 0 rgba(255, 182, 193, 0.2);
             margin-top: 100px;
@@ -341,22 +372,22 @@
     </div>
     <div class="btn-write">
         <div th:if="${#authorization.expression('isAuthenticated()')}">
-            <button class="btn btn-outline-success" onclick="redirectToCreatePage()">글쓰기</button>
+            <div class="btn-up" onclick="redirectToCreatePage()">글쓰기</div>
         </div>
         <div th:if="${user == null}">
-            <button class="btn btn-outline-success" type="submit"
-                    th:onclick="|location.href='@{/api/users/login-page}'|">로그인
-            </button>
+            <div class="btn-up"
+                 th:onclick="|location.href='@{/api/users/login-page}'|">로그인
+            </div>
         </div>
         <div th:if="${user != null}">
-            <button class="btn btn-outline-success" id="logout-button" type="submit" onclick="logout()">
+            <div class="btn-up" id="logout-button"  onclick="logout()">
                 로그아웃
-            </button>
+            </div>
         </div>
         <div th:if="${user != null && user.role == T(sparta.com.sappun.domain.user.entity.Role).ADMIN}">
-            <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/boards/reports}'|">
+            <div class="btn-up" th:onclick="|location.href='@{/api/boards/reports}'|">
                 게시판 관리
-            </button>
+            </div>
         </div>
         <div th:if="${user != null}" class="rank">
             <span th:if="${user.score < 0}">
