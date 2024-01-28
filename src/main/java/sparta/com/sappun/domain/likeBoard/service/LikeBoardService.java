@@ -64,9 +64,4 @@ public class LikeBoardService {
         return likeBoards.map(
                 likeBoard -> LikeBoardServiceMapper.INSTANCE.toLikeBoardGetRes(likeBoard));
     }
-
-    private boolean isLikedByUser(Long userId, LikeBoard likeBoard) {
-        return likeBoardRepository.existsLikeBoardByBoardAndUser(
-                likeBoard.getBoard(), userRepository.findById(userId));
-    }
 }
