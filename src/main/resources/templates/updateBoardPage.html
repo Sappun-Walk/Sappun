@@ -261,6 +261,7 @@
         .btn-map {
             font-family: 'Pretendard-600';
             width: 70%;
+            margin: 5px;
             background-color: white;
             color: black;
             border: 1px solid pink;
@@ -295,22 +296,6 @@
 
         .buttons button {
             margin-left: 5px; /* 각 버튼 사이의 간격을 조절할 수 있습니다. */
-        }
-
-        #capturedImage {
-            margin-top: 20px;
-        }
-
-        #drawLine, #captureImage, #locateCurrentPosition {
-            margin: 5px;
-        }
-
-        #capturedImage {
-            margin-top: 20px;
-        }
-
-        #drawLine, #captureImage, #locateCurrentPosition {
-            margin: 5px;
         }
 
         .gallery-item img {
@@ -478,7 +463,7 @@
             </div>
         </div>
         <div th:if="${user != null}">
-            <div class="btn-up" id="logout-button"  onclick="logout()">
+            <div class="btn-up" id="logout-button" onclick="logout()">
                 로그아웃
             </div>
         </div>
@@ -540,11 +525,6 @@
 <div class="getBoardDetail-body">
     <div class="title-and-buttons">
         <div class="outLine">
-            <!--기존 파일-->
-            <div>
-                <h3>기존 산책로</h3>
-                <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
-            </div>
             <h3>수정하고 싶은 산책로를 그려주세요!</h3>
             <div class="map-create">
                 <!--지도 div-->
@@ -592,13 +572,23 @@
 
     <div class="outLine">
         <h3>수정한 산책로를 캡처 후 첨부해주세요!</h3>
-        <!--지도 캡쳐한 이미지 div-->
-        <div id="capturedImage"></div>
+        <!--기존 파일-->
+        <div style="display: flex; flex-direction: row;">
+            <div>
+                <h3>기존 산책로</h3>
+                <img class="img-section" th:src="${board.fileURL}" alt="게시물 이미지">
+            </div>
+            <div style="margin-left: 20px;">
+                <h3>수정한 산책로</h3>
+                <!--지도 캡쳐한 이미지 div-->
+                <div class="img-section" id="capturedImage"></div>
+            </div>
+        </div>
     </div>
-    <!--            <section class="gaegu-bold">-->
     <div class="outLine">
         추가 이미지 업로드 (4장으로 제한) :
-        <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple onchange="readMultipleURL(this);">
+        <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple
+               onchange="readMultipleURL(this);">
     </div>
     <div class="outLine">
         <!--               폰트 적용 시 class="gaegu-bold"내용 에 추가-->
@@ -776,10 +766,10 @@
         if (!title) {
             alert("제목을 입력해주세요.");
             return;
-        } else if(title.length > 20) {
+        } else if (title.length > 20) {
             alert("제목은 최대 20자까지만 입력 가능합니다.");
             return;
-        } else if(!departure) {
+        } else if (!departure) {
             alert("출발지를 입력해주세요.");
             return;
         } else if (!destination) {
@@ -794,9 +784,9 @@
         }
 
         // 추가 이미지가 4장 이하인지 확인
-        if (imageInputs.files.length > 4){
-          alert("추가 이미지는 4개 이하 첨부해주세요!");
-          return
+        if (imageInputs.files.length > 4) {
+            alert("추가 이미지는 4개 이하 첨부해주세요!");
+            return
         }
 
         let formData = new FormData();
@@ -813,12 +803,12 @@
         formData.append("content", content);
         formData.append("image", mapImage);
 
-      // 여러 이미지 업로드
-      if (imageInputs.files.length > 0) {
-        for (let i = 0; i < imageInputs.files.length; i++) {
-          formData.append('photoImages', imageInputs.files[i]);
+        // 여러 이미지 업로드
+        if (imageInputs.files.length > 0) {
+            for (let i = 0; i < imageInputs.files.length; i++) {
+                formData.append('photoImages', imageInputs.files[i]);
+            }
         }
-      }
 
         // 요청 보내기
         fetch(boardUrl + '/' + boardId, {
@@ -952,36 +942,36 @@
 
         const imageUrl = `https://maps.googleapis.com/maps/api/staticmap?${serializeObject(staticMapOptions)}&key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg`;
 
-      fetch(imageUrl)
-      .then(response => response.blob())
-      .then(blob => {
-        // Blob을 FormData에 추가
-        const formData = new FormData();
-        formData.append('mapImage', blob);
+        fetch(imageUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                // Blob을 FormData에 추가
+                const formData = new FormData();
+                formData.append('mapImage', blob);
 
-        // 서버로 API 요청 보내기
-        fetch('/api/boards/map', {
-          method: 'POST',
-          body: formData,
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          // API 응답을 문자열로 변환
-          return response.text();
-        })
-        .then(data => {
-          mapImage = data;
-        })
-        .catch(error => {
-          console.error('Error saving map image:', error);
-        });
-      });
+                // 서버로 API 요청 보내기
+                fetch('/api/boards/map', {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        // API 응답을 문자열로 변환
+                        return response.text();
+                    })
+                    .then(data => {
+                        mapImage = data;
+                    })
+                    .catch(error => {
+                        console.error('Error saving map image:', error);
+                    });
+            });
 
         // 캡처 결과를 화면에 표시
         const capturedImageDiv = document.getElementById('capturedImage');
-        capturedImageDiv.innerHTML = `<img src="${imageUrl}" alt="Captured Map">`;
+        capturedImageDiv.innerHTML = `<img src="${imageUrl}" style="border-radius: 15px;" alt="Captured Map">`;
     }
 
     function locateCurrentPosition() {
