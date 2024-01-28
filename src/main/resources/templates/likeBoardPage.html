@@ -447,7 +447,7 @@
                 <h4 th:text="${likeBoard.board.title}"></h4>
                 <p></p>
             </div>
-            <div class="Board-content" th:text="'작성자: ' + ${likeBoard.nickname}"></div>
+            <div class="Board-content" th:text="'작성자: ' + ${likeBoard.board.nickname}"></div>
             <div class="Board-content" th:text="'지역: ' + ${likeBoard.board.region.getRegion()}"></div>
         </div>
     </div>
