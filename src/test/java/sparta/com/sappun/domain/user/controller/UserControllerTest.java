@@ -6,11 +6,14 @@ import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static sparta.com.sappun.global.jwt.JwtUtil.ACCESS_TOKEN_HEADER;
+import static sparta.com.sappun.global.jwt.JwtUtil.REFRESH_TOKEN_HEADER;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,7 +33,6 @@ import sparta.com.sappun.global.jwt.JwtUtil;
 import sparta.com.sappun.global.redis.RedisUtil;
 import sparta.com.sappun.test.UserTest;
 
-@Disabled
 @WebMvcTest(controllers = {UserController.class})
 class UserControllerTest extends BaseMvcTest implements UserTest {
 
@@ -125,10 +127,11 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
         String accessToken = "accessToken";
         String refreshToken = "refreshToken";
 
-        when(jwtUtil.getTokensFromCookie(any()).get(JwtUtil.ACCESS_TOKEN_HEADER))
-                .thenReturn(accessToken);
-        when(jwtUtil.getTokensFromCookie(any()).get(JwtUtil.REFRESH_TOKEN_HEADER))
-                .thenReturn(refreshToken);
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put(ACCESS_TOKEN_HEADER, accessToken);
+        tokens.put(REFRESH_TOKEN_HEADER, refreshToken);
+
+        when(jwtUtil.getTokensFromCookie(any())).thenReturn(tokens);
 
         // when - then
         mockMvc
@@ -171,7 +174,7 @@ class UserControllerTest extends BaseMvcTest implements UserTest {
 
         // when - then - 테스트할 메서드를 실제 동작 & 결과 제대로 나왔는지 확인
         mockMvc
-                .perform(get("/api/users").principal(mockPrincipal))
+                .perform(get("/api/users/profile/" + TEST_USER_ID))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

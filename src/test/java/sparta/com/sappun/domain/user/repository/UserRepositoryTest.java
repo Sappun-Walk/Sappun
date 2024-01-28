@@ -118,4 +118,21 @@ class UserRepositoryTest implements UserTest {
         // then
         assertTrue(isFound);
     }
+
+    @Test
+    @DisplayName("findByEmail 테스트")
+    void findByEmailTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+
+        // when
+        User saveUser = userRepository.findByEmail(user.getEmail());
+
+        // then
+        assertEquals(user.getId(), saveUser.getId());
+        assertEquals(user.getUsername(), saveUser.getUsername());
+        assertEquals(user.getNickname(), saveUser.getNickname());
+        assertEquals(user.getEmail(), saveUser.getEmail());
+        assertEquals(user.getScore(), saveUser.getScore());
+    }
 }

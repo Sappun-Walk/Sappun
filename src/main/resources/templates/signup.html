@@ -435,21 +435,30 @@
             },
             body: JSON.stringify(usernameVerifyReq),
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    // 중복된 경우 메시지 표시
-                    alert('중복된 아이디입니다.');
-                    isDuplicatedUsername = true;
-                } else {
-                    // 중복되지 않은 경우 메시지 초기화
-                    alert('사용 가능한 아이디입니다.');
-                    isDuplicatedUsername = false;
-                }
-            })
-            .catch(error => {
-                console.error('Error checking username:', error);
-            });
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.code === 200) {
+            if (data.data.isDuplicated) {
+              // 중복된 경우 메시지 표시
+              alert('사용 불가능한 아이디입니다.');
+              isDuplicatedUsername = true;
+            } else {
+              // 중복되지 않은 경우 메시지 초기화
+              alert('사용 가능한 아이디입니다.');
+              isDuplicatedUsername = false;
+            }
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error checking username:', error);
+        });
     }
 
     function checkNickname() {
@@ -476,21 +485,30 @@
             },
             body: JSON.stringify(nicknameVerifyReq),
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    // 중복된 경우 메시지 표시
-                    alert('중복된 닉네임입니다.');
-                    isDuplicatedNickname = true;
-                } else {
-                    // 중복되지 않은 경우 메시지 초기화
-                    alert('사용 가능한 닉네임입니다.');
-                    isDuplicatedNickname = false;
-                }
-            })
-            .catch(error => {
-                console.error('Error checking nickname:', error);
-            });
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.code === 200) {
+            if (data.data.isDuplicated) {
+              // 중복된 경우 메시지 표시
+              alert('사용 불가능한 닉네임입니다.');
+              isDuplicatedNickname = true;
+            } else {
+              // 중복되지 않은 경우 메시지 초기화
+              alert('사용 가능한 닉네임입니다.');
+              isDuplicatedNickname = false;
+            }
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error checking nickname:', error);
+        });
     }
 
     function signup() {
