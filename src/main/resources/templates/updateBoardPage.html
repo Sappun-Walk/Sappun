@@ -586,9 +586,12 @@
         </div>
     </div>
     <div class="outLine">
-        추가 이미지 업로드 (4장으로 제한) :
+        <div style="display: flex;justify-content: center; align-items: center;" id="previewContainer">
+        </div>
+        추가 이미지 업로드 (최대 4장) :
         <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple
                onchange="readMultipleURL(this);">
+        <p id="errorMessage" style="color: red; display: none;">최대 4장의 이미지만 선택할 수 있습니다.</p>
     </div>
     <div class="outLine">
         <!--               폰트 적용 시 class="gaegu-bold"내용 에 추가-->
@@ -997,72 +1000,59 @@
             .map(key => `${key}=${encodeURIComponent(obj[key])}`)
             .join('&');
     }
+
     function handleRegionChange() {
         // 선택된 값 가져오기
         var selectedValue = document.getElementById("region").value;
         var newLatLng = {lat: 37.5665, lng: 126.9780}; // 서울특별시 위경도
         var newZoomLevel = 12;
 
-        if(selectedValue === "REGION1"){
+        if (selectedValue === "REGION1") {
             newLatLng = {lat: 37.5665, lng: 126.9780}; // 서울특별시 위경도
-        }
-        else if(selectedValue === "REGION2"){
+        } else if (selectedValue === "REGION2") {
             newLatLng = {lat: 35.1379, lng: 129.0556}; // 부산특별시 위경도
             newZoomLevel = 11;
-        }
-        else if(selectedValue === "REGION3"){
+        } else if (selectedValue === "REGION3") {
             newLatLng = {lat: 35.8704, lng: 128.5910}; // 대구광역시 위경도
-        }
-        else if(selectedValue === "REGION4"){
+        } else if (selectedValue === "REGION4") {
             newLatLng = {lat: 37.4489, lng: 126.7031}; // 인천광역시 위경도
-        }
-        else if(selectedValue === "REGION5"){
-            newLatLng = {lat: 35.1595 , lng: 126.8526}; // 광주광역시 위경도
-        }
-        else if(selectedValue === "REGION6"){
+        } else if (selectedValue === "REGION5") {
+            newLatLng = {lat: 35.1595, lng: 126.8526}; // 광주광역시 위경도
+        } else if (selectedValue === "REGION6") {
             newLatLng = {lat: 35.5383, lng: 129.3113}; // 울산광역시 위경도
-        }
-        else if(selectedValue === "REGION7"){
+        } else if (selectedValue === "REGION7") {
             newLatLng = {lat: 36.5040, lng: 127.2494}; // 세종특별자치시 위경도
-        }
-        else if(selectedValue === "REGION8"){
+        } else if (selectedValue === "REGION8") {
             newLatLng = {lat: 37.2636, lng: 127.0286}; // 경기도 수원시 위경도
             newZoomLevel = 10;
-        }
-        else if(selectedValue === "REGION9"){
+        } else if (selectedValue === "REGION9") {
             newLatLng = {lat: 37.8222, lng: 128.1550}; // 강원특별자치도 춘천시 위경도
             newZoomLevel = 9;
-        }
-        else if(selectedValue === "REGION10"){
+        } else if (selectedValue === "REGION10") {
             newLatLng = {lat: 36.8001, lng: 127.7270}; // 충청북도 위경도
             newZoomLevel = 10;
-        }
-        else if(selectedValue === "REGION11"){
+        } else if (selectedValue === "REGION11") {
             newLatLng = {lat: 36.5184, lng: 126.8000}; // 충청남도 위경도
             newZoomLevel = 9;
-        }
-        else if(selectedValue === "REGION12"){
+        } else if (selectedValue === "REGION12") {
             newLatLng = {lat: 35.7175, lng: 127.1530}; // 전북특별자치도 위경도
             newZoomLevel = 9;
-        }
-        else if(selectedValue === "REGION13"){
+        } else if (selectedValue === "REGION13") {
             newLatLng = {lat: 34.8169, lng: 126.9794}; // 전라남도 위경도
             newZoomLevel = 9;
-        }
-        else if(selectedValue === "REGION14"){
+        } else if (selectedValue === "REGION14") {
             newLatLng = {lat: 36.5759, lng: 128.5059}; // 경상북도 위경도
             newZoomLevel = 9;
-        }
-        else if(selectedValue === "REGION15"){
+        } else if (selectedValue === "REGION15") {
             newLatLng = {lat: 35.2279, lng: 128.6811}; // 경상남도 위경도
             newZoomLevel = 10;
-        }
-        else if(selectedValue === "REGION16"){
+        } else if (selectedValue === "REGION16") {
             newLatLng = {lat: 33.4312, lng: 126.5437}; // 제주특별자치도 위경도
             newZoomLevel = 10;
         }
         moveMapToLocation(newLatLng, newZoomLevel)
     }
+
     function moveMapToLocation(newLatLng, newZoomLevel) {
         if (map) {
             // Map 객체가 존재하면 중심과 줌 레벨을 업데이트하여 지도 이동
@@ -1071,6 +1061,56 @@
         } else {
             console.error("지도가 활성화 되어 있지 않습니다!");
         }
+    }
+
+    function readMultipleURL(input) {
+        var previewContainer = document.getElementById('previewContainer');
+        previewContainer.innerHTML = ''; // 기존 이미지 제거
+
+        var errorMessage = document.getElementById('errorMessage');
+        if (input.files.length > 4) {
+            errorMessage.style.display = 'block'; // 에러 메시지 표시
+            return; // 에러 발생 시 함수 종료
+        } else {
+            errorMessage.style.display = 'none'; // 에러 메시지 숨기기
+        }
+
+        if (input.files && input.files.length > 0) {
+            var promises = []; // FileReader Promise 배열
+
+            for (var i = 0; i < input.files.length; i++) {
+                promises.push(readFile(input.files[i])); // 각 파일에 대한 Promise 생성
+            }
+
+            Promise.all(promises)
+                .then(function (results) {
+                    results.forEach(function (result) {
+                        var img = document.createElement('img');
+                        img.src = result;
+                        img.style.margin = '10px';
+                        img.style.borderRadius = '10px';
+                        img.style.width = '22%';
+                        img.style.height = '200px';
+                        previewContainer.appendChild(img);
+                    });
+                })
+                .catch(function (error) {
+                    console.error('Error reading files:', error);
+                });
+        }
+    }
+
+    function readFile(file) {
+        return new Promise(function (resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                resolve(event.target.result);
+            };
+            reader.onerror = function (event) {
+                reject(event.target.error);
+            };
+            reader.readAsDataURL(file);
+        });
     }
 </script>
 <!-- Google Maps API 및 Drawing 라이브러리 로드 -->

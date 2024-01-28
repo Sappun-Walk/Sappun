@@ -590,9 +590,12 @@
         <div id="capturedImage"></div>
     </div>
     <div class="outLine">
+        <div style="display: flex;justify-content: center; align-items: center;" id="previewContainer">
+        </div>
         추가 이미지 업로드 (4장으로 제한) :
         <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple
                onchange="readMultipleURL(this);">
+        <p id="errorMessage" style="color: red; display: none;">최대 4장의 이미지만 선택할 수 있습니다.</p>
     </div>
     <div class="outLine">
         <label for="content">내용:</label>
@@ -854,15 +857,23 @@
         }
     }
 
+
     function readMultipleURL(input) {
-        var previewContainer = document.getElementById('preview');
+        var previewContainer = document.getElementById('previewContainer');
         previewContainer.innerHTML = ''; // 기존 이미지 제거
+
+        var errorMessage = document.getElementById('errorMessage');
+        if (input.files.length > 4) {
+            errorMessage.style.display = 'block'; // 에러 메시지 표시
+            return; // 에러 발생 시 함수 종료
+        } else {
+            errorMessage.style.display = 'none'; // 에러 메시지 숨기기
+        }
 
         if (input.files && input.files.length > 0) {
             var promises = []; // FileReader Promise 배열
-            var maxFiles = 3; // 최대 허용 파일 수
 
-            for (var i = 0; i < Math.min(input.files.length, maxFiles); i++) {
+            for (var i = 0; i < input.files.length; i++) {
                 promises.push(readFile(input.files[i])); // 각 파일에 대한 Promise 생성
             }
 
@@ -871,7 +882,10 @@
                     results.forEach(function (result) {
                         var img = document.createElement('img');
                         img.src = result;
-                        img.style.width = '100px'; // 이미지 크기 조절
+                        img.style.margin = '10px';
+                        img.style.borderRadius = '10px';
+                        img.style.width = '22%';
+                        img.style.height = '200px';
                         previewContainer.appendChild(img);
                     });
                 })
@@ -884,15 +898,12 @@
     function readFile(file) {
         return new Promise(function (resolve, reject) {
             var reader = new FileReader();
-
-            reader.onload = function (e) {
-                resolve(e.target.result);
+            reader.onload = function (event) {
+                resolve(event.target.result);
             };
-
-            reader.onerror = function (e) {
-                reject(e);
+            reader.onerror = function (event) {
+                reject(event.target.error);
             };
-
             reader.readAsDataURL(file);
         });
     }
