@@ -16,7 +16,7 @@ public class LikeBoardGetRes {
     @Builder
     private LikeBoardGetRes(Long id, BoardToLikeGetRes board, String nickname) {
         this.id = id;
-        this.board = board;
         this.nickname = nickname;
+        this.board = board;
     }
 }

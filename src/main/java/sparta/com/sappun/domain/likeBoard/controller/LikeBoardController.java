@@ -26,6 +26,7 @@ public class LikeBoardController {
     private static final String DEFAULT_SORT_BY = "createdAt";
     private static final String DEFAULT_IS_ASC = "false";
 
+    @ResponseBody
     @PostMapping("/{boardId}/like")
     public CommonResponse<LikeBoardSaveRes> likeBoard(
             @PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -33,7 +34,7 @@ public class LikeBoardController {
                 likeBoardService.clickLikeBoard(boardId, userDetails.getUser().getId()));
     }
 
-    @GetMapping("/like")
+    @GetMapping("/likes")
     public String getLikeBoardList(
             @RequestParam(value = "page", defaultValue = DEFAULT_PAGE) int page,
             @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) int size,
