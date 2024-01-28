@@ -32,28 +32,6 @@ class BoardRepositoryTest implements BoardTest {
     @PersistenceContext EntityManager em;
 
     @Test
-    @DisplayName("save 테스트")
-    void saveTest() {
-        // given
-        userRepository.save(TEST_USER);
-
-        // when
-        Board saveBoard = boardRepository.save(TEST_BOARD);
-
-        // then
-        assertEquals(TEST_BOARD_ID, saveBoard.getId());
-        assertEquals(TEST_BOARD_TITLE, saveBoard.getTitle());
-        assertEquals(TEST_BOARD_CONTENT, saveBoard.getContent());
-        assertEquals(TEST_BOARD_URL, saveBoard.getFileURL());
-        assertEquals(TEST_DEPARTURE, saveBoard.getDeparture());
-        assertEquals(TEST_DESTINATION, saveBoard.getDestination());
-        assertEquals(TEST_STOPOVER, saveBoard.getStopover());
-        assertEquals(TEST_REGION1, saveBoard.getRegion());
-        assertEquals(TEST_LIKE_COUNT, saveBoard.getLikeCount());
-        assertEquals(TEST_REPORT_COUNT, saveBoard.getReportCount());
-    }
-
-    @Test
     @DisplayName("findById 테스트")
     void findByIdTest() {
         // given
@@ -66,9 +44,25 @@ class BoardRepositoryTest implements BoardTest {
         // then
         assertEquals(TEST_BOARD_TITLE, saveBoard.getTitle());
         assertEquals(TEST_BOARD_CONTENT, saveBoard.getContent());
-        assertEquals(TEST_BOARD_URL, saveBoard.getFileURL());
-        assertEquals(TEST_DEPARTURE, saveBoard.getDeparture());
-        assertEquals(TEST_DESTINATION, saveBoard.getDestination());
+        assertEquals(TEST_STOPOVER, saveBoard.getStopover());
+        assertEquals(TEST_REGION1, saveBoard.getRegion());
+        assertEquals(TEST_LIKE_COUNT, saveBoard.getLikeCount());
+        assertEquals(TEST_REPORT_COUNT, saveBoard.getReportCount());
+    }
+
+    @Test
+    @DisplayName("save 테스트")
+    void saveTest() {
+        // given
+        userRepository.save(TEST_USER);
+
+        // when
+        Board saveBoard = boardRepository.save(TEST_BOARD);
+
+        // then
+        assertEquals(TEST_BOARD_ID, saveBoard.getId());
+        assertEquals(TEST_BOARD_TITLE, saveBoard.getTitle());
+        assertEquals(TEST_BOARD_CONTENT, saveBoard.getContent());
         assertEquals(TEST_STOPOVER, saveBoard.getStopover());
         assertEquals(TEST_REGION1, saveBoard.getRegion());
         assertEquals(TEST_LIKE_COUNT, saveBoard.getLikeCount());
@@ -90,27 +84,34 @@ class BoardRepositoryTest implements BoardTest {
     }
 
     @Test
-    @DisplayName("findAllByRegion 테스트")
-    void findAllByRegionTest() {
+    @DisplayName("deleteAllByUser 테스트")
+    @Transactional
+    void deleteAllByUserTest() {
         // given
         User user = userRepository.save(TEST_USER);
-        Board board = boardRepository.save(TEST_BOARD);
-        Pageable pageable = PageRequest.ofSize(1);
+        Board board =
+                Board.builder()
+                        .user(user)
+                        .title(TEST_BOARD_TITLE)
+                        .content(TEST_BOARD_CONTENT)
+                        .fileURL(TEST_MAP_IMAGE)
+                        .departure(TEST_DEPARTURE)
+                        .destination(TEST_DESTINATION)
+                        .stopover(TEST_STOPOVER)
+                        .region(TEST_REGION1)
+                        .likeCount(0)
+                        .reportCount(TEST_REPORT_COUNT)
+                        .build();
+        boardRepository.save(board);
 
         // when
-        Page<Board> boardPage =
-                boardRepository.findAllByReportCountLessThanAndRegion(5, board.getRegion(), pageable);
+        boardRepository.deleteAllByUser(user);
+        em.flush(); // 변경사항을 데이터베이스에 즉시 반영
+        em.clear(); // 영속성 컨텍스트 초기화
+        Board findBoard = boardRepository.findById(board.getId());
 
         // then
-        assertEquals(TEST_BOARD_TITLE, boardPage.getContent().get(0).getTitle());
-        assertEquals(TEST_BOARD_CONTENT, boardPage.getContent().get(0).getContent());
-        assertEquals(TEST_BOARD_URL, boardPage.getContent().get(0).getFileURL());
-        assertEquals(TEST_DEPARTURE, boardPage.getContent().get(0).getDeparture());
-        assertEquals(TEST_DESTINATION, boardPage.getContent().get(0).getDestination());
-        assertEquals(TEST_STOPOVER, boardPage.getContent().get(0).getStopover());
-        assertEquals(TEST_REGION1, boardPage.getContent().get(0).getRegion());
-        assertEquals(TEST_LIKE_COUNT, boardPage.getContent().get(0).getLikeCount());
-        assertEquals(TEST_REPORT_COUNT, boardPage.getContent().get(0).getReportCount());
+        assertNull(findBoard);
     }
 
     @Test
@@ -123,7 +124,7 @@ class BoardRepositoryTest implements BoardTest {
                         .user(user)
                         .title(TEST_BOARD_TITLE)
                         .content(TEST_BOARD_CONTENT)
-                        .fileURL(TEST_BOARD_URL)
+                        .fileURL(TEST_MAP_IMAGE)
                         .departure(TEST_DEPARTURE)
                         .destination(TEST_DESTINATION)
                         .stopover(TEST_STOPOVER)
@@ -137,7 +138,7 @@ class BoardRepositoryTest implements BoardTest {
                         .user(user)
                         .title(TEST_BOARD_TITLE)
                         .content(TEST_BOARD_CONTENT)
-                        .fileURL(TEST_BOARD_URL)
+                        .fileURL(TEST_MAP_IMAGE)
                         .departure(TEST_DEPARTURE)
                         .destination(TEST_DESTINATION)
                         .stopover(TEST_STOPOVER)
@@ -151,7 +152,7 @@ class BoardRepositoryTest implements BoardTest {
                         .user(user)
                         .title(TEST_BOARD_TITLE)
                         .content(TEST_BOARD_CONTENT)
-                        .fileURL(TEST_BOARD_URL)
+                        .fileURL(TEST_MAP_IMAGE)
                         .departure(TEST_DEPARTURE)
                         .destination(TEST_DESTINATION)
                         .stopover(TEST_STOPOVER)
@@ -175,33 +176,60 @@ class BoardRepositoryTest implements BoardTest {
     }
 
     @Test
-    @DisplayName("deleteAllByUser 테스트")
-    @Transactional
-    void deleteAllByUserTest() {
+    @DisplayName("findAllByRegion 테스트")
+    void findAllByRegionTest() {
         // given
         User user = userRepository.save(TEST_USER);
-        Board board =
-                Board.builder()
-                        .user(user)
-                        .title(TEST_BOARD_TITLE)
-                        .content(TEST_BOARD_CONTENT)
-                        .fileURL(TEST_BOARD_URL)
-                        .departure(TEST_DEPARTURE)
-                        .destination(TEST_DESTINATION)
-                        .stopover(TEST_STOPOVER)
-                        .region(TEST_REGION1)
-                        .likeCount(0)
-                        .reportCount(TEST_REPORT_COUNT)
-                        .build();
-        boardRepository.save(board);
+        Board board = boardRepository.save(TEST_BOARD);
+        Pageable pageable = PageRequest.ofSize(1);
 
         // when
-        boardRepository.deleteAllByUser(user);
-        em.flush(); // 변경사항을 데이터베이스에 즉시 반영
-        em.clear(); // 영속성 컨텍스트 초기화
-        Board findBoard = boardRepository.findById(board.getId());
+        Page<Board> boardPage =
+                boardRepository.findAllByReportCountLessThanAndRegion(5, board.getRegion(), pageable);
 
         // then
-        assertNull(findBoard);
+        assertEquals(TEST_BOARD_TITLE, boardPage.getContent().get(0).getTitle());
+        assertEquals(TEST_BOARD_CONTENT, boardPage.getContent().get(0).getContent());
+        assertEquals(TEST_REGION1, boardPage.getContent().get(0).getRegion());
+        assertEquals(TEST_LIKE_COUNT, boardPage.getContent().get(0).getLikeCount());
+        assertEquals(TEST_REPORT_COUNT, boardPage.getContent().get(0).getReportCount());
+    }
+
+    @Test
+    @DisplayName("findAllUserBoardByUserId 테스트")
+    void findAllUserBoardByUserIdTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+        Board board = boardRepository.save(TEST_BOARD);
+        Pageable pageable = PageRequest.ofSize(1);
+
+        // when
+        Page<Board> boardPage = boardRepository.findAllByUserId(user.getId(), pageable);
+
+        // then
+        assertEquals(board.getTitle(), boardPage.getContent().get(0).getTitle());
+        assertEquals(board.getContent(), boardPage.getContent().get(0).getContent());
+        assertEquals(board.getRegion(), boardPage.getContent().get(0).getRegion());
+        assertEquals(board.getLikeCount(), boardPage.getContent().get(0).getLikeCount());
+        assertEquals(board.getReportCount(), boardPage.getContent().get(0).getReportCount());
+    }
+
+    @Test
+    @DisplayName("findAllByReportCountLessThan 테스트")
+    void findAllByReportCountLessThanTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+        Board board = boardRepository.save(TEST_BOARD);
+        Pageable pageable = PageRequest.ofSize(1);
+
+        // when
+        Page<Board> boardPage = boardRepository.findAllByReportCountLessThan(5, pageable);
+
+        // then
+        assertEquals(board.getTitle(), boardPage.getContent().get(0).getTitle());
+        assertEquals(board.getContent(), boardPage.getContent().get(0).getContent());
+        assertEquals(board.getRegion(), boardPage.getContent().get(0).getRegion());
+        assertEquals(board.getLikeCount(), boardPage.getContent().get(0).getLikeCount());
+        assertEquals(board.getReportCount(), boardPage.getContent().get(0).getReportCount());
     }
 }

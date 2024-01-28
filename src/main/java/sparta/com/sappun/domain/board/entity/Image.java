@@ -2,6 +2,7 @@ package sparta.com.sappun.domain.board.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,12 +25,10 @@ public class Image {
 
     // 생성자, 빌더 등 필요한 메서드 추가
 
-    public Image(String imageUrl, Board board) {
+    @Builder
+    private Image(String imageUrl, Board board) {
         this.imageUrl = imageUrl;
         this.board = board;
-        if (board != null) {
-            board.getImages().add(this); // Board에도 Image 추가
-        }
     }
 
     public void setBoard(Board board) {
