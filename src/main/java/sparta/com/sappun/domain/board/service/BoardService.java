@@ -78,7 +78,7 @@ public class BoardService {
         Pageable pageable = PageRequest.of(page, size, sort);
 
         return boardRepository
-                .findAllUserBoardByUserId(userId, pageable)
+                .findAllByUserId(userId, pageable)
                 .map(BoardServiceMapper.INSTANCE::toBoardUserListGetRes);
     }
 

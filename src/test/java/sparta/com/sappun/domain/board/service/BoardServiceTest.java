@@ -159,7 +159,7 @@ class BoardServiceTest implements BoardTest {
         List<Board> mockBoardList = List.of(TEST_BOARD1, TEST_BOARD2);
         Page<Board> mockPage = new PageImpl<>(mockBoardList, pageable, mockBoardList.size());
 
-        when(boardRepository.findAllUserBoardByUserId(TEST_USER_ID, pageable)).thenReturn(mockPage);
+        when(boardRepository.findAllByUserId(TEST_USER_ID, pageable)).thenReturn(mockPage);
 
         // when
         Page<BoardToReportGetRes> res =

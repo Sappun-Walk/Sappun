@@ -17,21 +17,21 @@ public interface BoardRepository {
 
     Board findById(Long boardId);
 
-    Page<Board> findAllByReportCountLessThanAndRegion(
-            int reportCount, RegionEnum region, Pageable pageable);
-
-    @Query("SELECT b FROM Board b WHERE b.user.id = :userId")
-    Page<Board> findAllUserBoardByUserId(@Param("userId") Long userId, Pageable pageable);
-
-    Page<Board> findAllByReportCountLessThan(int reportCount, Pageable pageable);
-
-    List<Board> findTop3ByReportCountLessThanOrderByLikeCountDesc(int reportCount);
-
     Board save(Board board);
 
     void delete(Board board);
 
     @Modifying
-    @Query(value = "delete from Board b where b.user = :user")
+    @Query(value = "delete from Board b where b.user = " + ":user")
     void deleteAllByUser(User user);
+
+    List<Board> findTop3ByReportCountLessThanOrderByLikeCountDesc(int reportCount);
+
+    Page<Board> findAllByReportCountLessThanAndRegion(
+            int reportCount, RegionEnum region, Pageable pageable);
+
+    @Query("SELECT b FROM Board b WHERE b.user.id = :userId")
+    Page<Board> findAllByUserId(@Param("userId") Long userId, Pageable pageable);
+
+    Page<Board> findAllByReportCountLessThan(int reportCount, Pageable pageable);
 }
