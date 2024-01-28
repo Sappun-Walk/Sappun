@@ -108,7 +108,7 @@ public class UserController {
         return CommonResponse.success(userService.deleteUser(userDetails.getUser().getId()));
     }
 
-    // 프로필 조회
+    // 프로필 조회 페이지
     @GetMapping
     public String getProfile(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         UserProfileRes res = userService.getProfile(userDetails.getUser().getId());
@@ -125,7 +125,7 @@ public class UserController {
         return CommonResponse.success(userService.getProfileInfo(userId));
     }
 
-    // 프로필 수정 입력 화면 출력
+    // 프로필 수정 페이지
     @GetMapping("/profile-update")
     public String getProfileForInput(
             Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -146,7 +146,7 @@ public class UserController {
         return CommonResponse.success(res);
     }
 
-    // 비밀번호 수정 페이지로 이동
+    // 비밀번호 수정 페이지
     @GetMapping("/profile/password")
     public String updatePasswordPage() {
         return "pwUpdate";
@@ -165,17 +165,19 @@ public class UserController {
     // 아이디 중복 확인
     @ResponseBody
     @PostMapping("/username")
-    public Boolean verifyUsername(@RequestBody @Valid UsernameVerifyReq req) {
+    public CommonResponse<UsernameVerifyRes> verifyUsername(
+            @RequestBody @Valid UsernameVerifyReq req) {
         UsernameVerifyRes res = userService.verifyUsername(req);
-        return res.getIsDuplicated();
+        return CommonResponse.success(res);
     }
 
     // 닉네임 중복확인
     @ResponseBody
     @PostMapping("/nickname")
-    public Boolean verifyNickname(@RequestBody @Valid NicknameVerifyReq req) {
+    public CommonResponse<NicknameVerifyRes> verifyNickname(
+            @RequestBody @Valid NicknameVerifyReq req) {
         NicknameVerifyRes res = userService.verifyNickname(req);
-        return res.getIsDuplicated();
+        return CommonResponse.success(res);
     }
 
     private void addCookie(String cookieValue, String header, HttpServletResponse res) {
