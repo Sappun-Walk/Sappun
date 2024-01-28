@@ -29,7 +29,8 @@ public class BoardUpdateReq {
             String departure,
             String destination,
             List<String> stopover,
-            RegionEnum region) {
+            RegionEnum region,
+            String image) {
         this.boardId = boardId;
         this.title = title;
         this.content = content;
@@ -37,5 +38,6 @@ public class BoardUpdateReq {
         this.destination = destination;
         this.stopover = stopover;
         this.region = region;
+        this.image = image;
     }
 }

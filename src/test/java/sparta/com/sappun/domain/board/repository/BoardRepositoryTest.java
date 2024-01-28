@@ -44,7 +44,7 @@ class BoardRepositoryTest implements BoardTest {
         assertEquals(TEST_BOARD_ID, saveBoard.getId());
         assertEquals(TEST_BOARD_TITLE, saveBoard.getTitle());
         assertEquals(TEST_BOARD_CONTENT, saveBoard.getContent());
-        assertEquals(TEST_BOARD_URL, saveBoard.getFileURL());
+        assertEquals(TEST_MAP_IMAGE, saveBoard.getFileURL());
         assertEquals(TEST_DEPARTURE, saveBoard.getDeparture());
         assertEquals(TEST_DESTINATION, saveBoard.getDestination());
         assertEquals(TEST_STOPOVER, saveBoard.getStopover());
@@ -66,7 +66,7 @@ class BoardRepositoryTest implements BoardTest {
         // then
         assertEquals(TEST_BOARD_TITLE, saveBoard.getTitle());
         assertEquals(TEST_BOARD_CONTENT, saveBoard.getContent());
-        assertEquals(TEST_BOARD_URL, saveBoard.getFileURL());
+        assertEquals(TEST_MAP_IMAGE, saveBoard.getFileURL());
         assertEquals(TEST_DEPARTURE, saveBoard.getDeparture());
         assertEquals(TEST_DESTINATION, saveBoard.getDestination());
         assertEquals(TEST_STOPOVER, saveBoard.getStopover());
@@ -104,7 +104,7 @@ class BoardRepositoryTest implements BoardTest {
         // then
         assertEquals(TEST_BOARD_TITLE, boardPage.getContent().get(0).getTitle());
         assertEquals(TEST_BOARD_CONTENT, boardPage.getContent().get(0).getContent());
-        assertEquals(TEST_BOARD_URL, boardPage.getContent().get(0).getFileURL());
+        assertEquals(TEST_MAP_IMAGE, boardPage.getContent().get(0).getFileURL());
         assertEquals(TEST_DEPARTURE, boardPage.getContent().get(0).getDeparture());
         assertEquals(TEST_DESTINATION, boardPage.getContent().get(0).getDestination());
         assertEquals(TEST_STOPOVER, boardPage.getContent().get(0).getStopover());
@@ -123,7 +123,7 @@ class BoardRepositoryTest implements BoardTest {
                         .user(user)
                         .title(TEST_BOARD_TITLE)
                         .content(TEST_BOARD_CONTENT)
-                        .fileURL(TEST_BOARD_URL)
+                        .fileURL(TEST_MAP_IMAGE)
                         .departure(TEST_DEPARTURE)
                         .destination(TEST_DESTINATION)
                         .stopover(TEST_STOPOVER)
@@ -137,7 +137,7 @@ class BoardRepositoryTest implements BoardTest {
                         .user(user)
                         .title(TEST_BOARD_TITLE)
                         .content(TEST_BOARD_CONTENT)
-                        .fileURL(TEST_BOARD_URL)
+                        .fileURL(TEST_MAP_IMAGE)
                         .departure(TEST_DEPARTURE)
                         .destination(TEST_DESTINATION)
                         .stopover(TEST_STOPOVER)
@@ -151,7 +151,7 @@ class BoardRepositoryTest implements BoardTest {
                         .user(user)
                         .title(TEST_BOARD_TITLE)
                         .content(TEST_BOARD_CONTENT)
-                        .fileURL(TEST_BOARD_URL)
+                        .fileURL(TEST_MAP_IMAGE)
                         .departure(TEST_DEPARTURE)
                         .destination(TEST_DESTINATION)
                         .stopover(TEST_STOPOVER)
@@ -185,7 +185,7 @@ class BoardRepositoryTest implements BoardTest {
                         .user(user)
                         .title(TEST_BOARD_TITLE)
                         .content(TEST_BOARD_CONTENT)
-                        .fileURL(TEST_BOARD_URL)
+                        .fileURL(TEST_MAP_IMAGE)
                         .departure(TEST_DEPARTURE)
                         .destination(TEST_DESTINATION)
                         .stopover(TEST_STOPOVER)
