@@ -47,6 +47,19 @@
             font-style: normal;
         }
 
+        html {
+            overflow-y: auto;
+            min-height: 100vh; /* 브라우저 높이에 따라 최소 높이 설정 */
+        }
+
+        body {
+            font-family: 'Pretendard-600';
+            min-height: 100vh; /* 브라우저 높이에 따라 최소 높이 설정 */
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
         .header-btn {
             font-family: 'Pretendard-600';
         }
@@ -243,10 +256,10 @@
         }
 
         footer {
-            background-color: rgba(255, 182, 193, 0.5); /* lightpink 색상을 반투명하게 지정 */
+            box-shadow: 0 -5px 0 rgba(255, 182, 193, 0.1), 0 -2px 0 rgba(255, 182, 193, 0.2);
+            margin-top: 100px;
             text-align: center;
             padding: 20px;
-
         }
 
         footer p {
@@ -256,6 +269,7 @@
         footer a {
             text-decoration: none; /* 하이퍼링크의 밑줄을 없앰 */
         }
+
     </style>
 </head>
 <body>
