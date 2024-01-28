@@ -51,13 +51,22 @@ public class LikeBoardService {
     }
 
     @Transactional
-    public Page<LikeBoardGetRes> getLikeBoardList(int page, int size, String sortBy, boolean isAsc) {
+    public Page<LikeBoardGetRes> getLikeBoardListByUser(
+            Long userId, int page, int size, String sortBy, boolean isAsc) {
+        User user = userRepository.findById(userId);
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<LikeBoard> likeBoards = likeBoardRepository.findAllFetchBoard(pageable);
+        // 좋아요한 글만 가져오도록 수정
+        Page<LikeBoard> likeBoards = likeBoardRepository.findAllByUser(user, pageable);
 
-        return likeBoards.map(LikeBoardServiceMapper.INSTANCE::toLikeBoardGetRes);
+        return likeBoards.map(
+                likeBoard -> LikeBoardServiceMapper.INSTANCE.toLikeBoardGetRes(likeBoard, true));
+    }
+
+    private boolean isLikedByUser(Long userId, LikeBoard likeBoard) {
+        return likeBoardRepository.existsLikeBoardByBoardAndUser(
+                likeBoard.getBoard(), userRepository.findById(userId));
     }
 }

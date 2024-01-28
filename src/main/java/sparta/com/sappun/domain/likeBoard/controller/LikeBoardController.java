@@ -43,8 +43,13 @@ public class LikeBoardController {
             Model model,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         model.addAttribute("user", userDetails.getUser());
+
+        Long userId = userDetails.getUser().getId(); // Get the user ID from UserDetails
+
+        // Do not pass the isLikedByUser flag here
         Page<LikeBoardGetRes> responseDto =
-                likeBoardService.getLikeBoardList(page - 1, size, sortBy, isAsc);
+                likeBoardService.getLikeBoardListByUser(userId, page - 1, size, sortBy, isAsc);
+
         model.addAttribute("responseDto", responseDto);
         model.addAttribute("maxPage", MAX_PAGE);
         return "likeBoardPage";

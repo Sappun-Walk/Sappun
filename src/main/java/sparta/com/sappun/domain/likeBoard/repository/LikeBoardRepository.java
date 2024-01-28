@@ -29,4 +29,6 @@ public interface LikeBoardRepository {
 
     @Query("SELECT rb FROM LikeBoard  rb JOIN FETCH rb.board")
     Page<LikeBoard> findAllFetchBoard(Pageable pageable);
+
+    Page<LikeBoard> findAllByUser(User user, Pageable pageable);
 }
