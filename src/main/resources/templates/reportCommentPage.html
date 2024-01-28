@@ -307,7 +307,7 @@
         </div>
     </div>
 
-    <div class="page-num" th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
+    <div class="page-num" th:if="${maxPage != 0}" th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
               end=(${(responseDto.totalPages == 0) ? 1 : (start + (maxPage - 1) < responseDto.totalPages ? start + (maxPage - 1) : responseDto.totalPages)})">
         <ul class="page-nation">
             <li class="li1" th:each="pageNum: ${#numbers.sequence(start, end)}">
