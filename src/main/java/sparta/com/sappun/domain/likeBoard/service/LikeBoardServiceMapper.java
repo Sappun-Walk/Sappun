@@ -1,6 +1,5 @@
 package sparta.com.sappun.domain.likeBoard.service;
 
-import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
