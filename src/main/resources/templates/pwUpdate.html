@@ -76,25 +76,20 @@
             list-style: none;
         }
 
-        logo {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .pwUpdate-header {
+        .wrap {
             width: 100%;
-            height: 100vh;
+            height: 85vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
             background: rgba(0, 0, 0, 0.1);
         }
 
         .login {
             width: 35%;
             height: 700px;
-            background: pink;
+            background: white;
+            border: 2px solid #ddd;
             border-radius: 20px;
             display: flex;
             justify-content: center;
@@ -122,7 +117,7 @@
 
         h3 {
             font-family: 'yg-jalnan';
-            color: gray;
+            color: pink;
             margin-left: 20px;
             text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
         }
@@ -131,12 +126,19 @@
             font-family: 'Pretendard-900';
         }
 
-        .login-id-label {
+        h5 {
+            font-family: 'Pretendard-900';
+            color: gray;
+            margin-top: 30px;
+            margin-bottom: 5px;
+        }
+
+        .login_id {
             margin-top: 20px;
             width: 80%;
         }
 
-        .login-id-label input {
+        .login_id input {
             width: 100%;
             height: 50px;
             border-radius: 30px;
@@ -162,22 +164,89 @@
             height: 50px;
             margin-left: 15px;
             margin-right: 15px;
-            border: 0;
+            border: 1px solid lightgray;
             outline: none;
             border-radius: 40px;
-            background: linear-gradient(to left, rgb(255, 77, 46), rgb(255, 155, 47));
-            color: white;
+            color: black;
             font-size: 1.2em;
             letter-spacing: 2px;
             cursor: pointer;
+        }
+
+        .main-img-container {
+            margin: 0 auto;
+            text-align: center;
+            justify-content: center;
+        }
+
+        #sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgba(17, 17, 17, 0.8);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        #sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        #sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        #main {
+            background: rgba(0, 0, 0, 0.1);
+            transition: margin-left 0.5s;
+            padding: 16px;
+            display: flex;
+        }
+
+        #openBtn {
+            font-size: 30px;
+            width: 250px;
+            margin-right: auto;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0);
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            display: flex;
+        }
+
+        #openBtn.hide {
+            visibility: hidden;
         }
 
         #mainLogoImage {
             cursor: pointer;
         }
 
-        .input-text {
-            font-family: 'Pretendard-300';
+        .btn-sideOpen {
+            width: 500px;
+        }
+
+        .btn-write {
+            width: 500px;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: flex-end;
+        }
+
+        .btn-write button {
+            width: auto;
+            margin-right: 10px;
         }
 
         footer {
@@ -196,34 +265,59 @@
     </style>
 </head>
 <body>
-<div class="pwUpdate-page">
-    <div class="pwUpdate-header">
-        <!-- 메인 로고 이미지 -->
-        <logo>
-            <img class="main-img" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}"
-                 alt="Logo" id="mainLogoImage"
-                 th:onclick="|location.href='@{/api/boards/best}'|">
-        </logo>
-        <div class="login">
-            <div class="login_title">
-                <h2>비밀번호 수정<h3>PwUpdate</h3></h2>
-            </div>
-            <div class="login-id-label">
-                <h4>기존 비밀번호</h4>
-                <input class="input-text" type="password" name="prePassword" id="prePassword" placeholder="Password">
-            </div>
-            <div class="login-id-label">
-                <h4>비밀번호</h4>
-                <input class="input-text" type="password" name="newPassword" id="newPassword" placeholder="NewPassword">
-            </div>
-            <div class="login-id-label">
-                <h4>비밀번호 확인</h4>
-                <input class="input-text" type="password" name="confirmPassword" id="confirmPassword" placeholder="NewPassword">
-            </div>
+<div id="sidebar">
+    <a href="#" onclick="navigateTo('/api/boards/best')">Best Top 3</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION1')">서울특별시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION2')">부산광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION3')">대구광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION4')">인천광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION5')">광주광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION6')">울산광역시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION7')">세종특별자치시</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION8')">경기도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION9')">강원특별자치도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION10')">충청북도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION11')">충청남도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION12')">전북특별자치도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION13')">전라남도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION14')">경상북도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION15')">경상남도</a>
+    <a href="#" onclick="navigateTo('/api/boards/region?region=REGION16')">제주특별자치도</a>
+</div>
+<!--페이지 기본 상단-->
+<div id="main">
+    <div class="btn-sideOpen">
+        <button id="openBtn" onclick="openNav()">☰ 메뉴</button>
+    </div>
+    <div class="main-img-container">
+        <img id="mainLogoImage"
+             th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png} "
+             th:onclick="|location.href='@{/api/boards/best}'|"
+             alt="Main Image">
+    </div>
+    <div class="btn-write"></div>
+</div>
 
-            <div class="change">
-                <input type="button" onclick="onPasswordUpdate()" value="변경하기"/>
-            </div>
+<div class="wrap">
+    <div class="login">
+        <div class="login_title">
+            <h2>비밀번호 수정<h3>PwUpdate</h3></h2>
+        </div>
+        <div class="login_id">
+            <h4>기존 비밀번호</h4>
+            <input type="password" name="prePassword" id="prePassword" placeholder="Password">
+        </div>
+        <div class="login_id">
+            <h4>비밀번호</h4>
+            <input type="password" name="newPassword" id="newPassword" placeholder="NewPassword">
+        </div>
+        <div class="login_id">
+            <h4>비밀번호 확인</h4>
+            <input type="password" name="confirmPassword" id="confirmPassword"
+                   placeholder="NewPassword">
+        </div>
+        <div class="change">
+            <input type="button" onclick="onPasswordUpdate()" value="변경하기"/>
         </div>
     </div>
 </div>
@@ -276,6 +370,34 @@
                     alert('비밀번호 변경이 실패했습니다: ' + data.code);
                 }
             })
+    }
+
+    // 사이드 메뉴바
+    function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("main").style.mginLeft = "250px";
+        document.getElementById("openBtn").classList.add("hide");
+        document.addEventListener("click", closeNavOutside);
+    }
+
+    function closeNav() {
+        document.getElementById("sidebar").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+        document.getElementById("openBtn").classList.remove("hide");
+        document.removeEventListener("click", closeNavOutside);
+    }
+
+    function closeNavOutside(event) {
+        var sidebar = document.getElementById("sidebar");
+        var openBtn = document.getElementById("openBtn");
+        if (event.target !== sidebar && event.target !== openBtn && !sidebar.contains(event.target)) {
+            closeNav();
+        }
+    }
+
+    function navigateTo(url) {
+        closeNav(); // 사이드바를 닫습니다.
+        window.location.href = url; // 지정된 URL로 이동합니다.
     }
 </script>
 </body>
