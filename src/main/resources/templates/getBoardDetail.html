@@ -213,24 +213,25 @@
             border-radius: 15px;
         }
 
-        .plusImagediv .originalImage {
+        .modal {
             display: none;
-            height: 70%;
-            position: absolute;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        /* 모달 내용 */
+        .modal-content {
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 1;
-            border-radius: 15px;
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease; /* transform 속성 추가 */
-            transform-origin: right; /* transform 기준점을 오른쪽으로 설정 */
-        }
-
-        /* 호버 효과 업데이트 */
-        .plusImagediv:hover .originalImage {
+            margin: auto;
             display: block;
-            opacity: 1;
+            width: 80%;
+            max-width: 700px;
+            max-height: 80%;
         }
 
         /* 컨테이너 스타일 */
@@ -715,15 +716,14 @@
 
                     <div class="plusImageContainer">
                         <div class="plusImagediv" th:each="image : ${board.images}" alt="게시물 url">
-                            <div class="imageWrapper">
-                                <div class="originalImageWrapper">
-                                    <img class="originalImage" th:if="${image.imageUrl != null}" th:src="${image.imageUrl}" alt="게시물 이미지">
-                                </div>
-                                <div class="hoveredImageWrapper">
-                                    <img class="plusImage" th:if="${image.imageUrl != null}" th:src="${image.imageUrl}" alt="게시물 이미지">
-                                </div>
+                            <div th:if="${image.imageUrl != null}">
+                                <img class="plusImage" th:src="${image.imageUrl}" alt="게시물 이미지" onclick="openModal(this)">
                             </div>
                         </div>
+                    </div>
+
+                    <div id="myModal" class="modal" onclick="closeModal(event)">
+                        <img class="modal-content" id="modalImg">
                     </div>
                 </div>
             </div>
@@ -1505,25 +1505,21 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function() {
-      const imageContainers = document.querySelectorAll('.plusImagediv');
+  // 모달 열기
+  function openModal(imgElement) {
+      var modal = document.getElementById("myModal");
+      var modalImg = document.getElementById("modalImg");
+      modal.style.display = "block";
+      modalImg.src = imgElement.src;
+  }
 
-      imageContainers.forEach(container => {
-          container.addEventListener('mouseenter', function() {
-              const originalImage = this.querySelector('.originalImage');
-              if (originalImage) {
-                  originalImage.classList.add('show');
-              }
-          });
-
-          container.addEventListener('mouseleave', function() {
-              const originalImage = this.querySelector('.originalImage');
-              if (originalImage) {
-                  originalImage.classList.remove('show');
-              }
-          });
-      });
-  });
+  // 모달 닫기
+  function closeModal(event) {
+      var modal = document.getElementById("myModal");
+      if (event.target === modal) {
+          modal.style.display = "none";
+      }
+  }
 </script>
 </body>
 </html>
