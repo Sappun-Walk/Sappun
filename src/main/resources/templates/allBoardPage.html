@@ -178,6 +178,13 @@
             width: 100%;
         }
 
+        .gallery-title {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
         .Board-Title {
             font-family: 'Pretendard-900';
             white-space: nowrap;
@@ -450,8 +457,8 @@
          th:onclick="'getBoardDetails(' + ${allboard.id} + ')'" style="cursor: pointer;">
         <img th:src="${allboard.fileURL}" alt="게시물 이미지">
         <div class="gallery-caption">
-            <div class="Board-Title">
-                <h4 th:text="${allboard.title}"></h4>
+            <div class="gallery-title">
+                <h4 class="Board-Title" th:text="${allboard.title}"></h4>
             </div>
             <div class="Board-content" th:text="'작성자: ' + ${allboard.nickname}"></div>
             <div class="Board-content" th:text="'지역: ' + ${allboard.region.getRegion()}"></div>
