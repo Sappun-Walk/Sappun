@@ -213,6 +213,26 @@
             border-radius: 15px;
         }
 
+        .plusImagediv .originalImage {
+            display: none;
+            height: 70%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            border-radius: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease; /* transform 속성 추가 */
+            transform-origin: right; /* transform 기준점을 오른쪽으로 설정 */
+        }
+
+        /* 호버 효과 업데이트 */
+        .plusImagediv:hover .originalImage {
+            display: block;
+            opacity: 1;
+        }
+
         /* 컨테이너 스타일 */
         .getBoardDetail-body {
             max-width: 70%;
@@ -695,8 +715,13 @@
 
                     <div class="plusImageContainer">
                         <div class="plusImagediv" th:each="image : ${board.images}" alt="게시물 url">
-                            <div th:if="${image.imageUrl != null}">
-                                <img class="plusImage" th:src="${image.imageUrl}" alt="게시물 이미지">
+                            <div class="imageWrapper">
+                                <div class="originalImageWrapper">
+                                    <img class="originalImage" th:if="${image.imageUrl != null}" th:src="${image.imageUrl}" alt="게시물 이미지">
+                                </div>
+                                <div class="hoveredImageWrapper">
+                                    <img class="plusImage" th:if="${image.imageUrl != null}" th:src="${image.imageUrl}" alt="게시물 이미지">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1479,6 +1504,26 @@
       alert('프로필 조회에 실패했습니다.');
     }
   }
+
+  document.addEventListener("DOMContentLoaded", function() {
+      const imageContainers = document.querySelectorAll('.plusImagediv');
+
+      imageContainers.forEach(container => {
+          container.addEventListener('mouseenter', function() {
+              const originalImage = this.querySelector('.originalImage');
+              if (originalImage) {
+                  originalImage.classList.add('show');
+              }
+          });
+
+          container.addEventListener('mouseleave', function() {
+              const originalImage = this.querySelector('.originalImage');
+              if (originalImage) {
+                  originalImage.classList.remove('show');
+              }
+          });
+      });
+  });
 </script>
 </body>
 </html>
