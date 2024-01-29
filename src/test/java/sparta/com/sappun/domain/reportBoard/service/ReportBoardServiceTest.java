@@ -13,8 +13,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.reportBoard.dto.request.ReportBoardReq;
+import sparta.com.sappun.domain.reportBoard.dto.response.ReportBoardGetRes;
+import sparta.com.sappun.domain.reportBoard.entity.ReportBoard;
 import sparta.com.sappun.domain.reportBoard.repository.ReportBoardRepository;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
@@ -113,5 +120,35 @@ class ReportBoardServiceTest implements ReportBoardTest {
         verify(reportBoardRepository).clearReportBoardByBoard(TEST_BOARD);
         assertEquals(-50, user1.getScore());
         assertEquals(boardAuthorScore + 100, TEST_BOARD.getUser().getScore());
+    }
+
+    @Test
+    @DisplayName("신고 게시글 조회 페이징 테스트")
+    public void getReportCommentListTest() {
+        // given
+        int page = 0;
+        int size = 8;
+        String sortBy = "createdAt";
+        boolean isAsc = false;
+        String reason = "신고 사유";
+
+        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        ReportBoard reportBoard =
+                ReportBoard.builder().board(TEST_BOARD).user(TEST_USER).reason(reason).build();
+
+        List<ReportBoard> mockList = List.of(reportBoard);
+        Page<ReportBoard> mockPage = new PageImpl<>(mockList, pageable, mockList.size());
+
+        when(reportBoardRepository.findAllFetchBoard(any())).thenReturn(mockPage);
+
+        // when
+        Page<ReportBoardGetRes> reportBoardGetResPage =
+                reportBoardService.getReportBoardList(page, size, sortBy, isAsc);
+
+        // then
+        assertEquals(1, reportBoardGetResPage.getTotalElements());
+        assertEquals(reason, reportBoardGetResPage.getContent().get(0).getReason());
     }
 }
