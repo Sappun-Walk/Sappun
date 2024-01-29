@@ -105,6 +105,27 @@
             text-align: center;
         }
 
+        .gallery-title {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .Board-Title {
+            font-family: 'Pretendard-900';
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .Board-content {
+            font-family: 'Pretendard-400';
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .main-img-container {
             margin-left: auto;
             margin-right: auto;
@@ -296,9 +317,9 @@
                     <img th:src="${reportComment.comment.fileURL}" id="commentImage" alt="댓글 이미지">
                 </p>
                 <div class="gallery-caption">
-                    <p th:text="'신고자: ' + ${reportComment.nickname}"></p>
-                    <p th:text="'신고 사유: ' + ${reportComment.reason}"></p>
-                    <p th:text="'게시글 총 신고 수: ' + ${reportComment.comment.reportCount}"></p>
+                    <p class="Board-content" th:text="'신고자: ' + ${reportComment.nickname}"></p>
+                    <p class="Board-content" th:text="'신고 사유: ' + ${reportComment.reason}"></p>
+                    <p class="Board-content" th:text="'게시글 총 신고 수: ' + ${reportComment.comment.reportCount}"></p>
                 </div>
             </div>
             <button class="btn btn-outline-success" th:onclick="'cancelReportComment(' + ${reportComment.comment.id} + ')'">

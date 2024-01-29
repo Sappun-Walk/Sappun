@@ -53,10 +53,6 @@
             overflow: hidden;
         }
 
-        view-div {
-            font-family: 'Pretendard-600';
-        }
-
         h5 {
             margin-top: 5px;
             margin-bottom: 0.1rem;
@@ -67,6 +63,28 @@
             margin-bottom: 0.1rem;
         }
 
+        .gallery-title {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .Board-Title {
+            font-family: 'Pretendard-900';
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .Board-content {
+            font-family: 'Pretendard-400';
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
         #profileImage {
             cursor: pointer;
             width: 80px;
@@ -74,6 +92,7 @@
             padding: 10px;
             border-radius: 50%;
         }
+
 
         .page-nation li {
             list-style: none;
@@ -145,50 +164,6 @@
         .gallery-caption {
             padding: 10px 20px;
             text-align: left;
-        }
-
-        .btn-up {
-            font-family: 'Pretendard-600';
-            position: relative;
-            width: auto;
-            margin: 0 10px;
-            display: inline-block;
-            padding: 3px;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-        }
-
-        .btn-up:hover {
-            transform: scale(1.3);
-        }
-
-        .btn-up::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: rgb(255, 182, 193);
-            transition: all 0.3s ease-in-out;
-        }
-
-        .btn-up:hover::after {
-            width: 100%;
-        }
-
-        .Board-Title {
-            font-family: 'Pretendard-900';
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .Board-content {
-            font-family: 'Pretendard-400';
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .main-img-container {
@@ -268,16 +243,9 @@
             visibility: hidden;
         }
 
-        .view-div {
-            margin-left: auto;
-            margin-right: 18%;
-            display: flex;
-            flex-direction: row-reverse;
-            gap: 10px;
-        }
-
-        .view-div1 {
-            font-family: 'Pretendard-400';
+        .view-div button {
+            width: auto;
+            margin-right: 10px;
         }
 
         #mainLogoImage {
@@ -312,7 +280,7 @@
         }
 
         .page-title {
-            width: 70%;
+            width: 63%;
             height: 50px;
             margin: 0 auto;
             display: flex;
@@ -329,6 +297,38 @@
             text-align: center;
             align-items: center;
         }
+
+        .btn-up {
+            font-family: 'Pretendard-600';
+            font-size: 20px;
+            position: relative;
+            width: auto;
+            margin: 0 10px;
+            display: inline-block;
+            padding: 3px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-up:hover {
+            transform: scale(1.3);
+        }
+
+        .btn-up::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: rgb(255, 182, 193);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-up:hover::after {
+            width: 100%;
+        }
+
 
         footer {
             box-shadow: 0 -5px 0 rgba(255, 182, 193, 0.1), 0 -2px 0 rgba(255, 182, 193, 0.2);
@@ -391,7 +391,7 @@
             </div>
         </div>
         <div th:if="${user != null}">
-            <div class="btn-up" id="logout-button"  onclick="logout()">
+            <div class="btn-up" id="logout-button" onclick="logout()">
                 로그아웃
             </div>
         </div>
@@ -436,6 +436,8 @@
 
 <div class="page-title">
     <h3 class="page-title1">좋아요 게시글</h3>
+    <div class="btn-style">
+    </div>
 </div>
 
 <div class="gallery-container">
@@ -443,16 +445,14 @@
          th:onclick="'getBoardDetails(' + ${likeBoard.board.id} + ')'" style="cursor: pointer;">
         <img th:src="${likeBoard.board.fileURL}" alt="게시물 이미지">
         <div class="gallery-caption">
-            <div class="Board-Title">
-                <h4 th:text="${likeBoard.board.title}"></h4>
-                <p></p>
+            <div class="gallery-title">
+                <h4 class="Board-Title" th:text="${likeBoard.board.title}"></h4>
             </div>
             <div class="Board-content" th:text="'작성자: ' + ${likeBoard.board.nickname}"></div>
             <div class="Board-content" th:text="'지역: ' + ${likeBoard.board.region.getRegion()}"></div>
         </div>
     </div>
 </div>
-
 
 
 <div class="page-num" th:if="${maxPage != 0}" th:with="start=${(responseDto.number/maxPage)*maxPage + 1},
@@ -466,7 +466,9 @@ currentPage=${responseDto.number + 1}">
                 <span th:text="'<<'"></span>
             </a>
         </li>
-        <li class="li1" th:each="pageNum: ${#numbers.sequence(currentPage - 2, currentPage + 2 < end ? currentPage + 2 : end)}" th:if="${pageNum >= start}">
+        <li class="li1"
+            th:each="pageNum: ${#numbers.sequence(currentPage - 2, currentPage + 2 < end ? currentPage + 2 : end)}"
+            th:if="${pageNum >= start}">
             <a href="#" th:data-page="${pageNum}" onclick="changelikeBoardPage(this)">
                 <span th:text="${pageNum}"></span>
             </a>
