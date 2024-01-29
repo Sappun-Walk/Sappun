@@ -75,21 +75,6 @@ class ReportBoardRepositoryTest implements ReportBoardTest {
     }
 
     @Test
-    @DisplayName("게시글 신고 clearReportBoardByBoard 테스트")
-    void clearReportBoardByBoardTest() {
-        // given
-        userRepository.save(TEST_USER);
-        boardRepository.save(TEST_BOARD);
-        reportBoardRepository.save(REPORT_BOARD);
-
-        // when
-        reportBoardRepository.clearReportBoardByBoard(TEST_BOARD);
-
-        // then
-        assertEquals(0, reportBoardRepository.selectUserByBoard(TEST_BOARD).size());
-    }
-
-    @Test
     @DisplayName("게시글 신고 selectReportBoardByUser 테스트")
     void selectReportBoardByUserTest() {
         // given
@@ -118,6 +103,21 @@ class ReportBoardRepositoryTest implements ReportBoardTest {
 
         // then
         assertFalse(isExist);
+    }
+
+    @Test
+    @DisplayName("게시글 신고 clearReportBoardByBoard 테스트")
+    void clearReportBoardByBoardTest() {
+        // given
+        userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
+        reportBoardRepository.save(REPORT_BOARD);
+
+        // when
+        reportBoardRepository.clearReportBoardByBoard(TEST_BOARD);
+
+        // then
+        assertEquals(0, reportBoardRepository.selectUserByBoard(TEST_BOARD).size());
     }
 
     @Test

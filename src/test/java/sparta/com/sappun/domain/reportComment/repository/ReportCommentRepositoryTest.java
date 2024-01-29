@@ -81,39 +81,6 @@ class ReportCommentRepositoryTest implements ReportCommentTest {
     }
 
     @Test
-    @DisplayName("댓글 신고 clearReportCommentByComment 테스트")
-    void clearReportCommentByCommentTest() {
-        // given
-        userRepository.save(TEST_USER);
-        boardRepository.save(TEST_BOARD);
-        commentRepository.save(TEST_COMMENT);
-        reportCommentRepository.save(REPORT_COMMENT);
-
-        // when
-        reportCommentRepository.clearReportCommentByComment(TEST_COMMENT);
-
-        // then
-        assertEquals(0, reportCommentRepository.selectUserByComment(TEST_COMMENT).size());
-    }
-
-    @Test
-    @DisplayName("댓글 신고 findAllFetchComment 테스트")
-    void findAllFetchComment() {
-        // given
-        userRepository.save(TEST_USER);
-        boardRepository.save(TEST_BOARD);
-        commentRepository.save(TEST_COMMENT);
-        reportCommentRepository.save(REPORT_COMMENT);
-        Pageable pageable = PageRequest.ofSize(1);
-
-        // when
-        Page<ReportComment> result = reportCommentRepository.findAllFetchComment(pageable);
-
-        // then
-        assertNotNull(result);
-    }
-
-    @Test
     @DisplayName("댓글 신고 selectReportCommentByUser 테스트")
     void selectReportCommentByUserTest() {
         // given
@@ -144,5 +111,38 @@ class ReportCommentRepositoryTest implements ReportCommentTest {
 
         // then
         assertFalse(isExist);
+    }
+
+    @Test
+    @DisplayName("댓글 신고 clearReportCommentByComment 테스트")
+    void clearReportCommentByCommentTest() {
+        // given
+        userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
+        commentRepository.save(TEST_COMMENT);
+        reportCommentRepository.save(REPORT_COMMENT);
+
+        // when
+        reportCommentRepository.clearReportCommentByComment(TEST_COMMENT);
+
+        // then
+        assertEquals(0, reportCommentRepository.selectUserByComment(TEST_COMMENT).size());
+    }
+
+    @Test
+    @DisplayName("댓글 신고 findAllFetchComment 테스트")
+    void findAllFetchComment() {
+        // given
+        userRepository.save(TEST_USER);
+        boardRepository.save(TEST_BOARD);
+        commentRepository.save(TEST_COMMENT);
+        reportCommentRepository.save(REPORT_COMMENT);
+        Pageable pageable = PageRequest.ofSize(1);
+
+        // when
+        Page<ReportComment> result = reportCommentRepository.findAllFetchComment(pageable);
+
+        // then
+        assertNotNull(result);
     }
 }
