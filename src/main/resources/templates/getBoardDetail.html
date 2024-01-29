@@ -245,6 +245,13 @@
             padding: 0 20px;
         }
 
+        .Board-Title {
+            width: 80%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .comment-create {
             display: flex;
             padding: 1%;
@@ -620,7 +627,7 @@
     <div class="title-and-buttons">
         <div class="outLine">
             <div class="title-main">
-                <h1 th:text="${board.title}"></h1>
+                <h1 class="Board-Title" th:text="${board.title}"></h1>
                 <div class="buttons">
                     <div th:if="${user != null && user.nickname eq board.nickname}">
                         <button class="btn btn-outline-success" th:onclick="'getUpdateBoard(' + ${boardId} + ')'"

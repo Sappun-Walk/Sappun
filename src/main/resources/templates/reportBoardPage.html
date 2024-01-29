@@ -105,6 +105,25 @@
             text-align: center;
         }
 
+        .gallery-title {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .Board-Title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .Board-content {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .main-img-container {
             margin-left: auto;
             margin-right: auto;
@@ -132,8 +151,8 @@
         }
 
         .rank-image {
-          width: 50px;
-          height: 50px;
+            width: 50px;
+            height: 50px;
         }
 
         h5 {
@@ -143,6 +162,7 @@
             text-align: center;
             justify-content: center;
         }
+
         p {
             font-size: 10px;
             display: flex;
@@ -242,33 +262,39 @@
     <div id="main">
         <button id="openBtn" onclick="openNav()">☰ 메뉴</button>
         <div class="main-img-container">
-            <img class="main-img" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}" th:onclick="|location.href='@{/api/boards/best}'|"
+            <img class="main-img" th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/logo.png}"
+                 th:onclick="|location.href='@{/api/boards/best}'|"
                  alt="Main Image">
         </div>
 
         <div class="btn-write">
             <div th:if="${user != null}" class="rank">
             <span th:if="${user.score < 0}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}" alt="rank-image"
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Warned.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
                 <span
-                    th:if="${user.score >= 0 and user.score <= 300}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}" alt="rank-image"
+                        th:if="${user.score >= 0 and user.score <= 300}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Bronze.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
                 <span
-                    th:if="${user.score > 300 and user.score <= 700}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}" alt="rank-image"
+                        th:if="${user.score > 300 and user.score <= 700}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Silver.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
                 <span
-                    th:if="${user.score > 700 and user.score <= 1200}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}" alt="rank-image"
+                        th:if="${user.score > 700 and user.score <= 1200}">
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Gold.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
                 <span th:if="${user.score > 1200}">
-                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}" alt="rank-image"
+                            <img th:src="@{https://sappun-walk.s3.ap-northeast-2.amazonaws.com/image/Platinum.png}"
+                                 alt="rank-image"
                                  class="rank-image">
                         </span>
             </div>
@@ -278,26 +304,32 @@
                 </button>
             </p>
             <p th:if="${user != null}">
-                <button class="btn btn-outline-success" type="submit" th:onclick="|location.href='@{/api/comments/reports}'|">
+                <button class="btn btn-outline-success" type="submit"
+                        th:onclick="|location.href='@{/api/comments/reports}'|">
                     댓글 관리
                 </button>
             </p>
             <p th:if="${user != null}">
-                <button class="btn btn-outline-success" type="submit" id="logout-button" onclick="logout()">로그아웃</button>
-                <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|"  alt="profile" id="profileImage">
+                <button class="btn btn-outline-success" type="submit" id="logout-button" onclick="logout()">로그아웃
+                </button>
+                <img th:src="${user.profileUrl}" th:onclick="|location.href='@{/api/users}'|" alt="profile"
+                     id="profileImage">
             </p>
         </div>
     </div>
 
     <div class="gallery-container">
-        <div class="gallery-item" th:each="reportBoard : ${responseDto.content}" th:id="${'reportBoard-' + reportBoard.id}" style="cursor: pointer;">
+        <div class="gallery-item" th:each="reportBoard : ${responseDto.content}"
+             th:id="${'reportBoard-' + reportBoard.id}" style="cursor: pointer;">
             <div th:onclick="'getBoardDetails(' + ${reportBoard.board.id} + ')'">
                 <img th:src="${reportBoard.board.fileURL}" alt="게시물 이미지">
                 <div class="gallery-caption">
-                    <h5 th:text="${reportBoard.board.title}"></h5>
-                    <p th:text="'신고자: ' + ${reportBoard.nickname}"></p>
-                    <p th:text="'신고 사유: ' + ${reportBoard.reason}"></p>
-                    <p th:text="'게시글 총 신고 수: ' + ${reportBoard.board.reportCount}"></p>
+                    <div class="gallery-title">
+                        <h4 class="Board-Title" th:text="${reportBoard.board.title}"></h4>
+                    </div>
+                    <p class="Board-content" th:text="'신고자: ' + ${reportBoard.nickname}"></p>
+                    <p class="Board-content" th:text="'신고 사유: ' + ${reportBoard.reason}"></p>
+                    <p class="Board-content" th:text="'게시글 총 신고 수: ' + ${reportBoard.board.reportCount}"></p>
                 </div>
             </div>
             <button class="btn btn-outline-success" th:onclick="'cancelReportBoard(' + ${reportBoard.board.id} + ')'">
@@ -555,6 +587,7 @@
         var page = element.getAttribute('data-page');
         window.location.href = boardUrl + '/reports' + '?page=' + page;
     }
+
     function changeAllBoardPage(element) {
         var page = element.getAttribute('data-page');
         window.location.href = boardUrl + '/all' + '?page=' + page;
@@ -675,7 +708,7 @@
         formData.append("region", region);
         formData.append("title", title);
         formData.append("departure", departure);
-        stopoverInputs.forEach(function(input) {
+        stopoverInputs.forEach(function (input) {
             formData.append("stopover", input.value);
         });
         formData.append("destination", destination);
@@ -979,7 +1012,7 @@
 
         // 사용자가 확인을 선택한 경우에만 DELETE 요청 보내기
         if (confirmation) {
-            fetch(commentUrl+ '/' + commentId + report, {method: 'DELETE'})
+            fetch(commentUrl + '/' + commentId + report, {method: 'DELETE'})
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
