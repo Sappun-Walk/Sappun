@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
@@ -101,5 +104,22 @@ class LikeBoardRepositoryTest implements LikeBoardTest {
 
         // then
         assertFalse(isExist);
+    }
+
+    @Test
+    @DisplayName("사용자로 좋아요 찾아 페이징 테스트")
+    public void findAllByUserTest() {
+        // given
+        User user = userRepository.save(TEST_USER);
+        Board board = boardRepository.save(TEST_BOARD);
+        LikeBoard likeBoard = likeBoardRepository.save(TEST_LIKE_BOARD);
+        Pageable pageable = PageRequest.ofSize(1);
+
+        // when
+        Page<LikeBoard> likeBoardPage = likeBoardRepository.findAllByUser(user, pageable);
+
+        // then
+        assertEquals(1, likeBoardPage.getTotalElements());
+        assertEquals(likeBoard, likeBoardPage.getContent().get(0));
     }
 }

@@ -14,8 +14,6 @@ import sparta.com.sappun.domain.user.entity.User;
 public interface LikeBoardRepository {
     LikeBoard save(LikeBoard boardLike);
 
-    List<LikeBoard> findByUser(User user);
-
     boolean existsLikeBoardByBoardAndUser(Board board, User user);
 
     void deleteLikeBoardByBoardAndUser(Board board, User user);
@@ -26,9 +24,6 @@ public interface LikeBoardRepository {
     @Modifying
     @Query(value = "delete from LikeBoard lb where lb in :likeBoards")
     void deleteAll(List<LikeBoard> likeBoards);
-
-    @Query("SELECT rb FROM LikeBoard  rb JOIN FETCH rb.board")
-    Page<LikeBoard> findAllFetchBoard(Pageable pageable);
 
     Page<LikeBoard> findAllByUser(User user, Pageable pageable);
 }

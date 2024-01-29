@@ -14,8 +14,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import sparta.com.sappun.domain.comment.repository.CommentRepository;
 import sparta.com.sappun.domain.reportComment.dto.request.ReportCommentReq;
+import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentGetRes;
+import sparta.com.sappun.domain.reportComment.entity.ReportComment;
 import sparta.com.sappun.domain.reportComment.repository.ReportCommentRepository;
 import sparta.com.sappun.domain.user.entity.Role;
 import sparta.com.sappun.domain.user.entity.User;
@@ -118,5 +125,35 @@ class ReportCommentServiceTest implements ReportCommentTest {
         verify(reportCommentRepository).clearReportCommentByComment(TEST_COMMENT);
         assertEquals(-50, user1.getScore());
         assertEquals(commentAuthorScore + 100, TEST_BOARD.getUser().getScore());
+    }
+
+    @Test
+    @DisplayName("신고 댓글 조회 테스트")
+    public void getReportCommentListTest() {
+        // given
+        int page = 0;
+        int size = 8;
+        String sortBy = "createdAt";
+        boolean isAsc = false;
+        String reason = "신고사유";
+
+        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        ReportComment reportComment =
+                ReportComment.builder().comment(TEST_COMMENT).user(TEST_USER).reason(reason).build();
+
+        List<ReportComment> mockList = List.of(reportComment);
+        Page<ReportComment> mockPage = new PageImpl<>(mockList, pageable, mockList.size());
+
+        when(reportCommentRepository.findAllFetchComment(any())).thenReturn(mockPage);
+
+        // when
+        Page<ReportCommentGetRes> reportCommentGetResPage =
+                reportCommentService.getReportCommentList(page, size, sortBy, isAsc);
+
+        // then
+        assertEquals(1, reportCommentGetResPage.getTotalElements());
+        assertEquals(reason, reportCommentGetResPage.getContent().get(0).getReason());
     }
 }

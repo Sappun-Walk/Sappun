@@ -26,7 +26,6 @@ import sparta.com.sappun.domain.reportComment.dto.response.ReportCommentRes;
 import sparta.com.sappun.domain.reportComment.service.ReportCommentService;
 import sparta.com.sappun.test.ReportCommentTest;
 
-@Disabled
 @WebMvcTest(controllers = {ReportCommentController.class})
 class ReportCommentControllerTest extends BaseMvcTest implements ReportCommentTest {
     @MockBean private ReportCommentService reportCommentService;
@@ -72,6 +71,7 @@ class ReportCommentControllerTest extends BaseMvcTest implements ReportCommentTe
                 .andExpect(status().isOk());
     }
 
+    @Disabled
     @Test
     @DisplayName("댓글 신고 조회 API 테스트")
     void getReportCommentListTest() throws Exception {
