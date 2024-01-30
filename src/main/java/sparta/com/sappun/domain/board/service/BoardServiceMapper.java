@@ -1,12 +1,13 @@
 package sparta.com.sappun.domain.board.service;
 
-import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import sparta.com.sappun.domain.board.dto.response.BoardGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardToListGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardToReportGetRes;
+import sparta.com.sappun.domain.board.dto.response.BoardLikeGetRes;
+import sparta.com.sappun.domain.board.dto.response.BoardListGetRes;
+import sparta.com.sappun.domain.board.dto.response.BoardRegionGetRes;
+import sparta.com.sappun.domain.board.dto.response.BoardUserGetRes;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.comment.dto.response.CommentGetRes;
 import sparta.com.sappun.domain.comment.entity.Comment;
@@ -25,11 +26,15 @@ public interface BoardServiceMapper {
     @Mapping(source = "user.id", target = "userId")
     CommentGetRes toCommentGetRes(Comment comment);
 
-    List<BoardToListGetRes> toBoardBestListGetRes(List<Board> boardList);
+    @Mapping(source = "user.nickname", target = "nickname")
+    BoardListGetRes toBoardListGetRes(Board board);
 
     @Mapping(source = "user.nickname", target = "nickname")
-    BoardToListGetRes toBoardToListGetRes(Board board);
+    BoardLikeGetRes toBoardLikeGetRes(Board board);
 
     @Mapping(source = "user.nickname", target = "nickname")
-    BoardToReportGetRes toBoardUserListGetRes(Board board);
+    BoardRegionGetRes toBoardRegionGetRes(Board board);
+
+    @Mapping(source = "user.nickname", target = "nickname")
+    BoardUserGetRes toBoardUserGetRes(Board board);
 }
