@@ -588,9 +588,10 @@
     <div class="outLine">
         <div style="display: flex;justify-content: center; align-items: center;" id="previewContainer">
         </div>
-        추가 이미지 업로드 (최대 4장) :
+        추가 이미지(장당 10MB 이내의 사진, 최대 4장) :
         <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple
                onchange="readMultipleURL(this);">
+        <div id="errorContainer"></div>
         <p id="errorMessage" style="color: red; display: none;">최대 4장의 이미지만 선택할 수 있습니다.</p>
     </div>
     <div class="outLine">
@@ -1112,6 +1113,44 @@
             reader.readAsDataURL(file);
         });
     }
+
+    // 파일 업로드 input 요소 가져오기
+    var fileInput = document.getElementById('image-multiple');
+
+    // 에러를 표시할 컨테이너 가져오기
+    var errorContainer = document.getElementById('errorContainer');
+
+    // 파일 업로드 이벤트 리스너 추가
+    fileInput.addEventListener('change', function() {
+        // 업로드된 파일 가져오기
+        var files = fileInput.files;
+
+        // 유효한 파일 목록 초기화
+        var validFiles = [];
+
+        // 모든 파일을 확인하여 제한된 크기를 초과하는 파일이 있는지 확인
+        var errors = [];
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            // 파일 크기 확인 (단일 파일 제한: 10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                errors.push('File "' + file.name + '" 의 용량이 10MB가 초과하였습니다. 10MB이내의 파일로 업로드해주세요.');
+            } else {
+                // 10MB 이하인 파일만 유효한 파일 배열에 추가
+                validFiles.push(file);
+            }
+        }
+
+        // 에러가 있을 경우 에러 메시지를 표시
+        if (errors.length > 0) {
+            errorContainer.innerHTML = errors.join('<br>');
+        } else {
+            // 에러가 없을 경우 에러 메시지를 지우고 유효한 파일을 다시 input에 설정
+            errorContainer.innerHTML = '';
+            // 유효한 파일 목록을 input에 설정
+            fileInput.files = validFiles;
+        }
+    });
 </script>
 <!-- Google Maps API 및 Drawing 라이브러리 로드 -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg&callback=initMap&libraries=drawing"
