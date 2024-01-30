@@ -1,38 +1,57 @@
 package sparta.com.sappun.domain.user.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import sparta.com.sappun.domain.user.repository.UserRepository;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import sparta.com.sappun.domain.BaseMvcTest;
 import sparta.com.sappun.domain.user.service.KakaoService;
 import sparta.com.sappun.global.jwt.JwtUtil;
 import sparta.com.sappun.global.redis.RedisUtil;
 
-import static org.junit.jupiter.api.Assertions.*;
+@WebMvcTest(controllers = KakaoController.class)
+public class KakaoControllerTest extends BaseMvcTest {
 
-class KakaoControllerTest {
-
-    @Mock
-    private PasswordEncoder passwordEncoder;
-
-    @Mock
-    private UserRepository userRepository;
-
-    @Mock
-    private JwtUtil jwtUtil;
-
-    @Mock
-    private RedisUtil redisUtil;
-
-    @InjectMocks
-    private KakaoService kakaoService;
+    @MockBean private KakaoService kakaoService;
+    @MockBean private JwtUtil jwtUtil;
+    @MockBean private RedisUtil redisUtil;
 
     @Test
-    void getKakaoLoginPage() {
+    @DisplayName("getKakaoLoginPage 테스트")
+    void testGetKakaoLoginPage() throws Exception {
+        // given
+        Mockito.when(kakaoService.getKakaoLoginPage()).thenReturn("/api/users/kakao/page");
+
+        // when & then
+        mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/users/kakao/page"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    void kakaoLogin() {
+    @DisplayName("kakaoLogin 테스트 - 성공")
+    void kakaoLogin_Success() throws Exception {
+
+        // given
+        Mockito.when(kakaoService.kakaoLogin(Mockito.anyString())).thenReturn(createMockTokens());
+
+        // when & then
+        mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/users/kakao/callback").param("code", "mockCode"))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/login"));
+    }
+
+    private HashMap<String, String> createMockTokens() {
+        HashMap<String, String> mockTokens = new HashMap<>();
+        mockTokens.put("mockAccessToken", "mockRefreshToken");
+        return mockTokens;
     }
 }
