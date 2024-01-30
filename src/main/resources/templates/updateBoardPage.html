@@ -419,6 +419,37 @@
             text-decoration: none; /* 하이퍼링크의 밑줄을 없앰 */
         }
 
+        .preview-image {
+            width: 22%;
+            height: 200px;
+            margin: 5px;
+            border-radius: 15px;
+        }
+
+        .modal {
+            display: none;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+        .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            max-height: 80%;
+            border-radius: 15px;
+        }
+        .modal-content img {
+            width: 100%;
+            height: auto;
+        }
+
     </style>
 </head>
 <body>
@@ -589,13 +620,14 @@
         <div style="display: flex;justify-content: center; align-items: center;" id="previewContainer">
         </div>
         추가 이미지(장당 10MB 이내의 사진, 최대 4장) :
-        <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple
-               onchange="readMultipleURL(this);">
-        <div id="errorContainer"></div>
-        <p id="errorMessage" style="color: red; display: none;">최대 4장의 이미지만 선택할 수 있습니다.</p>
+        <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple>
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <img id="modalImg" src="" alt="모달 이미지">
+        </div>
     </div>
     <div class="outLine">
-        <!--               폰트 적용 시 class="gaegu-bold"내용 에 추가-->
         <label for="content">내용:</label>
         <textarea id="content" name="content" th:text="${board.content}" required></textarea>
     </div>
@@ -754,18 +786,12 @@
         // 경유지 입력란의 값을 가져오는 함수
         var stopoverContainer = document.getElementById('stopovers-container');
         var stopoverInputs = stopoverContainer.querySelectorAll('.stopover-section input[name="stopover"]');
-
         var region = document.getElementById('region').value;
         var title = document.getElementById('title').value;
         var departure = document.getElementById('departure').value;
         var destination = document.getElementById('destination').value;
         var content = document.getElementById('content').value;
         var imageInputs = document.getElementById('image-multiple');
-
-        if (!title || !departure || !destination || !content) { // 수정: 논리 연산자 변경
-            alert('입력을 다시 확인해주세요.');
-            return;
-        }
 
         if (!title) {
             alert("제목을 입력해주세요.");
@@ -787,18 +813,46 @@
             return;
         }
 
-        // 추가 이미지가 4장 이하인지 확인
-        if (imageInputs.files.length > 4) {
-            alert("추가 이미지는 4개 이하 첨부해주세요!");
-            return
+        function resizeImage(file) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const MAX_WIDTH = 800;
+                    const MAX_HEIGHT = 600;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    canvas.toBlob(blob => {
+                        blob.name = file.name;
+                        resolve(blob);
+                    }, file.type);
+                };
+                img.onerror = reject;
+                img.src = URL.createObjectURL(file);
+            });
         }
 
         let formData = new FormData();
         formData.append("region", region);
         formData.append("title", title);
         formData.append("departure", departure);
-
-        // 여러 경유지 값을 배열로 추가
         stopoverInputs.forEach(function (input) {
             formData.append("stopover[]", input.value);
         });
@@ -807,48 +861,73 @@
         formData.append("content", content);
         formData.append("image", mapImage);
 
-        // 여러 이미지 업로드
-        if (imageInputs.files.length > 0) {
-            for (let i = 0; i < imageInputs.files.length; i++) {
-                formData.append('photoImages', imageInputs.files[i]);
-            }
+        const resizePromises = [];
+        for (let i = 0; i < imageInputs.files.length; i++) {
+            resizePromises.push(
+                resizeImage(imageInputs.files[i]).then(resizedImage => {
+                    formData.append('photoImages', resizedImage);
+                })
+            );
         }
 
         // 요청 보내기
-        fetch(boardUrl + '/' + boardId, {
-            method: 'PATCH',
-            body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
+        Promise.all(resizePromises).then(() => {
+            fetch(boardUrl + '/' + boardId, {
+                method: 'PATCH',
+                body: formData
             })
-            .then(data => {
-                if (data.code === 200) {
-                    alert('게시글 수정이 성공적으로 이루어졌습니다.');
-                    window.location.href = boardUrl + '/' + boardId;
-                } else {
-                    alert('게시글 수정 실패: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error updating profile:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.code === 200) {
+                        alert('게시글 수정이 성공적으로 이루어졌습니다.');
+                        window.location.href = boardUrl + '/' + boardId;
+                    } else {
+                        alert('게시글 수정 실패: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error :', error);
+                });
+        });
     }
 
-    // 이미지 미리보기
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                document.getElementById('preview').src = e.target.result;
+    function resizeImage(file) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const MAX_WIDTH = 800;  // 리사이징할 최대 가로 크기
+                const MAX_HEIGHT = 600; // 리사이징할 최대 세로 크기
+                let width = img.width;
+                let height = img.height;
+
+                // 이미지 비율 유지하면서 사이즈 조정
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+                canvas.toBlob(resolve, file.type);
             };
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            document.getElementById('preview').src = "";
-        }
+            img.onerror = reject;
+            img.src = URL.createObjectURL(file);
+        });
     }
 
     // 사이드 메뉴바
@@ -1064,93 +1143,101 @@
         }
     }
 
-    function readMultipleURL(input) {
+
+    document.getElementById('image-multiple').addEventListener('change', function (e) {
+        var files = e.target.files;
+        var numFiles = files.length;
         var previewContainer = document.getElementById('previewContainer');
-        previewContainer.innerHTML = ''; // 기존 이미지 제거
 
-        var errorMessage = document.getElementById('errorMessage');
-        if (input.files.length > 4) {
-            errorMessage.style.display = 'block'; // 에러 메시지 표시
-            return; // 에러 발생 시 함수 종료
-        } else {
-            errorMessage.style.display = 'none'; // 에러 메시지 숨기기
+        // 파일 수가 4개를 초과하는지 확인합니다.
+        if (numFiles > 4) {
+            alert('최대 4개의 파일을 선택하세요.');
+            this.value = ''; // 입력값 초기화
+            return;
         }
 
-        if (input.files && input.files.length > 0) {
-            var promises = []; // FileReader Promise 배열
+        // 이전 미리보기를 지웁니다.
+        previewContainer.innerHTML = '';
 
-            for (var i = 0; i < input.files.length; i++) {
-                promises.push(readFile(input.files[i])); // 각 파일에 대한 Promise 생성
-            }
-
-            Promise.all(promises)
-                .then(function (results) {
-                    results.forEach(function (result) {
-                        var img = document.createElement('img');
-                        img.src = result;
-                        img.style.margin = '10px';
-                        img.style.borderRadius = '10px';
-                        img.style.width = '22%';
-                        img.style.height = '200px';
-                        previewContainer.appendChild(img);
-                    });
-                })
-                .catch(function (error) {
-                    console.error('Error reading files:', error);
-                });
-        }
-    }
-
-    function readFile(file) {
-        return new Promise(function (resolve, reject) {
-            var reader = new FileReader();
-            reader.onload = function (event) {
-                resolve(event.target.result);
-            };
-            reader.onerror = function (event) {
-                reject(event.target.error);
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-
-    // 파일 업로드 input 요소 가져오기
-    var fileInput = document.getElementById('image-multiple');
-
-    // 에러를 표시할 컨테이너 가져오기
-    var errorContainer = document.getElementById('errorContainer');
-
-    // 파일 업로드 이벤트 리스너 추가
-    fileInput.addEventListener('change', function() {
-        // 업로드된 파일 가져오기
-        var files = fileInput.files;
-
-        // 유효한 파일 목록 초기화
-        var validFiles = [];
-
-        // 모든 파일을 확인하여 제한된 크기를 초과하는 파일이 있는지 확인
-        var errors = [];
-        for (var i = 0; i < files.length; i++) {
+        for (var i = 0; i < numFiles; i++) {
             var file = files[i];
-            // 파일 크기 확인 (단일 파일 제한: 10MB)
-            if (file.size > 10 * 1024 * 1024) {
-                errors.push('File "' + file.name + '" 의 용량이 10MB가 초과하였습니다. 10MB이내의 파일로 업로드해주세요.');
-            } else {
-                // 10MB 이하인 파일만 유효한 파일 배열에 추가
-                validFiles.push(file);
-            }
-        }
 
-        // 에러가 있을 경우 에러 메시지를 표시
-        if (errors.length > 0) {
-            errorContainer.innerHTML = errors.join('<br>');
-        } else {
-            // 에러가 없을 경우 에러 메시지를 지우고 유효한 파일을 다시 input에 설정
-            errorContainer.innerHTML = '';
-            // 유효한 파일 목록을 input에 설정
-            fileInput.files = validFiles;
+            // 파일 크기가 10MB를 초과하는지 확인합니다.
+            if (file.size > 10 * 1024 * 1024) {
+                alert('파일 크기가 10MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
+                this.value = ''; // 입력값 초기화
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = (function (file) {
+                return function (e) {
+                    var img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function () {
+                        var canvas = document.createElement('canvas');
+                        var ctx = canvas.getContext('2d');
+
+                        // 이미지 너비가 800px를 초과하는지 확인하여 리사이징합니다.
+                        if (img.width > 800) {
+                            var scaleFactor = 800 / img.width;
+                            canvas.width = 800;
+                            canvas.height = img.height * scaleFactor;
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        } else {
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                            ctx.drawImage(img, 0, 0);
+                        }
+
+                        // 캔버스를 PNG 형식으로 변환합니다.
+                        var resizedImageData = canvas.toDataURL('image/png');
+
+                        // 리사이징된 이미지를 미리보기로 표시합니다.
+                        var previewImage = document.createElement('img');
+                        previewImage.src = resizedImageData;
+                        previewImage.classList.add('preview-image');
+                        previewContainer.appendChild(previewImage);
+
+                        // 모달을 열기 위한 클릭 이벤트를 추가합니다.
+                        previewImage.addEventListener('click', function() {
+                            document.getElementById('modalImg').src = this.src;
+                            document.getElementById('modal').style.display = 'block';
+                        });
+
+                        // 리사이징된 이미지를 image-multiple에 추가합니다.
+                        var formData = new FormData();
+                        formData.append('resizedImages', file);
+                    }
+                };
+            })(file);
+
+            reader.readAsDataURL(file);
         }
     });
+
+    // 이미지 외부를 클릭할 때 모달을 닫습니다.
+    window.addEventListener('click', function (e) {
+        var modal = document.getElementById('modal');
+        if (e.target == modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // 이미지 데이터를 Base64 형식으로 가져오는 함수
+    function getBase64Image(img) {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        var dataURL = canvas.toDataURL('image/png');
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
+    }
+
+
 </script>
 <!-- Google Maps API 및 Drawing 라이브러리 로드 -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFn4liuOJQ1QaeiKk0gdA5G3tA6Sa9vwg&callback=initMap&libraries=drawing"

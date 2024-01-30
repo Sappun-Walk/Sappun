@@ -439,6 +439,31 @@
             width: 22%;
             height: 200px;
             margin: 5px;
+            border-radius: 15px;
+        }
+
+        .modal {
+            display: none;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+        .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            max-height: 80%;
+            border-radius: 15px;
+        }
+        .modal-content img {
+            width: 100%;
+            height: auto;
         }
 
     </style>
@@ -602,7 +627,6 @@
         <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple>
     </div>
     <div id="modal" class="modal">
-        <span class="close">&times;</span>
         <div class="modal-content">
             <img id="modalImg" src="" alt="모달 이미지">
         </div>
@@ -629,97 +653,142 @@
     </p>
 </footer>
 <script>
+    const host = 'http://' + window.location.host;
+    const loginPage = '/api/users/login';
+    const logoutUrl = '/api/users/logout';
+    const mainPage = '/api/boards/best';
+    const createPage = '/api/boards/create-page';
+    const updatePage = '/api/boards/update/';
+    const regionPage = '/api/boards/region'
+    const userUrl = '/api/users'
+    const boardUrl = '/api/boards';
+    const commentUrl = '/api/comments'
+    const report = '/report'
+    const like = '/like'
+    const updatePassword = '/api/users/profile/password';
+    var mapImage = '';
 
-    document.getElementById('image-multiple').addEventListener('change', function(e) {
-        var files = e.target.files;
-        var numFiles = files.length;
-        var previewContainer = document.getElementById('previewContainer');
+    // 로그아웃
+    function logout() {
+        var confirmation = confirm('로그아웃 하시겠습니까?');
 
-        // 파일 수가 4개를 초과하는지 확인합니다.
-        if (numFiles > 4) {
-            alert('최대 4개의 파일을 선택하세요.');
-            this.value = ''; // 입력값 초기화
-            return;
-        }
-
-        // 이전 미리보기를 지웁니다.
-        previewContainer.innerHTML = '';
-
-        for (var i = 0; i < numFiles; i++) {
-            var file = files[i];
-
-            // 파일 크기가 10MB를 초과하는지 확인합니다.
-            if (file.size > 10 * 1024 * 1024) {
-                alert('파일 크기가 10MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
-                this.value = ''; // 입력값 초기화
-                return;
-            }
-
-            var reader = new FileReader();
-            reader.onload = (function(file) {
-                return function(e) {
-                    var img = new Image();
-                    img.src = e.target.result;
-                    img.onload = function() {
-                        var canvas = document.createElement('canvas');
-                        var ctx = canvas.getContext('2d');
-
-                        // 이미지 너비가 800px를 초과하는지 확인하여 리사이징합니다.
-                        if (img.width > 800) {
-                            var scaleFactor = 800 / img.width;
-                            canvas.width = 800;
-                            canvas.height = img.height * scaleFactor;
-                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        } else {
-                            canvas.width = img.width;
-                            canvas.height = img.height;
-                            ctx.drawImage(img, 0, 0);
-                        }
-
-                        // 캔버스를 PNG 형식으로 변환합니다.
-                        var resizedImageData = canvas.toDataURL('image/png');
-
-                        // 리사이징된 이미지를 미리보기로 표시합니다.
-                        var previewImage = document.createElement('img');
-                        previewImage.src = resizedImageData;
-                        previewImage.classList.add('preview-image');
-                        previewContainer.appendChild(previewImage);
-
-                        // 리사이징된 이미지를 image-multiple에 추가합니다.
-                        var formData = new FormData();
-                        formData.append('resizedImages', file);
+        if (confirmation) {
+            fetch(logoutUrl, {method: 'POST'})
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
                     }
-                };
-            })(file);
-
-            reader.readAsDataURL(file);
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.code === 200) {
+                        alert('로그아웃이 성공적으로 이루어졌습니다.');
+                        deleteCookie();
+                        window.location.href = mainPage;
+                    } else {
+                        alert('로그아웃 실패: ' + data.message);
+                    }
+                })
         }
-    });
+    }
 
-    // 이미지 외부를 클릭할 때 모달을 닫습니다.
-    window.addEventListener('click', function(e) {
-        var modal = document.getElementById('modal');
-        if (e.target == modal) {
-            modal.style.display = 'none';
+    // 쿠키 삭제
+    function deleteCookie() {
+        document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+
+    // 메인 페이지로 이동
+    function getMainPage() {
+        window.location.href = mainPage;
+    }
+
+    // 상세 페이지로 이동
+    function getBoardDetails(boardId) {
+        window.location.href = boardUrl + '/' + boardId;
+    }
+
+    // 게시글 작성 페이지로 이동
+    function redirectToCreatePage() {
+        window.location.href = createPage;
+    }
+
+    // 게시글 수정 페이지 이동
+    function getUpdateBoard(boardId) {
+        window.location.href = updatePage + boardId;
+    }
+
+    // 지역 페이지
+    function submitForm() {
+        document.getElementById('regionForm').submit();
+    }
+
+    function changeRegionAndPage(element) {
+        var region = element.getAttribute('data-region');
+        var page = element.getAttribute('data-page');
+        window.location.href = regionPage + '?region=' + region + '&page=' + page;
+    }
+
+    function changeBoardPage(element) {
+        var page = element.getAttribute('data-page');
+        window.location.href = boardUrl + '/reports' + '?page=' + page;
+    }
+
+    function changeCommentPage(element) {
+        var page = element.getAttribute('data-page');
+        window.location.href = commentUrl + '/reports' + '?page=' + page;
+    }
+
+    // 게시글 작성 페이지 경유지 추가
+    function addStopover() {
+        // 현재 경유지 입력란 개수 확인
+        var stopoverContainer = document.getElementById('stopovers-container');
+        var stopoverSections = stopoverContainer.getElementsByClassName('stopover-section');
+
+        if (stopoverSections.length < 5) {
+            // 5개 미만일 때만 새로운 경유지 입력란 생성
+            var newStopoverSection = document.createElement('div');
+            newStopoverSection.classList.add('stopover-section');
+
+
+            var input = document.createElement('input');
+            input.setAttribute('type', 'text');
+            input.setAttribute('name', 'stopover');
+
+            // 새로운 경유지 입력란에 삭제 버튼 추가
+            var removeStopoverButton = document.createElement('button');
+            removeStopoverButton.setAttribute('type', 'button');
+            removeStopoverButton.textContent = '➖';
+            removeStopoverButton.classList.add('btn-stopover'); // Adding the class
+            removeStopoverButton.addEventListener('click', function () {
+                addRemoveStopover(newStopoverSection);
+            });
+
+            newStopoverSection.appendChild(input);
+            newStopoverSection.appendChild(removeStopoverButton);
+
+            // 생성된 입력란을 컨테이너에 추가
+            stopoverContainer.appendChild(newStopoverSection);
+        } else {
+            alert('경유지는 최대 5개까지만 입력 가능합니다.');
         }
-    });
+    }
 
-    // 닫기 버튼을 클릭하여 모달을 닫습니다.
-    document.querySelector('.close').addEventListener('click', function() {
-        document.getElementById('modal').style.display = 'none';
-    });
+    // 공통 함수: 삭제 버튼이 속한 div 요소를 찾아서 삭제
+    function removeFromContainer(element) {
+        var container = document.getElementById('stopovers-container');
+        container.removeChild(element);
+    }
 
-    // 이미지 데이터를 Base64 형식으로 가져오는 함수
-    function getBase64Image(img) {
-        var canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
+    // 이전 입력된 경유지 입력란 삭제 함수
+    function removeStopover(button) {
+        var stopoverSection = button.parentNode;
+        removeFromContainer(stopoverSection);
+    }
 
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-
-        var dataURL = canvas.toDataURL('image/png');
-        return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
+    // 추가 입력할 경유지 입력란 삭제 함수
+    function addRemoveStopover(stopoverSection) {
+        removeFromContainer(stopoverSection);
     }
 
     //게시글 작성
@@ -871,144 +940,6 @@
             img.onerror = reject;
             img.src = URL.createObjectURL(file);
         });
-    }
-
-    const host = 'http://' + window.location.host;
-    const loginPage = '/api/users/login';
-    const logoutUrl = '/api/users/logout';
-    const mainPage = '/api/boards/best';
-    const createPage = '/api/boards/create-page';
-    const updatePage = '/api/boards/update/';
-    const regionPage = '/api/boards/region'
-    const userUrl = '/api/users'
-    const boardUrl = '/api/boards';
-    const commentUrl = '/api/comments'
-    const report = '/report'
-    const like = '/like'
-    const updatePassword = '/api/users/profile/password';
-    var mapImage = '';
-
-    // 로그아웃
-    function logout() {
-        var confirmation = confirm('로그아웃 하시겠습니까?');
-
-        if (confirmation) {
-            fetch(logoutUrl, {method: 'POST'})
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.code === 200) {
-                        alert('로그아웃이 성공적으로 이루어졌습니다.');
-                        deleteCookie();
-                        window.location.href = mainPage;
-                    } else {
-                        alert('로그아웃 실패: ' + data.message);
-                    }
-                })
-        }
-    }
-
-    // 쿠키 삭제
-    function deleteCookie() {
-        document.cookie = "AccessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        document.cookie = "RefreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    }
-
-    // 메인 페이지로 이동
-    function getMainPage() {
-        window.location.href = mainPage;
-    }
-
-    // 상세 페이지로 이동
-    function getBoardDetails(boardId) {
-        window.location.href = boardUrl + '/' + boardId;
-    }
-
-    // 게시글 작성 페이지로 이동
-    function redirectToCreatePage() {
-        window.location.href = createPage;
-    }
-
-    // 게시글 수정 페이지 이동
-    function getUpdateBoard(boardId) {
-        window.location.href = updatePage + boardId;
-    }
-
-    // 지역 페이지
-    function submitForm() {
-        document.getElementById('regionForm').submit();
-    }
-
-    function changeRegionAndPage(element) {
-        var region = element.getAttribute('data-region');
-        var page = element.getAttribute('data-page');
-        window.location.href = regionPage + '?region=' + region + '&page=' + page;
-    }
-
-    function changeBoardPage(element) {
-        var page = element.getAttribute('data-page');
-        window.location.href = boardUrl + '/reports' + '?page=' + page;
-    }
-
-    function changeCommentPage(element) {
-        var page = element.getAttribute('data-page');
-        window.location.href = commentUrl + '/reports' + '?page=' + page;
-    }
-
-    // 게시글 작성 페이지 경유지 추가
-    function addStopover() {
-        // 현재 경유지 입력란 개수 확인
-        var stopoverContainer = document.getElementById('stopovers-container');
-        var stopoverSections = stopoverContainer.getElementsByClassName('stopover-section');
-
-        if (stopoverSections.length < 5) {
-            // 5개 미만일 때만 새로운 경유지 입력란 생성
-            var newStopoverSection = document.createElement('div');
-            newStopoverSection.classList.add('stopover-section');
-
-
-            var input = document.createElement('input');
-            input.setAttribute('type', 'text');
-            input.setAttribute('name', 'stopover');
-
-            // 새로운 경유지 입력란에 삭제 버튼 추가
-            var removeStopoverButton = document.createElement('button');
-            removeStopoverButton.setAttribute('type', 'button');
-            removeStopoverButton.textContent = '➖';
-            removeStopoverButton.classList.add('btn-stopover'); // Adding the class
-            removeStopoverButton.addEventListener('click', function () {
-                addRemoveStopover(newStopoverSection);
-            });
-
-            newStopoverSection.appendChild(input);
-            newStopoverSection.appendChild(removeStopoverButton);
-
-            // 생성된 입력란을 컨테이너에 추가
-            stopoverContainer.appendChild(newStopoverSection);
-        } else {
-            alert('경유지는 최대 5개까지만 입력 가능합니다.');
-        }
-    }
-
-    // 공통 함수: 삭제 버튼이 속한 div 요소를 찾아서 삭제
-    function removeFromContainer(element) {
-        var container = document.getElementById('stopovers-container');
-        container.removeChild(element);
-    }
-
-    // 이전 입력된 경유지 입력란 삭제 함수
-    function removeStopover(button) {
-        var stopoverSection = button.parentNode;
-        removeFromContainer(stopoverSection);
-    }
-
-    // 추가 입력할 경유지 입력란 삭제 함수
-    function addRemoveStopover(stopoverSection) {
-        removeFromContainer(stopoverSection);
     }
 
     // 사이드 메뉴바
@@ -1255,6 +1186,99 @@
         } else {
             console.error("지도가 활성화 되어 있지 않습니다!");
         }
+    }
+
+    document.getElementById('image-multiple').addEventListener('change', function(e) {
+        var files = e.target.files;
+        var numFiles = files.length;
+        var previewContainer = document.getElementById('previewContainer');
+
+        // 파일 수가 4개를 초과하는지 확인합니다.
+        if (numFiles > 4) {
+            alert('최대 4개의 파일을 선택하세요.');
+            this.value = ''; // 입력값 초기화
+            return;
+        }
+
+        // 이전 미리보기를 지웁니다.
+        previewContainer.innerHTML = '';
+
+        for (var i = 0; i < numFiles; i++) {
+            var file = files[i];
+
+            // 파일 크기가 10MB를 초과하는지 확인합니다.
+            if (file.size > 10 * 1024 * 1024) {
+                alert('파일 크기가 10MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
+                this.value = ''; // 입력값 초기화
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = (function(file) {
+                return function(e) {
+                    var img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function() {
+                        var canvas = document.createElement('canvas');
+                        var ctx = canvas.getContext('2d');
+
+                        // 이미지 너비가 800px를 초과하는지 확인하여 리사이징합니다.
+                        if (img.width > 800) {
+                            var scaleFactor = 800 / img.width;
+                            canvas.width = 800;
+                            canvas.height = img.height * scaleFactor;
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        } else {
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                            ctx.drawImage(img, 0, 0);
+                        }
+
+                        // 캔버스를 PNG 형식으로 변환합니다.
+                        var resizedImageData = canvas.toDataURL('image/png');
+
+                        // 리사이징된 이미지를 미리보기로 표시합니다.
+                        var previewImage = document.createElement('img');
+                        previewImage.src = resizedImageData;
+                        previewImage.classList.add('preview-image');
+                        previewContainer.appendChild(previewImage);
+
+                        // 모달을 열기 위한 클릭 이벤트를 추가합니다.
+                        previewImage.addEventListener('click', function() {
+                            document.getElementById('modalImg').src = this.src;
+                            document.getElementById('modal').style.display = 'block';
+                        });
+
+                        // 리사이징된 이미지를 image-multiple에 추가합니다.
+                        var formData = new FormData();
+                        formData.append('resizedImages', file);
+                    }
+                };
+            })(file);
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // 이미지 외부를 클릭할 때 모달을 닫습니다.
+    window.addEventListener('click', function(e) {
+        var modal = document.getElementById('modal');
+        if (e.target == modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // 이미지 데이터를 Base64 형식으로 가져오는 함수
+    function getBase64Image(img) {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        var dataURL = canvas.toDataURL('image/png');
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
     }
 </script>
 <!-- Google Maps API 및 Drawing 라이브러리 로드 -->
