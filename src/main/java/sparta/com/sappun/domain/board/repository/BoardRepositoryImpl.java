@@ -78,7 +78,15 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
         List<Board> boards = query.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
 
-        long totalCount = selectTotalCount();
+        Long total =
+                queryFactory
+                        .select(qBoard.count())
+                        .from(qBoard)
+                        .where(qBoard.user.id.eq(userId))
+                        .fetchOne();
+
+        // null 체크 후 기본값 제공
+        long totalCount = (total != null) ? total : 0;
 
         return new PageImpl<>(boards, pageable, totalCount);
     }
@@ -104,7 +112,16 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
         List<Board> boards = query.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
 
-        long totalCount = selectTotalCount();
+        Long total =
+                queryFactory
+                        .select(qBoard.count())
+                        .from(qBoard)
+                        .where(qBoard.region.eq(region))
+                        .where(qBoard.reportCount.lt(reportCount))
+                        .fetchOne();
+
+        // null 체크 후 기본값 제공
+        long totalCount = (total != null) ? total : 0;
 
         return new PageImpl<>(boards, pageable, totalCount);
     }
@@ -128,15 +145,16 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
         List<Board> boards = query.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
 
-        long totalCount = selectTotalCount();
-
-        return new PageImpl<>(boards, pageable, totalCount);
-    }
-
-    private long selectTotalCount() {
-        Long total = queryFactory.select(qBoard.count()).from(qBoard).fetchOne();
+        Long total =
+                queryFactory
+                        .select(qBoard.count())
+                        .from(qBoard)
+                        .where(qBoard.reportCount.lt(reportCount))
+                        .fetchOne();
 
         // null 체크 후 기본값 제공
-        return total != null ? total : 0;
+        long totalCount = (total != null) ? total : 0;
+
+        return new PageImpl<>(boards, pageable, totalCount);
     }
 }
