@@ -23,7 +23,7 @@ import sparta.com.sappun.global.config.QuerydslConfig;
 
 @RequiredArgsConstructor
 @Import(QuerydslConfig.class)
-public class BoardRepositoryImpl implements BoardRepositoryCustom {
+public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     private final QBoard qBoard = QBoard.board;
     private final QUser qUser = QUser.user;

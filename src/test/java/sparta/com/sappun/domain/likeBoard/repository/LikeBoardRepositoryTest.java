@@ -96,10 +96,13 @@ class LikeBoardRepositoryTest implements LikeBoardTest {
         // given
         User user = userRepository.save(TEST_USER);
         Board board = boardRepository.save(TEST_BOARD);
-        LikeBoard likeBoard = likeBoardRepository.save(TEST_LIKE_BOARD);
+        Board board1 = boardRepository.save(TEST_BOARD1);
+        LikeBoard likeBoard1 = LikeBoard.builder().board(board1).user(user).build();
+        LikeBoard saveLikeBoard = likeBoardRepository.save(TEST_LIKE_BOARD);
+        LikeBoard saveLikeBoard1 = likeBoardRepository.save(likeBoard1);
 
         // when
-        likeBoardRepository.deleteAll(List.of(likeBoard));
+        likeBoardRepository.deleteAll(List.of(saveLikeBoard, saveLikeBoard1));
         boolean isExist = likeBoardRepository.existsLikeBoardByBoardAndUser(board, user);
 
         // then

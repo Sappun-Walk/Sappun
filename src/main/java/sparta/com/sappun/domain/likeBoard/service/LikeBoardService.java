@@ -61,7 +61,6 @@ public class LikeBoardService {
         // 좋아요한 글만 가져오도록 수정
         Page<LikeBoard> likeBoards = likeBoardRepository.findAllByUser(user, pageable);
 
-        return likeBoards.map(
-                likeBoard -> LikeBoardServiceMapper.INSTANCE.toLikeBoardGetRes(likeBoard));
+        return likeBoards.map(LikeBoardServiceMapper.INSTANCE::toLikeBoardGetRes);
     }
 }
