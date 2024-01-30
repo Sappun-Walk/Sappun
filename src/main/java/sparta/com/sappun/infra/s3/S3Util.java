@@ -1,5 +1,7 @@
 package sparta.com.sappun.infra.s3;
 
+import static sparta.com.sappun.global.response.ResultCode.*;
+
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
@@ -17,8 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.global.exception.GlobalException;
 import sparta.com.sappun.global.validator.S3Validator;
-
-import static sparta.com.sappun.global.response.ResultCode.*;
 
 @Service
 @RequiredArgsConstructor

@@ -1,9 +1,9 @@
 package sparta.com.sappun.global.validator;
 
+import static sparta.com.sappun.global.response.ResultCode.*;
+
 import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.global.exception.GlobalException;
-
-import static sparta.com.sappun.global.response.ResultCode.*;
 
 public class S3Validator {
 
