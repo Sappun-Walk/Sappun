@@ -1,7 +1,6 @@
 package sparta.com.sappun.infra.s3;
 
-import static sparta.com.sappun.global.response.ResultCode.NOT_FOUND_FILE;
-import static sparta.com.sappun.global.response.ResultCode.SYSTEM_ERROR;
+import static sparta.com.sappun.global.response.ResultCode.*;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.global.exception.GlobalException;
+import sparta.com.sappun.global.validator.S3Validator;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +52,10 @@ public class S3Util {
         if (multipartFile == null || multipartFile.isEmpty()) {
             return null;
         }
+
+        // 각 파일의 크기 확인
+        S3Validator.checkFileSize(multipartFile);
+
         // 업로드할 파일의 고유한 파일명 생성
         String fileName = createFileName(multipartFile.getOriginalFilename());
         // 파일명을 UTF-8로 디코딩

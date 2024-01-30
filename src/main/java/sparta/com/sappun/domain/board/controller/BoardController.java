@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.Comparator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +21,7 @@ import sparta.com.sappun.domain.comment.dto.response.CommentGetRes;
 import sparta.com.sappun.global.response.CommonResponse;
 import sparta.com.sappun.global.security.UserDetailsImpl;
 
+@Slf4j
 @Controller
 @RequestMapping("/api/boards")
 @RequiredArgsConstructor
@@ -126,12 +128,15 @@ public class BoardController {
     // Best 게시글 조회 페이지
     @GetMapping("/best")
     public String getBestBoards(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.info("컨트롤러 진입");
         BoardBestListGetRes bestBoards = boardService.getBoardBestList();
+        log.info("서비스단 종료");
         if (userDetails != null) {
             model.addAttribute("user", userDetails.getUser());
         }
         model.addAttribute("bestBoards", bestBoards);
         model.addAttribute("boardList", bestBoards.getBoards());
+        log.info("메인 페이지 반환");
         return "mainPage";
     }
 

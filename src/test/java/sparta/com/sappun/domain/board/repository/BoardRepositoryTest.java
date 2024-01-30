@@ -89,7 +89,7 @@ class BoardRepositoryTest implements BoardTest {
     void deleteAllByUserTest() {
         // given
         User user = userRepository.save(TEST_USER);
-        Board board =
+        Board board1 =
                 Board.builder()
                         .user(user)
                         .title(TEST_BOARD_TITLE)
@@ -102,16 +102,33 @@ class BoardRepositoryTest implements BoardTest {
                         .likeCount(0)
                         .reportCount(TEST_REPORT_COUNT)
                         .build();
-        boardRepository.save(board);
+        boardRepository.save(board1);
+
+        Board board2 =
+                Board.builder()
+                        .user(user)
+                        .title(TEST_BOARD_TITLE)
+                        .content(TEST_BOARD_CONTENT)
+                        .fileURL(TEST_MAP_IMAGE)
+                        .departure(TEST_DEPARTURE)
+                        .destination(TEST_DESTINATION)
+                        .stopover(TEST_STOPOVER)
+                        .region(TEST_REGION1)
+                        .likeCount(0)
+                        .reportCount(TEST_REPORT_COUNT)
+                        .build();
+        boardRepository.save(board2);
 
         // when
         boardRepository.deleteAllByUser(user);
         em.flush(); // 변경사항을 데이터베이스에 즉시 반영
         em.clear(); // 영속성 컨텍스트 초기화
-        Board findBoard = boardRepository.findById(board.getId());
+        Board findBoard1 = boardRepository.findById(board1.getId());
+        Board findBoard2 = boardRepository.findById(board2.getId());
 
         // then
-        assertNull(findBoard);
+        assertNull(findBoard1);
+        assertNull(findBoard2);
     }
 
     @Test
@@ -174,6 +191,67 @@ class BoardRepositoryTest implements BoardTest {
         assertEquals(TEST_BOARD1.getLikeCount(), top3Boards.get(1).getLikeCount());
         assertEquals(TEST_BOARD.getLikeCount(), top3Boards.get(2).getLikeCount());
     }
+
+    //    @Test
+    //    @DisplayName("findTop3ByOrderByLikeCountDesc 인덱스 적용 테스트")
+    //    void findTop3ByOrderByLikeCountDescTest() {
+    //        // given
+    //        User user = userRepository.save(TEST_USER);
+    //
+    //        long insertStartTime = System.currentTimeMillis();
+    //
+    //        for(int i=0; i<1000; i++){ // 1000개 board 저장
+    //            Board board =
+    //                Board.builder()
+    //                    .user(user)
+    //                    .title(TEST_BOARD_TITLE)
+    //                    .content(TEST_BOARD_CONTENT)
+    //                    .fileURL(TEST_MAP_IMAGE)
+    //                    .departure(TEST_DEPARTURE)
+    //                    .destination(TEST_DESTINATION)
+    //                    .stopover(TEST_STOPOVER)
+    //                    .region(TEST_REGION1)
+    //                    .likeCount(0)
+    //                    .reportCount(TEST_REPORT_COUNT)
+    //                    .build();
+    //            boardRepository.save(board);
+    //        }
+    //
+    //        long insertEndTime = System.currentTimeMillis();
+    //        long insertTime = insertEndTime - insertStartTime;
+    //
+    //        long updateStartTime = System.currentTimeMillis();
+    //
+    //        // 사용자 활동 시뮬레이션: likeCount 증가 및 감소
+    //        for(long i= 1L; i<=1000; i++){
+    //            Board findBoard = boardRepository.findById(i);
+    //            findBoard.setLikeCount(findBoard.getLikeCount() + 1); // likeCount 1 증가
+    //        }
+    //
+    //        long updateEndTime = System.currentTimeMillis();
+    //        long updateTime = updateEndTime - updateStartTime;
+    //
+    //        // when
+    //        long selectStartTime = System.currentTimeMillis();
+    //
+    //        List<Board> top3Boards = new ArrayList<>();
+    //        for(int i=0; i<2000; i++){ // 조회
+    //            top3Boards = boardRepository.findTop3ByReportCountLessThanOrderByLikeCountDesc(5);
+    //        }
+    //
+    //        long selectEndTime = System.currentTimeMillis();
+    //        long selectTime = selectEndTime - selectStartTime;
+    //
+    //        System.out.println("삽입 소요 시간: " + insertTime + " milliseconds");
+    //        System.out.println("수정 소요 시간: " + updateTime + " milliseconds");
+    //        System.out.println("조회 소요 시간: " + selectTime + " milliseconds");
+    //
+    //        // then
+    //        assertEquals(3, top3Boards.size());
+    //        assertEquals(1, top3Boards.get(0).getLikeCount());
+    //        assertEquals(1, top3Boards.get(1).getLikeCount());
+    //        assertEquals(1, top3Boards.get(2).getLikeCount());
+    //    }
 
     @Test
     @DisplayName("findAllByRegion 테스트")
