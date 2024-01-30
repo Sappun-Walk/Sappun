@@ -2,14 +2,9 @@ package sparta.com.sappun.domain.likeBoard.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
-import sparta.com.sappun.domain.likeBoard.dto.response.LikeBoardGetRes;
 import sparta.com.sappun.domain.likeBoard.dto.response.LikeBoardSaveRes;
 import sparta.com.sappun.domain.likeBoard.entity.LikeBoard;
 import sparta.com.sappun.domain.likeBoard.repository.LikeBoardRepository;
@@ -48,19 +43,5 @@ public class LikeBoardService {
         }
 
         return res;
-    }
-
-    @Transactional
-    public Page<LikeBoardGetRes> getLikeBoardListByUser(
-            Long userId, int page, int size, String sortBy, boolean isAsc) {
-        User user = userRepository.findById(userId);
-        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Sort sort = Sort.by(direction, sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        // 좋아요한 글만 가져오도록 수정
-        Page<LikeBoard> likeBoards = likeBoardRepository.findAllByUser(user, pageable);
-
-        return likeBoards.map(LikeBoardServiceMapper.INSTANCE::toLikeBoardGetRes);
     }
 }

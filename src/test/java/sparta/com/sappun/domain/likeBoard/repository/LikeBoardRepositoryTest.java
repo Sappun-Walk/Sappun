@@ -119,10 +119,10 @@ class LikeBoardRepositoryTest implements LikeBoardTest {
         Pageable pageable = PageRequest.ofSize(1);
 
         // when
-        Page<LikeBoard> likeBoardPage = likeBoardRepository.findAllByUser(user, pageable);
+        Page<Board> boardPage = boardRepository.findLikeBoardsByUserId(user.getId(), pageable);
 
         // then
-        assertEquals(1, likeBoardPage.getTotalElements());
-        assertEquals(likeBoard, likeBoardPage.getContent().get(0));
+        assertEquals(1, boardPage.getTotalElements());
+        assertEquals(board, boardPage.getContent().get(0));
     }
 }

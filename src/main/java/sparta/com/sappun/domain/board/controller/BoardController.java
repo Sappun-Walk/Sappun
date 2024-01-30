@@ -3,6 +3,7 @@ package sparta.com.sappun.domain.board.controller;
 import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -77,8 +78,8 @@ public class BoardController {
         if (userDetails != null) {
             model.addAttribute("user", userDetails.getUser());
         }
-        Page<BoardToListGetRes> responseDto =
-                boardService.getBoardList(region, page - 1, size, sortBy, isAsc);
+        Page<BoardRegionGetRes> responseDto =
+                boardService.getBoardRegionList(region, page - 1, size, sortBy, isAsc);
         model.addAttribute("region", region);
         model.addAttribute("responseDto", responseDto);
         model.addAttribute("maxPage", responseDto.getTotalPages());
@@ -97,8 +98,7 @@ public class BoardController {
         if (userDetails != null) {
             model.addAttribute("user", userDetails.getUser());
         }
-        Page<BoardToListGetRes> responseDto =
-                boardService.getBoardAllList(page - 1, size, sortBy, isAsc);
+        Page<BoardListGetRes> responseDto = boardService.getBoardAllList(page - 1, size, sortBy, isAsc);
         model.addAttribute("responseDto", responseDto);
         model.addAttribute("maxPage", responseDto.getTotalPages());
         return "allBoardPage";
@@ -117,7 +117,7 @@ public class BoardController {
         model.addAttribute("user", userDetails.getUser());
 
         // BoardService의 getBoardUserList 메서드를 호출하여 사용자의 보드 목록을 가져옵니다.
-        Page<BoardToReportGetRes> responseDto =
+        Page<BoardUserGetRes> responseDto =
                 boardService.getBoardUserList(userId, page - 1, size, sortBy, isAsc);
 
         model.addAttribute("responseDto", responseDto);
@@ -128,16 +128,34 @@ public class BoardController {
     // Best 게시글 조회 페이지
     @GetMapping("/best")
     public String getBestBoards(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        log.info("컨트롤러 진입");
-        BoardBestListGetRes bestBoards = boardService.getBoardBestList();
-        log.info("서비스단 종료");
+        List<BoardListGetRes> bestBoards = boardService.getBoardBestList();
+
         if (userDetails != null) {
             model.addAttribute("user", userDetails.getUser());
         }
         model.addAttribute("bestBoards", bestBoards);
-        model.addAttribute("boardList", bestBoards.getBoards());
-        log.info("메인 페이지 반환");
         return "mainPage";
+    }
+
+    // 좋아요 한 게시글 조회 페이지
+    @GetMapping("/likes")
+    public String getLikeBoardList(
+            @RequestParam(value = "page", defaultValue = DEFAULT_PAGE) int page,
+            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) int size,
+            @RequestParam(value = "sortBy", defaultValue = DEFAULT_SORT_BY) String sortBy,
+            @RequestParam(value = "isAsc", defaultValue = DEFAULT_IS_ASC) boolean isAsc,
+            Model model,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        model.addAttribute("user", userDetails.getUser());
+
+        Long userId = userDetails.getUser().getId();
+
+        Page<BoardLikeGetRes> responseDto =
+                boardService.getLikeBoardListByUser(userId, page - 1, size, sortBy, isAsc);
+
+        model.addAttribute("responseDto", responseDto);
+        model.addAttribute("maxPage", responseDto.getTotalPages());
+        return "likeBoardPage";
     }
 
     // 게시글 작성

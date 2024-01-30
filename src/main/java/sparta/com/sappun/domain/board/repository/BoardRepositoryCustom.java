@@ -16,6 +16,8 @@ public interface BoardRepositoryCustom {
 
     Page<Board> findAllByUserId(Long userId, Pageable pageable);
 
+    Page<Board> findLikeBoardsByUserId(Long userId, Pageable pageable);
+
     Page<Board> findAllByReportCountLessThanAndRegion(
             int reportCount, RegionEnum region, Pageable pageable);
 
