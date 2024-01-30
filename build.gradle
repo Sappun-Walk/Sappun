@@ -67,9 +67,6 @@ dependencies {
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    // email
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-
     // h2
     testImplementation 'com.h2database:h2:2.1.214'
     compileOnly('com.h2database:h2:2.1.214')
@@ -107,6 +104,8 @@ spotless {
         trimTrailingWhitespace()
         // 끝부분 New Line 처리
         endWithNewline()
+
+        targetExclude('**/generated/**') // 자동 생성된 코드 경로 제외
     }
 }
 
@@ -114,14 +113,10 @@ spotless {
 tasks.named("spotlessJava").configure { dependsOn("compileTestJava") }
 
 // === QueryDsl 빌드 옵션 (선택) ===
-def querydslDir = "$buildDir/generated/querydsl"
+def querydslDir = "build/generated/querydsl"
 
 sourceSets {
     main.java.srcDirs += [ querydslDir ]
-}
-
-tasks.withType(JavaCompile) {
-    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
 }
 
 clean.doLast {
