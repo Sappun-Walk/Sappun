@@ -1,10 +1,9 @@
 package sparta.com.sappun.global.validator;
 
-import static sparta.com.sappun.global.response.ResultCode.INVALID_PROFILE_IMAGE_FILE;
-import static sparta.com.sappun.global.response.ResultCode.NULL_FILE_TYPE;
-
 import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.global.exception.GlobalException;
+
+import static sparta.com.sappun.global.response.ResultCode.*;
 
 public class S3Validator {
 
@@ -32,5 +31,13 @@ public class S3Validator {
     private static boolean isImageFile(String fileType) {
         // 파일의 컨텐츠 타입이 이미지 파일(JPEG or PNG)인지 여부를 판단
         return fileType.equals(IMAGE_JPG) || fileType.equals(IMAGE_PNG);
+    }
+
+    // 파일 크기 확인 및 예외 처리
+    public static void checkFileSize(MultipartFile multipartFile) {
+        long fileSize = multipartFile.getSize();
+        if (fileSize > 10 * 1024 * 1024) { // 10MB 이상인 경우 에러 발생
+            throw new GlobalException(MAXIMUM_UPLOAD_FILE_SIZE);
+        }
     }
 }

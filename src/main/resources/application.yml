@@ -34,6 +34,10 @@ spring:
               - email
               - nickname
 
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 60MB
 
   jpa:
     open-in-view: false
