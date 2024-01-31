@@ -31,10 +31,10 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import sparta.com.sappun.domain.board.dto.request.BoardSaveReq;
 import sparta.com.sappun.domain.board.dto.request.BoardUpdateReq;
-import sparta.com.sappun.domain.board.dto.response.BoardBestListGetRes;
 import sparta.com.sappun.domain.board.dto.response.BoardGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardToListGetRes;
-import sparta.com.sappun.domain.board.dto.response.BoardToReportGetRes;
+import sparta.com.sappun.domain.board.dto.response.BoardListGetRes;
+import sparta.com.sappun.domain.board.dto.response.BoardRegionGetRes;
+import sparta.com.sappun.domain.board.dto.response.BoardUserGetRes;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.board.repository.BoardRepository;
 import sparta.com.sappun.domain.board.repository.ImageRepository;
@@ -93,8 +93,8 @@ class BoardServiceTest implements BoardTest {
     }
 
     @Test
-    @DisplayName("getBoardList 테스트")
-    void getBoardListTest() {
+    @DisplayName("getBoardRegionList 테스트")
+    void getBoardRegionListTest() {
         // given
         int page = 0;
         int size = 8;
@@ -111,8 +111,8 @@ class BoardServiceTest implements BoardTest {
                 .thenReturn(mockPage);
 
         // when
-        Page<BoardToListGetRes> res =
-                boardService.getBoardList(TEST_REGION1, page, size, sortBy, isAsc);
+        Page<BoardRegionGetRes> res =
+                boardService.getBoardRegionList(TEST_REGION1, page, size, sortBy, isAsc);
 
         // then
         assertEquals(1, res.getTotalPages());
@@ -137,7 +137,7 @@ class BoardServiceTest implements BoardTest {
         when(boardRepository.findAllByReportCountLessThan(5, pageable)).thenReturn(mockPage);
 
         // when
-        Page<BoardToListGetRes> res = boardService.getBoardAllList(page, size, sortBy, isAsc);
+        Page<BoardListGetRes> res = boardService.getBoardAllList(page, size, sortBy, isAsc);
 
         // then
         assertEquals(1, res.getTotalPages());
@@ -162,7 +162,7 @@ class BoardServiceTest implements BoardTest {
         when(boardRepository.findAllByUserId(TEST_USER_ID, pageable)).thenReturn(mockPage);
 
         // when
-        Page<BoardToReportGetRes> res =
+        Page<BoardUserGetRes> res =
                 boardService.getBoardUserList(TEST_USER_ID, page, size, sortBy, isAsc);
 
         // then
@@ -180,10 +180,10 @@ class BoardServiceTest implements BoardTest {
                 .thenReturn(mockBoardList);
 
         // when
-        BoardBestListGetRes res = boardService.getBoardBestList();
+        List<BoardListGetRes> res = boardService.getBoardBestList();
 
         // then
-        assertEquals(2, res.getBoards().size());
+        assertEquals(2, res.size());
     }
 
     @Test
