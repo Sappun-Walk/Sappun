@@ -1,12 +1,11 @@
 package sparta.com.sappun.domain.reportBoard.repository;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import sparta.com.sappun.domain.board.entity.Board;
 import sparta.com.sappun.domain.reportBoard.entity.ReportBoard;
 import sparta.com.sappun.domain.user.entity.User;
-
-import java.util.List;
 
 public interface ReportBoardRepositoryCustom {
 

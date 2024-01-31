@@ -1,11 +1,11 @@
 package sparta.com.sappun.domain.reportComment.repository;
 
-
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
@@ -19,8 +19,6 @@ import sparta.com.sappun.domain.reportComment.entity.ReportComment;
 import sparta.com.sappun.domain.user.entity.QUser;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.global.config.QuerydslConfig;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Import(QuerydslConfig.class)
@@ -43,48 +41,38 @@ public class ReportCommentRepositoryImpl implements ReportCommentRepositoryCusto
     public List<ReportComment> selectReportCommentByUser(User user) {
         return queryFactory
                 .selectFrom(qReportComment)
-                .join(qReportComment.user, qUser).fetchJoin()
+                .join(qReportComment.user, qUser)
+                .fetchJoin()
                 .where(qReportComment.user.eq(user))
                 .fetch();
     }
 
     @Override
     public void deleteAll(List<ReportComment> reportComments) {
-        queryFactory
-                .delete(qReportComment)
-                .where(qReportComment.in(reportComments))
-                .execute();
+        queryFactory.delete(qReportComment).where(qReportComment.in(reportComments)).execute();
     }
 
     @Override
     public void clearReportCommentByComment(Comment comment) {
-        queryFactory
-                .delete(qReportComment)
-                .where(qReportComment.comment.eq(comment))
-                .execute();
+        queryFactory.delete(qReportComment).where(qReportComment.comment.eq(comment)).execute();
     }
 
     @Override
     public Page<ReportComment> findAllFetchComment(Pageable pageable) {
         JPAQuery<ReportComment> query =
-                queryFactory
-                        .selectFrom(qReportComment)
-                        .join(qReportComment.comment, qComment)
-                        .fetchJoin();
+                queryFactory.selectFrom(qReportComment).join(qReportComment.comment, qComment).fetchJoin();
 
         for (Sort.Order o : pageable.getSort()) {
-            PathBuilder pathBuilder = new PathBuilder(qReportComment.getType(), qReportComment.getMetadata());
+            PathBuilder pathBuilder =
+                    new PathBuilder(qReportComment.getType(), qReportComment.getMetadata());
             query.orderBy(
                     new OrderSpecifier<>(
                             o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
         }
-        List<ReportComment> reportComments = query.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+        List<ReportComment> reportComments =
+                query.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
 
-        Long total =
-                queryFactory
-                        .select(qReportComment.count())
-                        .from(qReportComment)
-                        .fetchOne();
+        Long total = queryFactory.select(qReportComment.count()).from(qReportComment).fetchOne();
 
         long totalCount = (total != null) ? total : 0;
 

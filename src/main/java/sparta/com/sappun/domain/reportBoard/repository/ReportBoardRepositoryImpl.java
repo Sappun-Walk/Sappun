@@ -1,11 +1,11 @@
 package sparta.com.sappun.domain.reportBoard.repository;
 
-
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
@@ -19,8 +19,6 @@ import sparta.com.sappun.domain.reportBoard.entity.ReportBoard;
 import sparta.com.sappun.domain.user.entity.QUser;
 import sparta.com.sappun.domain.user.entity.User;
 import sparta.com.sappun.global.config.QuerydslConfig;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Import(QuerydslConfig.class)
@@ -43,34 +41,26 @@ public class ReportBoardRepositoryImpl implements ReportBoardRepositoryCustom {
     public List<ReportBoard> selectReportBoardByUser(User user) {
         return queryFactory
                 .selectFrom(qReportBoard)
-                .join(qReportBoard.user, qUser).fetchJoin()
+                .join(qReportBoard.user, qUser)
+                .fetchJoin()
                 .where(qReportBoard.user.eq(user))
                 .fetch();
     }
 
     @Override
     public void deleteAll(List<ReportBoard> reportBoards) {
-        queryFactory
-                .delete(qReportBoard)
-                .where(qReportBoard.in(reportBoards))
-                .execute();
+        queryFactory.delete(qReportBoard).where(qReportBoard.in(reportBoards)).execute();
     }
 
     @Override
     public void clearReportBoardByBoard(Board board) {
-        queryFactory
-                .delete(qReportBoard)
-                .where(qReportBoard.board.eq(board))
-                .execute();
+        queryFactory.delete(qReportBoard).where(qReportBoard.board.eq(board)).execute();
     }
 
     @Override
     public Page<ReportBoard> findAllFetchBoard(Pageable pageable) {
         JPAQuery<ReportBoard> query =
-                queryFactory
-                        .selectFrom(qReportBoard)
-                        .join(qReportBoard.board, qBoard)
-                        .fetchJoin();
+                queryFactory.selectFrom(qReportBoard).join(qReportBoard.board, qBoard).fetchJoin();
 
         for (Sort.Order o : pageable.getSort()) {
             PathBuilder pathBuilder = new PathBuilder(qReportBoard.getType(), qReportBoard.getMetadata());
@@ -78,13 +68,10 @@ public class ReportBoardRepositoryImpl implements ReportBoardRepositoryCustom {
                     new OrderSpecifier<>(
                             o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
         }
-        List<ReportBoard> reportBoards = query.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+        List<ReportBoard> reportBoards =
+                query.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
 
-        Long total =
-                queryFactory
-                        .select(qReportBoard.count())
-                        .from(qReportBoard)
-                        .fetchOne();
+        Long total = queryFactory.select(qReportBoard.count()).from(qReportBoard).fetchOne();
 
         long totalCount = (total != null) ? total : 0;
 
