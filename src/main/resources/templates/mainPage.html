@@ -420,7 +420,7 @@
 
 <div class="getBoardDetail-body">
     <div class="gallery-container">
-        <div class="gallery-item" th:each="board : ${bestBoards.boards}" th:id="${'board-' + board.id}">
+        <div class="gallery-item" th:each="board : ${bestBoards}" th:id="${'board-' + board.id}">
             <img class="img-section" th:src="${board.fileURL}" th:onclick="'getBoardDetails(' + ${board.id} + ')'"
                  alt="게시물 이미지">
             <div class="gallery-caption">
