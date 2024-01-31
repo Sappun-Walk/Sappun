@@ -46,6 +46,7 @@ public class NaverController {
         Cookie cookie = new Cookie(header, cookieValue); // Name-Value
         cookie.setPath("/");
         cookie.setMaxAge(2 * 60 * 60);
+        cookie.setHttpOnly(true);
         //        cookie.setDomain(".sappun.shop");
         //        cookie.setSecure(true); // 쿠키를 안전한 연결에서만 전송
         //        cookie.setHttpOnly(true); // JavaScript를 통한 액세스 제한
