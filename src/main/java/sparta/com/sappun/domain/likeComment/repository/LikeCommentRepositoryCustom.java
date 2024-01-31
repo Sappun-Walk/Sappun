@@ -1,9 +1,8 @@
 package sparta.com.sappun.domain.likeComment.repository;
 
+import java.util.List;
 import sparta.com.sappun.domain.likeComment.entity.LikeComment;
 import sparta.com.sappun.domain.user.entity.User;
-
-import java.util.List;
 
 public interface LikeCommentRepositoryCustom {
 
