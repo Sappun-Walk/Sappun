@@ -43,6 +43,7 @@ public class ReportBoardRepositoryImpl implements ReportBoardRepositoryCustom {
     public List<ReportBoard> selectReportBoardByUser(User user) {
         return queryFactory
                 .selectFrom(qReportBoard)
+                .join(qReportBoard.user, qUser).fetchJoin()
                 .where(qReportBoard.user.eq(user))
                 .fetch();
     }
@@ -68,7 +69,7 @@ public class ReportBoardRepositoryImpl implements ReportBoardRepositoryCustom {
         JPAQuery<ReportBoard> query =
                 queryFactory
                         .selectFrom(qReportBoard)
-                        .join(qReportBoard.board)
+                        .join(qReportBoard.board, qBoard)
                         .fetchJoin();
 
         for (Sort.Order o : pageable.getSort()) {
