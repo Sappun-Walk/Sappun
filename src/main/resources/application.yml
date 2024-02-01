@@ -60,6 +60,7 @@ spring:
     redis:
       host: 3.36.206.196
       port: 6379
+      password: ${REDIS_PASSWORD}
 
 logging:
   level:
