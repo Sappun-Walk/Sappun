@@ -47,7 +47,7 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BoardToListGetRes> getBoardList(
+    public Page<BoardRegionGetRes> getBoardRegionList(
             RegionEnum region, int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
@@ -56,22 +56,22 @@ public class BoardService {
         Page<Board> boardList =
                 boardRepository.findAllByReportCountLessThanAndRegion(
                         REPORT_HIDDEN_COUNT, region, pageable); // 신고된 횟수가 5회 미만인 게시글 찾기
-        return boardList.map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
+        return boardList.map(BoardServiceMapper.INSTANCE::toBoardRegionGetRes);
     }
 
     @Transactional(readOnly = true)
-    public Page<BoardToListGetRes> getBoardAllList(int page, int size, String sortBy, boolean isAsc) {
+    public Page<BoardListGetRes> getBoardAllList(int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
         return boardRepository
                 .findAllByReportCountLessThan(REPORT_HIDDEN_COUNT, pageable)
-                .map(BoardServiceMapper.INSTANCE::toBoardToListGetRes);
+                .map(BoardServiceMapper.INSTANCE::toBoardListGetRes);
     }
 
     @Transactional(readOnly = true)
-    public Page<BoardToReportGetRes> getBoardUserList(
+    public Page<BoardUserGetRes> getBoardUserList(
             Long userId, int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
@@ -79,16 +79,30 @@ public class BoardService {
 
         return boardRepository
                 .findAllByUserId(userId, pageable)
-                .map(BoardServiceMapper.INSTANCE::toBoardUserListGetRes);
+                .map(BoardServiceMapper.INSTANCE::toBoardUserGetRes);
     }
 
     @Transactional(readOnly = true)
-    public BoardBestListGetRes getBoardBestList() {
-        List<BoardToListGetRes> boardGetRes =
-                BoardServiceMapper.INSTANCE.toBoardBestListGetRes(
-                        boardRepository.findTop3ByReportCountLessThanOrderByLikeCountDesc(
-                                REPORT_HIDDEN_COUNT)); // 신고된 횟수가 5회 미만인 게시글 찾기
-        return BoardBestListGetRes.builder().boards(boardGetRes).build();
+    public List<BoardListGetRes> getBoardBestList() {
+        return boardRepository
+                .findTop3ByReportCountLessThanOrderByLikeCountDesc(REPORT_HIDDEN_COUNT)
+                .stream()
+                .map(BoardServiceMapper.INSTANCE::toBoardListGetRes)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<BoardLikeGetRes> getLikeBoardListByUser(
+            Long userId, int page, int size, String sortBy, boolean isAsc) {
+        User user = userRepository.findById(userId);
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        // 좋아요한 글만 가져오도록 수정
+        Page<Board> likeBoards = boardRepository.findLikeBoardsByUserId(user.getId(), pageable);
+
+        return likeBoards.map(BoardServiceMapper.INSTANCE::toBoardLikeGetRes);
     }
 
     public String saveMapImage(MultipartFile mapImage) {

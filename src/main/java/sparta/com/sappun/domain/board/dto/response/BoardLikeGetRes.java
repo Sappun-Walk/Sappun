@@ -8,7 +8,7 @@ import sparta.com.sappun.domain.board.entity.RegionEnum;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BoardToLikeGetRes {
+public class BoardLikeGetRes {
     private Long id;
     private String nickname;
     private String title;
@@ -18,7 +18,7 @@ public class BoardToLikeGetRes {
     private Integer reportCount;
 
     @Builder
-    private BoardToLikeGetRes(
+    private BoardLikeGetRes(
             Long id,
             String nickname,
             String title,
