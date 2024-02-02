@@ -316,7 +316,7 @@
             <div class="profile-info">
                 <div class="profile-image-group">
                     <img id="preview" th:src="${userProfile.profileUrl}" alt="Profile Picture" class="profile-image">
-                    <input class="file" type="file" name="image" accept="image/*" id="image" onchange="readURL(this);">
+                    <input class="file" type="file" name="image" accept="image/*" id="image">
 
                     <p class="rank">
                         <b class="Rank-text">Rank</b>
@@ -562,18 +562,6 @@
         window.location.href = commentUrl + '/reports' + '?page=' + page;
     }
 
-    // 이미지 미리보기
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                document.getElementById('preview').src = e.target.result;
-            };
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            document.getElementById('preview').src = "";
-        }
-    }
 
     // 사이드 메뉴바
     function openNav() {
@@ -622,25 +610,25 @@
             body: JSON.stringify(usernameVerifyReq),
         })
             .then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              return response.json();
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
             })
             .then(data => {
-              if (data.code === 200) {
-                if (data.data.isDuplicated) {
-                  // 중복된 경우 메시지 표시
-                  alert('사용 불가능한 아이디입니다.');
-                  isDuplicatedUsername = true;
+                if (data.code === 200) {
+                    if (data.data.isDuplicated) {
+                        // 중복된 경우 메시지 표시
+                        alert('사용 불가능한 아이디입니다.');
+                        isDuplicatedUsername = true;
+                    } else {
+                        // 중복되지 않은 경우 메시지 초기화
+                        alert('사용 가능한 아이디입니다.');
+                        isDuplicatedUsername = false;
+                    }
                 } else {
-                  // 중복되지 않은 경우 메시지 초기화
-                  alert('사용 가능한 아이디입니다.');
-                  isDuplicatedUsername = false;
+                    alert(data.message);
                 }
-              } else {
-                alert(data.message);
-              }
             })
             .catch(error => {
                 console.error('Error checking username:', error);
@@ -662,30 +650,30 @@
             },
             body: JSON.stringify(nicknameVerifyReq),
         })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data.code === 200) {
-            if (data.data.isDuplicated) {
-              // 중복된 경우 메시지 표시
-              alert('사용 불가능한 닉네임입니다.');
-              isDuplicatedNickname = true;
-            } else {
-              // 중복되지 않은 경우 메시지 초기화
-              alert('사용 가능한 닉네임입니다.');
-              isDuplicatedNickname = false;
-            }
-          } else {
-            alert(data.message);
-          }
-        })
-        .catch(error => {
-          console.error('Error checking nickname:', error);
-        });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200) {
+                    if (data.data.isDuplicated) {
+                        // 중복된 경우 메시지 표시
+                        alert('사용 불가능한 닉네임입니다.');
+                        isDuplicatedNickname = true;
+                    } else {
+                        // 중복되지 않은 경우 메시지 초기화
+                        alert('사용 가능한 닉네임입니다.');
+                        isDuplicatedNickname = false;
+                    }
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error checking nickname:', error);
+            });
     }
 
     function updateProfile() {
@@ -708,19 +696,77 @@
             return;
         }
 
-            let formData = new FormData();
-            formData.append("username", username);
-            formData.append("nickname", nickname);
+        let formData = new FormData();
+        formData.append("username", username);
+        formData.append("nickname", nickname);
 
-            // 파일이 선택되지 않은 경우 빈 파일 전송
-            if (image.files.length > 0) {
-                formData.append('image', image.files[0]);
-            } else {
-                // 빈 파일 생성 및 전송
-                const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
-                formData.append('image', emptyFile);
+        if (image.files.length > 0) {
+            const imageFile = image.files[0];
+
+            // 파일 크기가 20MB를 초과하는지 확인합니다.
+            if (imageFile.size > 20 * 1024 * 1024) {
+                alert('파일 크기가 20MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
+                imageInput.value = ''; // 입력값 초기화
+                return;
             }
 
+            resizeAndSend(imageFile, formData);
+        } else {
+            // 이미지가 없는 경우 바로 요청 보냄
+            const emptyFile = new File([''], 'empty.txt', {type: 'text/plain'});
+            formData.append('image', emptyFile);
+
+            sendRequest(formData);
+        }
+
+        function resizeAndSend(file, formData) {
+            resizeImage(file)
+                .then(resizedImage => {
+                    formData.append('image', resizedImage);
+                    sendRequest(formData);
+                })
+        }
+
+        function resizeImage(file) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const MAX_WIDTH = 800;
+                    const MAX_HEIGHT = 600;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    canvas.toBlob(blob => {
+                        blob.name = file.name;
+                        resolve(blob);
+                    }, file.type);
+                };
+                img.onerror = () => {
+                    reject(new Error('이미지를 읽는 중 오류가 발생했습니다.'));
+                };
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+
+        function sendRequest(formData) {
             // 요청 보내기
             fetch('/api/users/profile', {
                 method: 'PATCH',
@@ -744,7 +790,37 @@
                     console.error('Error updating profile:', error);
                 });
         }
+    }
 
+    document.getElementById('image').addEventListener('change', function (e) {
+        var files = e.target.files;
+        var numFiles = files.length;
+
+        // 파일 수가 1개를 초과하는지 확인합니다.
+        if (numFiles > 1) {
+            alert('최대 1개의 파일을 선택하세요.');
+            this.value = ''; // 입력값 초기화
+            return;
+        }
+
+        for (var i = 0; i < numFiles; i++) {
+            var file = files[i];
+
+            // 파일 크기가 20MB를 초과하는지 확인합니다.
+            if (file.size > 20 * 1024 * 1024) {
+                alert('파일 크기가 20MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
+                this.value = ''; // 입력값 초기화
+                return;
+            }
+
+            // 이미지 미리보기
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('preview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 </script>
 </body>
 </html>
