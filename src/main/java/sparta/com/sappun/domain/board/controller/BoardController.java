@@ -48,7 +48,7 @@ public class BoardController {
     public String getBoardDetails(
             @PathVariable Long boardId,
             Model model,
-            @RequestParam(value = "sortOrder", defaultValue = "likes") String sortOrder,
+            @RequestParam(value = "sortOrder", defaultValue = "recent") String sortOrder,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails != null) {
             model.addAttribute("user", userDetails.getUser());
