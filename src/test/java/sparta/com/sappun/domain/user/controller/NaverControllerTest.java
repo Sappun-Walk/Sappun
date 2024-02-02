@@ -1,5 +1,6 @@
 package sparta.com.sappun.domain.user.controller;
 
+import java.util.HashMap;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -9,8 +10,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import sparta.com.sappun.domain.BaseMvcTest;
 import sparta.com.sappun.domain.user.service.NaverService;
-
-import java.util.HashMap;
 
 @WebMvcTest(controllers = NaverController.class)
 public class NaverControllerTest extends BaseMvcTest {
@@ -41,6 +40,7 @@ public class NaverControllerTest extends BaseMvcTest {
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/api/boards/best"));
     }
+
     private HashMap<String, String> createMockTokens() {
         HashMap<String, String> mockTokens = new HashMap<>();
         mockTokens.put("mockAccessToken", "mockRefreshToken");
