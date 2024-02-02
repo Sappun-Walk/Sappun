@@ -1,0 +1,340 @@
+@font-face {
+    font-family: 'yg-jalnan';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-400';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-600';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-900';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+html {
+    overflow-y: auto;
+    min-height: 100vh; /* 브라우저 높이에 따라 최소 높이 설정 */
+}
+
+body {
+    font-family: 'Pretendard-600';
+    min-height: 100vh; /* 브라우저 높이에 따라 최소 높이 설정 */
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+view-div {
+    font-family: 'Pretendard-600';
+}
+
+h5 {
+    margin-top: 5px;
+    margin-bottom: 0.1rem;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 0.1rem;
+}
+
+#profileImage {
+    cursor: pointer;
+    width: 80px;
+    height: 80px;
+    padding: 10px;
+    border-radius: 50%;
+}
+
+.page-nation li {
+    list-style: none;
+}
+
+.page-nation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.page-nation a {
+    display: block;
+    margin: 0 3px;
+    float: left;
+    border: 1px solid #e6e6e6;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    background-color: #fff;
+    font-size: 13px;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.page-nation a:hover {
+    background-color: gray;
+    color: white;
+
+}
+
+.gallery-container {
+    width: 78%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+    gap: 20px 30px;
+    flex-direction: row;
+    align-items: center;
+    align-content: flex-start;
+}
+
+.gallery-item {
+    width: 275px;
+    height: 380px;
+    border: 1px solid deeppink;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4), -3px -3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-item img {
+    padding: 5px;
+    margin: 5px;
+    background-size: cover;
+    width: 250px;
+    height: 250px;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.gallery-caption {
+    padding: 10px 20px;
+    text-align: left;
+}
+
+.btn-up {
+    font-family: 'Pretendard-600';
+    font-size: 20px;
+    position: relative;
+    width: auto;
+    margin: 0 10px;
+    display: inline-block;
+    padding: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-up:hover {
+    transform: scale(1.3);
+}
+
+.btn-up::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: rgb(255, 182, 193);
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-up:hover::after {
+    width: 100%;
+}
+
+.gallery-title {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Board-Title {
+    font-family: 'Pretendard-900';
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Board-content {
+    font-family: 'Pretendard-400';
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.main-img-container {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    justify-content: center;
+}
+
+.btn-write {
+    width: 500px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.btn-write button {
+    width: auto;
+    margin-right: 10px;
+}
+
+.rank-image {
+    width: 50px;
+    height: 50px;
+}
+
+#sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgba(17, 17, 17, 0.8);
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+#sidebar a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+#sidebar a:hover {
+    color: #f1f1f1;
+}
+
+#main {
+    transition: margin-left 0.5s;
+    padding: 16px;
+    display: flex;
+}
+
+.btn-sideOpen {
+    width: 500px;
+}
+
+#openBtn {
+    font-size: 30px;
+    width: 250px;
+    margin-right: auto;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0);
+    color: black;
+    padding: 10px 15px;
+    border: none;
+    display: flex;
+}
+
+#openBtn.hide {
+    visibility: hidden;
+}
+
+.view-div {
+    margin-left: auto;
+    margin-right: 18%;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 10px;
+}
+
+.view-div1 {
+    font-family: 'Pretendard-400';
+}
+
+#mainLogoImage {
+    cursor: pointer;
+}
+
+.btn-style {
+    font-family: 'Pretendard-400';
+    width: 50%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.btn-style button {
+    font-family: 'Pretendard-400';
+    margin-left: 10px;
+    width: 15%;
+    background-color: white;
+    color: black;
+    border: 1px solid pink;
+    border-radius: 30px;
+    outline-color: pink;
+    cursor: pointer;
+}
+
+.btn-style button:hover {
+    /* 마우스를 버튼 위에 올렸을 때의 스타일 변경 */
+    background-color: pink;
+}
+
+.page-title {
+    width: 63%;
+    height: 50px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.page-title1 {
+    font-family: 'yg-jalnan';
+    font-size: 30px;
+    width: 50%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
+}
+
+footer {
+    box-shadow: 0 -5px 0 rgba(255, 182, 193, 0.1), 0 -2px 0 rgba(255, 182, 193, 0.2);
+    margin-top: 100px;
+    text-align: center;
+    padding: 20px;
+}
+
+footer p {
+    color: #000000;
+}
+
+footer a {
+    text-decoration: none; /* 하이퍼링크의 밑줄을 없앰 */
+}
