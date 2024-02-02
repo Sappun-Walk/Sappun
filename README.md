@@ -8,9 +8,9 @@
 [4. Collaborative Strategy](#Collaborative-Strategy) <br>
 [5. Service Architecture](#Service-Architecture) <br>
 [6. ERD](#ERD) <br>
-[8. Technical Decision](#Technical-Decision) <br>
-[9. Troble Shoting](#Troble-Shoting) <br>
-[10. Test](#Test)
+[7. Technical Decision](#Technical-Decision) <br>
+[8. Troble Shoting](#Troble-Shoting) <br>
+[9. Test](#Test)
 
 ## Introduce
 
@@ -27,7 +27,7 @@
 |:-----------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
 |                                               팀장                                                |                                              부팀장                                               |                                               팀원                                               |                                               팀원                                                |                                               팀원                                                |
 |                      홍정욱<br>[@peter202597](https://github.com/peter202597)                      |                      김재한<br>[@rlawogks22](https://github.com/rlawogks22)                       |                        이예진<br>[@dlwls423](https://github.com/dlwls423)                         |                          박상율<br>[@hayul93](https://github.com/hayul93)                          |                         김진환<br>[@jump6923](https://github.com/jump6923)                         |
-|                                    -ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ                                     |                                    -ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ                                    |                                    -ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ                                    |                                    -ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ                                     |                                    -ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ                                     |
+|                                    -프로필 기능<br>-아이디/이름 중복 확인<br>-소셜로그인                                     |                                    -좋아요, 신고 기능                                  |                                    -ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ                                    |                                    -댓글 기능<br>-CSS<br>-S3                                     |                                    -게시글 기능                                     |
 
 ## Develop Environment
 
