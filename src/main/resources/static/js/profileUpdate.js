@@ -336,3 +336,4 @@
     console.error('Error updating profile:', error);
 });
 }
+

@@ -1,4 +1,5 @@
 
+
     const host = 'http://' + window.location.host;
     const loginPage = '/api/users/login';
     const logoutUrl = '/api/users/logout';
@@ -586,3 +587,4 @@
     var dataURL = canvas.toDataURL('image/png');
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
 }
+
