@@ -663,7 +663,7 @@
                             삭제
                         </button>
                     </div>
-                    <div th:if="${user != null}">
+                    <div th:if="${user != null && user.nickname != board.nickname}">
                         <button class="btn btn-outline-success" th:onclick="showInputForm()">신고</button>
                     </div>
                     <div th:if="${user == null}">
@@ -796,7 +796,7 @@
                 </div>
                 <div class="like-comment-btn">
                     <!--댓글 신고-->
-                    <div th:if="${user != null}">
+                    <div th:if="${user != null && user.nickname != comment.nickname}">
                         <button class="btn btn-outline-success" th:onclick="|showCommentInputForm(${comment.id})|">
                             신고
                         </button>
