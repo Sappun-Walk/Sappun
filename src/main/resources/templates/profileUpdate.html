@@ -703,9 +703,9 @@
         if (image.files.length > 0) {
             const imageFile = image.files[0];
 
-            // 파일 크기가 10MB를 초과하는지 확인합니다.
-            if (imageFile.size > 10 * 1024 * 1024) {
-                alert('파일 크기가 10MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
+            // 파일 크기가 20MB를 초과하는지 확인합니다.
+            if (imageFile.size > 20 * 1024 * 1024) {
+                alert('파일 크기가 20MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
                 imageInput.value = ''; // 입력값 초기화
                 return;
             }
@@ -806,9 +806,9 @@
         for (var i = 0; i < numFiles; i++) {
             var file = files[i];
 
-            // 파일 크기가 10MB를 초과하는지 확인합니다.
-            if (file.size > 10 * 1024 * 1024) {
-                alert('파일 크기가 10MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
+            // 파일 크기가 20MB를 초과하는지 확인합니다.
+            if (file.size > 20 * 1024 * 1024) {
+                alert('파일 크기가 20MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
                 this.value = ''; // 입력값 초기화
                 return;
             }

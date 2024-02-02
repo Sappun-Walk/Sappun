@@ -619,7 +619,7 @@
     <div class="outLine">
         <div style="display: flex;justify-content: center; align-items: center;" id="previewContainer">
         </div>
-        추가 이미지(장당 10MB 이내의 사진, 최대 4장) :
+        추가 이미지(장당 20MB 이내의 사진, 최대 4장) :
         <input class="file" type="file" name="image-multiple" accept="image/*" id="image-multiple" multiple>
     </div>
     <div id="modal" class="modal">
@@ -1128,9 +1128,9 @@
         for (var i = 0; i < numFiles; i++) {
             var file = files[i];
 
-            // 파일 크기가 10MB를 초과하는지 확인합니다.
-            if (file.size > 10 * 1024 * 1024) {
-                alert('파일 크기가 10MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
+            // 파일 크기가 20MB를 초과하는지 확인합니다.
+            if (file.size > 20 * 1024 * 1024) {
+                alert('파일 크기가 20MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
                 this.value = ''; // 입력값 초기화
                 return;
             }
