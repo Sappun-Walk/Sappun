@@ -499,76 +499,78 @@ function moveMapToLocation(newLatLng, newZoomLevel) {
     }
 }
 
-document.getElementById('image-multiple').addEventListener('change', function(e) {
-    var files = e.target.files;
-    var numFiles = files.length;
-    var previewContainer = document.getElementById('previewContainer');
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('image-multiple').addEventListener('change', function(e) {
+        var files = e.target.files;
+        var numFiles = files.length;
+        var previewContainer = document.getElementById('previewContainer');
 
-    // 파일 수가 4개를 초과하는지 확인합니다.
-    if (numFiles > 4) {
-        alert('최대 4개의 파일을 선택하세요.');
-        this.value = ''; // 입력값 초기화
-        return;
-    }
-
-    // 이전 미리보기를 지웁니다.
-    previewContainer.innerHTML = '';
-
-    for (var i = 0; i < numFiles; i++) {
-        var file = files[i];
-
-        // 파일 크기가 20MB를 초과하는지 확인합니다.
-        if (file.size > 20 * 1024 * 1024) {
-            alert('파일 크기가 20MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
+        // 파일 수가 4개를 초과하는지 확인합니다.
+        if (numFiles > 4) {
+            alert('최대 4개의 파일을 선택하세요.');
             this.value = ''; // 입력값 초기화
             return;
         }
 
-        var reader = new FileReader();
-        reader.onload = (function(file) {
-            return function(e) {
-                var img = new Image();
-                img.src = e.target.result;
-                img.onload = function() {
-                    var canvas = document.createElement('canvas');
-                    var ctx = canvas.getContext('2d');
+        // 이전 미리보기를 지웁니다.
+        previewContainer.innerHTML = '';
 
-                    // 이미지 너비가 800px를 초과하는지 확인하여 리사이징합니다.
-                    if (img.width > 800) {
-                        var scaleFactor = 800 / img.width;
-                        canvas.width = 800;
-                        canvas.height = img.height * scaleFactor;
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    } else {
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        ctx.drawImage(img, 0, 0);
+        for (var i = 0; i < numFiles; i++) {
+            var file = files[i];
+
+            // 파일 크기가 20MB를 초과하는지 확인합니다.
+            if (file.size > 20 * 1024 * 1024) {
+                alert('파일 크기가 20MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
+                this.value = ''; // 입력값 초기화
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = (function(file) {
+                return function(e) {
+                    var img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function() {
+                        var canvas = document.createElement('canvas');
+                        var ctx = canvas.getContext('2d');
+
+                        // 이미지 너비가 800px를 초과하는지 확인하여 리사이징합니다.
+                        if (img.width > 800) {
+                            var scaleFactor = 800 / img.width;
+                            canvas.width = 800;
+                            canvas.height = img.height * scaleFactor;
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        } else {
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                            ctx.drawImage(img, 0, 0);
+                        }
+
+                        // 캔버스를 PNG 형식으로 변환합니다.
+                        var resizedImageData = canvas.toDataURL('image/png');
+
+                        // 리사이징된 이미지를 미리보기로 표시합니다.
+                        var previewImage = document.createElement('img');
+                        previewImage.src = resizedImageData;
+                        previewImage.classList.add('preview-image');
+                        previewContainer.appendChild(previewImage);
+
+                        // 모달을 열기 위한 클릭 이벤트를 추가합니다.
+                        previewImage.addEventListener('click', function() {
+                            document.getElementById('modalImg').src = this.src;
+                            document.getElementById('modal').style.display = 'block';
+                        });
+
+                        // 리사이징된 이미지를 image-multiple에 추가합니다.
+                        var formData = new FormData();
+                        formData.append('resizedImages', file);
                     }
+                };
+            })(file);
 
-                    // 캔버스를 PNG 형식으로 변환합니다.
-                    var resizedImageData = canvas.toDataURL('image/png');
-
-                    // 리사이징된 이미지를 미리보기로 표시합니다.
-                    var previewImage = document.createElement('img');
-                    previewImage.src = resizedImageData;
-                    previewImage.classList.add('preview-image');
-                    previewContainer.appendChild(previewImage);
-
-                    // 모달을 열기 위한 클릭 이벤트를 추가합니다.
-                    previewImage.addEventListener('click', function() {
-                        document.getElementById('modalImg').src = this.src;
-                        document.getElementById('modal').style.display = 'block';
-                    });
-
-                    // 리사이징된 이미지를 image-multiple에 추가합니다.
-                    var formData = new FormData();
-                    formData.append('resizedImages', file);
-                }
-            };
-        })(file);
-
-        reader.readAsDataURL(file);
-    }
+            reader.readAsDataURL(file);
+        }
+    });
 });
 
 // 이미지 외부를 클릭할 때 모달을 닫습니다.

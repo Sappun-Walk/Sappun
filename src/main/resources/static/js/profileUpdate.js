@@ -383,32 +383,34 @@ function updateProfile() {
     }
 }
 
-document.getElementById('image').addEventListener('change', function (e) {
-    var files = e.target.files;
-    var numFiles = files.length;
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('image').addEventListener('change', function (e) {
+        var files = e.target.files;
+        var numFiles = files.length;
 
-    // 파일 수가 1개를 초과하는지 확인합니다.
-    if (numFiles > 1) {
-        alert('최대 1개의 파일을 선택하세요.');
-        this.value = ''; // 입력값 초기화
-        return;
-    }
-
-    for (var i = 0; i < numFiles; i++) {
-        var file = files[i];
-
-        // 파일 크기가 20MB를 초과하는지 확인합니다.
-        if (file.size > 20 * 1024 * 1024) {
-            alert('파일 크기가 20MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
+        // 파일 수가 1개를 초과하는지 확인합니다.
+        if (numFiles > 1) {
+            alert('최대 1개의 파일을 선택하세요.');
             this.value = ''; // 입력값 초기화
             return;
         }
 
-        // 이미지 미리보기
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById('preview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
+        for (var i = 0; i < numFiles; i++) {
+            var file = files[i];
+
+            // 파일 크기가 20MB를 초과하는지 확인합니다.
+            if (file.size > 20 * 1024 * 1024) {
+                alert('파일 크기가 20MB 제한을 초과합니다. 더 작은 파일을 선택하세요.');
+                this.value = ''; // 입력값 초기화
+                return;
+            }
+
+            // 이미지 미리보기
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('preview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 });
