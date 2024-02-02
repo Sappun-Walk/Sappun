@@ -8,9 +8,9 @@
 [4. Collaborative Strategy](#Collaborative-Strategy) <br>
 [5. Service Architecture](#Service-Architecture) <br>
 [6. ERD](#ERD) <br>
-[8. Technical Decision](#Technical-Decision) <br>
-[9. Troble Shoting](#Troble-Shoting) <br>
-[10. Test](#Test)
+[7. Technical Decision](#Technical-Decision) <br>
+[8. Troble Shoting](#Troble-Shoting) <br>
+[9. Test](#Test)
 
 ## Introduce
 
@@ -23,11 +23,13 @@
 
 ## Team Introduce
 
-| <img src ="https://avatars.githubusercontent.com/u/146843126?v=4" width="160px" height="160px"> | <img src ="https://avatars.githubusercontent.com/u/72595935?v=4" width="160px" height="160px"> | <img src ="https://avatars.githubusercontent.com/u/99391320?v=4" width="160px" height="160px"> | <img src ="https://avatars.githubusercontent.com/u/139609206?v=4" width="160px" height="160px"> | <img src ="https://avatars.githubusercontent.com/u/146907732?v=4" width="160px" height="160px"> |
-|:-----------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
-|                                               팀장                                                |                                              부팀장                                               |                                               팀원                                               |                                               팀원                                                |                                               팀원                                                |
-|                      홍정욱<br>[@peter202597](https://github.com/peter202597)                      |                      김재한<br>[@rlawogks22](https://github.com/rlawogks22)                       |                        이예진<br>[@dlwls423](https://github.com/dlwls423)                         |                          박상율<br>[@hayul93](https://github.com/hayul93)                          |                         김진환<br>[@jump6923](https://github.com/jump6923)                         |
-|                                    -ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ                                     |                                    -ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ                                    |                                    -ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ                                    |                                    -ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ                                     |                                    -ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ<br>-ㅇㅇ                                     |
+
+|             <img src ="https://avatars.githubusercontent.com/u/146843126?v=4" width="160px" height="160px">             | <img src ="https://avatars.githubusercontent.com/u/72595935?v=4" width="160px" height="160px"> | <img src ="https://avatars.githubusercontent.com/u/99391320?v=4" width="160px" height="160px"> | <img src ="https://avatars.githubusercontent.com/u/139609206?v=4" width="160px" height="160px"> | <img src ="https://avatars.githubusercontent.com/u/146907732?v=4" width="160px" height="160px"> |
+|:-----------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
+|                                                           팀장                                                            |                                              부팀장                                               |                                               팀원                                               |                                               팀원                                                |                                               팀원                                                |
+|                                  홍정욱<br>[@peter202597](https://github.com/peter202597)                                  |                      김재한<br>[@rlawogks22](https://github.com/rlawogks22)                       |                        이예진<br>[@dlwls423](https://github.com/dlwls423)                         |                          박상율<br>[@hayul93](https://github.com/hayul93)                          |                         김진환<br>[@jump6923](https://github.com/jump6923)                         |
+|                                    -프로필 기능<br>-아이디/이름<br>중복 확인<br>-[카카오, 네이버] 소셜로그인                                     |                           -[게시글, 댓글]<br>좋아요, 신고 <br>관련 기능<br>-페이징 처리                           |                                    -인증/인가<br>-회원가입, <br>회원탈퇴<br>-로그인, 로그아웃(인증인가)<br>-CI/CD(배포)                                   |                          -댓글 기능 <br>(사진첨부)<br>-S3 <br>-이미지 <br>리사이징<br>-CSS                     |                                   -게시글 기능<br>-지도 API 연동<br>-NGINX, HTTPS                                |
+
 
 ## Develop Environment
 
