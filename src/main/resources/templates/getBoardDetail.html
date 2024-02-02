@@ -126,12 +126,14 @@
                                 id="board-update-button">
                             수정
                         </button>
+                    </div>
+                    <div th:if="${user != null && user.nickname == board.nickname || user.role == user.role.ADMIN}">
                         <button class="btn btn-outline-success" th:onclick="'deleteBoard(' + ${boardId} + ')'"
                                 id="board-delete-button">
                             삭제
                         </button>
                     </div>
-                    <div th:if="${user != null}">
+                    <div th:if="${user != null && user.nickname != board.nickname}">
                         <button class="btn btn-outline-success" th:onclick="showInputForm()">신고</button>
                     </div>
                     <div th:if="${user == null}">
@@ -264,7 +266,7 @@
                 </div>
                 <div class="like-comment-btn">
                     <!--댓글 신고-->
-                    <div th:if="${user != null}">
+                    <div th:if="${user != null && user.nickname != comment.nickname}">
                         <button class="btn btn-outline-success" th:onclick="|showCommentInputForm(${comment.id})|">
                             신고
                         </button>
@@ -277,6 +279,8 @@
                         <!--댓글 수정-->
                         <button class="btn btn-outline-success" th:onclick="|showCommentUpdateForm(${comment.id})|">수정
                         </button>
+                    </div>
+                    <div th:if="${user != null && user.nickname == comment.nickname || user.role == user.role.ADMIN}">
                         <!--댓글 삭제-->
                         <button class="btn btn-outline-success"
                                 th:onclick="'deleteComment(' + ${board.id} + ',' + ${comment.id} + ')'"
