@@ -1,0 +1,271 @@
+@font-face {
+    font-family: 'yg-jalnan';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-300';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-400';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-600';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-900';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+html {
+    overflow-y: auto;
+    min-height: 100vh; /* 브라우저 높이에 따라 최소 높이 설정 */
+}
+
+body {
+    font-family: 'Pretendard-600';
+    min-height: 100vh; /* 브라우저 높이에 따라 최소 높이 설정 */
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.header-btn {
+    font-family: 'Pretendard-600';
+}
+
+.bottom-btn {
+    font-family: 'Pretendard-600';
+}
+
+.name-tag {
+    font-family: 'Pretendard-900';
+    font-size: 20px;
+}
+
+.name-element {
+    font-family: 'Pretendard-400';
+    font-size: 14px;
+}
+
+.Rank-text {
+    font-family: 'Pretendard-400';
+}
+
+.profile-page {
+    display: flex; /* Flexbox 사용 */
+    flex-direction: column; /* 세로로 정렬 */
+    align-items: center; /* 가운데 정렬 */
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px; /* 여백 설정 */
+    width: 100%; /* 전체 너비로 확장 */
+}
+
+#mainLogoImage {
+    cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+}
+
+div.profile-header-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 50px;
+    margin-top: 20px;
+}
+
+#logout-button {
+    cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+    width: 100px;
+    font-size: 16px; /* 글자 크기를 조절하여 크기를 키움 */
+    padding: 10px; /* 버튼 내부의 여백 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: black; /* 글자 색상 */
+    background-color: white; /* 배경 색상 */
+    border: 1px solid palevioletred; /* 테두리 색상 */
+    border-radius: 4px; /* 둥근 테두리 */
+    margin-top: 10px; /* 맨 위에서 10px 만큼 떨어지도록 조절 */
+    margin-right: 50px;
+}
+
+#withdraw-button {
+    cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+    width: 100px;
+    font-size: 16px; /* 글자 크기를 조절하여 크기를 키움 */
+    padding: 10px; /* 버튼 내부의 여백 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: black; /* 글자 색상 */
+    background-color: white; /* 배경 색상 */
+    border: 1px solid palevioletred; /* 테두리 색상 */
+    border-radius: 4px; /* 둥근 테두리 */
+    margin-top: 10px; /* 맨 위에서 10px 만큼 떨어지도록 조절 */
+}
+
+div.profile-content {
+    width: 100%; /* 전체 너비로 확장 */
+    padding: 20px; /* 여백 설정 */
+    display: flex;
+    flex-direction: column; /* 세로로 정렬 */
+    align-items: center;
+}
+
+div.profile-info-box {
+    width: 1200px;
+    height: 650px;
+    border: 2px solid #F6CEE3;
+    border-radius: 10px; /* 테두리 모서리 둥글기 조절 */
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center;
+}
+
+div.profile-info {
+    width: 700px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.rank {
+    display: flex;
+    align-items: center;
+}
+
+.rank-image {
+    width: 50px;
+    height: 50px;
+}
+
+/* 프로필 이미지를 동그랗게 보여주기 위한 CSS 스타일*/
+img.profile-image {
+    border-radius: 50%;
+    width: 300px; /* 이미지 크기 조절에 따라 변경 가능 */
+    height: 300px;
+}
+
+/* 프로필 이미지와 Score를 나란히 보여줄 프로필 그룹 */
+div.profile-image-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-bottom: 10px; /* 그룹 간격 조절 */
+}
+
+/* ID, Nickname, Email을 나란히 보여줄 그룹 */
+div.profile-text-group {
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 나열 */
+    align-items: flex-start; /* 좌측 정렬 */
+    margin-top: 30px; /* 그룹 간격 조절 */
+}
+
+div.profile-page-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 40px;
+}
+
+#password-update-button {
+    cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+    width: 130px;
+    font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
+    padding: 10px; /* 버튼 내부의 여백 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: black; /* 글자 색상 */
+    background-color: #F6CEE3; /* 배경 색상 */
+    border: 1px solid #F6CEE3; /* 테두리 색상 */
+    border-radius: 4px; /* 둥근 테두리 */
+    margin-right: 10px;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+}
+
+#profile-update-button {
+    cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+    width: 60px;
+    font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
+    padding: 10px; /* 버튼 내부의 여백 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: black; /* 글자 색상 */
+    background-color: #F6CEE3; /* 배경 색상 */
+    border: 1px solid #F6CEE3; /* 테두리 색상 */
+    border-radius: 4px; /* 둥근 테두리 */
+    margin-right: 10px;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+}
+
+#back-main-button {
+    cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+    width: 60px;
+    font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
+    padding: 10px; /* 버튼 내부의 여백 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: black; /* 글자 색상 */
+    background-color: #F6CEE3; /* 배경 색상 */
+    border: 1px solid #F6CEE3; /* 테두리 색상 */
+    border-radius: 4px; /* 둥근 테두리 */
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+}
+
+#back-user-button {
+    cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+    width: 100px;
+    font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
+    padding: 10px; /* 버튼 내부의 여백 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: black; /* 글자 색상 */
+    background-color: #F6CEE3; /* 배경 색상 */
+    border: 1px solid #F6CEE3; /* 테두리 색상 */
+    border-radius: 4px; /* 둥근 테두리 */
+    margin-right: 10px;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+}
+#back-like-button {
+    cursor: pointer; /* 마우스를 가져다 댈 때 포인터로 변경 */
+    width: 100px;
+    font-size: 14px; /* 글자 크기를 조절하여 크기를 키움 */
+    padding: 10px; /* 버튼 내부의 여백 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: black; /* 글자 색상 */
+    background-color: #F6CEE3; /* 배경 색상 */
+    border: 1px solid #F6CEE3; /* 테두리 색상 */
+    border-radius: 4px; /* 둥근 테두리 */
+    margin-right: 10px;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+}
+#mainLogoImage {
+    cursor: pointer;
+}
+
+footer {
+    box-shadow: 0 -5px 0 rgba(255, 182, 193, 0.1), 0 -2px 0 rgba(255, 182, 193, 0.2);
+    margin-top: 100px;
+    text-align: center;
+    padding: 20px;
+}
+
+footer p {
+    color: #000000;
+}
+
+footer a {
+    text-decoration: none; /* 하이퍼링크의 밑줄을 없앰 */
+}
+
