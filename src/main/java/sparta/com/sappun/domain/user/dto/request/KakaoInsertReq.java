@@ -4,8 +4,10 @@ import com.nimbusds.jose.shaded.gson.JsonElement;
 import java.util.HashMap;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 public class KakaoInsertReq {
     private String email;
