@@ -125,7 +125,7 @@
 
 ## Service Architecture
 
-<img src="src/main/resources/static/images/Architecture.png" width="800px" height="500px">
+<img width="725" alt="아키텍처" src="https://github.com/Sappun-Walk/Sappun/assets/99391320/86c7ce5f-cbb4-4399-b734-d377137ca977">
 
 ## ERD
 
