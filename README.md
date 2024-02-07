@@ -60,7 +60,6 @@
 - AWS
     - EC2
     - S3
-    - CloudFront
     - RDS
     - Route53
 
