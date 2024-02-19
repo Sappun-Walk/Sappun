@@ -122,3 +122,19 @@ sourceSets {
 clean.doLast {
     file(querydslDir).deleteDir()
 }
+
+test {
+    finalizedBy jacocoTestReport // 테스트 실행 후 JaCoCo 보고서 생성
+}
+
+jacocoTestReport {
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['sparta/com/sappun/domain/board/dto/**', 'sparta/com/sappun/domain/comment/dto/**', 'sparta/com/sappun/domain/likeBoard/dto/**',
+                                        'sparta/com/sappun/domain/likeComment/dto/**', 'sparta/com/sappun/domain/reportBoard/dto/**', 'sparta/com/sappun/domain/reportComment/dto/**', 'sparta/com/sappun/domain/user/dto/**',
+                                        'sparta/com/sappun/global/config/**', 'sparta/com/sappun/global/jpa/**',
+                                        'sparta/com/sappun/global/redis/RedisConfig.class', 'sparta/com/sappun/global/security/WebSecurityConfig.class', 'sparta/com/sappun/infra/s3/S3Config.class'])
+        }))
+    }
+}

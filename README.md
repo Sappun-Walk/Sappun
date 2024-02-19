@@ -674,4 +674,4 @@ MDY3OTM5NDUsImlhdCI6MTcwNjc5MDM0NX0.mzW4oBI0gIx3hHELmVYWZWjLcf8p_8EAaYeq0hebcKU
 
 ### Jacoco 테스트 문서
 
-<img width="616" alt="jacoco" src="https://github.com/Sappun-Walk/Sappun/assets/99391320/de730c22-8621-4709-8f3e-fcdd31f02417">
+<img width="616" alt="jacoco" src="src/main/resources/static/images/jacoco.png">
